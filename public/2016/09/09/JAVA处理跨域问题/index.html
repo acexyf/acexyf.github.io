@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>JAVA处理AJAX跨域问题 | 谢小飞的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="JavaScript由于安全性方面的考虑，不允许页面跨域调用其他页面的对象，那么问题来了，什么是跨域问题？答：这是由于浏览器同源策略的限制，现在所有支持JavaScript的浏览器都使用了这个策略。那么什么是同源呢？所谓的同源是指三个方面“相同”：
+
+域名相同
+协议相同
+端口相同下面就举几个例子来帮助更好的理解同源策略。
+
+
+
+
+URL
+说明
+是否允许通信
+
+
+
+
+http://www.a.com">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JAVA处理AJAX跨域问题">
+<meta property="og:url" content="http://xieyufei.com/2016/09/09/JAVA处理跨域问题/index.html">
+<meta property="og:site_name" content="谢小飞的博客">
+<meta property="og:description" content="JavaScript由于安全性方面的考虑，不允许页面跨域调用其他页面的对象，那么问题来了，什么是跨域问题？答：这是由于浏览器同源策略的限制，现在所有支持JavaScript的浏览器都使用了这个策略。那么什么是同源呢？所谓的同源是指三个方面“相同”：
+
+域名相同
+协议相同
+端口相同下面就举几个例子来帮助更好的理解同源策略。
+
+
+
+
+URL
+说明
+是否允许通信
+
+
+
+
+http://www.a.com">
+<meta property="og:updated_time" content="2016-09-09T11:59:09.800Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JAVA处理AJAX跨域问题">
+<meta name="twitter:description" content="JavaScript由于安全性方面的考虑，不允许页面跨域调用其他页面的对象，那么问题来了，什么是跨域问题？答：这是由于浏览器同源策略的限制，现在所有支持JavaScript的浏览器都使用了这个策略。那么什么是同源呢？所谓的同源是指三个方面“相同”：
+
+域名相同
+协议相同
+端口相同下面就举几个例子来帮助更好的理解同源策略。
+
+
+
+
+URL
+说明
+是否允许通信
+
+
+
+
+http://www.a.com">
+  
+    <link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">谢小飞的博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://xieyufei.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-JAVA处理跨域问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/09/09/JAVA处理跨域问题/" class="article-date">
+  <time datetime="2016-09-09T11:56:30.797Z" itemprop="datePublished">2016-09-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JAVA处理AJAX跨域问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>JavaScript由于安全性方面的考虑，不允许页面跨域调用其他页面的对象，那么问题来了，什么是跨域问题？<br>答：这是由于浏览器同源策略的限制，现在所有支持JavaScript的浏览器都使用了这个策略。那么什么是同源呢？所谓的同源是指三个方面“相同”：</p>
+<ol>
+<li>域名相同</li>
+<li>协议相同</li>
+<li>端口相同<br>下面就举几个例子来帮助更好的理解同源策略。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>URL</th>
+<th>说明</th>
+<th>是否允许通信</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="http://www.a.com/a.js" target="_blank" rel="external">http://www.a.com/a.js</a> <br> <a href="http://www.a.com/b.js" target="_blank" rel="external">http://www.a.com/b.js</a></td>
+<td>同一域名</td>
+<td>允许</td>
+</tr>
+<tr>
+<td><a href="http://www.a.com/a.js" target="_blank" rel="external">http://www.a.com/a.js</a> <br> <a href="http://www.b.com/a.js" target="_blank" rel="external">http://www.b.com/a.js</a></td>
+<td>不同域名</td>
+<td>不允许</td>
+</tr>
+<tr>
+<td><a href="http://www.a.com:8000/a.js" target="_blank" rel="external">http://www.a.com:8000/a.js</a><br><a href="http://www.a.com/b.js" target="_blank" rel="external">http://www.a.com/b.js</a></td>
+<td>同一域名不同端口</td>
+<td>不允许</td>
+</tr>
+<tr>
+<td><a href="https://www.a.com/a.js" target="_blank" rel="external">https://www.a.com/a.js</a> <br> <a href="http://www.a.com/b.js" target="_blank" rel="external">http://www.a.com/b.js</a></td>
+<td>同一域名不同协议</td>
+<td>不允许</td>
+</tr>
+</tbody>
+</table>
+<p>在JAVA中处理跨域问题，通常有以下两种常用的解决方法。</p>
+<h4 id="第一种解决方法"><a href="#第一种解决方法" class="headerlink" title="第一种解决方法"></a>第一种解决方法</h4><p>后台代码在被请求的Servlet中添加Header设置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">response.setHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;);</div><div class="line">PrintWriter out =null;</div><div class="line">try</div><div class="line">&#123;</div><div class="line">	out = response.getWriter();</div><div class="line">&#125; catch (IOException e)</div><div class="line">&#123;</div><div class="line">	// TODO Auto-generated catch block</div><div class="line">	e.printStackTrace();</div><div class="line">&#125;</div><div class="line">out.print(&quot;&#123;&apos;status&apos;:&apos;ok&apos;&#125;&quot;);</div><div class="line">out.flush();</div><div class="line">out.close();</div></pre></td></tr></table></figure>
+<p>Access-Control-Allow-Origin这个Header在W3C标准里用来检查该跨域请求是否可以被通过，如果值为*则表明当前页面可以跨域访问。默认的情况下是不允许的。<br>在前端JS中需要向Servlet发出请求，请求代码如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$.ajax(&#123;</div><div class="line">  url: &quot;your url&quot;,</div><div class="line">  type:&quot;get or post&quot;,</div><div class="line">  dataType:&quot;json&quot;,</div><div class="line">  data:&#123;</div><div class="line">    ....</div><div class="line">  &#125;,</div><div class="line">  success:function(data)&#123;</div><div class="line">    ...</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h4 id="第二种解决方法"><a href="#第二种解决方法" class="headerlink" title="第二种解决方法"></a>第二种解决方法</h4><p>通过jsonp跨域请求的方式。JSONP和JSON虽然只有一个字母的区别，但是他们完全就是两回事，很多人很容易把他们搞混。JSON是一种数据交换的格式，而JSONP则是一种非官方跨域数据交互协议。<br>首先来说一下前端JS是怎么发送请求。代码如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">$.ajax(&#123;</div><div class="line">  url:&quot;your url&quot;,</div><div class="line">  type:&quot;get or post&quot;,</div><div class="line">  async:false,</div><div class="line">  dataType : &quot;jsonp&quot;,</div><div class="line">  //服务端用于接收callback调用的function名的参数</div><div class="line">  jsonp:&quot;callbackparam&quot;,</div><div class="line">  //callback的function名称</div><div class="line">  jsonpCallback:&quot;success_jsonpCallback&quot;,</div><div class="line">  success:function(data)&#123;</div><div class="line">    console.log(data);</div><div class="line">  &#125;,</div><div class="line">  error:function(data)&#123;</div><div class="line">    console.log(data);</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>这里的callbackparam和success_jsonpCallback可以理解为发送的data数据的键值对，可以自定义，但是callbackparam需要和后台约定好参数名称，因为后台需要获取到这个参数里面的值（即success_jsonpCallback）。<br>下面，最重要的来了，后台怎么样获取和返回数据呢。代码如下所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">PrintWriter out =null;</div><div class="line">String callback=req.getParameter(&quot;callbackparam&quot;);</div><div class="line">String json=callback+&quot;(&#123;&apos;status&apos;:&apos;ok&apos;&#125;)&quot;;</div><div class="line">try</div><div class="line">&#123;</div><div class="line">  out = resp.getWriter();</div><div class="line">&#125; catch (IOException e)</div><div class="line">&#123;</div><div class="line">  // TODO Auto-generated catch block</div><div class="line">  e.printStackTrace();</div><div class="line">&#125;</div><div class="line">out.print(json);</div><div class="line">out.flush();</div><div class="line">out.close();</div></pre></td></tr></table></figure>
+<p>首先需要获取参数名为callbackparam的值，这里获取到的值就是“success_jsonpCallback”。然后将这个值加上一对小括号。小括号里放入你需要返回的数据内容，比如这里我返回一个JSON对象。当然你也可以返回其他对象，比如只返回一个字符串类型数据也可以。最后前端JS返回的数据就是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">success_jsonpCallback(&#123;&apos;status&apos;:&apos;ok&apos;&#125;)</div></pre></td></tr></table></figure>
+<p>浏览器会自动解析为json对象，这时候你只需要在success回调函数中直接用data.status就可以了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xieyufei.com/2016/09/09/JAVA处理跨域问题/" data-id="ciswu8fzr00011wnq7wgyli4y" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/09/09/CraftyJs初探/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">CraftyJs(一)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/09/09/JAVA处理跨域问题/">JAVA处理AJAX跨域问题</a>
+          </li>
+        
+          <li>
+            <a href="/2016/09/09/CraftyJs初探/">CraftyJs(一)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Corner<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
