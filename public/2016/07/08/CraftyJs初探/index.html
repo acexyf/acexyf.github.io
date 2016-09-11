@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>CraftyJs初探 | 谢小飞的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前不久听了一趟分享课，分享课的主题是JS游戏的制作，但是如果是自己写游戏比较的繁琐，如果能应用一个游戏引擎，就能大大的简化游戏的开发速度和开发效率，于是我在网上参考了几个游戏引擎，找到了CraftyJs这个游戏引擎还是挺不错的，但是苦于网上的教程不是很全面，所以今天就开个坑，写个入门级的教程，仅供参考。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CraftyJs初探">
+<meta property="og:url" content="http://xieyufei.com/2016/07/08/CraftyJs初探/index.html">
+<meta property="og:site_name" content="谢小飞的博客">
+<meta property="og:description" content="前不久听了一趟分享课，分享课的主题是JS游戏的制作，但是如果是自己写游戏比较的繁琐，如果能应用一个游戏引擎，就能大大的简化游戏的开发速度和开发效率，于是我在网上参考了几个游戏引擎，找到了CraftyJs这个游戏引擎还是挺不错的，但是苦于网上的教程不是很全面，所以今天就开个坑，写个入门级的教程，仅供参考。">
+<meta property="og:updated_time" content="2016-09-11T08:02:24.061Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CraftyJs初探">
+<meta name="twitter:description" content="前不久听了一趟分享课，分享课的主题是JS游戏的制作，但是如果是自己写游戏比较的繁琐，如果能应用一个游戏引擎，就能大大的简化游戏的开发速度和开发效率，于是我在网上参考了几个游戏引擎，找到了CraftyJs这个游戏引擎还是挺不错的，但是苦于网上的教程不是很全面，所以今天就开个坑，写个入门级的教程，仅供参考。">
+  
+    <link rel="alternative" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.ico">
+  
+  
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.png" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/">Corner</a></h1>
+        </hgroup>
+
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/about">留言打卡</a></li>
+                        
+                            <li><a href="/FrontEndGuide">前端导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PAkNDgsKBQ4MCnxNTRJfU1E" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/acexyf" title="github">github</a>
+                            
+                                <a class="fl zhihu" target="_blank" href="https://www.zhihu.com/people/xie-yu-fei-16" title="zhihu">zhihu</a>
+                            
+                                <a class="fl weibo" target="_blank" href="http://weibo.com/u/1394805987" title="weibo">weibo</a>
+                            
+                                <a class="fl rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/CraftyJs/" style="font-size: 10px;">CraftyJs</a> <a href="/tags/JAVA/" style="font-size: 10px;">JAVA</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/前端/" style="font-size: 10px;">前端</a> <a href="/tags/异步跨域/" style="font-size: 10px;">异步跨域</a> <a href="/tags/游戏引擎/" style="font-size: 10px;">游戏引擎</a>
+                    </div>
+                </section>
+                
+                
+                
+
+                
+                
+                <section class="switch-part switch-part3">
+                
+                    <div id="js-aboutme">一个喜欢写代码的程序员</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Corner</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.png" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Corner</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/about">留言打卡</a></li>
+                
+                    <li><a href="/FrontEndGuide">前端导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=PAkNDgsKBQ4MCnxNTRJfU1E" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/acexyf" title="github">github</a>
+                    
+                        <a class="zhihu" target="_blank" href="https://www.zhihu.com/people/xie-yu-fei-16" title="zhihu">zhihu</a>
+                    
+                        <a class="weibo" target="_blank" href="http://weibo.com/u/1394805987" title="weibo">weibo</a>
+                    
+                        <a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-CraftyJs初探" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/07/08/CraftyJs初探/" class="article-date">
+      <time datetime="2016-07-08T14:00:00.000Z" itemprop="datePublished">2016-07-08</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CraftyJs初探
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/技术/">技术</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CraftyJs/">CraftyJs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/游戏引擎/">游戏引擎</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>　　前不久听了一趟分享课，分享课的主题是JS游戏的制作，但是如果是自己写游戏比较的繁琐，如果能应用一个游戏引擎，就能大大的简化游戏的开发速度和开发效率，于是我在网上参考了几个游戏引擎，找到了CraftyJs这个游戏引擎还是挺不错的，但是苦于网上的教程不是很全面，所以今天就开个坑，写个入门级的教程，仅供参考。<br><a id="more"></a></p>
+<h3 id="1-初始化"><a href="#1-初始化" class="headerlink" title="1. 初始化"></a>1. 初始化</h3><p>首先从<a href="http://craftyjs.com/" target="_blank" rel="external">官网</a>上下载CraftyJs的脚本引用到项目中来。然后就可以开始写我们自己的程序了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CraftyJs.init(this.config.width,this.config.height);</div></pre></td></tr></table></figure></p>
+<p>这段代码用于初始化整个stage，用官方的话来说就是舞台，所有的元素将在这整个舞台里活动。这个舞台的宽度是this.config.width(px)，高度是this.config.height(px)。如果有元素超出了舞台的范围，这个元素将被遮住，因为整个舞台设置了样式overflow:hidden将超出的元素隐藏掉。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Crafty.background(&quot;#f0f0f0&quot;);</div></pre></td></tr></table></figure></p>
+<p>你还可以通过background()方法给整个舞台设置背景颜色</p>
+<h3 id="2-放置场景"><a href="#2-放置场景" class="headerlink" title="2. 放置场景"></a>2. 放置场景</h3><p>当整个舞台初始化后就可以玩游戏了吧？不！你去剧院看戏一入座演员就给你演戏么，当然不是，还需要一些场景的带入和切换。这些场景比如加载动画、菜单选项等一系列。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Crafty.defineScene(&quot;loading&quot;, function() &#123;</div><div class="line">	Crafty.background(&quot;#000&quot;);</div><div class="line">	Crafty.e(&quot;2D, DOM, Text&quot;).attr(&#123;</div><div class="line">		w: 100,</div><div class="line">		h: 20,</div><div class="line">		x: 150,</div><div class="line">		y: 120</div><div class="line">	&#125;).text(&quot;Loading&quot;).css(&#123;</div><div class="line">		&quot;text-align&quot;: &quot;center&quot;</div><div class="line">	&#125;).textColor(&quot;#FFFFFF&quot;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>我们可以使用Crafty.defineScene()方法来定义一个场景。在这里我们定义了一个叫loading的场景，里面只有一个元素就是一行”Loading”的字。但是定义好了场景并没有显示在舞台上，因为这个场景并没有被调用到。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Crafty.enterScene(&quot;loading&quot;);</div></pre></td></tr></table></figure></p>
+<p>通过enterScene()这个方法来展示刚才我们定义好场景，你会在舞台上看到这个场景。这个展示舞台的方法可以在任何地方被调用。但是需要注意的是这个方法会清除舞台上所有的元素，除了那些有”Persist”组件的元素（组件这一名词下面会解释到）。</p>
+<h3 id="3-实体-组件系统"><a href="#3-实体-组件系统" class="headerlink" title="3. 实体/组件系统"></a>3. 实体/组件系统</h3><p>现在到了CraftyJS最重要的部分来了，就是CraftyJS独特的实体/组件系统。这个系统有点面向对象编程的意思。整个系统分为两个部分。</p>
+<h5 id="1-组件系统"><a href="#1-组件系统" class="headerlink" title="(1) 组件系统"></a>(1) 组件系统</h5><p>所谓的组件，有点类似JAVA中的对象（不是现实里的对象），看不见摸不着，是对实体的抽象。每个组件里封装了对应的方法，可以在实体中直接调用。CraftyJS中有很多已经被预先定义好的组件可以直接拿来使用，而且组件可以被重复地继承。</p>
+<h5 id="2-实体系统"><a href="#2-实体系统" class="headerlink" title="(2) 实体系统"></a>(2) 实体系统</h5><p>实体是真正看得见的元素，是对组件的“实例化”。一个单一的实体能够继承多个实体。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">var square = Crafty.e(&apos;2D, DOM, Color&apos;);</div></pre></td></tr></table></figure></p>
+<p>这样就通过e()方法定义了几个叫”square”的实体。这个实体继承了三个组件”2D”、”DOM”和”Color”，这三个组件预先在CraftyJS中就已经被定义好了。如果你觉得单单使用这三个组件还不够，你可以后续往”square”这个实体中再添加组件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">square.addComponent(&quot;Text&quot;);</div></pre></td></tr></table></figure></p>
+<p>通过addComponent()方法向实体中加入”Text”组件，这个方法支持一次添加多个组件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">square.addComponent(&quot;Text,Mouse&quot;);//这是可以的</div></pre></td></tr></table></figure></p>
+<p>你还可以通过has()方法判断某个实体中是否含有某个组件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">square.has(&quot;Mouse&quot;);</div></pre></td></tr></table></figure></p>
+<p>这个方法返回一个boolean类型的值。但是需要注意的是这个方法一次性只能判断一个组件存在，并不支持同时判定多个组件比如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">square.has(&quot;2D,DOM&quot;);//这是错误的</div></pre></td></tr></table></figure></p>
+<p>如果你对某个组件不满意，你还可以把它删掉，这个方法也不支持传入两个以上的组件名称<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">square.removeComponent(&quot;2D&quot;);</div></pre></td></tr></table></figure></p>
+<h3 id="4-常用的属性和方法"><a href="#4-常用的属性和方法" class="headerlink" title="4. 常用的属性和方法"></a>4. 常用的属性和方法</h3><h5 id="1-“2D”组件"><a href="#1-“2D”组件" class="headerlink" title="(1) “2D”组件"></a>(1) “2D”组件</h5><p>2D组件是CraftyJS预先给我们定义好的一个组件，是最常用的组件之一。他提供了一个attr()的方法让我们来设置实体的属性值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">square.attr(&#123;</div><div class="line">  x: 150,</div><div class="line">  y: 150,</div><div class="line">  w: 100,</div><div class="line">  h: 100,</div><div class="line">  alpha: 0.5,</div><div class="line">  rotation: 45,</div><div class="line">  visible:true</div><div class="line">  &#125;);</div></pre></td></tr></table></figure>
+<p>这里的x和y是实体相对于舞台左上角的位置，单位都为像素(px)。w和h是实体的宽度和高度，单位也是像素(px)。alpha是实体的透明度，取值范围是0到1。visible代表实体是否可见，只能接受boolean类型的参数。x、y、w、h如果不设置值，默认为0。</p>
+<h5 id="2-“Text”组件"><a href="#2-“Text”组件" class="headerlink" title="(2) “Text”组件"></a>(2) “Text”组件</h5><p>Text组件有四个方法可以使用，分别是text()、textColor()、textFont()和unselectable()。text()方法用于设置组件里面的内容。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Crafty.e(&quot;2D,DOM,Text&quot;).text(&quot;hello world!&quot;);</div></pre></td></tr></table></figure></p>
+<p>text()方法支持传入一个方法，但是这个方法必须要返回一个字符串类型的参数，否则这个组件的内容将会显示undefined(未定义)。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Crafty.e(&quot;2D, Canvas, Text&quot;).text(function () &#123; </div><div class="line">	return &quot;hello world!&quot;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>textColor()方法用来设置组件文字的颜色，你可以使用HEX、rgb或者rgba的方式来定义颜色。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Crafty.e(&quot;2D, DOM, Text&quot;).textColor(&apos;#FF0000&apos;)</div><div class="line">		.textColor(&apos;rgba(0, 255, 0, 0.5)&apos;)</div><div class="line">		.textColor(&apos;white&apos;);</div></pre></td></tr></table></figure></p>
+<p>textFont()方法用来设置文字的字体。如果有多个字体的属性，传入一个对象的方式进行设置，Crafty支持设置的属性有以下几个：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Crafty.e(&quot;2D, DOM, Text&quot;).textFont(&#123; &apos;type&apos;: &apos;italic&apos;, &apos;family&apos;: &apos;Arial&apos; , &apos;size&apos;:&apos;20px&apos;, &apos;weight&apos;:&apos;bold&apos;, &apos;lineHeight&apos;:&apos;30px&apos;&#125;);</div></pre></td></tr></table></figure></p>
+<p>unselectable()方法设置Text组件中的内容不能被高亮选中。Canvas的Text是不能被高亮选中的，所以这个方法只对DOM的Text组件有效。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Crafty.e(&quot;2D, DOM, Text&quot;).text(&apos;This text cannot be highlighted!&apos;).unselectable();</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/07/08/CraftyJs初探/">CraftyJs初探</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Corner 的个人博客">Corner</a></p>
+        <p><span>发布时间:</span>2016年07月08日 - 22时00分</p>
+        <p><span>最后更新:</span>2016年09月11日 - 16时02分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/07/08/CraftyJs初探/" title="CraftyJs初探">http://xieyufei.com/2016/07/08/CraftyJs初探/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xieyufei.com/2016/07/08/CraftyJs初探/　　作者: Corner" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2016/09/11/Git命令学习/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Git命令学习
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/05/28/JAVA处理跨域问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JAVA处理跨域问题</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-初始化"><span class="toc-number">1.</span> <span class="toc-text">1. 初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-放置场景"><span class="toc-number">2.</span> <span class="toc-text">2. 放置场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-实体-组件系统"><span class="toc-number">3.</span> <span class="toc-text">3. 实体/组件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-组件系统"><span class="toc-number">3.0.1.</span> <span class="toc-text">(1) 组件系统</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-实体系统"><span class="toc-number">3.0.2.</span> <span class="toc-text">(2) 实体系统</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-常用的属性和方法"><span class="toc-number">4.</span> <span class="toc-text">4. 常用的属性和方法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-“2D”组件"><span class="toc-number">4.0.1.</span> <span class="toc-text">(1) “2D”组件</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-“Text”组件"><span class="toc-number">4.0.2.</span> <span class="toc-text">(2) “Text”组件</span></a></li></ol></li></ol></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/09/11/Git命令学习/" title="上一篇: Git命令学习">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2016/05/28/JAVA处理跨域问题/" title="下一篇: JAVA处理跨域问题">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/09/11/Git命令学习/">Git命令学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/08/CraftyJs初探/">CraftyJs初探</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/28/JAVA处理跨域问题/">JAVA处理跨域问题</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 Corner
+            </div>
+            
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >海贼到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

@@ -63,7 +63,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: spfk
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
@@ -72,3 +72,4 @@ deploy:
     repo: https://github.com/acexyf/acexyf.github.io.git
     branch: master
     message: 'update website:{{now("YYYY-MM-DD HH:mm:ss")}}'
+
