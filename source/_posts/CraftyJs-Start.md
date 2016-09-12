@@ -8,7 +8,7 @@ tags:
 - 游戏引擎
 - CraftyJs
 toc: true
-author:
+author: Corner
 comments:
 original:
 permalink: 

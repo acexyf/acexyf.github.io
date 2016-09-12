@@ -6,7 +6,7 @@ categories:
 tags:
 - git
 toc: true
-author:
+author: Corner
 comments:
 original:
 permalink: 
