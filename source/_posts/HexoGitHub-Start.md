@@ -1,4 +1,4 @@
-title: HexoGitHub
+title: Hexo+GitHub搭建个人博客（上）
 date: 2016-09-12 15:54:00
 description: 
 categories:
@@ -11,7 +11,9 @@ comments:
 original:
 permalink: 
 photos:
-layout: false
 ---
-　　git是一个开源的分布式版本控制系统，可以很高效的处理不同规模的项目的版本管理。git的命令比较多，在这篇文章中主要介绍了各种git命令的。
+　　使用Hexo+GitHub搭建个人博客
 <!-- more -->
+
+# 使用Hexo+GitHub搭建个人博客
+占位

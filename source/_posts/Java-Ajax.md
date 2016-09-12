@@ -4,7 +4,7 @@ description:
 categories:
 - 编程
 tags:
-- JAVA
+- Java
 - 异步跨域
 toc: true
 author: Corner
