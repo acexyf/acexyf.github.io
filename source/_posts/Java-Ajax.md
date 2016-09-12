@@ -2,7 +2,7 @@ title: JAVA处理跨域问题
 date: 2016-05-28 13:58:00
 description: 
 categories:
-- 技术
+- 编程
 tags:
 - JAVA
 - 异步跨域
@@ -11,6 +11,7 @@ author:
 comments:
 original:
 permalink: 
+photos:
 ---
 　　在写前端脚本的时候我们经常会遇到发送数据到后台的情况，但是由于浏览器的限制，不同域名之间的数据是不能互相访问的，那前端怎么和后端如何进行数据之间的交换呢？
 <!-- more -->

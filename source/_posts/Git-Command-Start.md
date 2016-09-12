@@ -2,7 +2,7 @@ title: Git命令学习
 date: 2016-09-11 09:48:00
 description: 
 categories:
-- 技术
+- 编程
 tags:
 - git
 toc: true
@@ -10,6 +10,7 @@ author:
 comments:
 original:
 permalink: 
+photos:
 ---
 　　git是一个开源的分布式版本控制系统，可以很高效的处理不同规模的项目的版本管理。
 <!-- more -->
