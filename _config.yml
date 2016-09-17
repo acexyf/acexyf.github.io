@@ -48,11 +48,13 @@ default_category: uncategorized
 category_map:
 	编程: programing
 	生活: life
+  工具: tools
 	其他: other
 tag_map:
   CraftyJs: CraftyJs
   Java: Java
   前端: Front
+  推荐: Recommend
 
 # Date / Time format
 ## Hexo uses Moment.js to parse and display date
