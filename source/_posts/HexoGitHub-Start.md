@@ -11,8 +11,10 @@ comments:
 original:
 permalink: 
 photos:
+- http://bruce.u.qiniudn.com/2013/11/27/reading/photos-0.jpg
+- http://bruce.u.qiniudn.com/2013/11/27/reading/photos-1.jpg
 ---
-　　使用Hexo+GitHub搭建个人博客
+　　使用Hexo+GitHub搭建个人博客ssss
 <!-- more -->
 
 # 使用Hexo+GitHub搭建个人博客
