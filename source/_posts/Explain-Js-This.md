@@ -1,4 +1,4 @@
-title: Explain-Js-This
+title: Js中this的用法
 date: 2016-09-18 12:02:50
 description:
 categories:
@@ -13,7 +13,7 @@ original:
 permalink:
 photos:
 ---
-  在js中this的用法
+  this在js中是一个常见的变量，在不同的函数中this指代了不同的变量。刚开始我很困惑，怎么在这里是这个意思，到了相似的函数中却又改变了意思，让我很摸不着头脑。所以整理一下this的用法
 <!-- more -->
 
 # 1.全局作用域中的this
