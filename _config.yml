@@ -4,11 +4,13 @@
 
 # Site
 title: 谢小飞的博客
-subtitle:
+subtitle: 能力越大，责任越大
 description: With great power comes great responsibility
 author: Corner
 language: zh-Hans
 timezone:
+keywords: Corner
+email: 2817259608@qq.com
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
@@ -71,7 +73,8 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: spfk
+## used themes: spfk、indigo
+theme: indigo
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
@@ -86,3 +89,26 @@ duoshuo_shortname: xyface
 duoshuo_hotartical: true
 
 
+feed:
+  type: atom
+  path: atom.xml
+  limit: 0
+
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: true
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: false
+    tags: true
