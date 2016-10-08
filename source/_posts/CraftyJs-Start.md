@@ -17,8 +17,7 @@ photos:
 　　前不久听了一趟分享课，分享课的主题是JS游戏的制作，但是如果是自己写游戏比较的繁琐，如果能应用一个游戏引擎，就能大大的简化游戏的开发速度和开发效率，于是我在网上参考了几个游戏引擎，找到了CraftyJs这个游戏引擎还是挺不错的，但是苦于网上的教程不是很全面，所以今天就开个坑，写个入门级的教程，仅供参考。
 <!-- more -->
 
-
-### 1. 初始化
+# 1. 初始化
 首先从[官网](http://craftyjs.com/)上下载CraftyJs的脚本引用到项目中来。然后就可以开始写我们自己的程序了。
 ```
 CraftyJs.init(this.config.width,this.config.height);
@@ -29,7 +28,7 @@ Crafty.background("#f0f0f0");
 ```
 你还可以通过background()方法给整个舞台设置背景颜色
 
-### 2. 放置场景
+# 2. 放置场景
 当整个舞台初始化后就可以玩游戏了吧？不！你去剧院看戏一入座演员就给你演戏么，当然不是，还需要一些场景的带入和切换。这些场景比如加载动画、菜单选项等一系列。
 ```
 Crafty.defineScene("loading", function() {
@@ -50,11 +49,11 @@ Crafty.enterScene("loading");
 ```
 通过enterScene()这个方法来展示刚才我们定义好场景，你会在舞台上看到这个场景。这个展示舞台的方法可以在任何地方被调用。但是需要注意的是这个方法会清除舞台上所有的元素，除了那些有"Persist"组件的元素（组件这一名词下面会解释到）。
 
-### 3. 实体/组件系统
+# 3. 实体/组件系统
 现在到了CraftyJS最重要的部分来了，就是CraftyJS独特的实体/组件系统。这个系统有点面向对象编程的意思。整个系统分为两个部分。
-##### (1) 组件系统
+### 组件系统
 所谓的组件，有点类似JAVA中的对象（不是现实里的对象），看不见摸不着，是对实体的抽象。每个组件里封装了对应的方法，可以在实体中直接调用。CraftyJS中有很多已经被预先定义好的组件可以直接拿来使用，而且组件可以被重复地继承。
-##### (2) 实体系统
+### 实体系统
 实体是真正看得见的元素，是对组件的“实例化”。一个单一的实体能够继承多个实体。
 ```
 var square = Crafty.e('2D, DOM, Color');
@@ -67,7 +66,6 @@ square.addComponent("Text");
 ```
 square.addComponent("Text,Mouse");//这是可以的
 ```
-
 你还可以通过has()方法判断某个实体中是否含有某个组件
 ```
 square.has("Mouse");
@@ -76,15 +74,14 @@ square.has("Mouse");
 ```
 square.has("2D,DOM");//这是错误的
 ```
-
 如果你对某个组件不满意，你还可以把它删掉，这个方法也不支持传入两个以上的组件名称
 ```
 square.removeComponent("2D");
 ```
-### 4. 常用的属性和方法
-##### (1) "2D"组件
+# 4. 常用的组件、属性和方法
+一些常用的组件是CratyJs帮我们定义好了，我们直接使用就可以了。
+### "2D"组件
 2D组件是CraftyJS预先给我们定义好的一个组件，是最常用的组件之一。他提供了一个attr()的方法让我们来设置实体的属性值。
-
 ```
 square.attr({
   x: 150,
@@ -97,7 +94,7 @@ square.attr({
   });
 ```
 这里的x和y是实体相对于舞台左上角的位置，单位都为像素(px)。w和h是实体的宽度和高度，单位也是像素(px)。alpha是实体的透明度，取值范围是0到1。visible代表实体是否可见，只能接受boolean类型的参数。x、y、w、h如果不设置值，默认为0。
-##### (2) "Text"组件
+### "Text"组件
 Text组件有四个方法可以使用，分别是text()、textColor()、textFont()和unselectable()。text()方法用于设置组件里面的内容。
 ```
 Crafty.e("2D,DOM,Text").text("hello world!");
@@ -119,7 +116,6 @@ textFont()方法用来设置文字的字体。如果有多个字体的属性，�
 Crafty.e("2D, DOM, Text").textFont({ 'type': 'italic', 'family': 'Arial' , 'size':'20px', 'weight':'bold', 'lineHeight':'30px'});
 ```
 unselectable()方法设置Text组件中的内容不能被高亮选中。Canvas的Text是不能被高亮选中的，所以这个方法只对DOM的Text组件有效。
-
 ```
 Crafty.e("2D, DOM, Text").text('This text cannot be highlighted!').unselectable();
 ```
