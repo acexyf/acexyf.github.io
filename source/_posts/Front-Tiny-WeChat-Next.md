@@ -114,5 +114,35 @@ Page({
 ### 向detail中添加内容
 　　在组件中定义数据，当触发事件时，这些数据通过事件对象传给逻辑层。书写规则：以“data-”开头，多个字符用“-”连接，不能含有大写，可以绑定多个data值。例如data-element-name，最终会在event.currentTarget.dataset中转为elementName属性，属性的值就是定义的数据。
 
+# 三、异步数据
+　　小程序还提供发送异步的方法request(object)，发起的是https请求。一个小程序，同时只有有5个网络请求链接。object的参数如下：
+
+| 参数命 | 类型 | 说明 |
+| - | - | - |
+| url  | Sring  | 服务器接口地址 |
+| data  | Object  | 请求的参数 |
+| header  | Object | 设置请求头header，header不能设置Referer |
+| method  | String  | 请求方式，默认GET |
+| success  | Function  | 请求成功的回调方法 |
+| fail  | Function  | 请求失败的回调方法 |
+| complete  | Function  | 请求完成的回调方法(请求成功、失败都会调用) |
+
+　　跟jQuery不同的是，小程序请求的数据不是直接在success方法的res中(res是一个对象，还包括请求成功的状态码等)，而是在res.data中。示例代码如下：
+
+```javascript
+wx.request({
+  url: '/url',
+  data: {
+     x: '',
+     y: ''
+  },
+  header: {
+      'Content-Type': 'application/json'
+  },
+  success: function(res) {
+    console.log(res.data) //接收到的数据
+  }
+})
+```
 
 
