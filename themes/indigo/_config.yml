@@ -9,21 +9,28 @@
 #    target: _blank    是否跳出，省略则在当前页面打开
 menu:
   home:
-    text: Home
+    text: 主页
     url: /
   archives:
+    text: 分类
     url: /archives
   tags:
+    text: 标签
     url: /tags
   github:
     url: https://github.com/acexyf
     target: _blank
   weibo:
+    text: 微博
     url: http://weibo.com/u/1394805987
     target: _blank
-  link:
-    text: 404
-    url: /404
+  book:
+    text: 友情链接
+    url: http://answerywj.com
+    target: _blank
+  # link:
+  #   text: 404
+  #   url: /404
 
 rss: /atom.xml
 
@@ -83,3 +90,4 @@ less:
 # 是否开启多说评论，填写你在多说申请的项目名称 duoshuo: duoshuo-key
 # 若使用disqus，请在博客config文件中填写disqus_shortname，并关闭多说评论
 duoshuo: xyface
+
