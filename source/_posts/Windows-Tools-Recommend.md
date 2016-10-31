@@ -28,6 +28,7 @@ photos:
 
 　　Sublime还能支持多种编程语言的语法高亮，有优秀的代码自动补全的功能。而且Sublime还有非常强大的插件系统作为其功能的补充。一些常见和实用的插件如Emmet(快速编写 HTML/CSS 代码的方案)、ColorPicker(颜色选择器)、MarkdownPreview(markdown预览)、DocBlockr(代码注释规范)、SideBar(侧边栏工具)等等，其他一些强大的插件等待读者去体验。
 
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
 
 # 小孩桌面便签
 ## 推荐指数★★★☆☆
@@ -53,6 +54,7 @@ photos:
 
 　　它的主要功能有截图、屏幕录像、图像处理(裁切，改变图像效果等)。附带的特色小功能有屏幕放大器、屏幕取色器、屏幕标尺、图像转为PDF，功能可是非常的强大。
 
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
 
 # 有道云笔记
 ## 推荐指数★★☆☆☆
@@ -74,6 +76,7 @@ photos:
 
 　　Beyond Compare主要用途是对比两个文件夹或者文件的不同，并将差异 通过颜色的不同以标识。对的，你没有看错，就是文件夹的不同。它还可以按照你的需要进行比较，比如需要对比文件的不同或者对比文件的相同，都可以显示。
 
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
 
 # Everything
 ## 推荐指数★★★★★

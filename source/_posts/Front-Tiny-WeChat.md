@@ -22,6 +22,8 @@ photos: /images/Front-Tiny-WeChat/interface.png
 ![微信小程序开发工具界面](/images/Front-Tiny-WeChat/interface.png)
 调试按钮可以打开调试界面，如果读者用惯了Chrome浏览器，想必对这个界面肯定不会陌生；如果需要切换到其他的项目，可以直接点关闭按钮，而不用关闭整个工具。
 
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
+
 # 项目结构
 　　整个项目由两部分组成，一个是描述整体程序的app文件和多个框架页面文件组成。
 ## app文件
@@ -42,6 +44,8 @@ photos: /images/Front-Tiny-WeChat/interface.png
 
 * App()函数只能定义一次，并且只能在app.js中定义。
 * onLaunch()函数在整个小程序的生命周期只调用一次，其他两个函数调用多次。
+
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
 
 ## 框架页面文件
 　　项目框架页面可以配置多个，建议页面的文件名称和文件名保持一致。比如有一个下单页book，其中的文件可以设置为book.js、book.wxml、book.wxss、book.json。
@@ -69,6 +73,8 @@ photos: /images/Front-Tiny-WeChat/interface.png
 
 # 数据处理
 　　和jQuery等其他js框架不同的，小程序不能直接操作DOM元素，只能通过改变数据来控制页面元素的状态，这样有点类似React的思想。所以我觉得小程序的思想是面向数据，而不是面向元素。
+
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
 
 ## 数据绑定
 　　上一节我们说过注册页面时需要传入一个object参数，这个参数可以挂载很多页面的生命周期函数，同时，也能将页面的数据挂载进去。页面的数据可以直接挂载到object参数的data对象中去。
@@ -102,6 +108,7 @@ Page({
 <view class="{{name=='xyf'?'yes':'no'}}">{{name+' is a smart boy'}}</view>
 ```
 
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
 
 ## 数据获取和更改
 　　对于data中的数据，我们必须通过this.data.name这种方式来获取，对于data外面的数据，我们可以通过this.myname的方式来获取。
@@ -141,6 +148,8 @@ onLoad:function(){
 # 页面渲染
 　　对于data中的简单变量，我们可以通过双大括号的方式进行渲染，但是如果对于一些稍微复杂一点的数据结构(比如数组)，双大括号就不能满足我们的需求了。我们需要引入另外两种渲染方式，条件渲染和列表渲染。
 
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
+
 ## 条件渲染
 　　我们使用wx:if="{{condition}}"的来判断是否需要渲染该模块，还可以添加wx:elif和wx:else渲染。
 
@@ -170,13 +179,13 @@ onLoad:function(){
 
 　　在列表遍历时我们并没有定义item和index，小程序自动为我们添加了wx:for-index="index"和wx:for-item="item"。因此在嵌套列表渲染时，注意index和item所代表的值和对象。需要我们自己定义变量名和索引，避免混乱。
 
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
 
 # 总结和期待
 　　微信小程序还在内测阶段就引起了这么多关注，作为一个程序员，尤其是一名前端程序员，上手和熟悉微信小程序的开发无疑会让我们越来越“吃香”。网上也在热议微信小程序是否会颠覆或者代替原生App，我觉得两者还是有以下区别的：
 
 * 产品形态：微信小程序更加接近于HTML5产品，开发上也使用JavaScript进行开发，性能比H5好，但是要比原生App性能低。而且微信小程序整体文件大小限制在1MB以内，估计只能运行一些小型的应用和游戏，一些大型的应用肯定还是要用App的。
 * 用户习惯：很多用户已经用惯了App，要想改变用户的习惯还是挺难的。用户操作肯定是越简单越好。比如现在微博App打开就能用，但是如果有了微博小程序，需要进入微信才能打开，相信用户还是挺反感中间多余的“步骤”。
-
 
 　　个人感觉微信小程序的开发也存在着不足之处，希望在以后的版本中能够改进：
 

@@ -25,6 +25,8 @@ photos:
 　　借用webpack官网的一张图来解释一下webpack的工作原理。左边就是我们杂乱的页面资源，有脚本文件、样式文件、图片文件等等，各种文件之间互相引用。经过webpack的打包整理，生成静态文件。
 　　webpack的工作方式是：通过一个配置文件找到入口文件，从这个入口文件找到你项目依赖的所有资源文件，使用对应的资源加载器(loaders)来处理这些资源文件，最后打包成静态文件。
 
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
+
 # 二、安装webpack
 　　使用webpack之前需要安装webpack，在这里我们需要在两个地方安装：全局目录和项目目录，在项目目录下执行以下命令：
 
@@ -37,6 +39,8 @@ npm install --save-dev webpack
 
 # 三、使用webpack
 　　在开始上手项目之前首先来搭建我们的目录结构。
+
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
 
 ## 目录结构说明
 　　我们可以把项目目录搭建成如下，当然只是给大家做一个参考而已：
@@ -76,6 +80,8 @@ module.exports = {
 }
 ```
 
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
+
 ### entry属性
 　　entry属性是页面的主入口，所有页面的文件都在这个入口文件中进行引用。
 　　当然，一个项目肯定有不止一个页面，需要多个入口，entry属性可以这样配置：
@@ -96,6 +102,8 @@ entry: {
 　　module属性主要存放解析资源文件的各个加载器，每一个对象表示了一个加载器。
 　　test属性表示正则匹配，用来匹配文件的后缀名；loader属性表示如果文件相匹配，则调用对应的加载器来解析文件。比如样式加载器有css-loader、sass-loader。
 　　加载器的后缀都是``-loader``，在loader属性中配置加载器不用写后缀，配置不同的加载器需要使用``!``分隔并串联起来。
+
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
 
 ### plugins属性
 　　plugins属性是用来放webpack的插件，这个属性下面会用到
@@ -142,6 +150,8 @@ body{background:#f5f5f5}
 require('../stylesheet/style.css');
 ```
 　　在根目录我们再次执行webpack命令，再次生成构建的js文件就能看到页面上有颜色了。
+
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
 
 ## 提取公共的脚本并压缩
 　　有时候多个公共脚本中有公用的部分，如果多写就显得有点多余，我们可以利用webpack的提取公共部分的插件来帮助我们提取。

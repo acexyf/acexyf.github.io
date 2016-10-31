@@ -28,6 +28,8 @@ Crafty.background("#f0f0f0");
 ```
 　　你还可以通过background()方法给整个舞台设置背景颜色
 
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
+
 # 放置场景
 　　当整个舞台初始化后就可以玩游戏了吧？不！你去剧院看戏一入座演员就给你演戏么，当然不是，还需要一些场景的带入和切换。这些场景比如加载动画、菜单选项等一系列。
 ```javascript
@@ -51,6 +53,9 @@ Crafty.enterScene("loading");
 
 # 实体/组件系统
 　　现在到了CraftyJS最重要的部分来了，就是CraftyJS独特的实体/组件系统。这个系统有点面向对象编程的意思。整个系统分为两个部分。
+
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
+
 ## 组件系统
 　　所谓的组件，有点类似JAVA中的对象（不是现实里的对象），看不见摸不着，是对实体的抽象。每个组件里封装了对应的方法，可以在实体中直接调用。CraftyJS中有很多已经被预先定义好的组件可以直接拿来使用，而且组件可以被重复地继承。
 ## 实体系统

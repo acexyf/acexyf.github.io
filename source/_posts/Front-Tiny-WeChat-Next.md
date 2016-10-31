@@ -37,6 +37,8 @@ photos:
 </template>
 ```
 
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
+
 ## 使用模板
 　　使用模板我们用is属性引用定义好的模板，然后把模板所需要的值通过data属性传给模板。比如需要遍历persons数组，我们可以将整个persons作为对象传给模板，也可以遍历persons后将每个对象传给模板，具体取决于所应用的场景。
 
@@ -64,6 +66,8 @@ Page({
 
 * is属性也可以使用Mustache语法进行动态渲染，决定使用哪个模板
 * data如果传的是对象类型的数据，需要用“...”进行“解构”，在模板中可以直接调用对象的属性；如果是其他数据类型则不需要用“...”
+
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
 
 # 二、事件
 　　什么是事件呢，简单来说，事件就是逻辑层到逻辑层的通讯方式。就是在页面上通过触发某个操作（就是我们说的事件），在逻辑层进行一系列的操作，最终来改变数据。
@@ -113,6 +117,8 @@ Page({
 
 ### 向detail中添加内容
 　　在组件中定义数据，当触发事件时，这些数据通过事件对象传给逻辑层。书写规则：以“data-”开头，多个字符用“-”连接，不能含有大写，可以绑定多个data值。例如data-element-name，最终会在event.currentTarget.dataset中转为elementName属性，属性的值就是定义的数据。
+
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
 
 # 三、异步数据
 　　小程序还提供发送异步的方法request(object)，发起的是https请求。一个小程序，同时只有有5个网络请求链接。object的参数如下：

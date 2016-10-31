@@ -28,6 +28,8 @@ photos:
 　　因此，闭包也称为闭包数据，闭包的本质也就是函数。
 　　要理解闭包，首先要来理解两个概念：变量和作用域。在这里不多阐述，可以看笔者的另一篇文章[《深入理解js中的变量和作用域》](//xieyufei.com/2016/09/21/JS-Variate-Scope.html)。
 
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
+
 # 闭包的产生
 　　由于函数作用域的封闭性，函数外部并不能访问函数内部的变量。
 

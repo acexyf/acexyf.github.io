@@ -35,6 +35,8 @@ git init
 git clone [url]
 ```
 
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
+
 ## 2.将文件添加到版本库
 
 ### 追踪文件
@@ -49,6 +51,8 @@ git add .
 ```
 git commit -m "[you description]"
 ```
+
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
 
 ## 3.查看当前仓库的状态
 

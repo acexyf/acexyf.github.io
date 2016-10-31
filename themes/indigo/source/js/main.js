@@ -1,5 +1,8 @@
 (function(w, d) {
-
+    var reptiles=$('.prevent_reptile').closest('p');
+    if(reptiles.length){
+        reptiles.css('display','none')
+    }
     var body = d.body,
         root = d.querySelector('html'),
         gotop = d.getElementById('gotop'),

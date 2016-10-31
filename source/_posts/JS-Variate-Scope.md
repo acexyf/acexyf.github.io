@@ -104,6 +104,8 @@ console.log(typeof a); //string
 
 　　a最后被赋值为字符串，因此a的类型自然是字符串
 
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
+
 # 作用域
 ## 块级作用域
 　　js中作用域只有一个函数作用域和全局作用域，一个很大的特点就是js中**没有块级作用域**。函数作用域是比较容易理解的，那么什么是块级作用域呢？
@@ -140,6 +142,8 @@ console.log(v); //hello
 ```
 
 　　在这里由于js没有块级作用域，所以if方法没有“形成”一个封闭的作用域，并不能够“阻挡”外面的代码获取里面的变量。
+
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
 
 ## 函数作用域
 　　我们再把变量v放到函数中去：

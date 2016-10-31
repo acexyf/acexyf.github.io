@@ -30,6 +30,8 @@ var name='xyf';
 console.log(this);
 ```
 
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
+
 # 函数中的this
 　　在js中函数分为普通的函数和构造函数，主要的区别就是函数的调用形式。普通函数能够直接调用，而构造函数是不能调用，需要用new实例化。
 ## 普通函数中的this
@@ -53,6 +55,7 @@ console.log(myshow.name);  //'xyf'
 ```
 　　在这里如果你直接调用show('xyf')跟普通函数没有区别，通过new实例化一个myshow对象，这时候this就指向了这个实例化出来的对象
 
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
 
 # 对象中的this
 
@@ -141,6 +144,8 @@ var temp={
 }
 temp.tempFun();
 ```
+
+<a class="prevent_reptile" href="//www.xieyufei.com" style="font-size:24px">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a>
 
 # 使用apply和call函数改变this指向
 　　这两个函数都能够手动指定被调用函数内部this指向哪个对象。
