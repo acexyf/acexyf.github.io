@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://xieyufei.com/2022/07/22/React-Native-Router.html</loc>
+    <lastmod>2022-08-13</lastmod>
+  </url>
+  <url>
     <loc>https://xieyufei.com/2022/04/28/React-Native-Component.html</loc>
-    <lastmod>2022-05-17</lastmod>
+    <lastmod>2022-06-28</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2022/06/08/FrontEnd-Docker-Compose.html</loc>
+    <lastmod>2022-06-27</lastmod>
   </url>
   <url>
     <loc>https://xieyufei.com/2022/03/22/FrontEnd-Docker-Advance.html</loc>
@@ -189,11 +197,11 @@
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2016/11/15/Nodejs-Connect-Mysql.html</loc>
+    <loc>https://xieyufei.com/2017/09/25/Nodejs-File-Upload.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2017/09/25/Nodejs-File-Upload.html</loc>
+    <loc>https://xieyufei.com/2016/11/15/Nodejs-Connect-Mysql.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
