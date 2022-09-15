@@ -259,49 +259,49 @@
 <p>　　两种方式提交后URL上的差别让人们觉得POST相对于GET更安全。</p>
 <p><img src="https://qiniu.xieyufei.com/blog/Diff-Get-Post/form-get-post.png" onerror="javascript:this.src='/images/Diff-Get-Post/form-get-post.png'" srcset="/img/loading.gif" lazyload alt="form-get-post"></p>
 <p>　　然而安全性的说法存在着两个问题：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <ol>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>抓包后POST请求也是能看到<code>请求体（body）</code>中的数据</li>
 <li>HTTP规范并未规定说 GET 就不能在<code>请求体（body）</code>中传输数据</li>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </ol>
 <p>　　既然HTTP规范没有规定，那么为什么就不能传呢？我试着用axios和jQuery来在GET请求体中加入数据，无一例外的失败了；既然框架靠不住那就直接用原生的吧：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> xhr = <span class="hljs-keyword">new</span> XMLHttpRequest();<br>xhr.onreadystatechange = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;<br>    <span class="hljs-keyword">if</span> (xhr.readyState == <span class="hljs-number">4</span> &amp;&amp; xhr.status == <span class="hljs-number">200</span>) &#123;<br>        <span class="hljs-built_in">console</span>.log(xhr.responseText)<br>    &#125;<br>&#125;<br>xhr.open(<span class="hljs-string">&#x27;GET&#x27;</span>, <span class="hljs-string">&#x27;/api/test/get&#x27;</span>, <span class="hljs-literal">true</span>);<br>xhr.setRequestHeader(<span class="hljs-string">&#x27;Content-Type&#x27;</span>, <span class="hljs-string">&#x27;application/x-www-form-urlencoded&#x27;</span>);<br><span class="hljs-comment">//发送请求</span><br>xhr.send(<span class="hljs-string">&#x27;password=123&#x27;</span>);<br></code></pre></div></td></tr></table></figure>
 
 
 <p>　　我们通过express来接收一下传输的数据：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//其他代码略</span><br>app.get(<span class="hljs-string">&#x27;/api/test/get&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req, res</span>)</span>&#123;<br>    <span class="hljs-built_in">console</span>.log(req.body, <span class="hljs-string">&#x27;get body&#x27;</span>)<br>    res.json(&#123;<br>        <span class="hljs-attr">code</span>: <span class="hljs-number">1</span>,<br>        <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;get&#x27;</span><br>    &#125;)<br>&#125;)<br>app.post(<span class="hljs-string">&#x27;/api/test/post&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req, res</span>)</span>&#123;<br>    <span class="hljs-built_in">console</span>.log(req.body, <span class="hljs-string">&#x27;post body&#x27;</span>)<br>    res.json(&#123;<br>        <span class="hljs-attr">code</span>: <span class="hljs-number">1</span>,<br>        <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;post&#x27;</span><br>    &#125;)<br>&#125;)<br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　正当我兴奋的准备接收数据时，现实狠狠的给了我一拳：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">&#123;&#125; <span class="hljs-string">&#x27;get body&#x27;</span><br></code></pre></div></td></tr></table></figure>
 
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　浏览器并没有往请求体中存放数据，直接把send中传输的数据给丢弃了，那么GET的BODY中真的就不能放数据吗？</p>
 <p><img src="https://qiniu.xieyufei.com/blog/Diff-Get-Post/doubt.jpg" onerror="javascript:this.src='/images/Diff-Get-Post/doubt.jpg'" srcset="/img/loading.gif" lazyload alt="doubt"></p>
 <p>　　答案自然是可以的，浏览器由于规范问题不会在GET的请求体中添加数据，那我们可以尝试一下通过Fiddler的Composer来添加：</p>
 <p><img src="https://qiniu.xieyufei.com/blog/Diff-Get-Post/fiddler_get.png" onerror="javascript:this.src='/images/Diff-Get-Post/fiddler_get.png'" srcset="/img/loading.gif" lazyload alt="fiddler_get"></p>
 <p>　　这样我们就能在express中看到GET请求中的</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">&#123; <span class="hljs-attr">password</span>: <span class="hljs-string">&#x27;fiddler_123456&#x27;</span> &#125; <span class="hljs-string">&#x27;get body&#x27;</span><br></code></pre></div></td></tr></table></figure>
 
 <p>　　既然GET也能在Body中添加数据，那么POST请求数据的安全性并不是面试官期望听到的回答。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h1 id="数据量角度"><a href="#数据量角度" class="headerlink" title="数据量角度"></a>数据量角度</h1><p>　　常见的GET和POST区别还有GET传输的数据比较少，POST传输数据多；在HTTP规范中并没有对URL的长度和传输的数据大小进行限制，但是在实际开发时，由于浏览器和服务器均对URL的长度进行了限制，因此表现出了GET传输数据少的缺点。在笔者的测试过程中，Chrome的URL长度限制比较好，基本能达到1mb的限制；而在IE11中4kb~5kb的时候浏览器就会自动将URL后的参数丢弃了。</p>
 <p>　　而对于POST请求，由于数据放在请求体中，虽然理论上不会受到限制，但是实际开发中各个服务器也会对POST的数据大小进行一定的限制；比如nginx默认上传图片的大小是2mb，图片超过2mb就会提示<code>413 Request Entity Too Large</code>。</p>
 <p>　　因此不管GET还是POST，数据传输大小都会有限制，只是POST的传输大小相对于GET来说比较大；数据量大小也并不是面试官期望听到的回答。</p>
 <h1 id="缓存角度"><a href="#缓存角度" class="headerlink" title="缓存角度"></a>缓存角度</h1><p>　　GET请求多是用来获取数据的，比如一件商品的信息、商品列表等，在一定时间内，商品的信息不会那么快的变化，因此它通常用于缓存。</p>
 <p>　　而POST请求多是用于将表单数据提交到服务端，比如修改姓名、修改密码等操作，需要浏览器必须发送请求到达服务器才能进行操作，因此POST请求不能被缓存。</p>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="https://qiniu.xieyufei.com/blog/Diff-Get-Post/cache.png" onerror="javascript:this.src='/images/Diff-Get-Post/cache.png'" srcset="/img/loading.gif" lazyload alt="cache"></p>
 <p>　　从上图可以看出，我们同时将GET和POST请求在浏览器中多提交几次，会发现不管多少次提交，POST请求都是200；而GET请求第一次200，后面的请求会304进行缓存下来。</p>
 <h1 id="编码角度"><a href="#编码角度" class="headerlink" title="编码角度"></a>编码角度</h1><p>　　GET请求由于请求数据一般都是在URL上，所以GET一般都是URL编码；而POST请求由于请求参数的多样性，因此有多重编码方式；一般POST请求有<code>application/x-www-form-urlencoded</code>、<code>multipart/form-data</code>和<code>application/json</code>三种传输方式。</p>
 <p>　　<code>multipart/form-data</code>一般在上传文件的时候通过Html5的FormData新特性来构造上传表单对象会用到这种编码方式，通过FormData上传的请求类似这样：</p>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="https://qiniu.xieyufei.com/blog/Diff-Get-Post/formdata.png" onerror="javascript:this.src='/images/Diff-Get-Post/formdata.png'" srcset="/img/loading.gif" lazyload alt="formdata"></p>
 <p>　　<code>application/x-www-form-urlencoded</code>是Form表单的默认提交方式，这种方式的好处就是浏览器都支持；但是缺点是在请求发送前需要对数据进行序列化处理，以键值对形式，例如：key1=value1&amp;key2=value2的形式发送到服务器；如果使用jQuery的ajax方法，它内部已经对JSON格式的数据进行了序列化处理了；而使用axios默认使用<code>application/json</code>进行编码，或者自己通过原生Ajax请求就需要自己进行序列化。</p>
 <p>　　随着JSON规范越来越流行，并且浏览器支持程度比较好，<code>application/json</code>编码也越来越被更多的开发者使用；通过Content-Type告诉服务器主体内容是JSON格式的字符串，服务器端就会进行解析；这样的好处是前端人员不需要关心数据结构的复杂度，只要是标准的JSON格式就能提交成功。</p>
 <h1 id="幂等性角度"><a href="#幂等性角度" class="headerlink" title="幂等性角度"></a>幂等性角度</h1><p>　　初次看到<code>幂等</code>这个词很多童鞋都很陌生，我们首先来看一下幂等的定义：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <blockquote>
 <p>在编程中，一个幂等操作的特点是其任意多次执行所产生的影响均与一次执行的影响相同。幂等函数，或幂等方法，是指可以使用相同参数重复执行，并能获得相同结果的函数。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </blockquote>
 <p>　　HTTP的幂等是指无论调用多少次，无论调用一次还是一千次，都具有<code>同样的副作用</code>。GET请求用于获取资源，不管调用多少次接口，都不会影响返回的资源；因此我们说<code>GET请求是幂等的</code>。</p>
 <figure class="highlight awk"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs awk">GET /list     <span class="hljs-comment"># 获取列表</span><br>GET <span class="hljs-regexp">/detail/</span><span class="hljs-number">1</span> <span class="hljs-comment"># 获取详情</span><br></code></pre></div></td></tr></table></figure>
@@ -317,9 +317,9 @@
 
             </div>
             <hr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
             <div>
-              <div class="post-metas mb-3">
+              
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p><div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
