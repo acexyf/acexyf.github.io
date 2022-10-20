@@ -254,43 +254,43 @@
 <h1 id="GZIP介绍"><a href="#GZIP介绍" class="headerlink" title="GZIP介绍"></a>GZIP介绍</h1><a class="prevent_reptile" target="_blank" rel="noopener" href="http://www.xieyufei.com" style="font-size:24px">
 
 <h2 id="什么是GZIP"><a href="#什么是GZIP" class="headerlink" title="什么是GZIP"></a>什么是GZIP</h2><p>　　gzip是GNUzip的缩写，是一个GUN自由软件的文件压缩程序。刚开始用于UNIX系统的文件压缩。熟悉Linux系统的读者应该了解有一种文件的后缀是.gz，这种文件就是GZIP格式的文件。现在GZIP已经成为网上使用非常普遍的一种数据压缩格式。</p>
-<p><img src="https://qiniu.xieyufei.com/blog/SERVER-OPEN-GZIP/gzip.jpg" onerror="javascript:this.src='/images/SERVER-OPEN-GZIP/gzip.jpg'" srcset="/img/loading.gif" lazyload alt="gizp"></p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/SERVER-OPEN-GZIP/gzip.jpg" srcset="/img/loading.gif" lazyload alt="gizp"></p>
 <h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><p>　　既然GIZP是一种数据压缩格式，那么它是如何在浏览器和服务器之间进行数据传输的呢。通过下面一张图片能够很清晰的看出它的工作方式：</p>
-<p><img src="https://qiniu.xieyufei.com/blog/SERVER-OPEN-GZIP/work-way.png" onerror="javascript:this.src='/images/SERVER-OPEN-GZIP/work-way.png'" srcset="/img/loading.gif" lazyload alt="work-way"></p>
+<p><img src="/images/SERVER-OPEN-GZIP/work-way.png" srcset="/img/loading.gif" lazyload alt="work-way"></p>
 <ol>
 <li>首先浏览器发出一个请求给服务器，在请求头上标明自己可以接收GZIP格式的数据。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>然后服务器根据请求头，将数据经过压缩后返回给浏览器，同时在响应头上标明返回的数据是GZIP格式的数据。</li>
 <li>最后浏览器将返回的数据解压后渲染。</li>
 </ol>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h2 id="浏览器中查看"><a href="#浏览器中查看" class="headerlink" title="浏览器中查看"></a>浏览器中查看</h2><p>　　笔者模拟了一个GZIP数据请求：</p>
-<p><img src="https://qiniu.xieyufei.com/blog/SERVER-OPEN-GZIP/chrome-detail.png" onerror="javascript:this.src='/images/SERVER-OPEN-GZIP/chrome-detail.png'" srcset="/img/loading.gif" lazyload alt="chrome-detail"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/SERVER-OPEN-GZIP/chrome-detail.png" srcset="/img/loading.gif" lazyload alt="chrome-detail"></p>
 <p>　　可以看到Request Headers（请求头）中有一个Accept-Encoding属性，里面有一个gzip，表示浏览器能够接受的数据格式有：gzip、deflate、sdch和br。然后在Response Headers（响应头）中有一个Content-Encoding属性，表示返回的数据格式的编码，我们看到只有一种编码，就是gzip。</p>
 <h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><p>　　减小网络传输的数据量，提高网页响应速度。</p>
 <a class="prevent_reptile" target="_blank" rel="noopener" href="http://www.xieyufei.com" style="font-size:24px">
 
 <h1 id="服务器中如何开启GZIP"><a href="#服务器中如何开启GZIP" class="headerlink" title="服务器中如何开启GZIP"></a>服务器中如何开启GZIP</h1><h2 id="Tomcat"><a href="#Tomcat" class="headerlink" title="Tomcat"></a>Tomcat</h2><p>　　经过在网上找了很多资料，找到目录下的conf/server.xml文件，将<code>Connector</code>进行如下改写：</p>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight xml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">Connector</span> <span class="hljs-attr">port</span>=<span class="hljs-string">&quot;8088&quot;</span> <span class="hljs-attr">protocol</span>=<span class="hljs-string">&quot;HTTP/1.1&quot;</span></span><br><span class="hljs-tag">   <span class="hljs-attr">connectionTimeout</span>=<span class="hljs-string">&quot;20000&quot;</span></span><br><span class="hljs-tag">   <span class="hljs-attr">redirectPort</span>=<span class="hljs-string">&quot;8443&quot;</span> </span><br><span class="hljs-tag">   <span class="hljs-attr">URIEcoding</span>=<span class="hljs-string">&quot;UTF-8&quot;</span></span><br><span class="hljs-tag">   <span class="hljs-attr">compression</span>=<span class="hljs-string">&quot;on&quot;</span>            //打开压缩功能</span><br><span class="hljs-tag">   <span class="hljs-attr">compressionMinSize</span>=<span class="hljs-string">&quot;2048&quot;</span>   //启用压缩的输出内容大小，这里面默认为<span class="hljs-attr">2KB</span></span><br><span class="hljs-tag">   <span class="hljs-attr">noCompressionUserAgents</span>=<span class="hljs-string">&quot;gozilla, traviata&quot;</span> //对于以下的浏览器，不启用压缩 </span><br><span class="hljs-tag">   <span class="hljs-attr">compressableMimeType</span>=<span class="hljs-string">&quot;text/html,text/xml,text/javascript,text/css,text/plain,image/png,image/jpg,image/gif&quot;</span> //压缩类型</span><br><span class="hljs-tag">   /&gt;</span><br></code></pre></div></td></tr></table></figure>
 
 <h3 id="问题出现"><a href="#问题出现" class="headerlink" title="问题出现"></a>问题出现</h3><p>　　但是。。。当笔者配置完后，满心欢喜的打开服务器以为有效时，发现自己太天真了。很遗憾的是，脚本并没有被压缩。我以为是服务器没有配置成功，又多次重启，但是并没有用，网上查了很多资料，也没有解决。</p>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <h3 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h3><p>　　笔者发现同样是CSS却是有效的，为什么脚本不行呢？但是脚本占了网络流量的很大一部分。<br>　　当笔者再次仔细查看Response Headers的时候，发现<code>Content-Type</code>这个属性竟然是<code>application/javascript</code>，但是在我们的代码中配置的却是<code>text/javascript</code>，会不会是这个问题呢。<br>　　笔者抱着试一下的态度，在<br><code>compressableMimeType</code>属性中添加了<code>application/javascript</code>。最后再次启动服务器，OK，问题解决了。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <a class="prevent_reptile" target="_blank" rel="noopener" href="http://www.xieyufei.com" style="font-size:24px">
 
 <h2 id="Nodejs"><a href="#Nodejs" class="headerlink" title="Nodejs"></a>Nodejs</h2><p>　　Nodejs中笔者常用的库就是express，就用express作为demo。如果你的express的4.0以下的版本，只需要在代码中添加以下代码：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">app.use(express.compress());<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　在express 4.0以上的版本中不再集成GZIP功能，需要单独安装中间件，先通过<code>npm i compression</code>安装compression，然后在项目中引用：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> compress = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;compression&#x27;</span>);<br>app.use(compress());<br></code></pre></div></td></tr></table></figure>
 
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="NGINX"><a href="#NGINX" class="headerlink" title="NGINX"></a>NGINX</h2><p>　　修改nginx安装目录下的conf/nginx.conf配置文件，添加以下代码：</p>
 <figure class="highlight awk"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs awk"><span class="hljs-comment">#开启gzip</span><br>gzip on;<br><span class="hljs-comment">#压缩阀值，小于1k不压缩</span><br>gzip_min_length <span class="hljs-number">1</span>k;<br>gzip_buffers <span class="hljs-number">4</span> <span class="hljs-number">16</span>k;<br><span class="hljs-comment">#gzip_http_version 1.0;</span><br><span class="hljs-comment">#压缩级别</span><br>gzip_comp_level <span class="hljs-number">2</span>;<br><span class="hljs-comment">#压缩的文件类型</span><br>gzip_types text<span class="hljs-regexp">/plain application/</span>x-javascript text<span class="hljs-regexp">/css application/</span>xml text<span class="hljs-regexp">/javascript application/</span>x-httpd-php image<span class="hljs-regexp">/jpeg image/gi</span>f image<span class="hljs-regexp">/png application/</span>javascript;<br>gzip_vary off;<br><span class="hljs-comment">#IE6对Gzip不怎么友好，禁止IE6进行压缩</span><br>gzip_disable <span class="hljs-string">&quot;MSIE [1-6]\.&quot;</span>;<br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
             </div>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
             <hr>
             <div>
               <div class="post-metas mb-3">
