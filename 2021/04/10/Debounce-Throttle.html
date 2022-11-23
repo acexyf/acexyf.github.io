@@ -23,22 +23,22 @@
   
   <title>金三银四面试季，防抖节流要牢记 - 谢小飞的博客</title>
 
-  <link  rel="stylesheet" href="https://qiniu.xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
 
 
-  <link  rel="stylesheet" href="https://qiniu.xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
   <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
 
   
     
     
       
-      <link  rel="stylesheet" href="https://qiniu.xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
     
   
 
   
-    <link  rel="stylesheet" href="https://qiniu.xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
   
 
 
@@ -174,7 +174,7 @@
 </nav>
 
     <div class="banner" id="banner" parallax=true
-         style="background: url('//qiniu.xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -260,18 +260,18 @@
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">scrollHandler</span>(<span class="hljs-params"></span>) </span>&#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;handle&#x27;</span>)<br>&#125;<br><span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">&#x27;scroll&#x27;</span>, scrollHandler)<br></code></pre></div></td></tr></table></figure>
 
 <p>　　我们在页面滚动时会不断触发<code>scrollHandler</code>函数，但是我们不希望每次都触发，因此我们可以通过包装防抖函数来进行限制，当延迟时间超过n秒才真正执行scrollHandler函数。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="//qiniu.xieyufei.com/blog/Debounce-Throttle/debounce1.png" onerror="javascript:this.src='/images/Debounce-Throttle/debounce1.png'" srcset="/img/loading.gif" lazyload alt="debounce1.png"></p>
 <p>　　而防抖函数实现的方式也很简单，在每次触发事件时，都设置一个定时器，延迟执行，并且取消之前的定时器。</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debounce</span>(<span class="hljs-params">fn, wait</span>) </span>&#123;<br>  <span class="hljs-keyword">var</span> timeout<br>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">var</span> context = <span class="hljs-built_in">this</span>,<br>    args = <span class="hljs-built_in">arguments</span><br>    <span class="hljs-built_in">clearTimeout</span>(timeout)<br>    <br>    timeout = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>      fn.apply(context, args)<br>    &#125;, wait)<br>  &#125;<br>&#125;<br><span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">&#x27;scroll&#x27;</span>, debounce(scrollHandler, <span class="hljs-number">500</span>))<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　<code>debounce</code>主要的目的就是延迟执行传入的<code>fn</code>函数，我们发现它返回了一个函数，是典型的闭包结构；页面滚动将每次触发scrollHandler变成每次都会触发debounce中返回的闭包函数；由于闭包的存在，因此<code>timeout</code>定时器变量会一直存在，触发闭包函数时都会清除上次设置的定时器。</p>
 <p>　　这里调用fn时，很多fn函数都是滚动或者点击的回调函数，会提供Event对象进行处理，因此我们需要将原来的参数传入以及this进行绑定；因此分别赋值了变量<code>context</code>和<code>args</code>，这里<code>arguments</code>是类数组对象，那么什么是类数组对象呢，我们在函数中console.log出来看一下：</p>
 <p><img src="//qiniu.xieyufei.com/blog/Debounce-Throttle/arguments.png" onerror="javascript:this.src='/images/Debounce-Throttle/arguments.png'" srcset="/img/loading.gif" lazyload alt="arguments.png"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　我们发现它的属性名是按照从0开始的index，第一个参数的属性是’0’，第二个属性名是’1’，并且它还有个length属性；但是它和数组不同的是它<code>__proto__</code>直接指向了Object，而数组的<code>__proto__</code>指向了Array；因此Array原型上的一些map、find等方法arguments也是没有的。</p>
 <p>　　我们回到防抖函数，上面的防抖函数是非立即执行的，也就是触发事件后不会马上执行，但是我们某些场景下需要立即执行；立即执行后当n秒内触发事件才能再次执行。</p>
 <p><img src="//qiniu.xieyufei.com/blog/Debounce-Throttle/debounce2.png" onerror="javascript:this.src='/images/Debounce-Throttle/debounce2.png'" srcset="/img/loading.gif" lazyload alt="debounce2.png"></p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　因此我们来看下立即执行版本的防抖函数时如何来实现的：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debounce</span>(<span class="hljs-params">fn, wait</span>) </span>&#123;<br>  <span class="hljs-keyword">let</span> timeout, result;<br>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">const</span> context = <span class="hljs-built_in">this</span><br>    <span class="hljs-keyword">const</span> args = <span class="hljs-built_in">arguments</span><br>    <span class="hljs-built_in">clearTimeout</span>(timeout)<br>    <span class="hljs-keyword">const</span> callNow = !timeout<br>    timeout = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>      timeout = <span class="hljs-literal">null</span><br>    &#125;, wait)<br>    <span class="hljs-keyword">if</span> (callNow) result = fn.apply(context, args)<br>    <span class="hljs-keyword">return</span> result<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
@@ -279,8 +279,8 @@
 <p>　　在开发过程中我们需要根据不同的场景来切换不同版本的防抖函数，因此将两个防抖函数结合起来，根据参数来进行判断：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * fn：执行函数</span><br><span class="hljs-comment"> * wait：延迟执行时间</span><br><span class="hljs-comment"> * immediate：是否立即执行</span><br><span class="hljs-comment"> **/</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debounce</span>(<span class="hljs-params">fn, wait, immediate</span>) </span>&#123;<br>  <span class="hljs-keyword">var</span> timeout, result;<br>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">var</span> context = <span class="hljs-built_in">this</span><br>    <span class="hljs-keyword">var</span> args = <span class="hljs-built_in">arguments</span><br>    <span class="hljs-built_in">clearTimeout</span>(timeout)<br>    <span class="hljs-keyword">if</span> (immediate) &#123;<br>      <span class="hljs-keyword">var</span> callNow = !timeout<br>      timeout = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>        timeout = <span class="hljs-literal">null</span><br>      &#125;, wait)<br>      <span class="hljs-keyword">if</span> (callNow) result = fn.apply(context, args)<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      timeout = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>        fn.apply(context, args)<br>      &#125;, wait)<br>    &#125;<br>    <span class="hljs-keyword">return</span> result<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
-<p>　　到这里我们的防抖函数已经接近完美了，但是最后如果我们希望能够取消这里的debounce函数，比如我们传入wait是10秒，immediate为true，刚开始是立即执行fn函数的，但是我们需要等待10秒才能重新去触发fn函数，中间做的所有操作都是无效的；我们希望能有一个按钮，点击后能够取消上一次的防抖，然后我们就能够再次触发了。</p>
 <script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　到这里我们的防抖函数已经接近完美了，但是最后如果我们希望能够取消这里的debounce函数，比如我们传入wait是10秒，immediate为true，刚开始是立即执行fn函数的，但是我们需要等待10秒才能重新去触发fn函数，中间做的所有操作都是无效的；我们希望能有一个按钮，点击后能够取消上一次的防抖，然后我们就能够再次触发了。</p>
 <p>　　这里改动也很简单，我们需要对返回闭包函数进行处理，但是由于是匿名函数，我们给他具名，同时赋值一个<code>cancel</code>函数用来清除闭包外的定时器timeout即可：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debounce</span>(<span class="hljs-params">fn, wait, immediate</span>) </span>&#123;<br>  <span class="hljs-keyword">var</span> timeout, result;<br>  <span class="hljs-keyword">var</span> debounced = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">var</span> context = <span class="hljs-built_in">this</span><br>    <span class="hljs-keyword">var</span> args = <span class="hljs-built_in">arguments</span><br>    <span class="hljs-built_in">clearTimeout</span>(timeout)<br>    <span class="hljs-keyword">if</span> (immediate) &#123;<br>      <span class="hljs-keyword">var</span> callNow = !timeout<br>      timeout = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>        timeout = <span class="hljs-literal">null</span><br>      &#125;, wait)<br>      <span class="hljs-keyword">if</span> (callNow) result = fn.apply(context, args)<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      timeout = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>        fn.apply(context, args)<br>      &#125;, wait)<br>    &#125;<br>    <span class="hljs-keyword">return</span> result<br>  &#125;<br>  debounced.cancel = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">clearTimeout</span>(timeout)<br>    timeout = <span class="hljs-literal">null</span><br>  &#125;<br>  <span class="hljs-keyword">return</span> debounced<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
@@ -295,20 +295,19 @@
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">throttle</span>(<span class="hljs-params">fn, wait</span>) </span>&#123;<br>  <span class="hljs-keyword">let</span> timeout;<br>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">let</span> context = <span class="hljs-built_in">this</span><br>    <span class="hljs-keyword">let</span> args = <span class="hljs-built_in">arguments</span><br>    <span class="hljs-keyword">if</span> (!timeout) &#123;<br>      timeout = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>        timeout = <span class="hljs-literal">null</span><br>        fn.apply(context, args)<br>      &#125;, wait)<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
 <p>　　和防抖函数每次清除timeout不同，这里对timeout进行非空判断，只有它为空的时候才能设置定时器，这样保证了在一段时间内同时只有一个定时器，在时间到之后会释放定时器并且执行fn函数，重新设置定时器。</p>
-<p>　　我们再来看下时间戳版本的节流函数：</p>
 <script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　我们再来看下时间戳版本的节流函数：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">throttle</span>(<span class="hljs-params">fn, wait</span>) </span>&#123;<br>  <span class="hljs-keyword">var</span> context, args<br>  <span class="hljs-keyword">var</span> previous = <span class="hljs-number">0</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">var</span> now = +<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>()<br>    context = <span class="hljs-built_in">this</span><br>    args = <span class="hljs-built_in">arguments</span><br>    <span class="hljs-keyword">if</span> (now - previous &gt; wait) &#123;<br>      fn.apply(context, args)<br>      previous = now<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
 <p>　　时间戳版本的函数是在闭包函数的外部存储了一个<code>previous</code>变量，是上次执行的一个时间戳；每次触发内部闭包函数时与上次的时间戳进行对比判断，如果间隔时间大于我们设置的等待时间则执行fn函数，同时更新时间戳；同时由于我们初始化<code>previous</code>是0，而<code>now</code>当前的时间戳减去0肯定是会大于wait时间的，因此时间戳版本的节流函数fn一开始就会被触发。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　通过上面我们很容易就能发现，两个版本的节流函数最大的不同就是fn函数执行的时间点，定时器版本由于setTimeout延时的特性，在时间段结束的时候触发fn函数，而时间戳版本是在时间段开始的时候触发。</p>
 <p>　　同样的，我们可以将两种节流函数结合到一个函数，我们可以加上cancel取消方法：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * fn：执行函数</span><br><span class="hljs-comment"> * wait：延迟执行时间</span><br><span class="hljs-comment"> * immediate：是否立即执行</span><br><span class="hljs-comment"> **/</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">throttle</span>(<span class="hljs-params">fn, wait, immediate</span>) </span>&#123;<br>  <span class="hljs-keyword">let</span> timeout<br>  <span class="hljs-keyword">let</span> previous = <span class="hljs-number">0</span><br>  <span class="hljs-keyword">var</span> throttled = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">let</span> context = <span class="hljs-built_in">this</span><br>    <span class="hljs-keyword">let</span> args = <span class="hljs-built_in">arguments</span><br>    <span class="hljs-keyword">if</span> (immediate) &#123;<br>      <span class="hljs-keyword">let</span> now = <span class="hljs-built_in">Date</span>.now()<br>      <span class="hljs-keyword">if</span> (now - previous &gt; wait) &#123;<br>        fn.apply(context, args)<br>        previous = now<br>      &#125;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-keyword">if</span> (!timeout) &#123;<br>        timeout = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>          timeout = <span class="hljs-literal">null</span><br>          fn.apply(context, args)<br>        &#125;, wait)<br>      &#125;<br>    &#125;<br>  &#125;<br>  throttled.cancel = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-built_in">clearTimeout</span>(timeout)<br>    previous = <span class="hljs-number">0</span><br>    timeout = <span class="hljs-literal">null</span><br>  &#125;<br>  <span class="hljs-keyword">return</span> throttled<br>&#125;<br></code></pre></div></td></tr></table></figure>
             </div>
             <hr>
             <div>
-              
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script><div class="post-metas mb-3">
+              <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
@@ -443,8 +442,8 @@
 
   <!-- SCRIPTS -->
   
-  <script  src="https://qiniu.xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://qiniu.xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
 
   <script>
     NProgress.configure({"showSpinner":false,"trickleSpeed":100})
@@ -455,8 +454,8 @@
   </script>
 
 
-<script  src="https://qiniu.xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
-<script  src="https://qiniu.xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
 <script  src="/js/events.js" ></script>
 <script  src="/js/plugins.js" ></script>
 
@@ -473,19 +472,19 @@
 
 
 
-  <script  src="https://qiniu.xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
 
 
 
-  <script  src="https://qiniu.xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
 
 
 
-  <script  src="https://qiniu.xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
 
 
 
-  <script defer src="https://qiniu.xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
 
 
 
@@ -496,7 +495,7 @@
 
 
 
-  <script  src="https://qiniu.xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
   <script>
     (function (window, document) {
       var typing = Fluid.plugins.typing;

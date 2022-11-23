@@ -23,22 +23,22 @@
   
   <title>搭建自己的Webpack项目:入门（一） - 谢小飞的博客</title>
 
-  <link  rel="stylesheet" href="https://qiniu.xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
 
 
-  <link  rel="stylesheet" href="https://qiniu.xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
   <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
 
   
     
     
       
-      <link  rel="stylesheet" href="https://qiniu.xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
     
   
 
   
-    <link  rel="stylesheet" href="https://qiniu.xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
   
 
 
@@ -174,7 +174,7 @@
 </nav>
 
     <div class="banner" id="banner" parallax=true
-         style="background: url('//qiniu.xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -256,7 +256,6 @@
 <p>　　借用webpack官网的一张图来解释一下webpack的工作原理。左边就是我们杂乱的页面资源，有脚本文件、样式文件、图片文件等等，各种文件之间互相引用。经过webpack的打包整理，生成静态文件。<br>　　webpack的工作方式是：通过一个配置文件找到入口文件，从这个入口文件找到你项目依赖的所有资源文件，使用对应的资源加载器(loaders)来处理这些资源文件，最后打包成静态文件。</p>
 <h1 id="二、安装webpack"><a href="#二、安装webpack" class="headerlink" title="二、安装webpack"></a>二、安装webpack</h1><p>　　使用webpack之前需要安装webpack，在这里我们需要在两个地方安装：全局目录和项目目录，在项目目录下执行以下命令：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">//全局安装的作用是直接在命令行中使用</span><br>npm install -g webpack<br><span class="hljs-comment">//安装到项目目录，使用webpack的功能</span><br>npm install --save-dev webpack<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <h1 id="三、使用webpack"><a href="#三、使用webpack" class="headerlink" title="三、使用webpack"></a>三、使用webpack</h1><p>　　在开始上手项目之前首先来搭建我们的目录结构。</p>
 <h2 id="目录结构说明"><a href="#目录结构说明" class="headerlink" title="目录结构说明"></a>目录结构说明</h2><p>　　我们可以把项目目录搭建成如下，当然只是给大家做一个参考而已：</p>
@@ -264,9 +263,9 @@
 
 <p>　　package.json使用<code>npm init</code>命令可以自动生成，在这里不过多的阐述；build目录主要是webpack构建的产物，自动生成；这里的核心文件就是我们的webpack.config.js文件，需要自己手动编写。</p>
 <h2 id="webpack配置文件"><a href="#webpack配置文件" class="headerlink" title="webpack配置文件"></a>webpack配置文件</h2><p>　　<code>webpack.config.js</code>配置文件通过exports导出一个对象，这个对象中有三个模块比较重要：entry、output和module，具体如下：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;webpack&#x27;</span>);<br><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;path&#x27;</span>)<br><span class="hljs-built_in">module</span>.exports = &#123;<br>    <span class="hljs-attr">entry</span>: &#123;<br>        <span class="hljs-attr">index</span>: <span class="hljs-string">&#x27;./public/javascript/index.js&#x27;</span><br>    &#125;,<br>    <span class="hljs-attr">output</span>: &#123;<br>        <span class="hljs-attr">path</span>: path.resolve(__dirname, <span class="hljs-string">&#x27;build&#x27;</span>),<br>        <span class="hljs-attr">filename</span>: <span class="hljs-string">&#x27;[name].bundle.js&#x27;</span>,<br>        <span class="hljs-attr">publicPath</span>: <span class="hljs-string">&#x27;./build/&#x27;</span><br>    &#125;,<br>    <span class="hljs-attr">module</span>: &#123;<br>        <span class="hljs-attr">loaders</span>: []<br>    &#125;,<br>    <span class="hljs-attr">plugins</span>:&#123;&#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h3 id="entry属性"><a href="#entry属性" class="headerlink" title="entry属性"></a>entry属性</h3><p>　　entry属性是页面的主入口，所有页面的文件都在这个入口文件中进行引用。<br>　　当然，一个项目肯定有不止一个页面，需要多个入口，entry属性可以这样配置：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">entry: &#123;<br>    <span class="hljs-attr">index</span>: <span class="hljs-string">&#x27;./public/javascript/index.js&#x27;</span>,<br>    <span class="hljs-attr">list</span>: <span class="hljs-string">&#x27;./public/javascript/list.js&#x27;</span>,<br>	<span class="hljs-comment">//...多个页面的入口</span><br>&#125;,<br></code></pre></div></td></tr></table></figure>
 
@@ -274,14 +273,14 @@
 <h3 id="module属性"><a href="#module属性" class="headerlink" title="module属性"></a>module属性</h3><p>　　module属性主要存放解析资源文件的各个加载器，每一个对象表示了一个加载器。<br>　　test属性表示正则匹配，用来匹配文件的后缀名；loader属性表示如果文件相匹配，则调用对应的加载器来解析文件。比如样式加载器有css-loader、sass-loader。<br>　　加载器的后缀都是<code>-loader</code>，在loader属性中配置加载器不用写后缀，配置不同的加载器需要使用<code>!</code>分隔并串联起来。</p>
 <h3 id="plugins属性"><a href="#plugins属性" class="headerlink" title="plugins属性"></a>plugins属性</h3><p>　　plugins属性是用来放webpack的插件，这个属性下面会用到</p>
 <h2 id="编写入口文件"><a href="#编写入口文件" class="headerlink" title="编写入口文件"></a>编写入口文件</h2><p>　　在/public/javascript/目录下，编写我们的入口文件index.js，我们的入口文件非常简单，就在页面上打印一句话：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">/public/javascript/index.js<br><span class="hljs-built_in">document</span>.write(<span class="hljs-string">&#x27;webpack works&#x27;</span>)<br><span class="hljs-built_in">document</span>.write(<span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./module.js&#x27;</span>))<br></code></pre></div></td></tr></table></figure>
 <p>　　还有我们的模块文件：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">/public/javascript/<span class="hljs-built_in">module</span>.js<br><span class="hljs-built_in">module</span>.exports=<span class="hljs-string">&#x27;It works from module.js.&#x27;</span><br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　这样一个简单的webpack项目就完成了，通过在项目根目录使用webpack命令，在build文件中生成index.bundle.js文件就是我们的构建产物，在页面上直接引用这个js就能看到效果了</p>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="给页面点“颜色”看看"><a href="#给页面点“颜色”看看" class="headerlink" title="给页面点“颜色”看看"></a>给页面点“颜色”看看</h2><p>　　在页面上我们肯定会用到很多的样式文件，那么怎么在页面上使用呢？首先需要有对应的加载器，这里我们就要用到样式加载器。<br>　　首先安装我们的加载器：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">npm install css-loader style-loader sass-loader --save-dev<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　然后改写配置文件中的加载器模块：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-built_in">module</span>: &#123;<br>    <span class="hljs-attr">loaders</span>: [<br>		&#123; <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.css$/</span>, loader: <span class="hljs-string">&#x27;style!css&#x27;</span> &#125;,<br>		&#123;<span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.scss$/</span>, loader: <span class="hljs-string">&quot;style!css!sass&quot;</span>&#125;<br>    ]<br>&#125;<br></code></pre></div></td></tr></table></figure>
@@ -289,38 +288,37 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs stylesheet">/stylesheet/style.css<br>body&#123;background:#f5f5f5&#125;<br></code></pre></div></td></tr></table></figure>
 <p>　　在index.js中我们添加对样式文件的引用：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;../stylesheet/style.css&#x27;</span>);<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　在根目录我们再次执行webpack命令，再次生成构建的js文件就能看到页面上有颜色了。</p>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="提取公共的脚本并压缩"><a href="#提取公共的脚本并压缩" class="headerlink" title="提取公共的脚本并压缩"></a>提取公共的脚本并压缩</h2><p>　　有时候多个公共脚本中有公用的部分，如果多写就显得有点多余，我们可以利用webpack的提取公共部分的插件来帮助我们提取。<br>　　在plugins属性中添加如下代码：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">plugins: [<br>    <span class="hljs-comment">//压缩代码</span><br>    <span class="hljs-keyword">new</span> webpack.optimize.UglifyJsPlugin(),<br>    <span class="hljs-comment">//提取公共部分</span><br>    <span class="hljs-keyword">new</span> webpack.optimize.CommonsChunkPlugin(<span class="hljs-string">&#x27;common.js&#x27;</span>)<br>]<br></code></pre></div></td></tr></table></figure>
 <p>　　再次执行webpack命令，我们在build文件夹里看到多出了一个common.js文件，这个就是提取出的公共部分。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h2 id="独立出样式文件"><a href="#独立出样式文件" class="headerlink" title="独立出样式文件"></a>独立出样式文件</h2><p>　　通过<code>style</code>标签引入样式可能会让页面的代码看起来非常的庞大非常的凌乱，有时候我们需要将所有的样式导出到一个独立的样式文件，然后通过<code>link</code>标签引入样式文件。<br>　　这时候我们就需要用新的插件。通过<code>npm install</code>命令安装extract-text-webpack-plugin插件。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">npm install extract-text-webpack-plugin --save-dev<br></code></pre></div></td></tr></table></figure>
 <p>　　安装完插件我们就需要在<code>webpack.config.js</code>文件中进行配置了。</p>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> ExtractTextPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;extract-text-webpack-plugin&quot;</span>);<br><span class="hljs-built_in">module</span>.exports = &#123;<br>    <span class="hljs-comment">// ...省略部分代码</span><br>    <span class="hljs-attr">module</span>: &#123;<br>        <span class="hljs-attr">loaders</span>: [<br>            <span class="hljs-comment">// ...省略部分代码</span><br>            &#123;<span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.css$/</span>, loader: ExtractTextPlugin.extract(<span class="hljs-string">&quot;style-loader&quot;</span>, <span class="hljs-string">&quot;css-loader&quot;</span>)&#125;<br>        ]<br>    &#125;,<br>    <span class="hljs-attr">plugins</span>: [<br>        <span class="hljs-keyword">new</span> webpack.optimize.CommonsChunkPlugin(<span class="hljs-string">&#x27;common.js&#x27;</span>),<br>        <span class="hljs-keyword">new</span> ExtractTextPlugin(<span class="hljs-string">&quot;[name].css&quot;</span>)<br>    ]<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　我们再使用webpack命令打包一下，看到<code>build</code>文件夹中看到多了一个index.css文件，就是插件提取出来的所有页面样式，都在一个文件中。</p>
 <h2 id="使用高逼格的ES6"><a href="#使用高逼格的ES6" class="headerlink" title="使用高逼格的ES6"></a>使用高逼格的ES6</h2><p>　　ES6简洁的语法糖、性能的提升都让开发者对其深深的“迷恋”，下面来让我们的项目也来支持ES6的语法。<br>　　要想支持ES6首先要安装对应的解码器，es6的解码器就是babel，首先安装<code>babel-loader</code>：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">npm install babel-loader --save-dev<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　然后改写配置文件：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">loaders: [<br>    <span class="hljs-comment">// ...省略部分代码</span><br>    &#123; <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.js[x]?$/</span>, loader: <span class="hljs-string">&#x27;babel&#x27;</span> &#125;<br>]<br></code></pre></div></td></tr></table></figure>
 <p>　　配置完成后我们就可以在js中尽情地使用es6的语法糖了。</p>
 <h1 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h1><p>　　在这里我们编写了webpack的配置文件，对配置文件的属性进行了详细地说明，也添加了webpack的几个插件。但是还是欠缺以下几点：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <ul>
 <li>没有图片加载器</li>
 <li>没有构建本地服务器，没有热加载</li>
 <li>没有引导命令执行</li>
 </ul>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　本文所涉及到的代码都在<a target="_blank" rel="noopener" href="//github.com/acexyf/WebpackTest">我的github仓库</a>，需要的读者可以去fork，喜欢的给个赞啊亲。希望在后续的文章中对代码进行优化，添加更多的插件来丰富功能。</p>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 
             </div>
             <hr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
             <div>
-              
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p><div class="post-metas mb-3">
+              <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
@@ -457,8 +455,8 @@
 
   <!-- SCRIPTS -->
   
-  <script  src="https://qiniu.xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://qiniu.xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
 
   <script>
     NProgress.configure({"showSpinner":false,"trickleSpeed":100})
@@ -469,8 +467,8 @@
   </script>
 
 
-<script  src="https://qiniu.xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
-<script  src="https://qiniu.xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
 <script  src="/js/events.js" ></script>
 <script  src="/js/plugins.js" ></script>
 
@@ -487,19 +485,19 @@
 
 
 
-  <script  src="https://qiniu.xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
 
 
 
-  <script  src="https://qiniu.xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
 
 
 
-  <script  src="https://qiniu.xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
 
 
 
-  <script defer src="https://qiniu.xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
 
 
 
@@ -510,7 +508,7 @@
 
 
 
-  <script  src="https://qiniu.xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
   <script>
     (function (window, document) {
       var typing = Fluid.plugins.typing;

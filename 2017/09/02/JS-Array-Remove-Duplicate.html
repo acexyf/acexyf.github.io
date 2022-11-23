@@ -23,22 +23,22 @@
   
   <title>JS数组去重 - 谢小飞的博客</title>
 
-  <link  rel="stylesheet" href="https://qiniu.xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
 
 
-  <link  rel="stylesheet" href="https://qiniu.xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
   <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
 
   
     
     
       
-      <link  rel="stylesheet" href="https://qiniu.xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
     
   
 
   
-    <link  rel="stylesheet" href="https://qiniu.xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
   
 
 
@@ -174,7 +174,7 @@
 </nav>
 
     <div class="banner" id="banner" parallax=true
-         style="background: url('//qiniu.xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -260,14 +260,14 @@
 <p>　　在时间消耗上来看，这种方法比第一种方法要快很多，因为从对象中取属性值消耗的时间几乎可以不计，但是存在以下两个问题：</p>
 <ol>
 <li>由于需要存放Hash对象，因此在内存占用上比第一种方法会多占用更多的内存空间，就是所谓的空间换时间。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>从上面的排序结果我们会发现一个问题，’12’不在结果中。因为在键名中，String类型的’12’和Number类型的12对于Hash对象来说都是一样的。</li>
 </ol>
 <h1 id="第三种方法排序比较"><a href="#第三种方法排序比较" class="headerlink" title="第三种方法排序比较"></a>第三种方法排序比较</h1><p>　　第三种方法利用数组原生的<code>sort()</code>方法，将数组先进行排序，排序后比较相邻两个元素的值。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> arr = [<span class="hljs-number">1</span>,<span class="hljs-string">&#x27;1&#x27;</span>,<span class="hljs-number">2</span>,<span class="hljs-string">&#x27;2&#x27;</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-string">&#x27;x&#x27;</span>,<span class="hljs-string">&#x27;y&#x27;</span>,<span class="hljs-string">&#x27;f&#x27;</span>,<span class="hljs-string">&#x27;x&#x27;</span>,<span class="hljs-string">&#x27;y&#x27;</span>,<span class="hljs-string">&#x27;f&#x27;</span>];<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">unique3</span>(<span class="hljs-params">arr</span>) </span>&#123;<br>    <span class="hljs-keyword">let</span> result = [arr[<span class="hljs-number">0</span>]];<br>    arr = arr.sort();<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">1</span>; i &lt; arr.length; i++) &#123;<br>        <span class="hljs-keyword">let</span> item = arr[i];<br>        <span class="hljs-keyword">if</span> (item !== result[result.length - <span class="hljs-number">1</span>]) &#123;<br>            result.push(item)<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> result;<br>&#125;<br><br><span class="hljs-built_in">console</span>.log(unique3(arr))<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　这种方法比<code>indexOf()</code>消耗的时间要短，比存放Hash对象占用的内存要小，算是一种折中两者的方法。但是也存在一个问题，就是去重后的数组的顺序发生了改变。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h1 id="第四种方法利用Set类型"><a href="#第四种方法利用Set类型" class="headerlink" title="第四种方法利用Set类型"></a>第四种方法利用Set类型</h1><p>　　如果你开发环境支持ES6，这个方法是最简洁的。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> arr = [<span class="hljs-number">1</span>,<span class="hljs-string">&#x27;1&#x27;</span>,<span class="hljs-number">2</span>,<span class="hljs-string">&#x27;2&#x27;</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-string">&#x27;x&#x27;</span>,<span class="hljs-string">&#x27;y&#x27;</span>,<span class="hljs-string">&#x27;f&#x27;</span>,<span class="hljs-string">&#x27;x&#x27;</span>,<span class="hljs-string">&#x27;y&#x27;</span>,<span class="hljs-string">&#x27;f&#x27;</span>];<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">unique4</span>(<span class="hljs-params">arr</span>)</span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Array</span>.from(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>(arr));<br>&#125;<br><br><span class="hljs-built_in">console</span>.log(unique4(arr));<br></code></pre></div></td></tr></table></figure>
 
@@ -410,8 +410,8 @@
 
   <!-- SCRIPTS -->
   
-  <script  src="https://qiniu.xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://qiniu.xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
 
   <script>
     NProgress.configure({"showSpinner":false,"trickleSpeed":100})
@@ -422,8 +422,8 @@
   </script>
 
 
-<script  src="https://qiniu.xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
-<script  src="https://qiniu.xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
 <script  src="/js/events.js" ></script>
 <script  src="/js/plugins.js" ></script>
 
@@ -440,19 +440,19 @@
 
 
 
-  <script  src="https://qiniu.xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
 
 
 
-  <script  src="https://qiniu.xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
 
 
 
-  <script  src="https://qiniu.xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
 
 
 
-  <script defer src="https://qiniu.xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
 
 
 
@@ -463,7 +463,7 @@
 
 
 
-  <script  src="https://qiniu.xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
   <script>
     (function (window, document) {
       var typing = Fluid.plugins.typing;
