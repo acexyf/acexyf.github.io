@@ -4,7 +4,7 @@
   <url>
     <loc>https://xieyufei.com/2022/11/15/FrontEnd-Sideline.html</loc>
     
-    <lastmod>2022-11-19</lastmod>
+    <lastmod>2022-11-23</lastmod>
     
   </url>
   
@@ -352,6 +352,13 @@
   </url>
   
   <url>
+    <loc>https://xieyufei.com/baidu_verify_YT4JLM3ALV.html</loc>
+    
+    <lastmod>2021-06-16</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://xieyufei.com/google3b1d36610169e2a3.html</loc>
     
     <lastmod>2021-06-16</lastmod>
@@ -359,7 +366,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/baidu_verify_YT4JLM3ALV.html</loc>
+    <loc>https://xieyufei.com/demo/panorama.html</loc>
     
     <lastmod>2021-06-16</lastmod>
     
@@ -374,13 +381,6 @@
   
   <url>
     <loc>https://xieyufei.com/demo/panorama1.html</loc>
-    
-    <lastmod>2021-06-16</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://xieyufei.com/demo/panorama.html</loc>
     
     <lastmod>2021-06-16</lastmod>
     
@@ -485,14 +485,14 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2016/10/11/Front-Tiny-WeChat-Next.html</loc>
+    <loc>https://xieyufei.com/2016/10/09/Front-Tiny-WeChat.html</loc>
     
     <lastmod>2021-06-16</lastmod>
     
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2016/10/09/Front-Tiny-WeChat.html</loc>
+    <loc>https://xieyufei.com/2016/10/11/Front-Tiny-WeChat-Next.html</loc>
     
     <lastmod>2021-06-16</lastmod>
     
@@ -534,14 +534,14 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2016/09/11/Git-Command-Start.html</loc>
+    <loc>https://xieyufei.com/2017/09/11/Git-Learning.html</loc>
     
     <lastmod>2021-06-16</lastmod>
     
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2017/09/11/Git-Learning.html</loc>
+    <loc>https://xieyufei.com/2016/09/11/Git-Command-Start.html</loc>
     
     <lastmod>2021-06-16</lastmod>
     
@@ -555,14 +555,14 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2017/09/02/JS-Array-Remove-Duplicate.html</loc>
+    <loc>https://xieyufei.com/2018/03/07/JS-Decimal-Accuracy.html</loc>
     
     <lastmod>2021-06-16</lastmod>
     
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2018/03/07/JS-Decimal-Accuracy.html</loc>
+    <loc>https://xieyufei.com/2017/09/02/JS-Array-Remove-Duplicate.html</loc>
     
     <lastmod>2021-06-16</lastmod>
     
@@ -590,14 +590,14 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2016/09/18/Explain-Js-This.html</loc>
+    <loc>https://xieyufei.com/2017/02/21/Dotjs-Usage.html</loc>
     
     <lastmod>2021-06-16</lastmod>
     
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2017/02/21/Dotjs-Usage.html</loc>
+    <loc>https://xieyufei.com/2016/09/18/Explain-Js-This.html</loc>
     
     <lastmod>2021-06-16</lastmod>
     
@@ -641,13 +641,6 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/tags/CrossDomain/</loc>
-    <lastmod>2022-11-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://xieyufei.com/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/</loc>
     <lastmod>2022-11-23</lastmod>
     <changefreq>daily</changefreq>
@@ -662,14 +655,14 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/tags/Interview/</loc>
+    <loc>https://xieyufei.com/tags/CrossDomain/</loc>
     <lastmod>2022-11-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://xieyufei.com/tags/JS/</loc>
+    <loc>https://xieyufei.com/tags/Interview/</loc>
     <lastmod>2022-11-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -684,6 +677,13 @@
   
   <url>
     <loc>https://xieyufei.com/tags/Tips/</loc>
+    <lastmod>2022-11-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://xieyufei.com/tags/JS/</loc>
     <lastmod>2022-11-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -774,13 +774,6 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/tags/Modularization/</loc>
-    <lastmod>2022-11-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://xieyufei.com/tags/Java/</loc>
     <lastmod>2022-11-23</lastmod>
     <changefreq>daily</changefreq>
@@ -789,6 +782,13 @@
   
   <url>
     <loc>https://xieyufei.com/tags/%E5%BC%82%E6%AD%A5%E8%B7%A8%E5%9F%9F/</loc>
+    <lastmod>2022-11-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://xieyufei.com/tags/Modularization/</loc>
     <lastmod>2022-11-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
