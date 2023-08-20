@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://xieyufei.com/2023/08/20/Tailwindcss.html</loc>
+    <lastmod>2023-08-20</lastmod>
+  </url>
+  <url>
     <loc>https://xieyufei.com/2023/08/11/Chrome-Plugin-Practise.html</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-12</lastmod>
   </url>
   <url>
     <loc>https://xieyufei.com/2023/04/28/Threejs-Panorama.html</loc>
@@ -221,11 +225,11 @@
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2016/09/21/JS-Variate-Scope.html</loc>
+    <loc>https://xieyufei.com/2016/05/28/Java-Ajax.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2016/05/28/Java-Ajax.html</loc>
+    <loc>https://xieyufei.com/2016/09/21/JS-Variate-Scope.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
@@ -233,11 +237,11 @@
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2017/09/25/Nodejs-File-Upload.html</loc>
+    <loc>https://xieyufei.com/2016/11/15/Nodejs-Connect-Mysql.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2016/11/15/Nodejs-Connect-Mysql.html</loc>
+    <loc>https://xieyufei.com/2017/09/25/Nodejs-File-Upload.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
@@ -269,11 +273,11 @@
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2016/10/11/Front-Tiny-WeChat-Next.html</loc>
+    <loc>https://xieyufei.com/2016/10/09/Front-Tiny-WeChat.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2016/10/09/Front-Tiny-WeChat.html</loc>
+    <loc>https://xieyufei.com/2016/10/11/Front-Tiny-WeChat-Next.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
@@ -297,19 +301,19 @@
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2017/09/11/Git-Learning.html</loc>
-    <lastmod>2021-06-16</lastmod>
-  </url>
-  <url>
     <loc>https://xieyufei.com/2016/09/11/Git-Command-Start.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2016/11/12/Hubot-Chat-Machine.html</loc>
+    <loc>https://xieyufei.com/2017/09/11/Git-Learning.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
     <loc>https://xieyufei.com/2017/09/02/JS-Array-Remove-Duplicate.html</loc>
+    <lastmod>2021-06-16</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2016/11/12/Hubot-Chat-Machine.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
