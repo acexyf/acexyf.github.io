@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://xieyufei.com/2024/01/17/Turn-Round-Arrow.html</loc>
+    <lastmod>2024-01-17</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2023/12/22/Install-Linux-Nodejs.html</loc>
+    <lastmod>2023-12-18</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2023/04/14/GSAP-Practise.html</loc>
+    <lastmod>2023-12-14</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2023/11/02/Install-Linux-StableDiffusion.html</loc>
+    <lastmod>2023-12-09</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2023/12/09/Echarts-Deploy.html</loc>
+    <lastmod>2023-12-09</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2023/10/19/Vue3-Setup.html</loc>
+    <lastmod>2023-10-19</lastmod>
+  </url>
+  <url>
     <loc>https://xieyufei.com/2023/09/05/Install-Windows-Cuda.html</loc>
     <lastmod>2023-09-06</lastmod>
   </url>
@@ -19,10 +43,6 @@
   <url>
     <loc>https://xieyufei.com/2023/02/06/GSAP-Learn.html</loc>
     <lastmod>2023-04-18</lastmod>
-  </url>
-  <url>
-    <loc>https://xieyufei.com/2023/04/14/GSAP-Practise.html</loc>
-    <lastmod>2023-04-13</lastmod>
   </url>
   <url>
     <loc>https://xieyufei.com/2022/12/10/Recommend-Linux.html</loc>
@@ -229,11 +249,11 @@
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2016/09/21/JS-Variate-Scope.html</loc>
+    <loc>https://xieyufei.com/2016/05/28/Java-Ajax.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2016/05/28/Java-Ajax.html</loc>
+    <loc>https://xieyufei.com/2016/09/21/JS-Variate-Scope.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
@@ -241,11 +261,11 @@
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2016/11/15/Nodejs-Connect-Mysql.html</loc>
+    <loc>https://xieyufei.com/2017/09/25/Nodejs-File-Upload.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2017/09/25/Nodejs-File-Upload.html</loc>
+    <loc>https://xieyufei.com/2016/11/15/Nodejs-Connect-Mysql.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
@@ -281,15 +301,11 @@
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2016/10/09/Front-Tiny-WeChat.html</loc>
-    <lastmod>2021-06-16</lastmod>
-  </url>
-  <url>
     <loc>https://xieyufei.com/2016/10/21/Front-Webpack-First.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2017/04/16/FrontEnd-JS-Prototype.html</loc>
+    <loc>https://xieyufei.com/2016/10/09/Front-Tiny-WeChat.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
@@ -297,11 +313,15 @@
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2017/01/21/FrontEnd-Promise.html</loc>
+    <loc>https://xieyufei.com/2017/04/16/FrontEnd-JS-Prototype.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>
     <loc>https://xieyufei.com/2017/01/28/FrontEnd-Promise-jQuery.html</loc>
+    <lastmod>2021-06-16</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2017/01/21/FrontEnd-Promise.html</loc>
     <lastmod>2021-06-16</lastmod>
   </url>
   <url>

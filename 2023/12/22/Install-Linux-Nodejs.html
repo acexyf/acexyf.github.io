@@ -17,11 +17,11 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="　　部署">
+  <meta name="description" content="　　由于经常要在服务器上部署node项目，因此经常需要在Linux环境下安装Nodejs。">
   <meta name="author" content="Corner">
   <meta name="keywords" content="Corner">
   
-  <title>本地部署ChatGLM2 - 谢小飞的博客</title>
+  <title>Linux下源码包Nodejs安装教程 - 谢小飞的博客</title>
 
   <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
 
@@ -179,7 +179,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="本地部署ChatGLM2">
+            <span class="h2" id="subtitle" title="Linux下源码包Nodejs安装教程">
               
             </span>
 
@@ -189,8 +189,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2023-09-20 21:09" pubdate>
-        2023年9月20日 晚上
+      <time datetime="2023-12-22 20:00" pubdate>
+        2023年12月22日 晚上
       </time>
     </span>
   
@@ -201,7 +201,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      151 字
+      313 字
     </span>
   
 
@@ -211,7 +211,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      2
+      4
        分钟
     </span>
   
@@ -245,84 +245,43 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">本地部署ChatGLM2</h1>
+            <h1 style="display: none">Linux下源码包Nodejs安装教程</h1>
             
             <div class="markdown-body">
-              <p>　　部署</p>
+              <p>　　由于经常要在服务器上部署node项目，因此经常需要在Linux环境下安装Nodejs。</p>
 <span id="more"></span>
 
-<p>　　run</p>
-<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ git clone https://github.com/THUDM/ChatGLM2-<span class="hljs-number">6</span>B<br></code></pre></div></td></tr></table></figure>
+
+<p>　　大多数Linux发行版都提供了Node.js的安装包，我们可以直接使用包管理器进行安装：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ sudo apt-get update<br>$ sudo apt-get install nodejs <br></code></pre></div></td></tr></table></figure>
 
 
-<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ pip install -r requirements.txt -i https://mirror.sjtu.edu.cn/pypi/web/simple<br></code></pre></div></td></tr></table></figure>
+<p>　　但是包管理器安装的Nodejs版本比较老旧，有些是10或者12版本的，因此我们可以通过去官网通过下载源码包的方式进行安装。</p>
+<p>　　首先打开<a target="_blank" rel="noopener" href="http://nodejs.cn/download/">Node.js中文网</a>，官网提供了不同系统平台的安装包，我们下载对应平台的即可，例如这里的<code>node-v18.18.0-linux-x64.tar.gz</code>：</p>
+<p><img src="/images/Install-Linux-Nodejs/download.png" srcset="/img/loading.gif" lazyload alt="官网下载"></p>
+<p>　　我们可以选择这里Linux（x64）版本的，如果想要其他版本的，也可以选择<code>全部安装包</code>；这里我们用wget命令下载：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ <span class="hljs-built_in">cd</span> ~/下载/<br>$ wget https://registry.npmmirror.com/-/binary/node/v18.<span class="hljs-number">18</span>.<span class="hljs-number">0</span>/node-v18.<span class="hljs-number">18</span>.<span class="hljs-number">0</span>-linux-x64.tar.gz<br></code></pre></div></td></tr></table></figure>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
+<p>　　解压压缩包并且移动到/usr/local目录下：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ tar -zxvf node-v18.<span class="hljs-number">18</span>.<span class="hljs-number">0</span>-linux-x64.tar.gz<br>$ sudo mv node-v18.<span class="hljs-number">18</span>.<span class="hljs-number">0</span>-linux-x64 /usr/local/nodejs/<br></code></pre></div></td></tr></table></figure>
 
-
-
-<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ git lfs install<br>Updated git hooks.<br>Git LFS initialized.<br></code></pre></div></td></tr></table></figure>
-
-
-
-<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ git clone https://huggingface.co/THUDM/chatglm2-<span class="hljs-number">6</span>b<br></code></pre></div></td></tr></table></figure>
+<p>　　创建软链接：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ ln -s /usr/local/nodejs/bin/node /usr/local/bin/<br>$ ln -s /usr/local/nodejs/bin/npm /usr/local/bin/<br></code></pre></div></td></tr></table></figure>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
-
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-
-<figure class="highlight python"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs python">tokenizer = AutoTokenizer.from_pretrained(<span class="hljs-string">&quot;E:\project\ChatGLM2-6B\model&quot;</span>, trust_remote_code=<span class="hljs-literal">True</span>)<br>model = AutoModel.from_pretrained(<span class="hljs-string">&quot;E:\project\ChatGLM2-6B\model&quot;</span>, trust_remote_code=<span class="hljs-literal">True</span>).<span class="hljs-built_in">float</span>()<br></code></pre></div></td></tr></table></figure>
-
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-
-
-
-
-
-<figure class="highlight python"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs python">- demo.queue().launch(share=<span class="hljs-literal">False</span>, inbrowser=<span class="hljs-literal">True</span>)<br>+ demo.queue().launch(share=<span class="hljs-literal">False</span>, inbrowser=<span class="hljs-literal">True</span>, server_port=<span class="hljs-number">7860</span>, server_name=<span class="hljs-string">&quot;0.0.0.0&quot;</span>)<br></code></pre></div></td></tr></table></figure>
-
-
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-
-
-
-<p>bug1</p>
-<figure class="highlight sqf"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sqf">DLL <span class="hljs-built_in">load</span> failed <span class="hljs-keyword">while</span> importing <span class="hljs-variable">_sentencepiece</span>: 找不到指定的模块。<br></code></pre></div></td></tr></table></figure>
-
-
-<p>解决方案：<a target="_blank" rel="noopener" href="https://github.com/THUDM/ChatGLM-6B/issues/855">https://github.com/THUDM/ChatGLM-6B/issues/855</a></p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-<p>bu2</p>
-<figure class="highlight vbnet"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vbnet"><span class="hljs-symbol">ModuleNotFoundError:</span> No <span class="hljs-keyword">module</span> named <span class="hljs-comment">&#x27;torch.utils.hooks&#x27;</span><br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-
-
-<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">pip install --upgrade torch<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-
-
-<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">&gt;&gt;&gt; import torch<br>&gt;&gt;&gt; <span class="hljs-built_in">print</span>(torch.__version__)<br><span class="hljs-number">2</span>.<span class="hljs-number">0</span>.<span class="hljs-number">1</span>+cpu<br></code></pre></div></td></tr></table></figure>
-
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-
-
-
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-
-
-
-
-
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　验证node是否安装成功：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ node -v<br>v18.<span class="hljs-number">18</span>.<span class="hljs-number">0</span><br>$ npm -v<br><span class="hljs-number">9</span>.<span class="hljs-number">8</span>.<span class="hljs-number">1</span><br></code></pre></div></td></tr></table></figure>
             </div>
             <hr>
             <div>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
               <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                      <a class="hover-with-bg" href="/categories/tools/">工具</a>
                     
                   </div>
                 
@@ -330,9 +289,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
-                    
-                      <a class="hover-with-bg" href="/tags/Browser/">浏览器</a>
+                      <a class="hover-with-bg" href="/tags/Installation/">安装教程</a>
                     
                   </div>
                 
@@ -344,6 +301,29 @@
                   
                 </p>
               
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/01/17/Turn-Round-Arrow.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">记一次CSS3和SVG实现箭头拐弯动画</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/12/09/Echarts-Deploy.html">
+                        <span class="hidden-mobile">本地部署Echarts官网</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
               
             </div>
 
