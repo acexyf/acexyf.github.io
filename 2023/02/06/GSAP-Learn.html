@@ -1,10 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
-
-<script>var WM_MONITOR_ID="08649f0f-ef43-4f12-96c3-1872e2d59445";var WM_MONITOR_HOST="web-monitor.boeet.com.cn";</script>
-<script src="https://web-monitor.boeet.com.cn/public/bundle.js"></script>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
 
 
@@ -12,67 +9,100 @@
   <meta charset="UTF-8">
   <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
   <link rel="icon" href="/img/favicon.ico">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="　　我们在网上浏览时，经常能看到很多网站，随着页面滚动条向下滑动时，有非常丰富的页面动画效果；相信很多小伙伴也都很好奇，这样的网站效果是如何做出来的。我们本文就来深入的学习一下GSAP这个库的用法，为后面实现酷炫的动画效果打下基础。">
   <meta name="author" content="Corner">
   <meta name="keywords" content="Corner">
+  
+    <meta name="description" content="我们在网上浏览时，经常能看到很多网站，随着页面滚动条向下滑动时，有非常丰富的页面动画效果；相信很多小伙伴也都很好奇，这样的网站效果是如何做出来的。我们本文就来深入的学习一下GSAP这个库的用法，为后面实现酷炫的动画效果打下基础。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GSAP从入门到精通">
+<meta property="og:url" content="https://xieyufei.com/2023/02/06/GSAP-Learn.html">
+<meta property="og:site_name" content="谢小飞的博客">
+<meta property="og:description" content="我们在网上浏览时，经常能看到很多网站，随着页面滚动条向下滑动时，有非常丰富的页面动画效果；相信很多小伙伴也都很好奇，这样的网站效果是如何做出来的。我们本文就来深入的学习一下GSAP这个库的用法，为后面实现酷炫的动画效果打下基础。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xieyufei.com/images/GSAP-Learn/gsap.gif">
+<meta property="article:published_time" content="2023-02-06T12:00:00.000Z">
+<meta property="article:modified_time" content="2023-04-18T02:43:00.273Z">
+<meta property="article:author" content="Corner">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="动画">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://xieyufei.com/images/GSAP-Learn/gsap.gif">
+  
+  
   
   <title>GSAP从入门到精通 - 谢小飞的博客</title>
 
   <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
 
 
+
   <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
 
-  
-    
-    
-      
-      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
-    
-  
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
-  
-    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-  
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
 
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
 
 
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
 
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-<!-- 自定义样式保持在最底部 -->
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
 
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"JAVASCRIPT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
 </head>
 
 
 <body>
-  <header style="height: 70vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
-    <a class="navbar-brand"
-       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+    <a class="navbar-brand" href="/">
+      <strong>谢小飞的博客</strong>
+    </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -89,9 +119,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
-                首页
+                <span>首页</span>
               </a>
             </li>
           
@@ -101,9 +131,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
-                归档
+                <span>归档</span>
               </a>
             </li>
           
@@ -113,9 +143,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
-                分类
+                <span>分类</span>
               </a>
             </li>
           
@@ -125,9 +155,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
-                标签
+                <span>标签</span>
               </a>
             </li>
           
@@ -137,9 +167,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
-                关于
+                <span>关于</span>
               </a>
             </li>
           
@@ -149,9 +179,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/">
+              <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
-                友链
+                <span>友链</span>
               </a>
             </li>
           
@@ -161,23 +191,26 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+              <a class="nav-link" href="https://gallery.xieyufei.com/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
-                创意
+                <span>创意</span>
               </a>
             </li>
           
         
         
           <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
-                class="iconfont icon-search"></i>&nbsp;</a>
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
           </li>
+          
         
         
           <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
           </li>
         
       </ul>
@@ -185,82 +218,746 @@
   </div>
 </nav>
 
-    <div class="banner" id="banner" parallax=true
-         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="GSAP从入门到精通">
-              
-            </span>
-
-            
-              <div class="mt-3">
-  
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2023-02-06 20:00" pubdate>
-        2023年2月6日 晚上
-      </time>
-    </span>
-  
-</div>
-
-<div class="mt-1">
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      4.7k 字
-    </span>
   
 
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      57
-       分钟
-    </span>
-  
-
-  
-  
-</div>
-
-            
-          </div>
-
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg_small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="GSAP从入门到精通"></span>
           
         </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-06 20:00" pubdate>
+          2023年2月6日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          38 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
       </div>
+
+      
     </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
     
       
-<style>
-  .prevent_reptile{
-    display: none;
-  }
-</style>
+
 <div class="container-fluid nopadding-x">
   <div class="row nomargin-x">
-    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
     <div class="col-lg-8 nopadding-x-md">
       <div class="container nopadding-x-md" id="board-ctn">
-        <div class="py-5" id="board">
+        <div id="board">
           <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">GSAP从入门到精通</h1>
+            <h1 id="seo-header">GSAP从入门到精通</h1>
             
-            <div class="markdown-body">
-              <p>　　我们在网上浏览时，经常能看到很多网站，随着页面滚动条向下滑动时，有非常丰富的页面动画效果；相信很多小伙伴也都很好奇，这样的网站效果是如何做出来的。我们本文就来深入的学习一下GSAP这个库的用法，为后面实现酷炫的动画效果打下基础。</p>
+            
+              <div class="markdown-body">
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Corner">
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+  <meta name="keywords" content="Corner">
+  
+    <meta name="description" content="我们在网上浏览时，经常能看到很多网站，随着页面滚动条向下滑动时，有非常丰富的页面动画效果；相信很多小伙伴也都很好奇，这样的网站效果是如何做出来的。我们本文就来深入的学习一下GSAP这个库的用法，为后面实现酷炫的动画效果打下基础。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GSAP从入门到精通">
+<meta property="og:url" content="https://xieyufei.com/2023/02/06/GSAP-Learn.html">
+<meta property="og:site_name" content="谢小飞的博客">
+<meta property="og:description" content="我们在网上浏览时，经常能看到很多网站，随着页面滚动条向下滑动时，有非常丰富的页面动画效果；相信很多小伙伴也都很好奇，这样的网站效果是如何做出来的。我们本文就来深入的学习一下GSAP这个库的用法，为后面实现酷炫的动画效果打下基础。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xieyufei.com/images/GSAP-Learn/gsap.gif">
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<meta property="article:published_time" content="2023-02-06T12:00:00.000Z">
+<meta property="article:modified_time" content="2023-04-18T02:43:00.273Z">
+<meta property="article:author" content="Corner">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="动画">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://xieyufei.com/images/GSAP-Learn/gsap.gif">
+  
+  
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+  
+  <title>GSAP从入门到精通 - 谢小飞的博客</title>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+
+
+
+  <script id="fluid-configs">
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"JAVASCRIPT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<body>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>谢小飞的博客</strong>
+    </a>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+                <span>归档</span>
+              </a>
+            </li>
+          
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+            </li>
+          
+        
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+          
+          
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+          
+          
+            <li class="nav-item">
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+          
+          
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+            </li>
+          
+        
+          
+          
+          
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://gallery.xieyufei.com/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>创意</span>
+              </a>
+            </li>
+          
+        
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+</nav>
+
+  
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg_small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="GSAP从入门到精通"></span>
+          
+        </div>
+
+        
+          
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-06 20:00" pubdate>
+          2023年2月6日 晚上
+        </time>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.6k 字
+        
+      </span>
+    
+
+    
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          38 分钟
+        
+      </span>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+    
+
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+  </div>
+</div>
+
+</div>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">GSAP从入门到精通</h1>
+            
+            
+              <div class="markdown-body">
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+    <meta name="description" content="我们在网上浏览时，经常能看到很多网站，随着页面滚动条向下滑动时，有非常丰富的页面动画效果；相信很多小伙伴也都很好奇，这样的网站效果是如何做出来的。我们本文就来深入的学习一下GSAP这个库的用法，为后面实现酷炫的动画效果打下基础。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GSAP从入门到精通">
+<meta property="og:url" content="https://xieyufei.com/2023/02/06/GSAP-Learn.html">
+<meta property="og:site_name" content="谢小飞的博客">
+<meta property="og:description" content="我们在网上浏览时，经常能看到很多网站，随着页面滚动条向下滑动时，有非常丰富的页面动画效果；相信很多小伙伴也都很好奇，这样的网站效果是如何做出来的。我们本文就来深入的学习一下GSAP这个库的用法，为后面实现酷炫的动画效果打下基础。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xieyufei.com/images/GSAP-Learn/gsap.gif">
+<meta property="article:published_time" content="2023-02-06T12:00:00.000Z">
+<meta property="article:modified_time" content="2023-04-18T02:43:00.273Z">
+<meta property="article:author" content="Corner">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="动画">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://xieyufei.com/images/GSAP-Learn/gsap.gif">
+  
+  
+  
+  <title>GSAP从入门到精通 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"JAVASCRIPT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>谢小飞的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://gallery.xieyufei.com/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>创意</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg_small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="GSAP从入门到精通"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-06 20:00" pubdate>
+          2023年2月6日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          38 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">GSAP从入门到精通</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>　　我们在网上浏览时，经常能看到很多网站，随着页面滚动条向下滑动时，有非常丰富的页面动画效果；相信很多小伙伴也都很好奇，这样的网站效果是如何做出来的。我们本文就来深入的学习一下GSAP这个库的用法，为后面实现酷炫的动画效果打下基础。</p>
 <span id="more"></span>
 
 
@@ -271,16 +968,26 @@
 <h1 id="GSAP"><a href="#GSAP" class="headerlink" title="GSAP"></a>GSAP</h1><p>　　首先我们要知道这个库能做什么，<code>The GreenSock Animation Platform (GSAP)</code>是一个功能十分强大的动画平台，可以帮助我们实现大部分的动画需求，构建高性能的、适用于所有主要浏览器的高性能动画；GSAP非常的灵活，可以在任何框架上处理页面能够所有通过js改变的元素，不仅可以对div的css属性进行动画，还是SVG、React、Vue、WebGL，甚至和Threejs一起使用。</p>
 <p>　　除了GSAP核心库外，还有很多实用的插件，比如结合ScrollTrigger插件，我们可以实现非常震撼的滚动触发效果；同时也不需要担心响应式的问题，GSAP确保项目响应迅速、高效且流畅。</p>
 <h2 id="动画属性"><a href="#动画属性" class="headerlink" title="动画属性"></a>动画属性</h2><p>　　我们从一个<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo1">简单的例子</a>开始，先把一个<code>.box</code>元素沿着X轴移动200px；</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.to(<span class="hljs-string">&#x27;.box&#x27;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">200</span> &#125;);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">'.box'</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">200</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
 
 <p><img src="/images/GSAP-Learn/demo1.gif" srcset="/img/loading.gif" lazyload alt="demo1"></p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　如果我们对<code>.box</code>元素进行元素检查，我们会发现GSAP实际上是不停的修改<code>transform</code>属性，直至最终停留在<code>transform: translate(200px, 0px)</code>；我们继续回到上面的代码。</p>
 <p><img src="/images/GSAP-Learn/gsap-to.png" srcset="/img/loading.gif" lazyload alt="gsap.to"></p>
 <p>　　在上段代码中，我们发现这段代码包含有3层含义：函数、目标和变量；首先目标就是我们想要移动的元素，可以是CSS选择器，也可以使dom元素，甚至是一串数组：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// CSS选择器</span><br>gsap.to(<span class="hljs-string">&quot;.box&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">200</span> &#125;);<br>gsap.to(<span class="hljs-string">&quot;#box1&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">200</span> &#125;);<br><br><span class="hljs-comment">// dom元素</span><br><span class="hljs-keyword">const</span> box = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&quot;.box&quot;</span>);<br>gsap.to(box, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">200</span> &#125;)<br><br><span class="hljs-comment">// 元素数组</span><br><span class="hljs-keyword">let</span> square = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&quot;.square&quot;</span>);<br><span class="hljs-keyword">let</span> circle = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&quot;.circle&quot;</span>);<br>                                      <br>gsap.to([square, circle], &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">200</span> &#125;)<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// CSS选择器</span>
+gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".box"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">200</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">"#box1"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">200</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<span class="token comment">// dom元素</span>
+<span class="token keyword">const</span> box <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">".box"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span>box<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">200</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+
+<span class="token comment">// 元素数组</span>
+<span class="token keyword">let</span> square <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">".square"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> circle <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">".circle"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                      
+gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token punctuation">[</span>square<span class="token punctuation">,</span> circle<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">200</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+
 <p>　　然后是函数，有四种类型的动画函数：</p>
 <ol>
 <li>gsap.to：最常用的动画类型，从当前状态开始。</li>
@@ -289,32 +996,50 @@
 <li>gsap.set：立即设置属性，没有动画效果。</li>
 </ol>
 <p>　　我们直接看效果就能明白这几个函数的意义了。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.from(<span class="hljs-string">&quot;.box&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">300</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">gsap<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">".box"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">300</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></div></figure>
 
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/GSAP-Learn/demo3.gif" srcset="/img/loading.gif" lazyload alt="demo3"></p>
 <blockquote>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo3">demo3效果</a></p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.fromTo(<br>  <span class="hljs-string">&quot;.box&quot;</span>,<br>  &#123;<br>    <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>,<br>    <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>,<br>  &#125;,<br>  &#123;<br>    <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>,<br>    <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>,<br>  &#125;,<br>);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">gsap<span class="token punctuation">.</span><span class="token function">fromTo</span><span class="token punctuation">(</span>
+  <span class="token string">".box"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">y</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">400</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">y</span><span class="token operator">:</span> <span class="token number">50</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><img src="/images/GSAP-Learn/demo4.gif" srcset="/img/loading.gif" lazyload alt="demo4"></p>
 <blockquote>
 <p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo4">demo4效果</a></p>
 </blockquote>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.set(<span class="hljs-string">&quot;.box&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>,<br>  <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">gsap<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">".box"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">400</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">y</span><span class="token operator">:</span> <span class="token number">50</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><img src="/images/GSAP-Learn/demo5.gif" srcset="/img/loading.gif" lazyload alt="demo5"></p>
 <blockquote>
 <p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo5">demo5效果</a></p>
 </blockquote>
 <p>　　最后是变量对象，这个对象可以包含的信息种类就比较丰富了，可以是想要动画的任意CSS属性，也可以是影响动画表现形式的特殊属性，比如duration持续时间、repeat重复次数。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.to(target, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>,<br>  <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>,<br>  <span class="hljs-attr">rotation</span>: <span class="hljs-number">180</span>,<br>  <span class="hljs-comment">// 特殊属性</span><br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">3</span>,<br>  <span class="hljs-attr">repeat</span>: <span class="hljs-number">2</span><br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">400</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">y</span><span class="token operator">:</span> <span class="token number">50</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">rotation</span><span class="token operator">:</span> <span class="token number">180</span><span class="token punctuation">,</span>
+  <span class="token comment">// 特殊属性</span>
+  <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">repeat</span><span class="token operator">:</span> <span class="token number">2</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><img src="/images/GSAP-Learn/demo6.gif" srcset="/img/loading.gif" lazyload alt="demo6"></p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <blockquote>
 <p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo6">demo6效果</a></p>
 </blockquote>
@@ -323,35 +1048,50 @@
 <p>尽可能的使用transforms，而不是布局属性，例如top、left或者margin，有更平滑的动画体验。</p>
 </blockquote>
 <p>　　我们可能比较熟悉以下的transforms属性：</p>
-<figure class="highlight css"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs css"><span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">360deg</span>) <span class="hljs-built_in">translateX</span>(<span class="hljs-number">10px</span>) <span class="hljs-built_in">translateY</span>(<span class="hljs-number">50%</span>);<br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+<figure><div class="code-wrapper"><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token property">transform</span><span class="token punctuation">:</span> <span class="token function">rotate</span><span class="token punctuation">(</span>360deg<span class="token punctuation">)</span> <span class="token function">translateX</span><span class="token punctuation">(</span>10px<span class="token punctuation">)</span> <span class="token function">translateY</span><span class="token punctuation">(</span>50%<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
 
 <p>　　GSAP提供了下面的缩写形式，上面的transforms属性可以直接缩写成下面的属性（yPercent表示百分比元素的高度）：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">&#123; <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span>, <span class="hljs-attr">x</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">yPercent</span>: <span class="hljs-number">50</span> &#125;<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token punctuation">&#123;</span> <span class="token literal-property property">rotation</span><span class="token operator">:</span> <span class="token number">360</span><span class="token punctuation">,</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token literal-property property">yPercent</span><span class="token operator">:</span> <span class="token number">50</span> <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
 
 <blockquote>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>GSAP支持CSS属性转为小驼峰形式，例如<code>background-color</code>变成<code>backgroundColor</code></p>
 </blockquote>
 <p>　　通过上面的例子我们也发现了，默认情况下GSAP会给transform属性使用px和degrees单位，比如<code>&#123;x: 10, rotation: 360&#125;</code>就表示x轴10px，旋转360度；但是我们有时候想要使用其他的单位，比如vw，radians或者相对单位。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">x: <span class="hljs-number">200</span>, <span class="hljs-comment">// 默认px</span><br><span class="hljs-attr">x</span>: <span class="hljs-string">&quot;+=200&quot;</span> <span class="hljs-comment">// 相对值</span><br><span class="hljs-attr">x</span>: <span class="hljs-string">&#x27;40vw&#x27;</span>, <span class="hljs-comment">// 视窗单位</span><br><span class="hljs-attr">x</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">window</span>.innerWidth / <span class="hljs-number">2</span>, <span class="hljs-comment">// 函数计算</span><br>  <br><span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span> <span class="hljs-comment">// 默认角度</span><br><span class="hljs-attr">rotation</span>: <span class="hljs-string">&quot;1.25rad&quot;</span> <span class="hljs-comment">// 使用弧度单位</span><br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span> <span class="token comment">// 默认px</span>
+<span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token string">"+=200"</span> <span class="token comment">// 相对值</span>
+<span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token string">'40vw'</span><span class="token punctuation">,</span> <span class="token comment">// 视窗单位</span>
+<span class="token function-variable function">x</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> window<span class="token punctuation">.</span>innerWidth <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token comment">// 函数计算</span>
+  
+<span class="token literal-property property">rotation</span><span class="token operator">:</span> <span class="token number">360</span> <span class="token comment">// 默认角度</span>
+<span class="token literal-property property">rotation</span><span class="token operator">:</span> <span class="token string">"1.25rad"</span> <span class="token comment">// 使用弧度单位</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　GSAP的神奇之处在于，不仅能够对dom元素动画，还能够对非dom元素，比如svg、js对象等进行动画操作；对于svg元素，我们添加<code>attr属性</code>额外的处理一些svg的属性，像width、height、fill、stroke、opacity等。</p>
 <p><img src="/images/GSAP-Learn/demo8.gif" srcset="/img/loading.gif" lazyload alt="demo8"></p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <blockquote>
 <p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo8">demo8效果</a></p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.to(<span class="hljs-string">&quot;.svgBox&quot;</span>, &#123;<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">2</span>,<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">100</span>,<br>  <span class="hljs-attr">xPercent</span>: -<span class="hljs-number">100</span>,<br>  <span class="hljs-comment">// svg属性</span><br>  <span class="hljs-attr">attr</span>: &#123;<br>    <span class="hljs-attr">fill</span>: <span class="hljs-string">&quot;#8d3dae&quot;</span>,<br>    <span class="hljs-attr">rx</span>: <span class="hljs-number">50</span>,<br>  &#125;,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".svgBox"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">xPercent</span><span class="token operator">:</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">,</span>
+  <span class="token comment">// svg属性</span>
+  <span class="token literal-property property">attr</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">fill</span><span class="token operator">:</span> <span class="token string">"#8d3dae"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">rx</span><span class="token operator">:</span> <span class="token number">50</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p>　　甚至，我们对js对象进行动画时，不需要任何dom元素，针对任意js对象的任意属性进行动画，onUpdate函数用于监听动画的更新过程：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> obj = &#123; <span class="hljs-attr">myNum</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">myColor</span>: <span class="hljs-string">&quot;red&quot;</span> &#125;;<br>gsap.to(obj, &#123;<br>  <span class="hljs-attr">myNum</span>: <span class="hljs-number">200</span>,<br>  <span class="hljs-attr">myColor</span>: <span class="hljs-string">&quot;blue&quot;</span>,<br>  <span class="hljs-attr">onUpdate</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">console</span>.log(obj.myNum, obj.myColor)<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">let</span> obj <span class="token operator">=</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">myNum</span><span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token literal-property property">myColor</span><span class="token operator">:</span> <span class="token string">"red"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">myNum</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">myColor</span><span class="token operator">:</span> <span class="token string">"blue"</span><span class="token punctuation">,</span>
+  <span class="token function-variable function">onUpdate</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span>myNum<span class="token punctuation">,</span> obj<span class="token punctuation">.</span>myColor<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 
 
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="特殊属性"><a href="#特殊属性" class="headerlink" title="特殊属性"></a>特殊属性</h2><p>　　特殊属性用来调整动画的表现形式，我们在上面用到了repeat和duration，下面的文档中提供了一些常用的属性：</p>
 <table>
 <thead>
@@ -360,12 +1100,10 @@
 <th>描述</th>
 </tr>
 </thead>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <tbody><tr>
 <td>duration</td>
 <td>动画的持续时间（单位：秒）默认0.5秒</td>
 </tr>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <tr>
 <td>delay</td>
 <td>动画延迟时间</td>
@@ -375,12 +1113,10 @@
 <td>动画重复的次数</td>
 </tr>
 <tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>yoyo</td>
 <td>布尔值，如果为true，每次其他动画就会往相反方向运动（像yoyo球）默认false</td>
 </tr>
 <tr>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <td>stagger</td>
 <td>每个目标动画开始之间的时间（秒）</td>
 </tr>
@@ -388,7 +1124,6 @@
 <td>ease</td>
 <td>控制动画期间的变化率，默认”power1.out”</td>
 </tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <tr>
 <td>onComplete</td>
 <td>动画完成时的回调函数</td>
@@ -396,16 +1131,32 @@
 </tbody></table>
 <p>　　<code>repeat属性</code>就是重复的次数，会让动画执行多次；需要注意的是，如果我们填一个数值2，但实际动画的次数是3，因此我们总结出来公式：<code>真实运动次数 = repeat属性 + 1</code>。</p>
 <blockquote>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p>如果我们想让动画一直重复下去，使用<code>repeat: -1</code>。</p>
 </blockquote>
 <p>　　repeat一般会和<code>yoyo属性</code>一起使用，当yoyo为true时，在每次动画结束都会反向运动；需要注意的是，一个运动循环包含一个正向和反正运动，反向运动也计入运动的次数中。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.to(<span class="hljs-string">&quot;.box&quot;</span>, &#123;<br>  <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span>,<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">300</span>,<br>  <span class="hljs-attr">xPercent</span>: -<span class="hljs-number">100</span>,<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">2</span>,<br>  <span class="hljs-attr">repeat</span>: <span class="hljs-number">2</span>,<br>  <span class="hljs-attr">yoyo</span>: <span class="hljs-literal">true</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".box"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">rotation</span><span class="token operator">:</span> <span class="token number">360</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">300</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">xPercent</span><span class="token operator">:</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">repeat</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">yoyo</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p>　　我们这边repeat写的2，实际动画中，正好是3次运动，1.5次循环往复运动。</p>
 <p>　　delay也非常好理解，动画开始延迟时间，如果后面是repeat重复的动画，则不会有延迟了；如果我们想要为后面的任何重复运动添加延迟，可以使用<code>repeatDelay</code>属性。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.to(<span class="hljs-string">&quot;.green&quot;</span>, &#123;<br>  <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span>,<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span>,<br>  <span class="hljs-attr">delay</span>: <span class="hljs-number">1</span>,<br>  <span class="hljs-attr">repeat</span>: <span class="hljs-number">1</span>,<br>&#125;);<br>gsap.to(<span class="hljs-string">&quot;.purple&quot;</span>, &#123;<br>  <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span>,<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span>,<br>  <span class="hljs-attr">repeat</span>: <span class="hljs-number">1</span>,<br>  <span class="hljs-attr">repeatDelay</span>: <span class="hljs-number">1</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".green"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">rotation</span><span class="token operator">:</span> <span class="token number">360</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">delay</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">repeat</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".purple"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">rotation</span><span class="token operator">:</span> <span class="token number">360</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">repeat</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">repeatDelay</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p><img src="/images/GSAP-Learn/demo11.gif" srcset="/img/loading.gif" lazyload alt="demo11"></p>
 <blockquote>
@@ -413,44 +1164,84 @@
 </blockquote>
 <p>　　我们发现同样是总计2次的重复旋转运动，绿的div动画开始前有停顿，而后面的重复运动就没有停顿了；而紫色的div动画开始前没有停顿，在后面的每次重复运动则会有停顿，就是repeatDelay的作用。</p>
 <p>　　ease速度曲线也是动画效果的一部分，我们可以看到不同的速度曲线旋转效果也是不一样的。</p>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.to(<span class="hljs-string">&quot;.green&quot;</span>, &#123;<br>  <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span>,<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">2</span>,<br>  <span class="hljs-attr">ease</span>: <span class="hljs-string">&quot;none&quot;</span>,<br>&#125;);<br>gsap.to(<span class="hljs-string">&quot;.purple&quot;</span>, &#123;<br>  <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span>,<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">2</span>,<br>  <span class="hljs-attr">ease</span>: <span class="hljs-string">&quot;bounce.out&quot;</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".green"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">rotation</span><span class="token operator">:</span> <span class="token number">360</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">ease</span><span class="token operator">:</span> <span class="token string">"none"</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".purple"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">rotation</span><span class="token operator">:</span> <span class="token number">360</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">ease</span><span class="token operator">:</span> <span class="token string">"bounce.out"</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 
 <p>　　<code>stagger属性</code>也是比较有趣的属性，我们可以利用它控制多个目标之间动画的延迟差，形成奇妙又好看的交错效果。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.to(<span class="hljs-string">&quot;.box&quot;</span>, &#123;<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">0.5</span>,<br>  <span class="hljs-attr">opacity</span>: <span class="hljs-number">0</span>,<br>  <span class="hljs-attr">y</span>: -<span class="hljs-number">100</span>,<br>  <span class="hljs-attr">stagger</span>: <span class="hljs-number">0.1</span>,<br>  <span class="hljs-attr">ease</span>: <span class="hljs-string">&quot;back.in&quot;</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".box"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">0.5</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">opacity</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">y</span><span class="token operator">:</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">stagger</span><span class="token operator">:</span> <span class="token number">0.1</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">ease</span><span class="token operator">:</span> <span class="token string">"back.in"</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/GSAP-Learn/demo13.gif" srcset="/img/loading.gif" lazyload alt="demo13"></p>
 <blockquote>
 <p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo13">demo13效果</a></p>
 </blockquote>
 <p>　　比如这样，让div交错消失的场景；或者交错动画一个阵列，只需要告诉GSAP有多少行列。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.to(<span class="hljs-string">&quot;.box&quot;</span>, &#123;<br>  <span class="hljs-attr">scale</span>: <span class="hljs-number">0.1</span>,<br>  <span class="hljs-attr">y</span>: <span class="hljs-number">30</span>,<br>  <span class="hljs-attr">yoyo</span>: <span class="hljs-literal">true</span>,<br>  <span class="hljs-attr">repeat</span>: -<span class="hljs-number">1</span>,<br>  <span class="hljs-attr">ease</span>: <span class="hljs-string">&quot;power1.inOut&quot;</span>,<br>  <span class="hljs-attr">delay</span>: <span class="hljs-number">1</span>,<br>  <span class="hljs-attr">stagger</span>: &#123;<br>    <span class="hljs-attr">amount</span>: <span class="hljs-number">1.5</span>,<br>    <span class="hljs-attr">grid</span>: <span class="hljs-string">&quot;auto&quot;</span>,<br>    <span class="hljs-attr">from</span>: <span class="hljs-string">&quot;center&quot;</span>,<br>  &#125;,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".box"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">scale</span><span class="token operator">:</span> <span class="token number">0.1</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">y</span><span class="token operator">:</span> <span class="token number">30</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">yoyo</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">repeat</span><span class="token operator">:</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">ease</span><span class="token operator">:</span> <span class="token string">"power1.inOut"</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">delay</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">stagger</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">amount</span><span class="token operator">:</span> <span class="token number">1.5</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">grid</span><span class="token operator">:</span> <span class="token string">"auto"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">from</span><span class="token operator">:</span> <span class="token string">"center"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/GSAP-Learn/demo14.gif" srcset="/img/loading.gif" lazyload alt="demo14"></p>
 <blockquote>
 <p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo14">demo14效果</a></p>
 </blockquote>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h2 id="时间线timeline"><a href="#时间线timeline" class="headerlink" title="时间线timeline"></a>时间线timeline</h2><p>　　我们动画经常会遇到多个对象的情况，虽然我们可以使用上面的delay进行简单的控制，延迟物体的动画开始时间；但是如果中间某个物体的动画执行时间突然延长了，那么其后面所有的动画时间需要进行手动进行延迟，这显得非常不方便；因此我们需要引入时间线timeline的概念。</p>
 <blockquote>
 <p>时间线是GSAP最重要的概念之一</p>
 </blockquote>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　我们通过<code>gsap.timeline()</code>创建一个时间线，然后通过时间线控制每一个动画顺序执行；这样即使我们修改中间某个动画的<code>duration</code>，也不会影响后续时间线。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> t1 = gsap.timeline();<br>t1.to(<span class="hljs-string">&quot;.green&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">600</span>,<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">2</span>,<br>&#125;);<br>t1.to(<span class="hljs-string">&quot;.purple&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">600</span>,<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span>,<br>&#125;);<br>t1.to(<span class="hljs-string">&quot;.orange&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">600</span>,<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> t1 <span class="token operator">=</span> gsap<span class="token punctuation">.</span><span class="token function">timeline</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+t1<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".green"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">600</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+t1<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".purple"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">600</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+t1<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".orange"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">600</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 
 <p><img src="/images/GSAP-Learn/demo15.gif" srcset="/img/loading.gif" lazyload alt="demo15"></p>
 <blockquote>
 <p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo15">demo15效果</a></p>
 </blockquote>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　但是如果我们想要在一个动画开始的同时，执行另一个动画，除了再额外创建一条时间线，我们可以在to函数后面加一些小参数来进行精确的控制。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> t1 = gsap.timeline();<br>t1.to(<span class="hljs-string">&quot;.red&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>,<span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;);<br><span class="hljs-comment">// 在1秒开始插入动画（绝对值）</span><br>t1.to(<span class="hljs-string">&quot;.green&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;, <span class="hljs-number">1</span>);<br><span class="hljs-comment">// 在上个动画的开始插入动画</span><br>t1.to(<span class="hljs-string">&quot;.purple&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;, <span class="hljs-string">&quot;&lt;&quot;</span>);<br><span class="hljs-comment">// 在最后一个动画结束后一秒插入动画</span><br>t1.to(<span class="hljs-string">&quot;.orange&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;, <span class="hljs-string">&quot;+=1&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> t1 <span class="token operator">=</span> gsap<span class="token punctuation">.</span><span class="token function">timeline</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+t1<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".red"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">400</span><span class="token punctuation">,</span><span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 在1秒开始插入动画（绝对值）</span>
+t1<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".green"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">400</span><span class="token punctuation">,</span> <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 在上个动画的开始插入动画</span>
+t1<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".purple"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">400</span><span class="token punctuation">,</span> <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token string">"&lt;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 在最后一个动画结束后一秒插入动画</span>
+t1<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".orange"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">400</span><span class="token punctuation">,</span> <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token string">"+=1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 
 <p><img src="/images/GSAP-Learn/demo16.gif" srcset="/img/loading.gif" lazyload alt="demo16"></p>
@@ -459,11 +1250,9 @@
 </blockquote>
 <p>　　理解上面代码中的这些小参数可以帮助我们构建很多复杂精妙的动画效果，让我们能够在任意时间点来执行任意的动画效果；上面的例子乍一看可能不是那么好理解，不过没有关系，我们一点点来理解。</p>
 <p>　　虽然我们上面都是以<code>gsap.to</code>来为例，但是其他的函数比如from()、fromTo()、add()等也都适用；需要注意的是这些参数跟在<code>变量对象</code>的后面，因此函数的代码结构如下：</p>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <blockquote>
 <p>.method( target, vars, position )</p>
 </blockquote>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　我们将这些参数简单的分一下类就好理解多了，其实主要有以下几种类型：</p>
 <ul>
 <li>绝对值：在某个绝对秒数来执行动画。</li>
@@ -472,34 +1261,53 @@
 <li>label值：直接用某个时间点的label名。</li>
 </ul>
 <p>　　绝对值就表示在某个绝对的秒数时执行动画，比如上面demo中的green元素，在1秒时执行动画；<code>&lt;符号</code>表示在上个动画开始，比如demo中的purple元素，就和green元素同时执行动画；我们还可以在后面加个数值，比如：&lt;3和&lt;=3，两种表达方式的含义相同，都表示在上个动画开始后的三秒执行。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> t1 = gsap.timeline();<br>t1.to(<span class="hljs-string">&quot;.green&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;)<br>  .to(<span class="hljs-string">&quot;.purple&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;, <span class="hljs-string">&quot;&lt;3&quot;</span>)<br>  .to(<span class="hljs-string">&quot;.orange&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;, <span class="hljs-string">&quot;&gt;1&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> t1 <span class="token operator">=</span> gsap<span class="token punctuation">.</span><span class="token function">timeline</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+t1<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".green"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">400</span><span class="token punctuation">,</span> <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".purple"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">400</span><span class="token punctuation">,</span> <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token string">"&lt;3"</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".orange"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">400</span><span class="token punctuation">,</span> <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token string">">1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/GSAP-Learn/demo17.gif" srcset="/img/loading.gif" lazyload alt="demo17"></p>
 <blockquote>
 <p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo17">demo17效果</a></p>
 </blockquote>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　在上面的gif效果中，我们看到，purple元素是在green元素开始的3秒后才开始执行，并不是结束的3秒后；<code>&gt;符号</code>则表示上个动画结束时，用法类似，这里就不再赘述了。</p>
 <p>　　相对符则表示动画结束的时间点，<code>+=1</code>表示上个动画结束1秒后，<code>-=2</code>表示上个动画结束前2秒。</p>
 <p>　　label值则很好理解了，在某个时间点插入一个label，在这个label前面或者后面的时间来执行，我们看下它的用法：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> t1 = gsap.timeline();<br>t1.to(<span class="hljs-string">&quot;.green&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;)<br>  .add(<span class="hljs-string">&quot;myLabel&quot;</span>, <span class="hljs-number">2</span>)<br>  .to(<span class="hljs-string">&quot;.purple&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;, <span class="hljs-string">&quot;myLabel+=1&quot;</span>)<br>  .to(<span class="hljs-string">&quot;.orange&quot;</span>,&#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;, <span class="hljs-string">&quot;myLabel-=1&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> t1 <span class="token operator">=</span> gsap<span class="token punctuation">.</span><span class="token function">timeline</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+t1<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".green"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">400</span><span class="token punctuation">,</span> <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"myLabel"</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".purple"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">400</span><span class="token punctuation">,</span> <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token string">"myLabel+=1"</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".orange"</span><span class="token punctuation">,</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">400</span><span class="token punctuation">,</span> <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token string">"myLabel-=1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 
 <p>　　通过<code>gsap.add</code>函数，我们在2秒处放置了一个myLabel的标识，在后面使用myLabel+=1和myLabel-=1相对这个标识的时间进行控制。</p>
 <p><img src="/images/GSAP-Learn/demo18.gif" srcset="/img/loading.gif" lazyload alt="demo18"></p>
 <blockquote>
 <p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo18">demo18效果</a></p>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 </blockquote>
 <p>　　不同时间线中的动画可能会有相同的特殊属性，比如repeat和delay等，我们可以在时间线的创建函数中统一设置，避免重复：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> tl = gsap.timeline(&#123; <span class="hljs-attr">repeat</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">repeatDelay</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">yoyo</span>: <span class="hljs-literal">true</span> &#125;);<br>tl.to(<span class="hljs-string">&quot;.green&quot;</span>, &#123; <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span> &#125;)<br>  .to(<span class="hljs-string">&quot;.purple&quot;</span>, &#123; <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span> &#125;)<br>  .to(<span class="hljs-string">&quot;.orange&quot;</span>, &#123; <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span> &#125;);<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> tl <span class="token operator">=</span> gsap<span class="token punctuation">.</span><span class="token function">timeline</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">repeat</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token literal-property property">repeatDelay</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token literal-property property">yoyo</span><span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+tl<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".green"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">rotation</span><span class="token operator">:</span> <span class="token number">360</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".purple"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">rotation</span><span class="token operator">:</span> <span class="token number">360</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".orange"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">rotation</span><span class="token operator">:</span> <span class="token number">360</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 
 <p>　　如果你发现某个属性你重复使用了很多次，比如x、scale、duration等，我们就可以使用<code>defaults属性</code>，任何加到defaults属性中的参数都会被下面的函数继承。</p>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> tl = gsap.timeline(&#123;<br>  <span class="hljs-attr">defaults</span>: &#123;<br>    <span class="hljs-attr">scale</span>: <span class="hljs-number">1.2</span>,<br>    <span class="hljs-attr">duration</span>: <span class="hljs-number">2</span>,<br>  &#125;,<br>&#125;);<br>tl.to(<span class="hljs-string">&quot;.green&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">200</span>,<br>&#125;)<br>  .to(<span class="hljs-string">&quot;.purple&quot;</span>, &#123;<br>    <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>,<br>  &#125;)<br>  .to(<span class="hljs-string">&quot;.orange&quot;</span>, &#123;<br>    <span class="hljs-attr">x</span>: <span class="hljs-number">600</span>,<br>  &#125;);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> tl <span class="token operator">=</span> gsap<span class="token punctuation">.</span><span class="token function">timeline</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">defaults</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">scale</span><span class="token operator">:</span> <span class="token number">1.2</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+tl<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".green"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".purple"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">400</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".orange"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">600</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 
 <h2 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h2><p>　　在有些情况下，我们需要对动画的开始、过程、结束的某个时间点进行回调操作，gsap提供了以下回调函数：</p>
@@ -509,33 +1317,65 @@
 <li>onUpdate：动画更新时。</li>
 <li>onRepeat：动画重复时。</li>
 <li>onReverseComplete：当动画在反转到达开始时。</li>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.to(<span class="hljs-string">&quot;.class&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">100</span>, <br>  <span class="hljs-attr">onComplete</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;the tween is complete&quot;</span>)<br>&#125;<br><br><span class="hljs-comment">// 时间线所有动画结束时调用</span><br>gsap.timeline(&#123;<span class="hljs-attr">onComplete</span>: tlComplete&#125;);<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">tlComplete</span>(<span class="hljs-params"></span>) </span>&#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;the tl is complete&quot;</span>);<br>  <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".class"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">100</span><span class="token punctuation">,</span> 
+  <span class="token function-variable function">onComplete</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"the tween is complete"</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">// 时间线所有动画结束时调用</span>
+gsap<span class="token punctuation">.</span><span class="token function">timeline</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token literal-property property">onComplete</span><span class="token operator">:</span> tlComplete<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">tlComplete</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"the tl is complete"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">// ...</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 
 <h2 id="ScrollTrigger"><a href="#ScrollTrigger" class="headerlink" title="ScrollTrigger"></a>ScrollTrigger</h2><p>　　现在我们对gsap的基本用法有了一定的了解，下面我们来看下插件的用法；插件可以帮助我们扩展动画的高级功能，让动画的表现更丰富；我们主要来了解ScrollTrigger的使用。</p>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　我们先看下ScrollTrigger的一个简单用法，</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; ScrollTrigger &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;gsap/ScrollTrigger&quot;</span>;<br>gsap.registerPlugin(ScrollTrigger);<br><br>gsap.to(<span class="hljs-string">&quot;.green&quot;</span>, &#123;<br>  <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span>,<br>  <span class="hljs-attr">scale</span>: <span class="hljs-number">1.5</span>,<br>  <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">&quot;red&quot;</span>,<br>  <span class="hljs-attr">scrollTrigger</span>: &#123;<br>    <span class="hljs-attr">trigger</span>: <span class="hljs-string">&quot;.green&quot;</span>,<br>    <span class="hljs-attr">scrub</span>: <span class="hljs-literal">true</span>,<br>  &#125;,<br>&#125;);<br>gsap.to(<span class="hljs-string">&quot;.purple&quot;</span>, &#123;<br>  <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span>,<br>  <span class="hljs-attr">scale</span>: <span class="hljs-number">1.5</span>,<br>  <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">&quot;red&quot;</span>,<br>  <span class="hljs-attr">scrollTrigger</span>: &#123;<br>    <span class="hljs-attr">trigger</span>: <span class="hljs-string">&quot;.purple&quot;</span>,<br>    <span class="hljs-attr">scrub</span>: <span class="hljs-number">1</span>,<br>  &#125;,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> ScrollTrigger <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"gsap/ScrollTrigger"</span><span class="token punctuation">;</span>
+gsap<span class="token punctuation">.</span><span class="token function">registerPlugin</span><span class="token punctuation">(</span>ScrollTrigger<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".green"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">rotation</span><span class="token operator">:</span> <span class="token number">360</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">scale</span><span class="token operator">:</span> <span class="token number">1.5</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">backgroundColor</span><span class="token operator">:</span> <span class="token string">"red"</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">scrollTrigger</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">trigger</span><span class="token operator">:</span> <span class="token string">".green"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">scrub</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".purple"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">rotation</span><span class="token operator">:</span> <span class="token number">360</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">scale</span><span class="token operator">:</span> <span class="token number">1.5</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">backgroundColor</span><span class="token operator">:</span> <span class="token string">"red"</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">scrollTrigger</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">trigger</span><span class="token operator">:</span> <span class="token string">".purple"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">scrub</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+
 <p>　　使用前当然要对插件进行注册了，使用<code>gsap.registerPlugin</code>将ScrollTrigger注册，否则我们在下面操作时会发现没有任何效果。</p>
 <p>　　在to函数中我们新增了一个<code>scrollTrigger属性</code>，trigger表示当前动画触发的元素，这个很好理解，我们使用当前元素；markers是否进行标记，scrub表示是否将动画效果链接到滚动条，随着滚动条平滑处理；如果是false（默认），随着元素出现在视窗内，直接触发动画，如果是true，则平滑动画，我们看下效果：</p>
 <blockquote>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo21">demo21效果</a></p>
 </blockquote>
 <blockquote>
 <p>scrub还可以是某个具体的数值，表示延迟滚动条多少秒动画；比如这里的1，延迟1秒执行动画。</p>
 </blockquote>
 <p>　　我们在滚动浏览器时，可以使用pin属性将某个元素固定在某个位置；pin可以是css选择器字符串、布尔值或者直接dom元素；如果是true，则直接固定当前的动画元素；我们这里使用pin将purple元素固定起始位置：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.to(<span class="hljs-string">&quot;.green&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>,<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">2</span>,<br>  <span class="hljs-attr">scrollTrigger</span>: &#123;<br>    <span class="hljs-attr">trigger</span>: <span class="hljs-string">&quot;.green&quot;</span>,<br>    <span class="hljs-attr">pin</span>: <span class="hljs-string">&quot;.purple&quot;</span>,<br>  &#125;,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">gsap<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".green"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">400</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">scrollTrigger</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">trigger</span><span class="token operator">:</span> <span class="token string">".green"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">pin</span><span class="token operator">:</span> <span class="token string">".purple"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <blockquote>
 <p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo22">demo22效果</a></p>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 </blockquote>
 <h3 id="start和end"><a href="#start和end" class="headerlink" title="start和end"></a>start和end</h3><p>　　start和end属性用来决定滚动触发元素开始的位置，可以是字符串、数值或者函数，两者的用法类似，我们以start为例；start的值默认是<code>&quot;top bottom&quot;</code>，它的含义是当触发物体（trigger）的顶部（top）碰到浏览器的底部（bottom）时；我们看下当开启标记marker时的触发位置。</p>
 <p><img src="/images/GSAP-Learn/start-end.png" srcset="/img/loading.gif" lazyload alt="start和end默认触发位置"></p>
@@ -544,60 +1384,123 @@
 <p>　　第二个值表示浏览器视窗滚动触发的scroller-start线，bottom表示视窗的底部，我们也设为top或者center或者数值，以及百分比（例如80%，表示整个视窗的80%高度），甚至是相对位置，比如<code>bottom-=100px</code>。</p>
 <h3 id="toggleClass"><a href="#toggleClass" class="headerlink" title="toggleClass"></a>toggleClass</h3><p>　　有些情况下，我们不想要gsap的动画，而是想用我们自己自定义的css类名来实现某些动画效果，<code>toggleClass属性</code>可以让我们在触发的元素上添加或者移除这些的类名，从它的名字也能看出来它是处理类名的；它可以是一个字符串，例如<code>toggleClass: &quot;active&quot;</code>，就表示要新增/移除的类名。</p>
 <p>　　toggleClass也可以是对象，可以在其他的元素上来新增/移除类名，比如：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">toggleClass: &#123;<span class="hljs-attr">targets</span>: <span class="hljs-string">&quot;.my-selector&quot;</span>, <span class="hljs-attr">className</span>: <span class="hljs-string">&quot;active&quot;</span>&#125;<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token literal-property property">toggleClass</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token literal-property property">targets</span><span class="token operator">:</span> <span class="token string">".my-selector"</span><span class="token punctuation">,</span> <span class="token literal-property property">className</span><span class="token operator">:</span> <span class="token string">"active"</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
 
 
 <blockquote>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo24">demo24效果</a></p>
 </blockquote>
 <p>　　我们可以将ScrollTrigger结合timeline创建动画。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> tl = gsap.timeline(&#123;<br>  <span class="hljs-attr">scrollTrigger</span>: &#123;<br>    <span class="hljs-attr">trigger</span>: <span class="hljs-string">&quot;.wrap&quot;</span>,<br>    <span class="hljs-attr">scrub</span>: <span class="hljs-literal">true</span>,<br>  &#125;,<br>&#125;);<br>tl.to(<span class="hljs-string">&quot;.green&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">200</span>,<br>&#125;);<br>tl.to(<span class="hljs-string">&quot;.purple&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> tl <span class="token operator">=</span> gsap<span class="token punctuation">.</span><span class="token function">timeline</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">scrollTrigger</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">trigger</span><span class="token operator">:</span> <span class="token string">".wrap"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">scrub</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+tl<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".green"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+tl<span class="token punctuation">.</span><span class="token function">to</span><span class="token punctuation">(</span><span class="token string">".purple"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">x</span><span class="token operator">:</span> <span class="token number">400</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <blockquote>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo25">demo25效果</a></p>
 </blockquote>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　本文GSAP所有的用法教程大致到这里就结束了，本文涉及到了一些动画方面的概念，有些不准确的地方欢迎指正；笔者也参考了官网很多demo和英文案例的翻译理解，工作量较大，望给个一键三连。</p>
 
-            </div>
-            <hr>
-            <div>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-              <div class="post-metas mb-3">
-                
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
-                    
-                      <a class="hover-with-bg" href="/tags/Animation/">动画</a>
-                    
-                  </div>
                 
               </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/programing/" class="category-chain-item">编程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/FrontEnd/" class="print-no-link">#前端</a>
+      
+        <a href="/tags/Animation/" class="print-no-link">#动画</a>
+      
+    </div>
+  
+</div>
+
+
               
-                <p class="note note-warning">
-                  
-                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
-                  
-                </p>
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>GSAP从入门到精通</div>
+      <div>https://xieyufei.com/2023/02/06/GSAP-Learn.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Corner</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年2月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
               
               
-                <div class="post-prevnext">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/03/07/Whatis-Chatgpt.html">
+                      <a href="/2023/03/07/Whatis-Chatgpt.html" title="ChatGPT的狂飙之路">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">ChatGPT的狂飙之路</span>
                         <span class="visible-mobile">上一篇</span>
@@ -607,7 +1510,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/01/12/Linux-Office.html">
+                      <a href="/2023/01/12/Linux-Office.html" title="Linux下好用的神级办公软件">
                         <span class="hidden-mobile">Linux下好用的神级办公软件</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -619,55 +1522,95 @@
             </div>
 
             
-              <!-- Comments -->
-              <article class="comments" id="comments" lazyload>
-                
-                  
-                
-                
+  
+  
+    <article id="comments" lazyload>
+      
   <div id="waline"></div>
   <script type="text/javascript">
     Fluid.utils.loadComments('#waline', function() {
-      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+      Fluid.utils.createCssLink('https://xieyufei.com/npm/waline@2.15.5/waline.min.css')
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@2.15.5/waline.min.js', function() {
         var options = Object.assign(
-          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"你认为这篇文章怎么样？","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
           {
             el: '#waline',
             path: window.location.pathname
           }
         )
-        new Waline(options);
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
       });
     });
   </script>
   <noscript>Please enable JavaScript to view the comments</noscript>
 
 
-              </article>
-            
+    </article>
+  
+
+
           </article>
         </div>
       </div>
     </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
-      </div>
-    
+
+
+  </aside>
+
+
+    </div>
   </div>
 </div>
 
-<!-- Custom -->
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
 
 
     
 
     
-      <a id="scroll-top-button" href="#" role="button">
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
     
@@ -686,45 +1629,62 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
     </div>
   </div>
 </div>
+
     
 
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
-  <div class="footer-content">
-     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
-  </div>
+  <footer>
+    <div class="footer-inner">
   
-
+    <div class="footer-content">
+       <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
   
-  <!-- 备案信息 -->
-  <div class="beian">
-    <span>
-      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
-        苏ICP备19064103号-1
-      </a>
-    </span>
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      苏ICP备19064103号-1
+    </a>
+  </span>
+  
     
-  </div>
-
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=19064103"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>苏ICP备19064103号-1</span>
+        </a>
+      </span>
+    
+  
+</div>
 
   
-    <!-- cnzz Analytics Icon -->
-    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
   
-</footer>
+</div>
 
+  </footer>
 
-  <!-- SCRIPTS -->
+  <!-- Scripts -->
   
   <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
   <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
@@ -743,7 +1703,23 @@
 <script  src="/js/events.js" ></script>
 <script  src="/js/plugins.js" ></script>
 
-<!-- Plugins -->
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
 
 
   
@@ -752,25 +1728,101 @@
 
 
 
+
   
+<script>
+  Fluid.utils.createScript('https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
 
 
+  <script  src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
-  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  <script src=https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js></script>
 
-
-
-  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
-
+  <script>Fluid.plugins.codeWidget();</script>
 
 
-  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+<script>
+  Fluid.utils.createScript('https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
 
 
+  
+<script>
+  Fluid.utils.createScript('https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
 
-  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
 
-
+  <script>Fluid.plugins.imageCaption();</script>
 
   <script  src="/js/local-search.js" ></script>
 
@@ -778,63 +1830,15 @@
 
 
 
-
-  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var title = document.getElementById('subtitle').title;
-      
-      typing(title)
-      
-    })(window, document);
-  </script>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-    <!-- Baidu Analytics -->
-    <script defer>
-      var _hmt = _hmt || [];
-      (function () {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();
-    </script>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <!-- cnzz Analytics -->
-    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
-            type="text/javascript"></script>
-  
-
-
-
-
-
-<!-- 主题的启动项 保持在最底部 -->
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
 <script  src="/js/boot.js" ></script>
 
 
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
 </body>
 </html>

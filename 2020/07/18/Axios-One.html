@@ -1,10 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
-
-<script>var WM_MONITOR_ID="08649f0f-ef43-4f12-96c3-1872e2d59445";var WM_MONITOR_HOST="web-monitor.boeet.com.cn";</script>
-<script src="https://web-monitor.boeet.com.cn/public/bundle.js"></script>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
 
 
@@ -12,67 +9,100 @@
   <meta charset="UTF-8">
   <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
   <link rel="icon" href="/img/favicon.ico">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="　　axios是我们日常代码中常用的一个http库，它可以用来在浏览器或者node.js中发起http请求；它强大的功能和简单易用的API受到了广大前端童鞋们的青睐；那么它内部是如何来实现的呢，让我们走进它的源码世界一探究竟。">
   <meta name="author" content="Corner">
   <meta name="keywords" content="Corner">
+  
+    <meta name="description" content="axios是我们日常代码中常用的一个http库，它可以用来在浏览器或者node.js中发起http请求；它强大的功能和简单易用的API受到了广大前端童鞋们的青睐；那么它内部是如何来实现的呢，让我们走进它的源码世界一探究竟。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入学习Axios源码（构建配置）">
+<meta property="og:url" content="https://xieyufei.com/2020/07/18/Axios-One.html">
+<meta property="og:site_name" content="谢小飞的博客">
+<meta property="og:description" content="axios是我们日常代码中常用的一个http库，它可以用来在浏览器或者node.js中发起http请求；它强大的功能和简单易用的API受到了广大前端童鞋们的青睐；那么它内部是如何来实现的呢，让我们走进它的源码世界一探究竟。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xieyufei.com/images/Axios-One/logo.png">
+<meta property="article:published_time" content="2020-07-18T10:56:39.000Z">
+<meta property="article:modified_time" content="2021-07-05T00:26:59.527Z">
+<meta property="article:author" content="Corner">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="源码">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://xieyufei.com/images/Axios-One/logo.png">
+  
+  
   
   <title>深入学习Axios源码（构建配置） - 谢小飞的博客</title>
 
   <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
 
 
+
   <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
 
-  
-    
-    
-      
-      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
-    
-  
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
-  
-    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-  
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
 
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
 
 
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
 
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-<!-- 自定义样式保持在最底部 -->
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
 
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"JAVASCRIPT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
 </head>
 
 
 <body>
-  <header style="height: 70vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
-    <a class="navbar-brand"
-       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+    <a class="navbar-brand" href="/">
+      <strong>谢小飞的博客</strong>
+    </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -89,9 +119,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
-                首页
+                <span>首页</span>
               </a>
             </li>
           
@@ -101,9 +131,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
-                归档
+                <span>归档</span>
               </a>
             </li>
           
@@ -113,9 +143,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
-                分类
+                <span>分类</span>
               </a>
             </li>
           
@@ -125,9 +155,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
-                标签
+                <span>标签</span>
               </a>
             </li>
           
@@ -137,9 +167,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
-                关于
+                <span>关于</span>
               </a>
             </li>
           
@@ -149,9 +179,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/">
+              <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
-                友链
+                <span>友链</span>
               </a>
             </li>
           
@@ -161,23 +191,26 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+              <a class="nav-link" href="https://gallery.xieyufei.com/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
-                创意
+                <span>创意</span>
               </a>
             </li>
           
         
         
           <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
-                class="iconfont icon-search"></i>&nbsp;</a>
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
           </li>
+          
         
         
           <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
           </li>
         
       </ul>
@@ -185,82 +218,749 @@
   </div>
 </nav>
 
-    <div class="banner" id="banner" parallax=true
-         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="深入学习Axios源码（构建配置）">
-              
-            </span>
-
-            
-              <div class="mt-3">
-  
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-07-18 18:56" pubdate>
-        2020年7月18日 晚上
-      </time>
-    </span>
-  
-</div>
-
-<div class="mt-1">
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      3.9k 字
-    </span>
   
 
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      54
-       分钟
-    </span>
-  
-
-  
-  
-</div>
-
-            
-          </div>
-
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg_small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="深入学习Axios源码（构建配置）"></span>
           
         </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-07-18 18:56" pubdate>
+          2020年7月18日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          31 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
       </div>
+
+      
     </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
     
       
-<style>
-  .prevent_reptile{
-    display: none;
-  }
-</style>
+
 <div class="container-fluid nopadding-x">
   <div class="row nomargin-x">
-    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
     <div class="col-lg-8 nopadding-x-md">
       <div class="container nopadding-x-md" id="board-ctn">
-        <div class="py-5" id="board">
+        <div id="board">
           <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">深入学习Axios源码（构建配置）</h1>
+            <h1 id="seo-header">深入学习Axios源码（构建配置）</h1>
             
-            <div class="markdown-body">
-              <p>　　axios是我们日常代码中常用的一个http库，它可以用来在浏览器或者node.js中发起http请求；它强大的功能和简单易用的API受到了广大前端童鞋们的青睐；那么它内部是如何来实现的呢，让我们走进它的源码世界一探究竟。</p>
+            
+              <div class="markdown-body">
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+  
+    <meta name="description" content="axios是我们日常代码中常用的一个http库，它可以用来在浏览器或者node.js中发起http请求；它强大的功能和简单易用的API受到了广大前端童鞋们的青睐；那么它内部是如何来实现的呢，让我们走进它的源码世界一探究竟。">
+<meta property="og:type" content="article">
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+<meta property="og:title" content="深入学习Axios源码（构建配置）">
+<meta property="og:url" content="https://xieyufei.com/2020/07/18/Axios-One.html">
+<meta property="og:site_name" content="谢小飞的博客">
+<meta property="og:description" content="axios是我们日常代码中常用的一个http库，它可以用来在浏览器或者node.js中发起http请求；它强大的功能和简单易用的API受到了广大前端童鞋们的青睐；那么它内部是如何来实现的呢，让我们走进它的源码世界一探究竟。">
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xieyufei.com/images/Axios-One/logo.png">
+<meta property="article:published_time" content="2020-07-18T10:56:39.000Z">
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+<meta property="article:modified_time" content="2021-07-05T00:26:59.527Z">
+<meta property="article:author" content="Corner">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="源码">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://xieyufei.com/images/Axios-One/logo.png">
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+  
+  
+  
+  <title>深入学习Axios源码（构建配置） - 谢小飞的博客</title>
+
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"JAVASCRIPT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+  
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+  
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+    <a class="navbar-brand" href="/">
+      <strong>谢小飞的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+              </a>
+            </li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://gallery.xieyufei.com/" target="_self">
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+                <i class="iconfont icon-link-fill"></i>
+                <span>创意</span>
+              </a>
+            </li>
+          
+        
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+            </a>
+          </li>
+          
+        
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg_small.jpg') no-repeat center center; background-size: cover;">
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="深入学习Axios源码（构建配置）"></span>
+          
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+        </div>
+
+        
+          
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-07-18 18:56" pubdate>
+          2020年7月18日 晚上
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+        </time>
+      </span>
+    
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+          3.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+        
+          31 分钟
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+        
+      </span>
+    
+
+    
+    
+  </div>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+</div>
+
+  </header>
+
+  <main>
+    
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+            <h1 id="seo-header">深入学习Axios源码（构建配置）</h1>
+            
+            
+              <div class="markdown-body">
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+    <meta name="description" content="axios是我们日常代码中常用的一个http库，它可以用来在浏览器或者node.js中发起http请求；它强大的功能和简单易用的API受到了广大前端童鞋们的青睐；那么它内部是如何来实现的呢，让我们走进它的源码世界一探究竟。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入学习Axios源码（构建配置）">
+<meta property="og:url" content="https://xieyufei.com/2020/07/18/Axios-One.html">
+<meta property="og:site_name" content="谢小飞的博客">
+<meta property="og:description" content="axios是我们日常代码中常用的一个http库，它可以用来在浏览器或者node.js中发起http请求；它强大的功能和简单易用的API受到了广大前端童鞋们的青睐；那么它内部是如何来实现的呢，让我们走进它的源码世界一探究竟。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xieyufei.com/images/Axios-One/logo.png">
+<meta property="article:published_time" content="2020-07-18T10:56:39.000Z">
+<meta property="article:modified_time" content="2021-07-05T00:26:59.527Z">
+<meta property="article:author" content="Corner">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="源码">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://xieyufei.com/images/Axios-One/logo.png">
+  
+  
+  
+  <title>深入学习Axios源码（构建配置） - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"JAVASCRIPT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>谢小飞的博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://gallery.xieyufei.com/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>创意</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/bg_small.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="深入学习Axios源码（构建配置）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-07-18 18:56" pubdate>
+          2020年7月18日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          31 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">深入学习Axios源码（构建配置）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>　　axios是我们日常代码中常用的一个http库，它可以用来在浏览器或者node.js中发起http请求；它强大的功能和简单易用的API受到了广大前端童鞋们的青睐；那么它内部是如何来实现的呢，让我们走进它的源码世界一探究竟。</p>
 <span id="more"></span>
 
 <p>　　首先来看一下axios有哪些特性：</p>
@@ -271,7 +971,6 @@
 <li>拦截请求和响应</li>
 <li>转换请求数据和响应数据</li>
 <li>取消请求</li>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>自动转换 JSON 数据</li>
 <li>客户端支持防御 XSRF</li>
 </ol>
@@ -279,159 +978,553 @@
 <p><img src="/images/Axios-One/flow.jpg" srcset="/img/loading.gif" lazyload alt="flow.jpg"></p>
 <h1 id="多种请求方式"><a href="#多种请求方式" class="headerlink" title="多种请求方式"></a>多种请求方式</h1><p>　　axios除了以上的特性，还支持了多种请求方式，方便我们通过不同的方式来请求。</p>
 <p>　　第一种方式<code>axios(option)</code>。</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">axios(&#123;<br>  url,<br>  method,<br>  headers,<br>  data<br>&#125;)<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token function">axios</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  url<span class="token punctuation">,</span>
+  method<span class="token punctuation">,</span>
+  headers<span class="token punctuation">,</span>
+  data
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p>　　第二种方式<code>axios(url[, config])</code>。</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">axios(<span class="hljs-string">&#x27;/api/list&#x27;</span>, &#123;<br>  method,<br>  headers,<br>  data<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token function">axios</span><span class="token punctuation">(</span><span class="token string">'/api/list'</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  method<span class="token punctuation">,</span>
+  headers<span class="token punctuation">,</span>
+  data
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p>　　第三种方式<code>axios.request(url?,option)</code>，第三种方式同第一种方式本质上一样。</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">axios.request(&#123;<br>  url,<br>  method,<br>  headers,<br>  data<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">axios<span class="token punctuation">.</span><span class="token function">request</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  url<span class="token punctuation">,</span>
+  method<span class="token punctuation">,</span>
+  headers<span class="token punctuation">,</span>
+  data
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p>  第四种方式<code>axios.request(url,option)</code>，第四种方式同第三种方式本质上一样。</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">axios.request(url, &#123;<br>  method,<br>  headers,<br>  data<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">axios<span class="token punctuation">.</span><span class="token function">request</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  method<span class="token punctuation">,</span>
+  headers<span class="token punctuation">,</span>
+  data
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　第五种方式<code>axios[method](url,option)</code>，这种请求方式主要针对get、delete、head、options方法。</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">axios.get(url,&#123;<br>  headers,<br>  params<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">axios<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span><span class="token punctuation">&#123;</span>
+  headers<span class="token punctuation">,</span>
+  params
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　第六种方式<code>axios[method](url,data,option)</code>，这种请求方式主要针对post、put、patch方法。</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">axios.post(url, data, &#123;<br>  headers,<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">axios<span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> data<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  headers<span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p>　　这六种请求方式也是我们常见的方式；我们发现前两种请求方式axios作为一个函数直接来请求，而后面四种方式axios则是一个对象；因此我们猜测，axios首先肯定是一个函数，这个函数上又挂载了request、get、post等函数方便我们具体调用某个方法。</p>
 <h1 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h1><p>　　看代码前先来看一下项目的整体结构</p>
-<figure class="highlight awk"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs awk">├── <span class="hljs-regexp">/dist/</span>                     <span class="hljs-comment"># 项目输出目录</span><br>├── <span class="hljs-regexp">/lib/</span>                      <span class="hljs-comment"># 项目源码目录</span><br>│ ├── <span class="hljs-regexp">/cancel/</span>                 <span class="hljs-comment"># 定义取消功能</span><br>│ ├── <span class="hljs-regexp">/core/</span>                   <span class="hljs-comment"># 一些核心功能</span><br>│ │ ├── Axios.js               <span class="hljs-comment"># axios的核心主类</span><br>│ │ ├── dispatchRequest.js     <span class="hljs-comment"># 用来调用http请求适配器方法发送请求</span><br>│ │ ├── InterceptorManager.js  <span class="hljs-comment"># 拦截器构造函数</span><br>│ │ └── settle.js              <span class="hljs-comment"># 根据http响应状态，改变Promise的状态</span><br>│ ├── <span class="hljs-regexp">/helpers/</span>                <span class="hljs-comment"># 一些辅助方法</span><br>│ ├── <span class="hljs-regexp">/adapters/</span>               <span class="hljs-comment"># 定义请求的适配器 xhr、http</span><br>│ │ ├── http.js                <span class="hljs-comment"># 实现http适配器</span><br>│ │ └── xhr.js                 <span class="hljs-comment"># 实现xhr适配器</span><br>│ ├── axios.js                 <span class="hljs-comment"># 对外暴露接口</span><br>│ ├── defaults.js              <span class="hljs-comment"># 默认配置 </span><br>│ └── utils.js                 <span class="hljs-comment"># 公用工具</span><br>├── package.json               <span class="hljs-comment"># 项目信息</span><br>├── index.d.ts                 <span class="hljs-comment"># 配置TypeScript的声明文件</span><br>└── index.js                   <span class="hljs-comment"># 入口文件</span><br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-none"><code class="language-none">├── &#x2F;dist&#x2F;                     # 项目输出目录
+├── &#x2F;lib&#x2F;                      # 项目源码目录
+│ ├── &#x2F;cancel&#x2F;                 # 定义取消功能
+│ ├── &#x2F;core&#x2F;                   # 一些核心功能
+│ │ ├── Axios.js               # axios的核心主类
+│ │ ├── dispatchRequest.js     # 用来调用http请求适配器方法发送请求
+│ │ ├── InterceptorManager.js  # 拦截器构造函数
+│ │ └── settle.js              # 根据http响应状态，改变Promise的状态
+│ ├── &#x2F;helpers&#x2F;                # 一些辅助方法
+│ ├── &#x2F;adapters&#x2F;               # 定义请求的适配器 xhr、http
+│ │ ├── http.js                # 实现http适配器
+│ │ └── xhr.js                 # 实现xhr适配器
+│ ├── axios.js                 # 对外暴露接口
+│ ├── defaults.js              # 默认配置 
+│ └── utils.js                 # 公用工具
+├── package.json               # 项目信息
+├── index.d.ts                 # 配置TypeScript的声明文件
+└── index.js                   # 入口文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p>　　可以发现，我们需要用到的代码大多在<code>/lib</code>目录下。</p>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <h1 id="工具函数"><a href="#工具函数" class="headerlink" title="工具函数"></a>工具函数</h1><p>　　看源码之前我们首先来学习一下axios用到的几个易于混淆的工具函数，以及它们具体是用来实现什么功能的。</p>
 <h2 id="bind"><a href="#bind" class="headerlink" title="bind"></a>bind</h2><p>　　bind函数用来给某一函数指定调用时的上下文，其源码如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//lib/helpers/bind.js</span><br><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">bind</span>(<span class="hljs-params">fn, thisArg</span>) </span>&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">wrap</span>(<span class="hljs-params"></span>) </span>&#123;<br>    <span class="hljs-keyword">var</span> args = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>(<span class="hljs-built_in">arguments</span>.length);<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; args.length; i++) &#123;<br>      args[i] = <span class="hljs-built_in">arguments</span>[i];<br>    &#125;<br>    <span class="hljs-keyword">return</span> fn.apply(thisArg, args);<br>  &#125;;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//lib/helpers/bind.js</span>
+module<span class="token punctuation">.</span><span class="token function-variable function">exports</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token function">bind</span><span class="token punctuation">(</span><span class="token parameter">fn<span class="token punctuation">,</span> thisArg</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> <span class="token keyword">function</span> <span class="token function">wrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">var</span> args <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Array</span><span class="token punctuation">(</span>arguments<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> args<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      args<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> arguments<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> <span class="token function">fn</span><span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>thisArg<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p>　　它的实现效果同<code>Function.prototype.bind</code></p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> bind <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;/lib/helpers/bind.js&#x27;</span><br><br><span class="hljs-keyword">var</span> obj = &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;hello&#x27;</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">showName</span>(<span class="hljs-params"></span>) </span>&#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.name)<br>&#125;<br><br><span class="hljs-keyword">var</span> instance = bind(showName, obj)<br><span class="hljs-comment">//效果同下</span><br><span class="hljs-comment">//var instance = showName.bind(obj)</span><br>instance()<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> bind <span class="token keyword">from</span> <span class="token string">'/lib/helpers/bind.js'</span>
+
+<span class="token keyword">var</span> obj <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">'hello'</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">function</span> <span class="token function">showName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">var</span> instance <span class="token operator">=</span> <span class="token function">bind</span><span class="token punctuation">(</span>showName<span class="token punctuation">,</span> obj<span class="token punctuation">)</span>
+<span class="token comment">//效果同下</span>
+<span class="token comment">//var instance = showName.bind(obj)</span>
+<span class="token function">instance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <h2 id="forEach"><a href="#forEach" class="headerlink" title="forEach"></a>forEach</h2><p>　　forEach用来遍历对象或者数组；我们知道对象需要<code>for in</code>遍历，而数组用<code>for</code>循环遍历，forEach将两者遍历的方式整合到一起，其源码如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//lib/utils.js</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">forEach</span>(<span class="hljs-params">obj, fn</span>) </span>&#123;<br>  <span class="hljs-keyword">if</span> (obj === <span class="hljs-literal">null</span> || <span class="hljs-keyword">typeof</span> obj === <span class="hljs-string">&#x27;undefined&#x27;</span>) &#123;<br>    <span class="hljs-keyword">return</span>;<br>  &#125;<br>  <span class="hljs-comment">//兼容不是数组对象的情况</span><br>  <span class="hljs-comment">//如果是基本数据类型同样放到数组中遍历</span><br>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> obj !== <span class="hljs-string">&#x27;object&#x27;</span>) &#123;<br>    obj = [obj];<br>  &#125;<br>  <span class="hljs-keyword">if</span> (isArray(obj)) &#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, l = obj.length; i &lt; l; i++) &#123;<br>      fn.call(<span class="hljs-literal">null</span>, obj[i], i, obj);<br>    &#125;<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> obj) &#123;<br>      <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Object</span>.prototype.hasOwnProperty.call(obj, key)) &#123;<br>        fn.call(<span class="hljs-literal">null</span>, obj[key], key, obj);<br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//lib/utils.js</span>
+<span class="token keyword">function</span> <span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">obj<span class="token punctuation">,</span> fn</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>obj <span class="token operator">===</span> <span class="token keyword">null</span> <span class="token operator">||</span> <span class="token keyword">typeof</span> obj <span class="token operator">===</span> <span class="token string">'undefined'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token comment">//兼容不是数组对象的情况</span>
+  <span class="token comment">//如果是基本数据类型同样放到数组中遍历</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> obj <span class="token operator">!==</span> <span class="token string">'object'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    obj <span class="token operator">=</span> <span class="token punctuation">[</span>obj<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isArray</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> l <span class="token operator">=</span> obj<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i <span class="token operator">&lt;</span> l<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token function">fn</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> obj<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> i<span class="token punctuation">,</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> key <span class="token keyword">in</span> obj<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Object</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function">hasOwnProperty</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">fn</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> obj<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">,</span> key<span class="token punctuation">,</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p>　　可以看出forEach对字符串或者数字等基本数据类型做了兼容，对数组和对象做了不同的遍历处理；其中如果遍历的是对象，回调函数每次返回对象的值、键以及对象本身。</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; forEach &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;/lib/utils.js&#x27;</span><br>forEach([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],<span class="hljs-function">(<span class="hljs-params">elem, index, array</span>)=&gt;</span>&#123;&#125;)<br>forEach(&#123;<br>    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;hi&#x27;</span>,<br>    <span class="hljs-attr">age</span>: <span class="hljs-number">18</span><br>&#125;,<span class="hljs-function">(<span class="hljs-params">value, key, object</span>)=&gt;</span>&#123;&#125;)<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> forEach <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'/lib/utils.js'</span>
+<span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token parameter">elem<span class="token punctuation">,</span> index<span class="token punctuation">,</span> array</span><span class="token punctuation">)</span><span class="token operator">=></span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">'hi'</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">18</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token parameter">value<span class="token punctuation">,</span> key<span class="token punctuation">,</span> object</span><span class="token punctuation">)</span><span class="token operator">=></span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 
 <h2 id="extend"><a href="#extend" class="headerlink" title="extend"></a>extend</h2><p>　　extend将一个对象b上面所有的属性和方法扩展到另一个对象a上，并且指定方法调用的上下文，其源码如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//lib/utils.js</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">extend</span>(<span class="hljs-params">a, b, thisArg</span>) </span>&#123;<br>  forEach(b, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">assignValue</span>(<span class="hljs-params">val, key</span>) </span>&#123;<br>    <span class="hljs-keyword">if</span> (thisArg &amp;&amp; <span class="hljs-keyword">typeof</span> val === <span class="hljs-string">&#x27;function&#x27;</span>) &#123;<br>      a[key] = bind(val, thisArg);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      a[key] = val;<br>    &#125;<br>  &#125;);<br>  <span class="hljs-keyword">return</span> a;<br>&#125;<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//lib/utils.js</span>
+<span class="token keyword">function</span> <span class="token function">extend</span><span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b<span class="token punctuation">,</span> thisArg</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token function">forEach</span><span class="token punctuation">(</span>b<span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token function">assignValue</span><span class="token punctuation">(</span><span class="token parameter">val<span class="token punctuation">,</span> key</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>thisArg <span class="token operator">&amp;&amp;</span> <span class="token keyword">typeof</span> val <span class="token operator">===</span> <span class="token string">'function'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      a<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">bind</span><span class="token punctuation">(</span>val<span class="token punctuation">,</span> thisArg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+      a<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> val<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> a<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p>　　这里forEach就用来遍历对象了；a是目标对象，b是源对象，thisArg是执行上下文，我们可以通过代码尝试一下：</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; extend &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;/lib/utils.js&#x27;</span><br><span class="hljs-keyword">var</span> context = &#123;<br>    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;context&#x27;</span><br>&#125;<br><span class="hljs-keyword">var</span> target = &#123;<br>    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;target&#x27;</span>,<br>    <span class="hljs-function"><span class="hljs-title">say</span>(<span class="hljs-params"></span>)</span> &#123;<br>        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;i am target,my name is &#x27;</span> + <span class="hljs-built_in">this</span>.name)<br>    &#125;<br>&#125;<br><span class="hljs-keyword">var</span> source = &#123;<br>    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;source&#x27;</span>,<br>    <span class="hljs-function"><span class="hljs-title">say</span>(<span class="hljs-params"></span>)</span> &#123;<br>        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;i am source,my name is &#x27;</span> + <span class="hljs-built_in">this</span>.name)<br>    &#125;<br>&#125;<br>extend(target, source, context)<br><span class="hljs-comment">//source</span><br>target.name<br><span class="hljs-comment">//i am source,my name is context</span><br>target.say()<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> extend <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'/lib/utils.js'</span>
+<span class="token keyword">var</span> context <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">'context'</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">var</span> target <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">'target'</span><span class="token punctuation">,</span>
+    <span class="token function">say</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'i am target,my name is '</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">var</span> source <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">'source'</span><span class="token punctuation">,</span>
+    <span class="token function">say</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'i am source,my name is '</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token function">extend</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> source<span class="token punctuation">,</span> context<span class="token punctuation">)</span>
+<span class="token comment">//source</span>
+target<span class="token punctuation">.</span>name
+<span class="token comment">//i am source,my name is context</span>
+target<span class="token punctuation">.</span><span class="token function">say</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　最后运行可以发现source对象上的属性方法都赋值到target对象上，执行上下文是context对象了。</p>
 <h2 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h2><p>　　merge函数用来将多个对象深度合并为一个新的对象，其源码如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//lib/utils.js</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">merge</span>(<span class="hljs-params"><span class="hljs-comment">/* obj1, obj2, obj3, ... */</span></span>) </span>&#123;<br>  <span class="hljs-keyword">var</span> result = &#123;&#125;;<br>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">assignValue</span>(<span class="hljs-params">val, key</span>) </span>&#123;<br>    <span class="hljs-keyword">if</span> (isPlainObject(result[key]) &amp;&amp; isPlainObject(val)) &#123;<br>      result[key] = merge(result[key], val);<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isPlainObject(val)) &#123;<br>      result[key] = merge(&#123;&#125;, val);<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isArray(val)) &#123;<br>      result[key] = val.slice();<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      result[key] = val;<br>    &#125;<br>  &#125;<br><br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, l = <span class="hljs-built_in">arguments</span>.length; i &lt; l; i++) &#123;<br>    forEach(<span class="hljs-built_in">arguments</span>[i], assignValue);<br>  &#125;<br>  <span class="hljs-keyword">return</span> result;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//lib/utils.js</span>
+<span class="token keyword">function</span> <span class="token function">merge</span><span class="token punctuation">(</span><span class="token comment">/* obj1, obj2, obj3, ... */</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">var</span> result <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+  <span class="token keyword">function</span> <span class="token function">assignValue</span><span class="token punctuation">(</span><span class="token parameter">val<span class="token punctuation">,</span> key</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isPlainObject</span><span class="token punctuation">(</span>result<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token function">isPlainObject</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      result<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">merge</span><span class="token punctuation">(</span>result<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">,</span> val<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isPlainObject</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      result<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">merge</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span> val<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isArray</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      result<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> val<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+      result<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> val<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> l <span class="token operator">=</span> arguments<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i <span class="token operator">&lt;</span> l<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">forEach</span><span class="token punctuation">(</span>arguments<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> assignValue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">return</span> result<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p>　　isPlainObject判断一个对象是否是一个JS原生对象，即使用Object构造函数创建的对象；如果是对象的话就进行深度的合并，我们写一个demo测试一下：</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; merge &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;/lib/utils.js&#x27;</span><br><br><span class="hljs-keyword">var</span> obj1 = &#123;<br>  <span class="hljs-attr">a</span>:<span class="hljs-number">1</span>,<br>  <span class="hljs-attr">b</span>: &#123;<br>    <span class="hljs-attr">b1</span>:<span class="hljs-number">1</span>,<br>    <span class="hljs-attr">b2</span>:<span class="hljs-number">2</span><br>  &#125;<br>&#125;<br><span class="hljs-keyword">var</span> obj2 = &#123;<br>  <span class="hljs-attr">a</span>:<span class="hljs-number">2</span><br>  <span class="hljs-attr">b</span>: &#123;<br>    <span class="hljs-attr">b1</span>:<span class="hljs-number">4</span>,<br>    <span class="hljs-attr">b3</span>:<span class="hljs-number">5</span><br>  &#125;,<br>&#125;<br><span class="hljs-keyword">var</span> newObj = merge(obj1, obj2)<br><span class="hljs-comment">//最后结果</span><br><span class="hljs-comment">//&#123;</span><br><span class="hljs-comment">//  a:2,</span><br><span class="hljs-comment">//  b: &#123;</span><br><span class="hljs-comment">//    b1:4,</span><br><span class="hljs-comment">//    b2:2,</span><br><span class="hljs-comment">//    b3:5</span><br><span class="hljs-comment">//  &#125;</span><br><span class="hljs-comment">//&#125;</span><br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> merge <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'/lib/utils.js'</span>
+
+<span class="token keyword">var</span> obj1 <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">a</span><span class="token operator">:</span><span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">b</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">b1</span><span class="token operator">:</span><span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">b2</span><span class="token operator">:</span><span class="token number">2</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">var</span> obj2 <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">a</span><span class="token operator">:</span><span class="token number">2</span>
+  <span class="token literal-property property">b</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">b1</span><span class="token operator">:</span><span class="token number">4</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">b3</span><span class="token operator">:</span><span class="token number">5</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">var</span> newObj <span class="token operator">=</span> <span class="token function">merge</span><span class="token punctuation">(</span>obj1<span class="token punctuation">,</span> obj2<span class="token punctuation">)</span>
+<span class="token comment">//最后结果</span>
+<span class="token comment">//&#123;</span>
+<span class="token comment">//  a:2,</span>
+<span class="token comment">//  b: &#123;</span>
+<span class="token comment">//    b1:4,</span>
+<span class="token comment">//    b2:2,</span>
+<span class="token comment">//    b3:5</span>
+<span class="token comment">//  &#125;</span>
+<span class="token comment">//&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h1 id="构造实例"><a href="#构造实例" class="headerlink" title="构造实例"></a>构造实例</h1><p>　　介绍完了工具函数我们就真正的进入axios的核心源码部分；首先在<code>index.js</code>中，我们看到通过<code>module.exports = require(&#39;./lib/axios&#39;);</code>导出了axios，因此我们找到<code>/lib/axios</code>文件：</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//省略部分代码</span><br><span class="hljs-comment">///lib/axios.js</span><br><span class="hljs-keyword">var</span> Axios = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./core/Axios&#x27;</span>);<br><span class="hljs-keyword">var</span> utils = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./utils&#x27;</span>);<br><span class="hljs-keyword">var</span> bind = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./helpers/bind&#x27;</span>);<br><span class="hljs-comment">//默认配置</span><br><span class="hljs-keyword">var</span> defaults = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./defaults&#x27;</span>);<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createInstance</span>(<span class="hljs-params">defaultConfig</span>) </span>&#123;<br>  <span class="hljs-comment">//创建axios实例</span><br>  <span class="hljs-keyword">var</span> context = <span class="hljs-keyword">new</span> Axios(defaultConfig);<br>  <span class="hljs-comment">//将instance指向Axios.prototype.request函数</span><br>  <span class="hljs-keyword">var</span> instance = bind(Axios.prototype.request, context);<br>  <span class="hljs-comment">//将Axios.prototype上的属性和方法扩展到instance上</span><br>  utils.extend(instance, Axios.prototype, context);<br>  <span class="hljs-comment">//将context上的属性和方法扩展到instance上</span><br>  utils.extend(instance, context);<br>  <span class="hljs-keyword">return</span> instance;<br>&#125;<br><br><span class="hljs-keyword">var</span> axios = createInstance(defaults);<br><span class="hljs-built_in">module</span>.exports = axios;<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//省略部分代码</span>
+<span class="token comment">///lib/axios.js</span>
+<span class="token keyword">var</span> Axios <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./core/Axios'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> utils <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./utils'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> bind <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./helpers/bind'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//默认配置</span>
+<span class="token keyword">var</span> defaults <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./defaults'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">createInstance</span><span class="token punctuation">(</span><span class="token parameter">defaultConfig</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">//创建axios实例</span>
+  <span class="token keyword">var</span> context <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Axios</span><span class="token punctuation">(</span>defaultConfig<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">//将instance指向Axios.prototype.request函数</span>
+  <span class="token keyword">var</span> instance <span class="token operator">=</span> <span class="token function">bind</span><span class="token punctuation">(</span><span class="token class-name">Axios</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>request<span class="token punctuation">,</span> context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">//将Axios.prototype上的属性和方法扩展到instance上</span>
+  utils<span class="token punctuation">.</span><span class="token function">extend</span><span class="token punctuation">(</span>instance<span class="token punctuation">,</span> <span class="token class-name">Axios</span><span class="token punctuation">.</span>prototype<span class="token punctuation">,</span> context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">//将context上的属性和方法扩展到instance上</span>
+  utils<span class="token punctuation">.</span><span class="token function">extend</span><span class="token punctuation">(</span>instance<span class="token punctuation">,</span> context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> instance<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">var</span> axios <span class="token operator">=</span> <span class="token function">createInstance</span><span class="token punctuation">(</span>defaults<span class="token punctuation">)</span><span class="token punctuation">;</span>
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> axios<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 
 <p>　　这段代码看上去比较绕，不过我们发现核心部分就是通过<code>createInstance</code>创建了一个axios实例对象，创建的同时传入了<code>defaultConfig</code>对象（根据名字我们也能猜出来这是默认配置），然后将实例对象导出；因此<code>createInstance</code>创建的就是我们使用的那个axios函数。</p>
 <p>　　由于<code>createInstance</code>创建是通过Axios构造函数创建的，因此我们把<code>createInstance</code>放一放，先看一下Axios构造函数做了哪些操作：</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> utils = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./../utils&#x27;</span>);<br><span class="hljs-keyword">var</span> buildURL = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;../helpers/buildURL&#x27;</span>);<br><span class="hljs-keyword">var</span> InterceptorManager = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./InterceptorManager&#x27;</span>);<br><span class="hljs-keyword">var</span> dispatchRequest = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./dispatchRequest&#x27;</span>);<br><span class="hljs-keyword">var</span> mergeConfig = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./mergeConfig&#x27;</span>);<br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Axios</span>(<span class="hljs-params">instanceConfig</span>) </span>&#123;<br>  <span class="hljs-comment">//默认配置</span><br>  <span class="hljs-built_in">this</span>.defaults = instanceConfig;<br>  <span class="hljs-comment">//拦截器</span><br>  <span class="hljs-built_in">this</span>.interceptors = &#123;<br>    <span class="hljs-attr">request</span>: <span class="hljs-keyword">new</span> InterceptorManager(),<br>    <span class="hljs-attr">response</span>: <span class="hljs-keyword">new</span> InterceptorManager()<br>  &#125;;<br>&#125;<br><br>Axios.prototype.request = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">request</span>(<span class="hljs-params">config</span>) </span>&#123;<br>  <span class="hljs-comment">//兼容axios.request(url,config)的情况</span><br>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> config === <span class="hljs-string">&#x27;string&#x27;</span>) &#123;<br>    config = <span class="hljs-built_in">arguments</span>[<span class="hljs-number">1</span>] || &#123;&#125;;<br>    config.url = <span class="hljs-built_in">arguments</span>[<span class="hljs-number">0</span>];<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    config = config || &#123;&#125;;<br>  &#125;<br>  config = mergeConfig(<span class="hljs-built_in">this</span>.defaults, config);<br>  <span class="hljs-keyword">var</span> promise = <span class="hljs-built_in">Promise</span>.resolve(config);<br>  <span class="hljs-comment">//省略部分发送请求的代码</span><br>  <span class="hljs-keyword">return</span> promise;<br>&#125;;<br><br>utils.forEach([<span class="hljs-string">&#x27;delete&#x27;</span>, <span class="hljs-string">&#x27;get&#x27;</span>, <span class="hljs-string">&#x27;head&#x27;</span>, <span class="hljs-string">&#x27;options&#x27;</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">forEachMethodNoData</span>(<span class="hljs-params">method</span>) </span>&#123;<br>  Axios.prototype[method] = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">url, config</span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.request(mergeConfig(config || &#123;&#125;, &#123;<br>      <span class="hljs-attr">method</span>: method,<br>      <span class="hljs-attr">url</span>: url<br>    &#125;));<br>  &#125;;<br>&#125;);<br><br>utils.forEach([<span class="hljs-string">&#x27;post&#x27;</span>, <span class="hljs-string">&#x27;put&#x27;</span>, <span class="hljs-string">&#x27;patch&#x27;</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">forEachMethodWithData</span>(<span class="hljs-params">method</span>) </span>&#123;<br>  Axios.prototype[method] = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">url, data, config</span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.request(mergeConfig(config || &#123;&#125;, &#123;<br>      <span class="hljs-attr">method</span>: method,<br>      <span class="hljs-attr">url</span>: url,<br>      <span class="hljs-attr">data</span>: data<br>    &#125;));<br>  &#125;;<br>&#125;);<br><span class="hljs-built_in">module</span>.exports = Axios;<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> utils <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./../utils'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> buildURL <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'../helpers/buildURL'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> InterceptorManager <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./InterceptorManager'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> dispatchRequest <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./dispatchRequest'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> mergeConfig <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./mergeConfig'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">function</span> <span class="token function">Axios</span><span class="token punctuation">(</span><span class="token parameter">instanceConfig</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">//默认配置</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>defaults <span class="token operator">=</span> instanceConfig<span class="token punctuation">;</span>
+  <span class="token comment">//拦截器</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>interceptors <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">request</span><span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">InterceptorManager</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">response</span><span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">InterceptorManager</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
 
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+<span class="token class-name">Axios</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">request</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token function">request</span><span class="token punctuation">(</span><span class="token parameter">config</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">//兼容axios.request(url,config)的情况</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> config <span class="token operator">===</span> <span class="token string">'string'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    config <span class="token operator">=</span> arguments<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">||</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    config<span class="token punctuation">.</span>url <span class="token operator">=</span> arguments<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+    config <span class="token operator">=</span> config <span class="token operator">||</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  config <span class="token operator">=</span> <span class="token function">mergeConfig</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>defaults<span class="token punctuation">,</span> config<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> promise <span class="token operator">=</span> Promise<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span>config<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">//省略部分发送请求的代码</span>
+  <span class="token keyword">return</span> promise<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+utils<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'delete'</span><span class="token punctuation">,</span> <span class="token string">'get'</span><span class="token punctuation">,</span> <span class="token string">'head'</span><span class="token punctuation">,</span> <span class="token string">'options'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token function">forEachMethodNoData</span><span class="token punctuation">(</span><span class="token parameter">method</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token class-name">Axios</span><span class="token punctuation">.</span>prototype<span class="token punctuation">[</span>method<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">url<span class="token punctuation">,</span> config</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">request</span><span class="token punctuation">(</span><span class="token function">mergeConfig</span><span class="token punctuation">(</span>config <span class="token operator">||</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">method</span><span class="token operator">:</span> method<span class="token punctuation">,</span>
+      <span class="token literal-property property">url</span><span class="token operator">:</span> url
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+utils<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'post'</span><span class="token punctuation">,</span> <span class="token string">'put'</span><span class="token punctuation">,</span> <span class="token string">'patch'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token function">forEachMethodWithData</span><span class="token punctuation">(</span><span class="token parameter">method</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token class-name">Axios</span><span class="token punctuation">.</span>prototype<span class="token punctuation">[</span>method<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">url<span class="token punctuation">,</span> data<span class="token punctuation">,</span> config</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">request</span><span class="token punctuation">(</span><span class="token function">mergeConfig</span><span class="token punctuation">(</span>config <span class="token operator">||</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">method</span><span class="token operator">:</span> method<span class="token punctuation">,</span>
+      <span class="token literal-property property">url</span><span class="token operator">:</span> url<span class="token punctuation">,</span>
+      <span class="token literal-property property">data</span><span class="token operator">:</span> data
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> Axios<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+
 <p>　　Axios构造函数仅仅做了两个事，一个是将默认配置保存到defaults，另一个则是构造了<code>interceptors</code>拦截器对象；Axios函数在原型对象上还挂载了request、get、post等函数，但是get、post等函数最终都是通过<code>request</code>函数来发起请求的。而且<code>request</code>函数最终返回了一个Promise对象， 因此我们才能通过then函数接收到请求结果。对原型链不了解的童鞋可以看这篇文章<a href="https://xieyufei.com/2020/04/10/Js-Class-Inherit.html">一文读懂JS中类、原型和继承</a>。</p>
 <p>　　了解了Axios构造函数的本质，让我们再回到<code>createInstance</code>函数：</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createInstance</span>(<span class="hljs-params">defaultConfig</span>) </span>&#123;<br>  <span class="hljs-keyword">var</span> context = <span class="hljs-keyword">new</span> Axios(defaultConfig);<br>  <span class="hljs-keyword">var</span> instance = bind(Axios.prototype.request, context);<br>  utils.extend(instance, Axios.prototype, context);<br>  utils.extend(instance, context);<br>  <span class="hljs-keyword">return</span> instance;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">createInstance</span><span class="token punctuation">(</span><span class="token parameter">defaultConfig</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">var</span> context <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Axios</span><span class="token punctuation">(</span>defaultConfig<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> instance <span class="token operator">=</span> <span class="token function">bind</span><span class="token punctuation">(</span><span class="token class-name">Axios</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>request<span class="token punctuation">,</span> context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  utils<span class="token punctuation">.</span><span class="token function">extend</span><span class="token punctuation">(</span>instance<span class="token punctuation">,</span> <span class="token class-name">Axios</span><span class="token punctuation">.</span>prototype<span class="token punctuation">,</span> context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  utils<span class="token punctuation">.</span><span class="token function">extend</span><span class="token punctuation">(</span>instance<span class="token punctuation">,</span> context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> instance<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p>　　我们发现Axios构造出了实例对象context，然而createInstance并不是直接返回了context对象；这是因为上面我们也说了axios是一个函数，然而context是对象，返回对象的话是并不能直接调用的，那怎么办呢？</p>
 <p><img src="/images/Axios-One/how.jpg" srcset="/img/loading.gif" lazyload alt="how.jpg"></p>
 <p>　　我们在Axios源码中发现，真正调用的是Axios原型链上的<code>request</code>方法；因此导出的axios需要关联到<code>request</code>方法，这里巧妙的通过bind函数进行关联，生成关联后的<code>instance</code>函数，同时指定它的调用上下文就是Axios的实例对象，因此<code>instance</code>调用时也能获取到实例对象上的defaults和interceptors属性；但是仅仅关联<code>request</code>还不够，再通过<code>extend</code>函数将Axios原型对象上的所有get、post等函数扩展到<code>instance</code>函数上，因此这也是我们才能够使用多种方式调用的原因所在。</p>
 <p>　　同时，如果我们需要创建多个axios实例，但是某几个axios实例的配置（用了同样的域名等）是一样的，我们不希望每次都要写重复的配置，axios还提供了另一种创建实例模板的方式：</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> instance = axios.create(&#123;<br>  <span class="hljs-attr">baseURL</span>: <span class="hljs-string">&#x27;https://some-domain.com/api/&#x27;</span>,<br>  <span class="hljs-attr">timeout</span>: <span class="hljs-number">1000</span>,<br>  <span class="hljs-attr">headers</span>: &#123;<span class="hljs-string">&#x27;X-Custom-Header&#x27;</span>: <span class="hljs-string">&#x27;foobar&#x27;</span>&#125;<br>&#125;);<br>instance.get(<span class="hljs-string">&#x27;/list&#x27;</span>)<br>instance.post(<span class="hljs-string">&#x27;/add&#x27;</span>)<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> instance <span class="token operator">=</span> axios<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">baseURL</span><span class="token operator">:</span> <span class="token string">'https://some-domain.com/api/'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">timeout</span><span class="token operator">:</span> <span class="token number">1000</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">headers</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token string-property property">'X-Custom-Header'</span><span class="token operator">:</span> <span class="token string">'foobar'</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+instance<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'/list'</span><span class="token punctuation">)</span>
+instance<span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span><span class="token string">'/add'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p>　　通过<code>create</code>函数创建了一个有默认配置的实例，这样我们只需要愉快的调用axios的API方法即可；需要请求其他域名只需要再次create即可，这也是工厂模式的一种体现，它的源码实现也很简单，也是通过<code>createInstance</code>创建一个合并配置后的实例：</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">axios.create = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">create</span>(<span class="hljs-params">instanceConfig</span>) </span>&#123;<br>  <span class="hljs-keyword">return</span> createInstance(mergeConfig(axios.defaults, instanceConfig));<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">axios<span class="token punctuation">.</span><span class="token function-variable function">create</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token function">create</span><span class="token punctuation">(</span><span class="token parameter">instanceConfig</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> <span class="token function">createInstance</span><span class="token punctuation">(</span><span class="token function">mergeConfig</span><span class="token punctuation">(</span>axios<span class="token punctuation">.</span>defaults<span class="token punctuation">,</span> instanceConfig<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <h1 id="配置合并"><a href="#配置合并" class="headerlink" title="配置合并"></a>配置合并</h1><p>　　实例对象创建好之后，我们就需要把配置进行合并，方便后面发送请求。在看源码前，我们发现上面代码中主要有两种config，一种是<code>defaultConfig</code>，即默认配置，在构造实例的时候传入；另一种是<code>userConfig</code>，也就是我们调用实例进行请求时传入的配置；在上面的代码中，也出现了很多次<code>mergeConfig</code>这个函数，根据命名我们也能看出来，这是用来合并两种配置的。</p>
 <h2 id="默认配置"><a href="#默认配置" class="headerlink" title="默认配置"></a>默认配置</h2><p>　　首先让我们看一下axios给我们默认配置了哪些属性：</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//lib/defaults</span><br><span class="hljs-keyword">var</span> utils = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./utils&#x27;</span>);<br><span class="hljs-keyword">var</span> DEFAULT_CONTENT_TYPE = &#123;<br>  <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;application/x-www-form-urlencoded&#x27;</span><br>&#125;;<br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getDefaultAdapter</span>(<span class="hljs-params"></span>) </span>&#123;<br>  <span class="hljs-keyword">var</span> adapter;<br>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> XMLHttpRequest !== <span class="hljs-string">&#x27;undefined&#x27;</span>) &#123;<br>    <span class="hljs-comment">//浏览器环境使用xhr</span><br>    adapter = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./adapters/xhr&#x27;</span>);<br>  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> process !== <span class="hljs-string">&#x27;undefined&#x27;</span> <br>    &amp;&amp; <span class="hljs-built_in">Object</span>.prototype.toString.call(process) === <span class="hljs-string">&#x27;[object process]&#x27;</span>) &#123;<br>    <span class="hljs-comment">//node环境使用http</span><br>    adapter = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./adapters/http&#x27;</span>);<br>  &#125;<br>  <span class="hljs-keyword">return</span> adapter;<br>&#125;<br><span class="hljs-keyword">var</span> defaults = &#123;<br>  <span class="hljs-attr">adapter</span>: getDefaultAdapter(),<br>  <span class="hljs-attr">transformRequest</span>: [<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transformRequest</span>(<span class="hljs-params">data, headers</span>) </span>&#123;<br>    <span class="hljs-comment">//省略转换请求数据代码</span><br>    <span class="hljs-keyword">return</span> data;<br>  &#125;],<br>  <span class="hljs-attr">transformResponse</span>: [<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transformResponse</span>(<span class="hljs-params">data</span>) </span>&#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> data === <span class="hljs-string">&#x27;string&#x27;</span>) &#123;<br>      <span class="hljs-keyword">try</span> &#123;<br>        data = <span class="hljs-built_in">JSON</span>.parse(data);<br>      &#125; <span class="hljs-keyword">catch</span> (e) &#123; <span class="hljs-comment">/* Ignore */</span> &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> data;<br>  &#125;],<br>  <span class="hljs-attr">timeout</span>: <span class="hljs-number">0</span>,<br>  <span class="hljs-attr">xsrfCookieName</span>: <span class="hljs-string">&#x27;XSRF-TOKEN&#x27;</span>,<br>  <span class="hljs-attr">xsrfHeaderName</span>: <span class="hljs-string">&#x27;X-XSRF-TOKEN&#x27;</span>,<br>  <span class="hljs-attr">maxContentLength</span>: -<span class="hljs-number">1</span>,<br>  <span class="hljs-attr">maxBodyLength</span>: -<span class="hljs-number">1</span>,<br>  <span class="hljs-attr">validateStatus</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">validateStatus</span>(<span class="hljs-params">status</span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> status &gt;= <span class="hljs-number">200</span> &amp;&amp; status &lt; <span class="hljs-number">300</span>;<br>  &#125;<br>&#125;;<br>defaults.headers = &#123;<br>  <span class="hljs-attr">common</span>: &#123;<br>    <span class="hljs-string">&#x27;Accept&#x27;</span>: <span class="hljs-string">&#x27;application/json, text/plain, */*&#x27;</span><br>  &#125;<br>&#125;;<br>utils.forEach([<span class="hljs-string">&#x27;delete&#x27;</span>, <span class="hljs-string">&#x27;get&#x27;</span>, <span class="hljs-string">&#x27;head&#x27;</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">forEachMethodNoData</span>(<span class="hljs-params">method</span>) </span>&#123;<br>  defaults.headers[method] = &#123;&#125;;<br>&#125;);<br>utils.forEach([<span class="hljs-string">&#x27;post&#x27;</span>, <span class="hljs-string">&#x27;put&#x27;</span>, <span class="hljs-string">&#x27;patch&#x27;</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">forEachMethodWithData</span>(<span class="hljs-params">method</span>) </span>&#123;<br>  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);<br>&#125;);<br><span class="hljs-built_in">module</span>.exports = defaults;<br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//lib/defaults</span>
+<span class="token keyword">var</span> utils <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./utils'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> <span class="token constant">DEFAULT_CONTENT_TYPE</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token string-property property">'Content-Type'</span><span class="token operator">:</span> <span class="token string">'application/x-www-form-urlencoded'</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">function</span> <span class="token function">getDefaultAdapter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">var</span> adapter<span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> XMLHttpRequest <span class="token operator">!==</span> <span class="token string">'undefined'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">//浏览器环境使用xhr</span>
+    adapter <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./adapters/xhr'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> process <span class="token operator">!==</span> <span class="token string">'undefined'</span> 
+    <span class="token operator">&amp;&amp;</span> <span class="token class-name">Object</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>process<span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">'[object process]'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">//node环境使用http</span>
+    adapter <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./adapters/http'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">return</span> adapter<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">var</span> defaults <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">adapter</span><span class="token operator">:</span> <span class="token function">getDefaultAdapter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">transformRequest</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token keyword">function</span> <span class="token function">transformRequest</span><span class="token punctuation">(</span><span class="token parameter">data<span class="token punctuation">,</span> headers</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">//省略转换请求数据代码</span>
+    <span class="token keyword">return</span> data<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">transformResponse</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token keyword">function</span> <span class="token function">transformResponse</span><span class="token punctuation">(</span><span class="token parameter">data</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> data <span class="token operator">===</span> <span class="token string">'string'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+        data <span class="token operator">=</span> <span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">/* Ignore */</span> <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> data<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">timeout</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">xsrfCookieName</span><span class="token operator">:</span> <span class="token string">'XSRF-TOKEN'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">xsrfHeaderName</span><span class="token operator">:</span> <span class="token string">'X-XSRF-TOKEN'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">maxContentLength</span><span class="token operator">:</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">maxBodyLength</span><span class="token operator">:</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token function-variable function">validateStatus</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token function">validateStatus</span><span class="token punctuation">(</span><span class="token parameter">status</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> status <span class="token operator">>=</span> <span class="token number">200</span> <span class="token operator">&amp;&amp;</span> status <span class="token operator">&lt;</span> <span class="token number">300</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+defaults<span class="token punctuation">.</span>headers <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">common</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string-property property">'Accept'</span><span class="token operator">:</span> <span class="token string">'application/json, text/plain, */*'</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+utils<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'delete'</span><span class="token punctuation">,</span> <span class="token string">'get'</span><span class="token punctuation">,</span> <span class="token string">'head'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token function">forEachMethodNoData</span><span class="token punctuation">(</span><span class="token parameter">method</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  defaults<span class="token punctuation">.</span>headers<span class="token punctuation">[</span>method<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+utils<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'post'</span><span class="token punctuation">,</span> <span class="token string">'put'</span><span class="token punctuation">,</span> <span class="token string">'patch'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token function">forEachMethodWithData</span><span class="token punctuation">(</span><span class="token parameter">method</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  defaults<span class="token punctuation">.</span>headers<span class="token punctuation">[</span>method<span class="token punctuation">]</span> <span class="token operator">=</span> utils<span class="token punctuation">.</span><span class="token function">merge</span><span class="token punctuation">(</span><span class="token constant">DEFAULT_CONTENT_TYPE</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> defaults<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p>　　可以发现，axios定义了默认的适配器（用于发送请求）、转换器（转换请求和响应数据）和请求头等一些数据；<code>getDefaultAdapter</code>函数用来获取默认的适配器，这样在浏览器端和node环境都可以发送请求；可以看到axios给每个请求方法都定义了一个默认的请求头和一个公共的请求头<code>common</code>，在后面发送请求时会根据传入的请求方法类型使用相应的请求头。</p>
 <h2 id="属性分类"><a href="#属性分类" class="headerlink" title="属性分类"></a>属性分类</h2><p>　　下面我们就来看一下mergeConfig是如何将两种config合并的；首先mergeConfig将所有config中用到的字段进行了划分，分成了三类：</p>
 <ol>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>没有初始值，其值必须由初始化的时候指定</li>
 <li>需要合并的属性，这些属性一般都是对象，处理时需要将对象进行合并</li>
 <li>普通属性，这些属性一般都是值类型，如果<code>userConfig</code>中有，则以<code>userConfig</code>为准；没有取<code>defaultConfig</code>的值</li>
 </ol>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//可以把config1看做defaultConfig,config2看做userConfig</span><br><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mergeConfig</span>(<span class="hljs-params">config1, config2</span>) </span>&#123;<br>  config2 = config2 || &#123;&#125;;<br>  <span class="hljs-comment">//最终返回合并后的配置</span><br>  <span class="hljs-keyword">var</span> config = &#123;&#125;;<br>  <span class="hljs-comment">//第一种属性</span><br>  <span class="hljs-keyword">var</span> valueFromConfig2Keys = [<span class="hljs-string">&#x27;url&#x27;</span>, <span class="hljs-string">&#x27;method&#x27;</span>, <span class="hljs-string">&#x27;data&#x27;</span>];<br>  <span class="hljs-comment">//第二种属性</span><br>  <span class="hljs-keyword">var</span> mergeDeepPropertiesKeys = [<span class="hljs-string">&#x27;headers&#x27;</span>, <span class="hljs-string">&#x27;auth&#x27;</span>, <span class="hljs-string">&#x27;proxy&#x27;</span>, <span class="hljs-string">&#x27;params&#x27;</span>];<br>  <span class="hljs-comment">//第三种属性</span><br>  <span class="hljs-keyword">var</span> defaultToConfig2Keys = [<br>    <span class="hljs-string">&#x27;baseURL&#x27;</span>, <span class="hljs-string">&#x27;transformRequest&#x27;</span>, <span class="hljs-string">&#x27;transformResponse&#x27;</span>, <span class="hljs-string">&#x27;paramsSerializer&#x27;</span>,<br>    <span class="hljs-string">&#x27;timeout&#x27;</span>, <span class="hljs-string">&#x27;timeoutMessage&#x27;</span>, <span class="hljs-string">&#x27;withCredentials&#x27;</span>, <span class="hljs-string">&#x27;adapter&#x27;</span>, <span class="hljs-string">&#x27;responseType&#x27;</span>, <span class="hljs-string">&#x27;xsrfCookieName&#x27;</span>,<br>    <span class="hljs-string">&#x27;xsrfHeaderName&#x27;</span>, <span class="hljs-string">&#x27;onUploadProgress&#x27;</span>, <span class="hljs-string">&#x27;onDownloadProgress&#x27;</span>, <span class="hljs-string">&#x27;decompress&#x27;</span>,<br>    <span class="hljs-string">&#x27;maxContentLength&#x27;</span>, <span class="hljs-string">&#x27;maxBodyLength&#x27;</span>, <span class="hljs-string">&#x27;maxRedirects&#x27;</span>, <span class="hljs-string">&#x27;transport&#x27;</span>, <span class="hljs-string">&#x27;httpAgent&#x27;</span>,<br>    <span class="hljs-string">&#x27;httpsAgent&#x27;</span>, <span class="hljs-string">&#x27;cancelToken&#x27;</span>, <span class="hljs-string">&#x27;socketPath&#x27;</span>, <span class="hljs-string">&#x27;responseEncoding&#x27;</span><br>  ];<br>  <span class="hljs-keyword">var</span> directMergeKeys = [<span class="hljs-string">&#x27;validateStatus&#x27;</span>];<br>  <span class="hljs-comment">//省略下面代码</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//可以把config1看做defaultConfig,config2看做userConfig</span>
+module<span class="token punctuation">.</span><span class="token function-variable function">exports</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token function">mergeConfig</span><span class="token punctuation">(</span><span class="token parameter">config1<span class="token punctuation">,</span> config2</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  config2 <span class="token operator">=</span> config2 <span class="token operator">||</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+  <span class="token comment">//最终返回合并后的配置</span>
+  <span class="token keyword">var</span> config <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+  <span class="token comment">//第一种属性</span>
+  <span class="token keyword">var</span> valueFromConfig2Keys <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'url'</span><span class="token punctuation">,</span> <span class="token string">'method'</span><span class="token punctuation">,</span> <span class="token string">'data'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token comment">//第二种属性</span>
+  <span class="token keyword">var</span> mergeDeepPropertiesKeys <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'headers'</span><span class="token punctuation">,</span> <span class="token string">'auth'</span><span class="token punctuation">,</span> <span class="token string">'proxy'</span><span class="token punctuation">,</span> <span class="token string">'params'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token comment">//第三种属性</span>
+  <span class="token keyword">var</span> defaultToConfig2Keys <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token string">'baseURL'</span><span class="token punctuation">,</span> <span class="token string">'transformRequest'</span><span class="token punctuation">,</span> <span class="token string">'transformResponse'</span><span class="token punctuation">,</span> <span class="token string">'paramsSerializer'</span><span class="token punctuation">,</span>
+    <span class="token string">'timeout'</span><span class="token punctuation">,</span> <span class="token string">'timeoutMessage'</span><span class="token punctuation">,</span> <span class="token string">'withCredentials'</span><span class="token punctuation">,</span> <span class="token string">'adapter'</span><span class="token punctuation">,</span> <span class="token string">'responseType'</span><span class="token punctuation">,</span> <span class="token string">'xsrfCookieName'</span><span class="token punctuation">,</span>
+    <span class="token string">'xsrfHeaderName'</span><span class="token punctuation">,</span> <span class="token string">'onUploadProgress'</span><span class="token punctuation">,</span> <span class="token string">'onDownloadProgress'</span><span class="token punctuation">,</span> <span class="token string">'decompress'</span><span class="token punctuation">,</span>
+    <span class="token string">'maxContentLength'</span><span class="token punctuation">,</span> <span class="token string">'maxBodyLength'</span><span class="token punctuation">,</span> <span class="token string">'maxRedirects'</span><span class="token punctuation">,</span> <span class="token string">'transport'</span><span class="token punctuation">,</span> <span class="token string">'httpAgent'</span><span class="token punctuation">,</span>
+    <span class="token string">'httpsAgent'</span><span class="token punctuation">,</span> <span class="token string">'cancelToken'</span><span class="token punctuation">,</span> <span class="token string">'socketPath'</span><span class="token punctuation">,</span> <span class="token string">'responseEncoding'</span>
+  <span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> directMergeKeys <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'validateStatus'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token comment">//省略下面代码</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p>　　对于第一种属性，url、method和data不能从默认配置中取值，因此如果userConfig中有就直接取userConfig中的值。</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getMergedValue</span>(<span class="hljs-params">target, source</span>) </span>&#123;<br>  <span class="hljs-keyword">if</span> (utils.isPlainObject(target) &amp;&amp; utils.isPlainObject(source)) &#123;<br>    <span class="hljs-keyword">return</span> utils.merge(target, source);<br>  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (utils.isPlainObject(source)) &#123;<br>    <span class="hljs-keyword">return</span> utils.merge(&#123;&#125;, source);<br>  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (utils.isArray(source)) &#123;<br>    <span class="hljs-keyword">return</span> source.slice();<br>  &#125;<br>  <span class="hljs-keyword">return</span> source;<br>&#125;<br>utils.forEach(valueFromConfig2Keys, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">valueFromConfig2</span>(<span class="hljs-params">prop</span>) </span>&#123;<br>  <span class="hljs-keyword">if</span> (!utils.isUndefined(config2[prop])) &#123;<br>    config[prop] = getMergedValue(<span class="hljs-literal">undefined</span>, config2[prop]);<br>  &#125;<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">getMergedValue</span><span class="token punctuation">(</span><span class="token parameter">target<span class="token punctuation">,</span> source</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>utils<span class="token punctuation">.</span><span class="token function">isPlainObject</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> utils<span class="token punctuation">.</span><span class="token function">isPlainObject</span><span class="token punctuation">(</span>source<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> utils<span class="token punctuation">.</span><span class="token function">merge</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> source<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>utils<span class="token punctuation">.</span><span class="token function">isPlainObject</span><span class="token punctuation">(</span>source<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> utils<span class="token punctuation">.</span><span class="token function">merge</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span> source<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>utils<span class="token punctuation">.</span><span class="token function">isArray</span><span class="token punctuation">(</span>source<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> source<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">return</span> source<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+utils<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>valueFromConfig2Keys<span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token function">valueFromConfig2</span><span class="token punctuation">(</span><span class="token parameter">prop</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>utils<span class="token punctuation">.</span><span class="token function">isUndefined</span><span class="token punctuation">(</span>config2<span class="token punctuation">[</span>prop<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    config<span class="token punctuation">[</span>prop<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">getMergedValue</span><span class="token punctuation">(</span><span class="token keyword">undefined</span><span class="token punctuation">,</span> config2<span class="token punctuation">[</span>prop<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 <p>　　对于第二种属性，如果userConfig中有，就将其与defaultConfig进行合并。</p>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">mergeDeepProperties</span>(<span class="hljs-params">prop</span>) </span>&#123;<br>  <span class="hljs-keyword">if</span> (!utils.isUndefined(config2[prop])) &#123;<br>    config[prop] = getMergedValue(config1[prop], config2[prop]);<br>  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!utils.isUndefined(config1[prop])) &#123;<br>    config[prop] = getMergedValue(<span class="hljs-literal">undefined</span>, config1[prop]);<br>  &#125;<br>&#125;<br>utils.forEach(mergeDeepPropertiesKeys, mergeDeepProperties);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">mergeDeepProperties</span><span class="token punctuation">(</span><span class="token parameter">prop</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>utils<span class="token punctuation">.</span><span class="token function">isUndefined</span><span class="token punctuation">(</span>config2<span class="token punctuation">[</span>prop<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    config<span class="token punctuation">[</span>prop<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">getMergedValue</span><span class="token punctuation">(</span>config1<span class="token punctuation">[</span>prop<span class="token punctuation">]</span><span class="token punctuation">,</span> config2<span class="token punctuation">[</span>prop<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>utils<span class="token punctuation">.</span><span class="token function">isUndefined</span><span class="token punctuation">(</span>config1<span class="token punctuation">[</span>prop<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    config<span class="token punctuation">[</span>prop<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">getMergedValue</span><span class="token punctuation">(</span><span class="token keyword">undefined</span><span class="token punctuation">,</span> config1<span class="token punctuation">[</span>prop<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+utils<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>mergeDeepPropertiesKeys<span class="token punctuation">,</span> mergeDeepProperties<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　对于第三种普通属性，如果userConfig中有就取userConfig，没有就取defaultConfig中的值。</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">utils.forEach(defaultToConfig2Keys, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">defaultToConfig2</span>(<span class="hljs-params">prop</span>) </span>&#123;<br>  <span class="hljs-keyword">if</span> (!utils.isUndefined(config2[prop])) &#123;<br>    config[prop] = getMergedValue(<span class="hljs-literal">undefined</span>, config2[prop]);<br>  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!utils.isUndefined(config1[prop])) &#123;<br>    config[prop] = getMergedValue(<span class="hljs-literal">undefined</span>, config1[prop]);<br>  &#125;<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">utils<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>defaultToConfig2Keys<span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token function">defaultToConfig2</span><span class="token punctuation">(</span><span class="token parameter">prop</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>utils<span class="token punctuation">.</span><span class="token function">isUndefined</span><span class="token punctuation">(</span>config2<span class="token punctuation">[</span>prop<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    config<span class="token punctuation">[</span>prop<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">getMergedValue</span><span class="token punctuation">(</span><span class="token keyword">undefined</span><span class="token punctuation">,</span> config2<span class="token punctuation">[</span>prop<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>utils<span class="token punctuation">.</span><span class="token function">isUndefined</span><span class="token punctuation">(</span>config1<span class="token punctuation">[</span>prop<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    config<span class="token punctuation">[</span>prop<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">getMergedValue</span><span class="token punctuation">(</span><span class="token keyword">undefined</span><span class="token punctuation">,</span> config1<span class="token punctuation">[</span>prop<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 
 <p>　　对于除这三种属性之外的其他属性，当做第二种属性处理，通过<code>mergeDeepProperties</code>函数进行整合。</p>
-<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> axiosKeys = valueFromConfig2Keys<br>  .concat(mergeDeepPropertiesKeys)<br>  .concat(defaultToConfig2Keys)<br>  .concat(directMergeKeys);<br><br><span class="hljs-comment">//获取不在上述三种属性的中的其他属性的数组</span><br><span class="hljs-keyword">var</span> otherKeys = <span class="hljs-built_in">Object</span><br>  .keys(config1)<br>  .concat(<span class="hljs-built_in">Object</span>.keys(config2))<br>  .filter(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">filterAxiosKeys</span>(<span class="hljs-params">key</span>) </span>&#123;<br>    <span class="hljs-keyword">return</span> axiosKeys.indexOf(key) === -<span class="hljs-number">1</span>;<br>  &#125;);<br><br>utils.forEach(otherKeys, mergeDeepProperties);<br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> axiosKeys <span class="token operator">=</span> valueFromConfig2Keys
+  <span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>mergeDeepPropertiesKeys<span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>defaultToConfig2Keys<span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>directMergeKeys<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">//获取不在上述三种属性的中的其他属性的数组</span>
+<span class="token keyword">var</span> otherKeys <span class="token operator">=</span> Object
+  <span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>config1<span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>config2<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token function">filterAxiosKeys</span><span class="token punctuation">(</span><span class="token parameter">key</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> axiosKeys<span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+utils<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>otherKeys<span class="token punctuation">,</span> mergeDeepProperties<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
 
 
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　axios的源码还是有很多的地方值得我们来深入学习的，比如工具函数和它如何构造实例等；我们根据axios的多种请求方式，找到了它在构造实例时巧妙的绑定方式来实现多种请求的调用，构造实例后就需要将用户传入的配置和默认的配置进行整合起来；在下一篇文章中我们会了解axios是如何使用整合后的配置来通过适配器发起请求的。</p>
 
-            </div>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
-                    
-                      <a class="hover-with-bg" href="/tags/SourceCode/">源码</a>
-                    
-                  </div>
                 
               </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/programing/" class="category-chain-item">编程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/FrontEnd/" class="print-no-link">#前端</a>
+      
+        <a href="/tags/SourceCode/" class="print-no-link">#源码</a>
+      
+    </div>
+  
+</div>
+
+
               
-                <p class="note note-warning">
-                  
-                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
-                  
-                </p>
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>深入学习Axios源码（构建配置）</div>
+      <div>https://xieyufei.com/2020/07/18/Axios-One.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Corner</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年7月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
               
               
-                <div class="post-prevnext">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/07/30/Webpack-Optimize.html">
+                      <a href="/2020/07/30/Webpack-Optimize.html" title="Webpack配置全解析（优化篇）">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">Webpack配置全解析（优化篇）</span>
                         <span class="visible-mobile">上一篇</span>
@@ -441,7 +1534,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/07/10/Line-Gradient.html">
+                      <a href="/2020/07/10/Line-Gradient.html" title="深入理解linear-gradient">
                         <span class="hidden-mobile">深入理解linear-gradient</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -453,55 +1546,95 @@
             </div>
 
             
-              <!-- Comments -->
-              <article class="comments" id="comments" lazyload>
-                
-                  
-                
-                
+  
+  
+    <article id="comments" lazyload>
+      
   <div id="waline"></div>
   <script type="text/javascript">
     Fluid.utils.loadComments('#waline', function() {
-      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+      Fluid.utils.createCssLink('https://xieyufei.com/npm/waline@2.15.5/waline.min.css')
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@2.15.5/waline.min.js', function() {
         var options = Object.assign(
-          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"你认为这篇文章怎么样？","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
           {
             el: '#waline',
             path: window.location.pathname
           }
         )
-        new Waline(options);
+        Waline.init(options);
+        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
+          var imgSelector = '#waline .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
       });
     });
   </script>
   <noscript>Please enable JavaScript to view the comments</noscript>
 
 
-              </article>
-            
+    </article>
+  
+
+
           </article>
         </div>
       </div>
     </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
-      </div>
-    
+
+
+  </aside>
+
+
+    </div>
   </div>
 </div>
 
-<!-- Custom -->
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
 
 
     
 
     
-      <a id="scroll-top-button" href="#" role="button">
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
     
@@ -520,45 +1653,62 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
     </div>
   </div>
 </div>
+
     
 
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
-  <div class="footer-content">
-     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
-  </div>
+  <footer>
+    <div class="footer-inner">
   
-
+    <div class="footer-content">
+       <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
   
-  <!-- 备案信息 -->
-  <div class="beian">
-    <span>
-      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
-        苏ICP备19064103号-1
-      </a>
-    </span>
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      苏ICP备19064103号-1
+    </a>
+  </span>
+  
     
-  </div>
-
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=19064103"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>苏ICP备19064103号-1</span>
+        </a>
+      </span>
+    
+  
+</div>
 
   
-    <!-- cnzz Analytics Icon -->
-    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
   
-</footer>
+</div>
 
+  </footer>
 
-  <!-- SCRIPTS -->
+  <!-- Scripts -->
   
   <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
   <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
@@ -577,7 +1727,23 @@
 <script  src="/js/events.js" ></script>
 <script  src="/js/plugins.js" ></script>
 
-<!-- Plugins -->
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
 
 
   
@@ -586,25 +1752,101 @@
 
 
 
+
   
+<script>
+  Fluid.utils.createScript('https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
 
 
+  <script  src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
-  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+  <script src=https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js></script>
 
-
-
-  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
-
+  <script>Fluid.plugins.codeWidget();</script>
 
 
-  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+  
+<script>
+  Fluid.utils.createScript('https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
 
 
+  
+<script>
+  Fluid.utils.createScript('https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
 
-  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
 
-
+  <script>Fluid.plugins.imageCaption();</script>
 
   <script  src="/js/local-search.js" ></script>
 
@@ -612,63 +1854,15 @@
 
 
 
-
-  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var title = document.getElementById('subtitle').title;
-      
-      typing(title)
-      
-    })(window, document);
-  </script>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-    <!-- Baidu Analytics -->
-    <script defer>
-      var _hmt = _hmt || [];
-      (function () {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();
-    </script>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    <!-- cnzz Analytics -->
-    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
-            type="text/javascript"></script>
-  
-
-
-
-
-
-<!-- 主题的启动项 保持在最底部 -->
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
 <script  src="/js/boot.js" ></script>
 
 
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
 </body>
 </html>
