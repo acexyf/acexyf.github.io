@@ -271,16 +271,16 @@
 </ul>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">后缀名            MIME名称<br>*.3gpp      audio/3gpp, video/3gpp<br>*.ac3       audio/ac3<br>*.asf       allpication/vnd.ms-asf<br>*.au        audio/basic<br>*.css       text/css<br>*.csv       text/csv<br>*.doc       application/msword    <br>*.dot       application/msword    <br>*.dtd       application/xml-dtd    <br>*.dwg       image/vnd.dwg    <br>*.dxf       image/vnd.dxf<br>*.gif       image/gif    <br>*.htm       text/html    <br>*.html      text/html    <br>*.jp2       image/jp2    <br>*.jpe       image/jpeg<br>*.jpeg      image/jpeg<br>*.jpg       image/jpeg    <br>*.js        text/javascript, application/javascript    <br>*.json      application/json    <br>*.mp2       audio/mpeg, video/mpeg    <br>*.mp3       audio/mpeg    <br>*.mp4       audio/mp4, video/mp4    <br>*.mpeg      video/mpeg    <br>*.mpg       video/mpeg    <br>*.mpp       application/vnd.ms-project    <br>*.ogg       application/ogg, audio/ogg    <br>*.pdf       application/pdf    <br>*.png       image/png    <br>*.pot       application/vnd.ms-powerpoint    <br>*.pps       application/vnd.ms-powerpoint    <br>*.ppt       application/vnd.ms-powerpoint    <br>*.rtf       application/rtf, text/rtf    <br>*.svf       image/vnd.svf    <br>*.tif       image/tiff    <br>*.tiff      image/tiff    <br>*.txt       text/plain    <br>*.wdb       application/vnd.ms-works    <br>*.wps       application/vnd.ms-works    <br>*.xhtml     application/xhtml+xml    <br>*.xlc       application/vnd.ms-excel    <br>*.xlm       application/vnd.ms-excel    <br>*.xls       application/vnd.ms-excel    <br>*.xlt       application/vnd.ms-excel    <br>*.xlw       application/vnd.ms-excel    <br>*.xml       text/xml, application/xml    <br>*.zip       aplication/zip    <br>*.xlsx      application/vnd.openxmlformats-officedocument.spreadsheetml.sheet<br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　但是在开发时，我们习惯把accept设置为<code>image/*</code>来过滤所有非图片的文件。虽然这种方式简单粗暴，但是在新版本的chrome中，会出现点击input之后，文件选择框弹出非常慢的问题。将<code>accept=&quot;image/*&quot;</code>改为指定的图片格式，比如指定几种常用格式，就能解决这个问题。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;file&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;file&quot;</span> <span class="hljs-attr">accept</span>=<span class="hljs-string">&quot;image/jpg,image/jpeg,image/png,image/gif&quot;</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
 
 <h3 id="文件读取"><a href="#文件读取" class="headerlink" title="文件读取"></a>文件读取</h3><p>　　在input选取文件后，我们可以监听chang事件来获取所选取的文件。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">$(<span class="hljs-string">&#x27;input&#x27;</span>).on(<span class="hljs-string">&#x27;change&#x27;</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;<br>  <span class="hljs-keyword">if</span>(<span class="hljs-built_in">this</span>.files &amp;&amp; <span class="hljs-built_in">this</span>.files.length&gt;<span class="hljs-number">0</span>)&#123;<br>    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.files);<br>  &#125;<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 <p>　　这里获取到的this.files是一个FileList对象，也是一个类数组对象，可以通过this.files[index]来获取每一个文件。</p>
 <p><img src="/images/Project-Summary/select-files.png" srcset="/img/loading.gif" lazyload alt="select-files"></p>
-<p>　　这个数组对象中的每个对象有以下几个属性：</p>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　这个数组对象中的每个对象有以下几个属性：</p>
 <ul>
 <li>lastModified:上次修改时间的时间戳</li>
 <li>lastModifiedDate:上次修改时间的日期</li>
@@ -288,41 +288,38 @@
 <li>size:文件大小</li>
 <li>type:文件类型</li>
 <li>webkitRelativePath:</li>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 </ul>
 <p>　　在获取到文件后，我们可以根据type和size对文件的类型和大小进行过滤匹配。匹配后需要对文件的内容进行读取。HTML5定义了一个FileReader对象用来读取文件。FileReader使用方式也非常简单，需要创建FileReader对象并调用方法。</p>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">if</span>(<span class="hljs-built_in">window</span>.FileReader)&#123;<br>  <span class="hljs-keyword">var</span> fileReader = <span class="hljs-keyword">new</span> FileReader();<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　FileReader的实例对象有4个方法，三个方法是用来读取文件的，还有一个方法用来中断读取。</p>
 <table>
 <thead>
 <tr>
 <th>方法</th>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <th>参数</th>
 <th>描述</th>
 </tr>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 </thead>
 <tbody><tr>
 <td>abort</td>
 <td>none</td>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <td>中断读取</td>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
 <tr>
 <td>readAsBinaryString</td>
 <td>file</td>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <td>将文件读取为二进制码</td>
 </tr>
 <tr>
 <td>readAsDataURL</td>
-<td>file</td>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>file</td>
 <td>将文件读取为 DataURL</td>
 </tr>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <tr>
 <td>readAsText</td>
 <td>file, [encoding]</td>
@@ -330,54 +327,55 @@
 </tr>
 </tbody></table>
 <p>　　readAsText主要用来读取文本文件的内容，readAsDataURL用来读取文件并将其转为DataUrl格式。FileReader还有一系列完整的事件函数，用来捕获读取文件时的状态。</p>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <table>
 <thead>
 <tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <th>事件</th>
 <th>描述</th>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
 </thead>
 <tbody><tr>
 <td>onabort</td>
 <td>中断时触发</td>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
 <tr>
 <td>onerror</td>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <td>出错时触发</td>
 </tr>
 <tr>
 <td>onload</td>
 <td>文件读取成功完成时触发</td>
-</tr>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</tr>
 <tr>
 <td>onloadend</td>
 <td>读取完成触发，无论成功或失败</td>
 </tr>
 <tr>
 <td>onloadstart</td>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <td>读取开始时触发</td>
 </tr>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <tr>
 <td>onprogress</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>读取中</td>
 </tr>
 </tbody></table>
 <p>　　文件一旦开始读取，无论成功或失败，实例的<code>result</code>属性都会被填充。如果读取失败，则<code>result</code>的值为 null，否则即是读取的结果，绝大多数的程序都会在成功读取文件的时候，抓取这个值。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> fileReader = <span class="hljs-keyword">new</span> FileReader();<br>fileReader.readAsDataURL(imgFile);<br>reader.onload = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) </span>&#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.result);<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　通过readAsDataURL来读取图片变成DataUrl格式。将其字符串嵌入到页面中，我们可以看到读取后的图片，通过这种方式实现选取图片后的预览效果。</p>
 <figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"> <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;data:image/gif;base64,R0lGODlhMwAxAIAAAAAAAP///</span></span><br><span class="hljs-string"><span class="hljs-tag">yH5BAAAAAAALAAAAAAzADEAAAK8jI+pBr0PowytzotTtbm/DTqQ6C3hGX</span></span><br><span class="hljs-string"><span class="hljs-tag">ElcraA9jIr66ozVpM3nseUvYP1UEHF0FUUHkNJxhLZfEJNvol06tzwrgd</span></span><br><span class="hljs-string"><span class="hljs-tag">LbXsFZYmSMPnHLB+zNJFbq15+SOf50+6rG7lKOjwV1ibGdhHYRVYVJ9Wn</span></span><br><span class="hljs-string"><span class="hljs-tag">k2HWtLdIWMSH9lfyODZoZTb4xdnpxQSEF9oyOWIqp6gaI9pI1Qo7BijbF</span></span><br><span class="hljs-string"><span class="hljs-tag">ZkoaAtEeiiLeKn72xM7vMZofJy8zJys2UxsCT3kO229LH1tXAAAOw==&quot;</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
 
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="base64方式上传"><a href="#base64方式上传" class="headerlink" title="base64方式上传"></a>base64方式上传</h2><p>　　在通过readAsDataURL方法读取到文件的DataUrl后，我们可以将这么长的字符串直接放到ajax中作为string类型发送到后台解析（建议使用post方式）。不过会有一定的局限性，就是如果文件很大，服务器可能会拒绝接受这么长的字符串。</p>
 <h2 id="FormData方式上传"><a href="#FormData方式上传" class="headerlink" title="FormData方式上传"></a>FormData方式上传</h2><p>　　FormData对象是HTML5新增的一个对象，目前一些主流的浏览器都已经兼容了，我们可以通过FormData来向服务器传递数据。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> formData = <span class="hljs-keyword">new</span> FormData();<br>formData.append(<span class="hljs-string">&#x27;username&#x27;</span>,<span class="hljs-string">&#x27;corner&#x27;</span>);<br>formData.append(<span class="hljs-string">&#x27;pwd&#x27;</span>,<span class="hljs-string">&#x27;corner&#x27;</span>);<br>$.ajax(&#123;<br>  <span class="hljs-attr">url</span>:<span class="hljs-string">&#x27;this is your url&#x27;</span>,<br>  <span class="hljs-attr">type</span>:<span class="hljs-string">&#x27;get&#x27;</span>,<br>  <span class="hljs-attr">data</span>:formData,<br>  <span class="hljs-attr">success</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)</span>&#123;<br>    <span class="hljs-built_in">console</span>.log(data);<br>  &#125;<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 <p>　　但是如果这样直接把FormData对象作为data数据来发送，浏览器会报一个非法调用的错误。<br><img src="/images/Project-Summary/error.png" srcset="/img/loading.gif" lazyload alt="error"><br>　　在发送FormData对象时，还需要给ajax加上另外两个属性：</p>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">$.ajax(&#123;<br>  <span class="hljs-attr">url</span>:<span class="hljs-string">&#x27;this is your url&#x27;</span>,<br>  <span class="hljs-attr">type</span>:<span class="hljs-string">&#x27;get&#x27;</span>,<br>  <span class="hljs-attr">data</span>:formData,<br>  <span class="hljs-attr">processData</span>:<span class="hljs-literal">false</span>,<br>  <span class="hljs-attr">contentType</span>:<span class="hljs-literal">false</span>,<br>  <span class="hljs-attr">success</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)</span>&#123;<br>    <span class="hljs-built_in">console</span>.log(data);<br>  &#125;<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 <p>　　jQuery在发送异步请求的时候会自动将data数据进行序列化处理，转化成key/value格式的字符串，加上<code>processData:false</code>说明禁止对数据进行序列化处理。contentType用来指定发送至服务器时的内容编码类型。<br>　　如果每个表单数据都需要使用append来添加就比较麻烦，FormData还支持直接从html中的表单生成数据，就是在html页面中已经有数据了，然后FormData可以直接把这个表单的数据写入这个对象，然后直接提交给后台。</p>
 <figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;form&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;file&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;img&quot;</span> <span class="hljs-attr">accept</span>=<span class="hljs-string">&quot;image/jpeg,image/jpg,image/png,image/gif&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;username&quot;</span>/&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;button&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submit&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;submit&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
@@ -397,8 +395,8 @@
 <h1 id="四、文件下载"><a href="#四、文件下载" class="headerlink" title="四、文件下载"></a>四、文件下载</h1><p>　　刚开始，笔者在页面上用jQuery的$.post方法发送一个请求给服务器，然后服务器根据这个参数再生成相应的一个文件流返回给客户端。但是，在$.post方法的回调函数中，只能处理xml, json, script, or html类型，对返回的文件流却没办法弹出对话框让用户下载了。经过百度，看到了很多人采用隐藏form提交的方式，再用response来推就可以。</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">exportRecord</span>(<span class="hljs-params">ajaxData</span>) </span>&#123;<br>  <span class="hljs-keyword">var</span> form = $(<span class="hljs-string">&quot;&lt;form&gt;&quot;</span>);<br>  form.attr(<span class="hljs-string">&#x27;style&#x27;</span>, <span class="hljs-string">&#x27;display:none&#x27;</span>);<br>  form.attr(<span class="hljs-string">&#x27;target&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>);<br>  form.attr(<span class="hljs-string">&#x27;method&#x27;</span>, ajaxData.method); <span class="hljs-comment">//请求方式</span><br>  form.attr(<span class="hljs-string">&#x27;action&#x27;</span>, ajaxData.url);<span class="hljs-comment">//请求地址</span><br>  <span class="hljs-keyword">var</span> input1 = $(<span class="hljs-string">&#x27;&lt;input&gt;&#x27;</span>);<span class="hljs-comment">//将你请求的数据模仿成一个input表单</span><br>  input1.attr(<span class="hljs-string">&#x27;type&#x27;</span>, <span class="hljs-string">&#x27;hidden&#x27;</span>);<br>  input1.attr(<span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>);<span class="hljs-comment">//该输入框的name</span><br>  input1.attr(<span class="hljs-string">&#x27;value&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>);<span class="hljs-comment">//该输入框的值value</span><br>  $(<span class="hljs-string">&#x27;body&#x27;</span>).append(form);<br>  form.append(input1);<br>  form.submit();<br>  form.remove();<br>&#125;<br></code></pre></div></td></tr></table></figure>
 <p>　　这种方法发出的请求格式类似于username=username&amp;password=password. 代码中的name就是请求中的key，代码中的value就是请求数据中的value</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
             </div>
             <hr>
             <div>
@@ -465,7 +463,7 @@
   <div id="waline"></div>
   <script type="text/javascript">
     Fluid.utils.loadComments('#waline', function() {
-      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@waline/client@0.16.2/dist/Waline.min.js', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@0.16.2/Waline.min.js', function() {
         var options = Object.assign(
           {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
           {

@@ -300,48 +300,46 @@
 <p>　　a最后被赋值为字符串，因此a的类型自然是字符串</p>
 <h1 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h1><h2 id="块级作用域"><a href="#块级作用域" class="headerlink" title="块级作用域"></a>块级作用域</h2><p>　　js中作用域只有一个函数作用域和全局作用域，一个很大的特点就是js中<strong>没有块级作用域</strong>。函数作用域是比较容易理解的，那么什么是块级作用域呢？</p>
 <blockquote>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p>任何一对花括号（｛和｝）中的语句集都属于一个块，在这之中定义的所有变量在代码块外都是不可见的，我们称之为块级作用域。</p>
 </blockquote>
 <p>　　理解了块级作用域，来看一下下面的小例子。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-built_in">console</span>.log(v); <span class="hljs-comment">//undefined</span><br><span class="hljs-keyword">var</span> v = <span class="hljs-string">&quot;world&quot;</span>;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　这段代码很好理解，由于变量v在没有赋值前使用了，所以是undefined。其实这里存在着声明的提前。</p>
 <blockquote>
 <p>当前作用域内的声明都会提升到作用域的最前面，包括变量和函数的声明</p>
-</blockquote>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</blockquote>
 <p>　　由于js作用域中的声明都会被提升到作用域的最前面，所以，上面的代码相当于：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> v;<br><span class="hljs-built_in">console</span>.log(v); <span class="hljs-comment">//undefined</span><br>v = <span class="hljs-string">&quot;world&quot;</span>;<br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　这样就能很清晰地理解为什么变量v是undefined的了。<br>　　下面我们把变量v放到一个方法中去：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">if</span>(<span class="hljs-literal">true</span>)&#123;<br>  <span class="hljs-keyword">var</span> v = <span class="hljs-string">&quot;hello&quot;</span>;<br>&#125;<br><span class="hljs-built_in">console</span>.log(v); <span class="hljs-comment">//hello</span><br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　在这里由于js没有块级作用域，所以if方法没有“形成”一个封闭的作用域，并不能够“阻挡”外面的代码获取里面的变量。</p>
 <h2 id="函数作用域"><a href="#函数作用域" class="headerlink" title="函数作用域"></a>函数作用域</h2><p>　　我们再把变量v放到函数中去：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">show</span>(<span class="hljs-params"></span>)</span>&#123;<br>  <span class="hljs-keyword">var</span> v=<span class="hljs-string">&#x27;world&#x27;</span>;<br>&#125;<br>show();<br><span class="hljs-built_in">console</span>.log(v); <span class="hljs-comment">//undefined</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　由于show函数是一个函数作用域，“阻挡”外面的代码获取里面变量（并不能阻挡里面的代码获取外面的变量），所以函数外部并不能获取到函数里面的变量v。因此证明了js中只有函数作用域，没有块级作用域。<br>　　再来看下面的一段代码：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> v=<span class="hljs-string">&#x27;hello&#x27;</span>;<br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">show</span>(<span class="hljs-params"></span>)</span>&#123;<br>  <span class="hljs-built_in">console</span>.log(v); <span class="hljs-comment">//undefined</span><br>  <span class="hljs-keyword">var</span> v=<span class="hljs-string">&#x27;world&#x27;</span>;<br>&#125;<br>show();<br></code></pre></div></td></tr></table></figure>
 
 <p>　　很多人看到这边都会很疑惑，不是说这边show函数中能够获取到函数外面的变量的么？但是由于这边是一个函数作用域，而函数作用域存在着变量声明的提前，因此，上面的代码相当于下面的代码：</p>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> v=<span class="hljs-string">&#x27;hello&#x27;</span>;<br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">show</span>(<span class="hljs-params"></span>)</span>&#123;<br>	<span class="hljs-keyword">var</span> v;<br>	<span class="hljs-built_in">console</span>.log(v); <span class="hljs-comment">//undefined</span><br>	v=<span class="hljs-string">&#x27;world&#x27;</span>;<br>&#125;<br>show();<br></code></pre></div></td></tr></table></figure>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　这里把变量v的声明放到了整个函数作用域的最前面，因此显示为undefined。理解了上面的代码，相信下面的代码也不难理解了。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> v = <span class="hljs-string">&quot;hello&quot;</span>;<br>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;<br>  <span class="hljs-built_in">console</span>.log(v);<br>  <span class="hljs-keyword">var</span> v = <span class="hljs-string">&quot;world&quot;</span>;<br>&#125;)();<br></code></pre></div></td></tr></table></figure>
 
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　在这里自执行函数形成了函数作用域</p>
 <h2 id="需要注意的是"><a href="#需要注意的是" class="headerlink" title="需要注意的是"></a>需要注意的是</h2><blockquote>
 <p>变量提升只提升函数的声明，并不提升函数的定义</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </blockquote>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">show(); <span class="hljs-comment">//show is not a function</span><br><span class="hljs-keyword">var</span> show=<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;<br>	<span class="hljs-comment">//...</span><br>&#125;<br>show(); <span class="hljs-comment">//成功运行</span><br></code></pre></div></td></tr></table></figure>
 
 <p>　　或许有人有疑问，为什么这边定义的函数就不能执行呢？在这里我们需要明白函数在js中是如何进行定义的。函数有两种定义方式，一种是函数声明，另一种是函数表达式。那么什么是函数声明什么是函数表达式呢？</p>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">//函数声明</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">show</span>(<span class="hljs-params"></span>)</span>&#123;<br>	<span class="hljs-comment">//....</span><br>&#125;<br><span class="hljs-comment">//函数表达式</span><br><span class="hljs-keyword">var</span> show=<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;<br>	<span class="hljs-comment">//...</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
 
 <p>　　乍一看，他们长得很像，写法都差不多，但是实际上还是有区别的。js的解析器对函数声明和函数表达式并不是一视同仁的对待的，有点“种族歧视”的意思在里面。<br>　　函数声明就像是“一等公民”，js会优先读取，确保在执行前就已经被解析了，所以函数声明放在当前作用域的任何地方都能够被调用，甚至放到调用函数声明之后面。<br>　　而函数表达式就显得比较“普通”，和一般的变量一样，只有到执行到该行时才进行解析，因此，调用函数表达式要在定义后进行使用。</p>
@@ -415,7 +413,7 @@
   <div id="waline"></div>
   <script type="text/javascript">
     Fluid.utils.loadComments('#waline', function() {
-      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@waline/client@0.16.2/dist/Waline.min.js', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@0.16.2/Waline.min.js', function() {
         var options = Object.assign(
           {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
           {
