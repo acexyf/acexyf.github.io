@@ -1,7 +1,10 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+<script>var WM_MONITOR_ID="08649f0f-ef43-4f12-96c3-1872e2d59445";var WM_MONITOR_HOST="web-monitor.boeet.com.cn";</script>
+<script src="https://web-monitor.boeet.com.cn/public/bundle.js"></script>
 
 
 
@@ -9,102 +12,67 @@
   <meta charset="UTF-8">
   <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
   <link rel="icon" href="/img/favicon.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　Threejs中海天一色的效果是比较壮观好玩的，本文我们就学习一下如何一步步实现该效果，同时也能深入理解着色器中的Uniforms参数的作用和归一化的原理及效果。">
   <meta name="author" content="Corner">
   <meta name="keywords" content="Corner">
-  
-    <meta name="description" content="Threejs中海天一色的效果是比较壮观好玩的，本文我们就学习一下如何一步步实现该效果，同时也能深入理解着色器中的Uniforms参数的作用和归一化的原理及效果。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Threejs海水效果学习">
-<meta property="og:url" content="https://xieyufei.com/2024/01/30/Threejs-Ocean.html">
-<meta property="og:site_name" content="谢小飞的博客">
-<meta property="og:description" content="Threejs中海天一色的效果是比较壮观好玩的，本文我们就学习一下如何一步步实现该效果，同时也能深入理解着色器中的Uniforms参数的作用和归一化的原理及效果。">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://xieyufei.com/images/Threejs-Ocean/logo.png">
-<meta property="article:published_time" content="2024-01-30T12:12:00.000Z">
-<meta property="article:modified_time" content="2024-01-30T05:51:35.395Z">
-<meta property="article:author" content="Corner">
-<meta property="article:tag" content="前端">
-<meta property="article:tag" content="Threejs">
-<meta property="article:tag" content="动画">
-<meta property="article:tag" content="图形化">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://xieyufei.com/images/Threejs-Ocean/logo.png">
-  
-  
   
   <title>Threejs海水效果学习 - 谢小飞的博客</title>
 
   <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
 
 
-
   <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
 
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.min.css" />
-
-  <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
 
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
-
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
 
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
 
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
-
+<!-- 自定义样式保持在最底部 -->
 
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"JAVASCRIPT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
-    }
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-  
-
-
-  
 <meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
 </head>
 
 
 <body>
-  
-
-  <header>
-    
-
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>谢小飞的博客</strong>
-    </a>
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -121,9 +89,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/" target="_self">
+              <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                <span>首页</span>
+                首页
               </a>
             </li>
           
@@ -133,9 +101,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/" target="_self">
+              <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>归档</span>
+                归档
               </a>
             </li>
           
@@ -145,9 +113,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/" target="_self">
+              <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                <span>分类</span>
+                分类
               </a>
             </li>
           
@@ -157,9 +125,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/" target="_self">
+              <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>标签</span>
+                标签
               </a>
             </li>
           
@@ -169,9 +137,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/" target="_self">
+              <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
-                <span>关于</span>
+                关于
               </a>
             </li>
           
@@ -181,9 +149,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/" target="_self">
+              <a class="nav-link" href="/links/">
                 <i class="iconfont icon-link-fill"></i>
-                <span>友链</span>
+                友链
               </a>
             </li>
           
@@ -193,26 +161,23 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="https://gallery.xieyufei.com/" target="_self">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
                 <i class="iconfont icon-link-fill"></i>
-                <span>创意</span>
+                创意
               </a>
             </li>
           
         
         
           <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              <i class="iconfont icon-search"></i>
-            </a>
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
           </li>
-          
         
         
           <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
-              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
-            </a>
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
@@ -220,69 +185,60 @@
   </div>
 </nav>
 
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Threejs海水效果学习">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-01-30 20:12" pubdate>
+        2024年1月30日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.9k 字
+    </span>
   
 
-<div id="banner" class="banner" parallax=true
-     style="background: url('/img/bg_small.jpg') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="Threejs海水效果学习"></span>
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      49
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
           
         </div>
-
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-01-30 20:12" pubdate>
-          2024年1月30日 晚上
-        </time>
-      </span>
-    
-  </div>
-
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          3.7k 字
-        
-      </span>
-    
-
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          32 分钟
-        
-      </span>
-    
-
-    
-    
-  </div>
-
-
-        
       </div>
-
-      
     </div>
-  </div>
-</div>
-
-</div>
-
   </header>
 
   <main>
@@ -295,777 +251,41 @@
 </style>
 <div class="container-fluid nopadding-x">
   <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-
-    </div>
-
+    <div class="d-none d-lg-block col-lg-2"></div>
     <div class="col-lg-8 nopadding-x-md">
       <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
+        <div class="py-5" id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Threejs海水效果学习</h1>
+            <!-- SEO header -->
+            <h1 style="display: none">Threejs海水效果学习</h1>
             
-            
-              <div class="markdown-body">
-
-<!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
-
-<head>
-  <meta charset="UTF-8">
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
-  <link rel="icon" href="/img/favicon.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="Corner">
-  <meta name="keywords" content="Corner">
-  
-    <meta name="description" content="Threejs中海天一色的效果是比较壮观好玩的，本文我们就学习一下如何一步步实现该效果，同时也能深入理解着色器中的Uniforms参数的作用和归一化的原理及效果。">
-<meta property="og:type" content="article">
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-<meta property="og:title" content="Threejs海水效果学习">
-<meta property="og:url" content="https://xieyufei.com/2024/01/30/Threejs-Ocean.html">
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-<meta property="og:site_name" content="谢小飞的博客">
-<meta property="og:description" content="Threejs中海天一色的效果是比较壮观好玩的，本文我们就学习一下如何一步步实现该效果，同时也能深入理解着色器中的Uniforms参数的作用和归一化的原理及效果。">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://xieyufei.com/images/Threejs-Ocean/logo.png">
-<meta property="article:published_time" content="2024-01-30T12:12:00.000Z">
-<meta property="article:modified_time" content="2024-01-30T05:51:35.395Z">
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-<meta property="article:author" content="Corner">
-<meta property="article:tag" content="前端">
-<meta property="article:tag" content="Threejs">
-<meta property="article:tag" content="动画">
-<meta property="article:tag" content="图形化">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://xieyufei.com/images/Threejs-Ocean/logo.png">
-  
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-  
-  
-  <title>Threejs海水效果学习 - 谢小飞的博客</title>
-
-  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
-
-
-
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.min.css" />
-
-  <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"JAVASCRIPT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
-
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
-    }
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-  
-
-
-  
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
-</head>
-
-
-<body>
-  
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-
-  <header>
-    
-
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>谢小飞的博客</strong>
-    </a>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/" target="_self">
-                <i class="iconfont icon-home-fill"></i>
-                <span>首页</span>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/" target="_self">
-                <i class="iconfont icon-archive-fill"></i>
-                <span>归档</span>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>分类</span>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-              </a>
-            </li>
-          
-        
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/" target="_self">
-                <i class="iconfont icon-tags-fill"></i>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-                <span>标签</span>
-              </a>
-            </li>
-          
-        
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/" target="_self">
-                <i class="iconfont icon-user-fill"></i>
-                <span>关于</span>
-              </a>
-            </li>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-          
-        
-          
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-          
-          
-          
-            <li class="nav-item">
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-              <a class="nav-link" href="/links/" target="_self">
-                <i class="iconfont icon-link-fill"></i>
-                <span>友链</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-          
-            <li class="nav-item">
-              <a class="nav-link" href="https://gallery.xieyufei.com/" target="_self">
-                <i class="iconfont icon-link-fill"></i>
-                <span>创意</span>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              <i class="iconfont icon-search"></i>
-            </a>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-          </li>
-          
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-        
-        
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
-              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
-            </a>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-  
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/img/bg_small.jpg') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-            <span id="subtitle" data-typed-text="Threejs海水效果学习"></span>
-          
-        </div>
-
-        
-          
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-01-30 20:12" pubdate>
-          2024年1月30日 晚上
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-        </time>
-      </span>
-    
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-  </div>
-
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-        <i class="iconfont icon-chart"></i>
-        
-          3.7k 字
-        
-      </span>
-    
-
-    
-      <span class="post-meta mr-2">
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          32 分钟
-        
-      </span>
-    
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-
-    
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-    
-  </div>
-
-
-        
-      </div>
-
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-      
-    </div>
-  </div>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-</div>
-
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-</div>
-
-  </header>
-
-  <main>
-    
-      
-<style>
-  .prevent_reptile{
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-    display: none;
-  }
-</style>
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-            <h1 id="seo-header">Threejs海水效果学习</h1>
-            
-            
-              <div class="markdown-body">
-
-<!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
-
-<head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
-  <link rel="icon" href="/img/favicon.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="Corner">
-  <meta name="keywords" content="Corner">
-  
-    <meta name="description" content="Threejs中海天一色的效果是比较壮观好玩的，本文我们就学习一下如何一步步实现该效果，同时也能深入理解着色器中的Uniforms参数的作用和归一化的原理及效果。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Threejs海水效果学习">
-<meta property="og:url" content="https://xieyufei.com/2024/01/30/Threejs-Ocean.html">
-<meta property="og:site_name" content="谢小飞的博客">
-<meta property="og:description" content="Threejs中海天一色的效果是比较壮观好玩的，本文我们就学习一下如何一步步实现该效果，同时也能深入理解着色器中的Uniforms参数的作用和归一化的原理及效果。">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://xieyufei.com/images/Threejs-Ocean/logo.png">
-<meta property="article:published_time" content="2024-01-30T12:12:00.000Z">
-<meta property="article:modified_time" content="2024-01-30T05:51:35.395Z">
-<meta property="article:author" content="Corner">
-<meta property="article:tag" content="前端">
-<meta property="article:tag" content="Threejs">
-<meta property="article:tag" content="动画">
-<meta property="article:tag" content="图形化">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://xieyufei.com/images/Threejs-Ocean/logo.png">
-  
-  
-  
-  <title>Threejs海水效果学习 - 谢小飞的博客</title>
-
-  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.min.css" />
-
-  <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"JAVASCRIPT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
-    }
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-  
-
-
-  
-<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
-</head>
-
-
-<body>
-  
-
-  <header>
-    
-
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>谢小飞的博客</strong>
-    </a>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/" target="_self">
-                <i class="iconfont icon-home-fill"></i>
-                <span>首页</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/" target="_self">
-                <i class="iconfont icon-archive-fill"></i>
-                <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>分类</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/" target="_self">
-                <i class="iconfont icon-tags-fill"></i>
-                <span>标签</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/" target="_self">
-                <i class="iconfont icon-user-fill"></i>
-                <span>关于</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/links/" target="_self">
-                <i class="iconfont icon-link-fill"></i>
-                <span>友链</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="https://gallery.xieyufei.com/" target="_self">
-                <i class="iconfont icon-link-fill"></i>
-                <span>创意</span>
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              <i class="iconfont icon-search"></i>
-            </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
-              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
-            </a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/img/bg_small.jpg') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="Threejs海水效果学习"></span>
-          
-        </div>
-
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-01-30 20:12" pubdate>
-          2024年1月30日 晚上
-        </time>
-      </span>
-    
-  </div>
-
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          3.7k 字
-        
-      </span>
-    
-
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          32 分钟
-        
-      </span>
-    
-
-    
-    
-  </div>
-
-
-        
-      </div>
-
-      
-    </div>
-  </div>
-</div>
-
-</div>
-
-  </header>
-
-  <main>
-    
-      
-<style>
-  .prevent_reptile{
-    display: none;
-  }
-</style>
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <h1 id="seo-header">Threejs海水效果学习</h1>
-            
-            
-              <div class="markdown-body">
-                
-                <p>　　Threejs中海天一色的效果是比较壮观好玩的，本文我们就学习一下如何一步步实现该效果，同时也能深入理解着色器中的Uniforms参数的作用和归一化的原理及效果。</p>
+            <div class="markdown-body">
+              <p>　　Threejs中海天一色的效果是比较壮观好玩的，本文我们就学习一下如何一步步实现该效果，同时也能深入理解着色器中的Uniforms参数的作用和归一化的原理及效果。</p>
 <span id="more"></span>
 
 
 <h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h1><p>　　首先我们搭建Threejs的基本环境，我们将初始化的元素都封装到一个类中；在使用时，直接初始化类即可：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Index</span> <span class="token punctuation">&#123;</span>
-  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">// 初始化场景</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>scene <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Scene</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token comment">// 初始化相机</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>camera <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PerspectiveCamera</span><span class="token punctuation">(</span>
-      <span class="token number">55</span><span class="token punctuation">,</span>
-      window<span class="token punctuation">.</span>innerWidth <span class="token operator">/</span> window<span class="token punctuation">.</span>innerHeight<span class="token punctuation">,</span>
-      <span class="token number">1</span><span class="token punctuation">,</span>
-      <span class="token number">20000</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>camera<span class="token punctuation">.</span>position<span class="token punctuation">.</span><span class="token function">copy</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>camera<span class="token punctuation">.</span><span class="token function">lookAt</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">this</span><span class="token punctuation">.</span>renderer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WebGLRenderer</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-      <span class="token comment">//开启抗锯齿</span>
-      <span class="token literal-property property">antialias</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-      <span class="token literal-property property">physicallyCorrectLights</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>renderer<span class="token punctuation">.</span><span class="token function">setSize</span><span class="token punctuation">(</span>window<span class="token punctuation">.</span>innerWidth<span class="token punctuation">,</span> window<span class="token punctuation">.</span>innerHeight<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>renderer<span class="token punctuation">.</span><span class="token function">setPixelRatio</span><span class="token punctuation">(</span>window<span class="token punctuation">.</span>devicePixelRatio <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">"webgl-output"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span>renderer<span class="token punctuation">.</span>domElement<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">this</span><span class="token punctuation">.</span>scene<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">AxesHelper</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">this</span><span class="token punctuation">.</span>controls <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OrbitControls</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>camera<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>renderer<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>controls<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>clock<span class="token punctuation">.</span><span class="token function">getDelta</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">this</span><span class="token punctuation">.</span>renderer<span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>scene<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>camera<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 初始化场景</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Scene</span>();<br><br>    <span class="hljs-comment">// 初始化相机</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PerspectiveCamera</span>(<br>      <span class="hljs-number">55</span>,<br>      <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerWidth</span> / <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerHeight</span>,<br>      <span class="hljs-number">1</span>,<br>      <span class="hljs-number">20000</span><br>    );<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>.<span class="hljs-property">position</span>.<span class="hljs-title function_">copy</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Vector3</span>(<span class="hljs-number">30</span>, <span class="hljs-number">30</span>, <span class="hljs-number">100</span>));<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>.<span class="hljs-title function_">lookAt</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Vector3</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>));<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebGLRenderer</span>(&#123;<br>      <span class="hljs-comment">//开启抗锯齿</span><br>      <span class="hljs-attr">antialias</span>: <span class="hljs-literal">true</span>,<br>      <span class="hljs-attr">physicallyCorrectLights</span>: <span class="hljs-literal">true</span>,<br>    &#125;);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-title function_">setSize</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">innerWidth</span>, <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerHeight</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-title function_">setPixelRatio</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">devicePixelRatio</span> * <span class="hljs-number">2</span>);<br>    <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;webgl-output&quot;</span>).<span class="hljs-title function_">appendChild</span>(renderer.<span class="hljs-property">domElement</span>);<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">AxesHelper</span>(<span class="hljs-number">10</span>));<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">controls</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">OrbitControls</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>, <span class="hljs-literal">false</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">render</span>();<br>  &#125;<br>  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">controls</span>.<span class="hljs-title function_">update</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">clock</span>.<span class="hljs-title function_">getDelta</span>());<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-title function_">render</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>);<br>    <span class="hljs-title function_">requestAnimationFrame</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">render</span>.<span class="hljs-title function_">bind</span>(<span class="hljs-variable language_">this</span>));<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
 
 
 <p>　　代码比较多，这里主要就是搭建了场景、相机、渲染器、轨道控制器等基本的Threejs元素，实现一个Three画布中该有的元素；然后把我们的类放到页面中初始化；在vue中，我们可以放到onMounted钩子函数中执行：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;template&gt;
-  &lt;div id&#x3D;&quot;webgl-output&quot;&gt;&lt;&#x2F;div&gt;
-&lt;&#x2F;template&gt;
-&lt;script setup&gt;
-import &#123; onMounted &#125; from &quot;vue&quot;;
-import Ocean from &quot;.&#x2F;index&quot;;
-onMounted(() &#x3D;&gt; &#123;
-  new Ocean();
-&#125;);
-&lt;&#x2F;script&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vue">&lt;template&gt;<br>  &lt;div id=&quot;webgl-output&quot;&gt;&lt;/div&gt;<br>&lt;/template&gt;<br>&lt;script setup&gt;<br>import &#123; onMounted &#125; from &quot;vue&quot;;<br>import Ocean from &quot;./index&quot;;<br>onMounted(() =&gt; &#123;<br>  new Ocean();<br>&#125;);<br>&lt;/script&gt;<br></code></pre></div></td></tr></table></figure>
 
 
 <p>　　这个时候，我们只要一改变页面的宽高大小，我们的画布由于没有及时更新，就会出现空白的区域；我们在构造函数中绑定页面大小监听事件，重新更新renderer和相机：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Index</span> <span class="token punctuation">&#123;</span>
-  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>_resizeFn <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">resizeFn</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"resize"</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>_resizeFn<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-  <span class="token function">resizeFn</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>renderer<span class="token punctuation">.</span><span class="token function">setSize</span><span class="token punctuation">(</span>window<span class="token punctuation">.</span>innerWidth<span class="token punctuation">,</span> window<span class="token punctuation">.</span>innerHeight<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>camera<span class="token punctuation">.</span>aspect <span class="token operator">=</span> window<span class="token punctuation">.</span>innerWidth <span class="token operator">/</span> window<span class="token punctuation">.</span>innerHeight<span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>camera<span class="token punctuation">.</span><span class="token function">updateProjectionMatrix</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-  <span class="token function">beforeDestroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    window<span class="token punctuation">.</span><span class="token function">removeEventListener</span><span class="token punctuation">(</span><span class="token string">"resize"</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>_resizeFn<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">_resizeFn</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">resizeFn</span>.<span class="hljs-title function_">bind</span>(<span class="hljs-variable language_">this</span>);<br>    <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;resize&quot;</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">_resizeFn</span>);<br>  &#125;<br>  <span class="hljs-title function_">resizeFn</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-title function_">setSize</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">innerWidth</span>, <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerHeight</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>.<span class="hljs-property">aspect</span> = <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerWidth</span> / <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerHeight</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>.<span class="hljs-title function_">updateProjectionMatrix</span>();<br>  &#125;<br>  <span class="hljs-title function_">beforeDestroy</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">removeEventListener</span>(<span class="hljs-string">&quot;resize&quot;</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">_resizeFn</span>);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
 
 <p>　　在vue中，页面unmount时调用beforeDestroy函数，解除监听事件：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">let</span> ocean<span class="token punctuation">;</span>
-<span class="token function">onMounted</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-  ocean <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Ocean</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token function">onBeforeUnmount</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-  ocean <span class="token operator">&amp;&amp;</span> ocean<span class="token punctuation">.</span><span class="token function">beforeDestroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> ocean;<br><span class="hljs-title function_">onMounted</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>  ocean = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Ocean</span>();<br>&#125;);<br><span class="hljs-title function_">onBeforeUnmount</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>  ocean &amp;&amp; ocean.<span class="hljs-title function_">beforeDestroy</span>();<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 
 
 <h1 id="添加物体"><a href="#添加物体" class="headerlink" title="添加物体"></a>添加物体</h1><p>　　环境初步搭建好后，我们就可以向画布上添加物体了，这里我们具体来学习水Water、天空Sky等物体的使用方式。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h2 id="添加海水"><a href="#添加海水" class="headerlink" title="添加海水"></a>添加海水</h2><p>　　这里我们需要从<a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js.git">Three.js源码</a>中获取一个法线贴图，拷贝到我们项目public目录：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">$ cp three.js&#x2F;examples&#x2F;textures&#x2F;waternormals.jpg demos&#x2F;public&#x2F;textures&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ cp three.js/examples/textures/waternormals.jpg demos/public/textures/<br></code></pre></div></td></tr></table></figure>
 
 
 <blockquote>
@@ -1074,100 +294,44 @@ onMounted(() &#x3D;&gt; &#123;
 <blockquote>
 <p>法线贴图也广泛应用于游戏开发、动画制作、虚拟现实等领域，以提供更逼真和优化的视觉体验。</p>
 </blockquote>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　我们打开复制法线贴图看一下，是一张偏蓝紫色的图片；</p>
 <p><img src="/images/Threejs-Ocean/normal.png" srcset="/img/loading.gif" lazyload alt="法线贴图"></p>
 <p>　　通过水面的法线贴图，我们就可以模拟水面的波纹效果以及太阳光的照射效果了；我们从threejs中引入<code>Water</code>类，构建水平面物体：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Water <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"three/examples/jsm/objects/Water"</span><span class="token punctuation">;</span>
-<span class="token keyword">class</span> <span class="token class-name">Index</span> <span class="token punctuation">&#123;</span>
-  <span class="token function">initMeshes</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>water <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Water</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">PlaneGeometry</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">,</span> <span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
-      <span class="token literal-property property">textureWidth</span><span class="token operator">:</span> <span class="token number">512</span><span class="token punctuation">,</span>
-      <span class="token literal-property property">textureHeight</span><span class="token operator">:</span> <span class="token number">512</span><span class="token punctuation">,</span>
-      <span class="token literal-property property">waterNormals</span><span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">TextureLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span>
-        <span class="token string">"/textures/waternormals.jpg"</span><span class="token punctuation">,</span>
-        <span class="token punctuation">(</span><span class="token parameter">texture</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-          texture<span class="token punctuation">.</span>wrapS <span class="token operator">=</span> texture<span class="token punctuation">.</span>wrapT <span class="token operator">=</span> RepeatWrapping<span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-      <span class="token literal-property property">waterColor</span><span class="token operator">:</span> <span class="token number">0x0072ff</span><span class="token punctuation">,</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment">// 翻转平面</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>water<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token operator">-</span>Math<span class="token punctuation">.</span><span class="token constant">PI</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>scene<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>water<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Water</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;three/examples/jsm/objects/Water&quot;</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">initMeshes</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">water</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Water</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">PlaneGeometry</span>(<span class="hljs-number">10000</span>, <span class="hljs-number">10000</span>), &#123;<br>      <span class="hljs-attr">textureWidth</span>: <span class="hljs-number">512</span>,<br>      <span class="hljs-attr">textureHeight</span>: <span class="hljs-number">512</span>,<br>      <span class="hljs-attr">waterNormals</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">TextureLoader</span>().<span class="hljs-title function_">load</span>(<br>        <span class="hljs-string">&quot;/textures/waternormals.jpg&quot;</span>,<br>        <span class="hljs-function">(<span class="hljs-params">texture</span>) =&gt;</span> &#123;<br>          texture.<span class="hljs-property">wrapS</span> = texture.<span class="hljs-property">wrapT</span> = <span class="hljs-title class_">RepeatWrapping</span>;<br>        &#125;<br>      ),<br>      <span class="hljs-attr">waterColor</span>: <span class="hljs-number">0x0072ff</span>,<br>    &#125;);<br>    <span class="hljs-comment">// 翻转平面</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">water</span>.<span class="hljs-property">rotation</span>.<span class="hljs-property">x</span> = -<span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span> / <span class="hljs-number">2</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">water</span>);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
 
 <p>　　这里我们Water构造函数接收两个参数，第一个是物体，我们直接使用一个较大的PlaneGeometry作为水平面；第二个参数是<code>WaterOptions</code>，其中主要的是<code>waterNormals属性</code>，就是我们的法线贴图，通过TextureLoader加载，加载完成后我们让它在S和T方向上都重复平铺开来；还有一个属性是<code>waterColor</code>，就是水面的基本颜色，我们选一个接近海水的蓝色即可。</p>
 <p>　　完整的WaterOptions参数如下，其他属性的含义后面会进行调试：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name">WaterOptions</span> <span class="token punctuation">&#123;</span>
-    textureWidth<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
-    textureHeight<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
-    clipBias<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
-    alpha<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
-    time<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
-    waterNormals<span class="token operator">?</span><span class="token operator">:</span> Texture<span class="token punctuation">;</span>
-    sunDirection<span class="token operator">?</span><span class="token operator">:</span> Vector3<span class="token punctuation">;</span>
-    sunColor<span class="token operator">?</span><span class="token operator">:</span> ColorRepresentation<span class="token punctuation">;</span>
-    waterColor<span class="token operator">?</span><span class="token operator">:</span> ColorRepresentation<span class="token punctuation">;</span>
-    eye<span class="token operator">?</span><span class="token operator">:</span> Vector3<span class="token punctuation">;</span>
-    distortionScale<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
-    side<span class="token operator">?</span><span class="token operator">:</span> Side<span class="token punctuation">;</span>
-    fog<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">boolean</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">WaterOptions</span> &#123;<br>    textureWidth?: <span class="hljs-built_in">number</span>;<br>    textureHeight?: <span class="hljs-built_in">number</span>;<br>    clipBias?: <span class="hljs-built_in">number</span>;<br>    alpha?: <span class="hljs-built_in">number</span>;<br>    time?: <span class="hljs-built_in">number</span>;<br>    waterNormals?: <span class="hljs-title class_">Texture</span>;<br>    sunDirection?: <span class="hljs-title class_">Vector3</span>;<br>    sunColor?: <span class="hljs-title class_">ColorRepresentation</span>;<br>    waterColor?: <span class="hljs-title class_">ColorRepresentation</span>;<br>    eye?: <span class="hljs-title class_">Vector3</span>;<br>    distortionScale?: <span class="hljs-built_in">number</span>;<br>    side?: <span class="hljs-title class_">Side</span>;<br>    fog?: <span class="hljs-built_in">boolean</span>;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 
 <p>　　我们先打开页面看一下效果，海水的纹理也呈现出来了：</p>
 <p><img src="/images/Threejs-Ocean/water1.png" srcset="/img/loading.gif" lazyload alt="海水效果"></p>
 <p>　　海水纹理加载后，我们就可以通过海水材质的<code>uniforms属性</code>来让纹理动起来：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token punctuation">&#123;</span>
-  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>water<span class="token punctuation">.</span>material<span class="token punctuation">.</span>uniforms<span class="token punctuation">[</span><span class="token string">"time"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value <span class="token operator">+=</span> <span class="token number">1.0</span> <span class="token operator">/</span> <span class="token number">60</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">&#123;<br>  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">water</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>[<span class="hljs-string">&quot;time&quot;</span>].<span class="hljs-property">value</span> += <span class="hljs-number">1.0</span> / <span class="hljs-number">60</span>;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
 
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/Threejs-Ocean/water2.gif" srcset="/img/loading.gif" lazyload alt="波光粼粼的效果"></p>
 <p>　　那么这里的uniforms是什么？为什么我们更改了time的value就可以让波纹动起来呢？我们悬浮查看一下Water的材质，发现它是一个<code>ShaderMaterial</code>材质：</p>
 <p><img src="/images/Threejs-Ocean/shader.png" srcset="/img/loading.gif" lazyload alt="ShaderMaterial"></p>
 <p>　　ShaderMaterial在定义顶点着色器和片元着色器之外，还会声明uniforms属性，可以给顶点着色器和片元着色器中的变量传值，达到不同的渲染效果，比如我们查看Water.js的源码就能看到它的uniforms属性里面有一个<code>time</code>参数，初始化的value是0.0，因此我们改变这个值就可以控制水面波纹的渲染效果了。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// three/examples/jsm/objects/Water</span>
-<span class="token keyword">const</span> material <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>ShaderMaterial</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-  <span class="token literal-property property">uniforms</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">// 省略其他参数</span>
-    <span class="token string-property property">'time'</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">0.0</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token literal-property property">vertexShader</span><span class="token operator">:</span> <span class="token string">'着色器代码'</span><span class="token punctuation">,</span><span class="token comment">// 顶点着色器</span>
-  <span class="token literal-property property">fragmentShader</span><span class="token operator">:</span> <span class="token string">'着色器代码'</span><span class="token punctuation">,</span><span class="token comment">// 片元着色器</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// three/examples/jsm/objects/Water</span><br><span class="hljs-keyword">const</span> material = <span class="hljs-keyword">new</span> <span class="hljs-variable constant_">THREE</span>.<span class="hljs-title class_">ShaderMaterial</span>(&#123;<br>  <span class="hljs-attr">uniforms</span>: &#123;<br>    <span class="hljs-comment">// 省略其他参数</span><br>    <span class="hljs-string">&#x27;time&#x27;</span>: &#123; <span class="hljs-attr">value</span>: <span class="hljs-number">0.0</span> &#125;,<br>  &#125;,<br>  <span class="hljs-attr">vertexShader</span>: <span class="hljs-string">&#x27;着色器代码&#x27;</span>,<span class="hljs-comment">// 顶点着色器</span><br>  <span class="hljs-attr">fragmentShader</span>: <span class="hljs-string">&#x27;着色器代码&#x27;</span>,<span class="hljs-comment">// 片元着色器</span><br>&#125;);<br></code></pre></div></td></tr></table></figure>
 
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　在后面天空的材质中我们会看到uniforms中更多参数的用法。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h2 id="天空"><a href="#天空" class="headerlink" title="天空"></a>天空</h2><p>　　海水做完了，我们来实现天空中的效果；这里的太阳和天空是一体的，Three.js都集成到Sky类中，因此我们不需要去单独做一个太阳的物体，只要初始化一个太阳的位置，后续传入即可：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token function">initMeshes</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token comment">// 太阳初始化的位置</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>sun <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">80</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>water<span class="token punctuation">.</span>material<span class="token punctuation">.</span>uniforms<span class="token punctuation">[</span><span class="token string">"sunDirection"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value<span class="token punctuation">.</span><span class="token function">copy</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>sun<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title function_">initMeshes</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">// 太阳初始化的位置</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">sun</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Vector3</span>(-<span class="hljs-number">80</span>, <span class="hljs-number">5</span>, -<span class="hljs-number">100</span>);<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">water</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>[<span class="hljs-string">&quot;sunDirection&quot;</span>].<span class="hljs-property">value</span>.<span class="hljs-title function_">copy</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">sun</span>);<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
 
 <p>　　这里Water的sunDirection是一个Vector3向量，我们使用<code>copy</code>函数将传入的太阳xyz位置进行赋值。我们在后面调试的时候，只要更改太阳的位置，就可以同时更改阳光在海水和天空的效果；</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Sky <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"three/examples/jsm/objects/Sky"</span><span class="token punctuation">;</span>
-<span class="token keyword">class</span> <span class="token class-name">Index</span> <span class="token punctuation">&#123;</span>
-  <span class="token function">initMeshes</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>sky <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Sky</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>sky<span class="token punctuation">.</span>scale<span class="token punctuation">.</span><span class="token function">setScalar</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">this</span><span class="token punctuation">.</span>sky<span class="token punctuation">.</span>material<span class="token punctuation">.</span>uniforms<span class="token punctuation">[</span><span class="token string">"sunPosition"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value<span class="token punctuation">.</span><span class="token function">copy</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>sun<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">this</span><span class="token punctuation">.</span>sky<span class="token punctuation">.</span>material<span class="token punctuation">.</span>uniforms<span class="token punctuation">[</span><span class="token string">"turbidity"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>sky<span class="token punctuation">.</span>material<span class="token punctuation">.</span>uniforms<span class="token punctuation">[</span><span class="token string">"rayleigh"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token number">1.5</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>sky<span class="token punctuation">.</span>material<span class="token punctuation">.</span>uniforms<span class="token punctuation">[</span><span class="token string">"mieCoefficient"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token number">0.005</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>sky<span class="token punctuation">.</span>material<span class="token punctuation">.</span>uniforms<span class="token punctuation">[</span><span class="token string">"mieDirectionalG"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token number">0.8</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">this</span><span class="token punctuation">.</span>scene<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>sky<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Sky</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;three/examples/jsm/objects/Sky&quot;</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">initMeshes</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">sky</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Sky</span>();<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">sky</span>.<span class="hljs-property">scale</span>.<span class="hljs-title function_">setScalar</span>(<span class="hljs-number">10000</span>);<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">sky</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>[<span class="hljs-string">&quot;sunPosition&quot;</span>].<span class="hljs-property">value</span>.<span class="hljs-title function_">copy</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">sun</span>);<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">sky</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>[<span class="hljs-string">&quot;turbidity&quot;</span>].<span class="hljs-property">value</span> = <span class="hljs-number">1</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">sky</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>[<span class="hljs-string">&quot;rayleigh&quot;</span>].<span class="hljs-property">value</span> = <span class="hljs-number">1.5</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">sky</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>[<span class="hljs-string">&quot;mieCoefficient&quot;</span>].<span class="hljs-property">value</span> = <span class="hljs-number">0.005</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">sky</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>[<span class="hljs-string">&quot;mieDirectionalG&quot;</span>].<span class="hljs-property">value</span> = <span class="hljs-number">0.8</span>;<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">sky</span>);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 
 
 <p>　　这里实例化了一个天空，setScalar设置了一个放大的倍数，我们跟海平面设置成一样大小；uniforms中的<code>sunPosition</code>属性也是太阳的位置，我们传入sun位置即可；其他的一些属性也是调节天空的参数，我们在下面调试的时候会详细分析每个参数的意义。</p>
@@ -1177,24 +341,19 @@ onMounted(() &#x3D;&gt; &#123;
 <p>　　因此，这里需要介绍一下<code>归一化的概念</code>，归一化在机器学习中也有着广泛的应用，就是将所有的数据压缩到0到1之间的范围；Three.js中的归一化，其实就是将向量的xyz等比例缩放，将整个向量的长度缩放到长度为1。</p>
 <blockquote>
 <p>更多向量的学习，可以参考这篇文章：<a target="_blank" rel="noopener" href="http://webgl3d.cn/pages/d69d76/">向量方向(归一化.normalize)</a></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </blockquote>
 <p>　　比如下面的向量p1，根据初中学的两点之间计算公式，它的长度是<code>√(10*2+20*2+30*2)</code>，算出来长度大概是37多，而通过<code>normalize函数</code>之后，我们再去获取length，得到的就是单位1：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> p1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>p1<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//37.416573867739416</span>
-<span class="token comment">// 将向量归一化处理</span>
-p1<span class="token punctuation">.</span><span class="token function">normalize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>p1<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> p1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Vector3</span>(<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(p1.<span class="hljs-title function_">length</span>()); <span class="hljs-comment">//37.416573867739416</span><br><span class="hljs-comment">// 将向量归一化处理</span><br>p1.<span class="hljs-title function_">normalize</span>();<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(p1.<span class="hljs-title function_">length</span>()); <span class="hljs-comment">// 1</span><br></code></pre></div></td></tr></table></figure>
 
 
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　因此，回到太阳位置的设置，我们传到sunDirection.value中后，copy函数会将传入的sun位置复制到sunDirection向量，并返回自身向量；最后再调用一下<code>normalize函数</code>就可以将向量设置成单位向量了：</p>
 <blockquote>
 <p>copy函数作用将所传入Vector3的x、y和z属性复制给这一Vector3，并返回自身。</p>
 </blockquote>
-<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">this</span><span class="token punctuation">.</span>sun <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vector3</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">80</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">this</span><span class="token punctuation">.</span>water<span class="token punctuation">.</span>material
-  <span class="token punctuation">.</span>uniforms<span class="token punctuation">[</span><span class="token string">"sunDirection"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value
-  <span class="token punctuation">.</span><span class="token function">copy</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>sun<span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">normalize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-variable language_">this</span>.<span class="hljs-property">sun</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Vector3</span>(-<span class="hljs-number">80</span>, <span class="hljs-number">5</span>, -<span class="hljs-number">100</span>);<br><span class="hljs-variable language_">this</span>.<span class="hljs-property">water</span>.<span class="hljs-property">material</span><br>  .<span class="hljs-property">uniforms</span>[<span class="hljs-string">&quot;sunDirection&quot;</span>].<span class="hljs-property">value</span><br>  .<span class="hljs-title function_">copy</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">sun</span>)<br>  .<span class="hljs-title function_">normalize</span>();<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <blockquote>
 <p>我们通过查看Water.js源码中sunDirection初始值，发现是Vector3( 0.70707, 0.70707, 0 )，也是一个归一化的向量。</p>
@@ -1203,157 +362,44 @@ console<span class="token punctuation">.</span><span class="token function">log<
 <p><img src="/images/Threejs-Ocean/water3.gif" srcset="/img/loading.gif" lazyload alt="海水效果"></p>
 <h2 id="多面体"><a href="#多面体" class="headerlink" title="多面体"></a>多面体</h2><p>　　在Three.js的Demo中，我们可以看到一个多面体在不停的上下浮沉，外面的材质被海水和天空所浸染，就像生活在大城市的我们一样，沾染着世俗气息，随波逐流。。。。</p>
 <p>　　我们首先构建一个二十面体的球形物体：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Index</span> <span class="token punctuation">&#123;</span>
-  <span class="token function">initMeshes</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">const</span> geometry <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">IcosahedronBufferGeometry</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">const</span> material <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MeshStandardMaterial</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-      <span class="token literal-property property">roughness</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
-      <span class="token literal-property property">side</span><span class="token operator">:</span> DoubleSide<span class="token punctuation">,</span>
-      <span class="token literal-property property">flatShading</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">this</span><span class="token punctuation">.</span>cube <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Mesh</span><span class="token punctuation">(</span>geometry<span class="token punctuation">,</span> material<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>scene<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>cube<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">initMeshes</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> geometry = <span class="hljs-keyword">new</span> <span class="hljs-title class_">IcosahedronBufferGeometry</span>(<span class="hljs-number">20</span>, <span class="hljs-number">1</span>);<br>    <span class="hljs-keyword">const</span> material = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MeshStandardMaterial</span>(&#123;<br>      <span class="hljs-attr">roughness</span>: <span class="hljs-number">0</span>,<br>      <span class="hljs-attr">side</span>: <span class="hljs-title class_">DoubleSide</span>,<br>      <span class="hljs-attr">flatShading</span>: <span class="hljs-literal">true</span>,<br>    &#125;);<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">cube</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Mesh</span>(geometry, material);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">cube</span>);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　在渲染的时候，控制y轴方向做sin函数运动，同时绕着x轴和z轴不断的旋转：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Index</span> <span class="token punctuation">&#123;</span>
-  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">const</span> now <span class="token operator">=</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>cube<span class="token punctuation">.</span>position<span class="token punctuation">.</span>y <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">sin</span><span class="token punctuation">(</span>now <span class="token operator">*</span> <span class="token number">0.001</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">20</span> <span class="token operator">+</span> <span class="token number">5</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>cube<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>x <span class="token operator">=</span> now <span class="token operator">*</span> <span class="token number">0.001</span> <span class="token operator">*</span> <span class="token number">0.5</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>cube<span class="token punctuation">.</span>rotation<span class="token punctuation">.</span>z <span class="token operator">=</span> now <span class="token operator">*</span> <span class="token number">0.001</span> <span class="token operator">*</span> <span class="token number">0.5</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> now = <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>();<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">cube</span>.<span class="hljs-property">position</span>.<span class="hljs-property">y</span> = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">sin</span>(now * <span class="hljs-number">0.001</span>) * <span class="hljs-number">20</span> + <span class="hljs-number">5</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">cube</span>.<span class="hljs-property">rotation</span>.<span class="hljs-property">x</span> = now * <span class="hljs-number">0.001</span> * <span class="hljs-number">0.5</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">cube</span>.<span class="hljs-property">rotation</span>.<span class="hljs-property">z</span> = now * <span class="hljs-number">0.001</span> * <span class="hljs-number">0.5</span>;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
 <p>　　这时，由于我们使用的MeshStandardMaterial材质，因此我们会看到一个灰色的，光滑的球体在水面上下漂浮。</p>
 <p>　　如果我们想让环境的光照射到圆球的表面，可以使用<code>PMREMGenerator</code>，它的全称叫预计算辐射度环境贴图（pre-computed radiance environment map，PMREM）生成器，PMREMGenerator可以根据当前场景和光照计算出辐射度环境贴图，并将其缓存在内存中，方便后续使用</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> PMREMGenerator <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"three"</span><span class="token punctuation">;</span>
-<span class="token keyword">class</span> <span class="token class-name">Index</span> <span class="token punctuation">&#123;</span>
-  <span class="token function">initMeshes</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>pmremGenerator <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PMREMGenerator</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>renderer<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>renderTarget<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token keyword">this</span><span class="token punctuation">.</span>renderTarget<span class="token punctuation">.</span><span class="token function">dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>renderTarget <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>pmremGenerator<span class="token punctuation">.</span><span class="token function">fromScene</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>scene<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>scene<span class="token punctuation">.</span>environment <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>renderTarget<span class="token punctuation">.</span>texture<span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">PMREMGenerator</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;three&quot;</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">initMeshes</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">pmremGenerator</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PMREMGenerator</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>);<br>    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">renderTarget</span>) &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderTarget</span>.<span class="hljs-title function_">dispose</span>();<br>    &#125;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderTarget</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">pmremGenerator</span>.<span class="hljs-title function_">fromScene</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-property">environment</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderTarget</span>.<span class="hljs-property">texture</span>;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　它的用法也很简单，构建一个类，然后调用fromScene从当前场景中生成辐射环境贴图，赋值给<code>scene.environment</code>。</p>
 <p><img src="/images/Threejs-Ocean/logo.png" srcset="/img/loading.gif" lazyload alt="球体表面辐照效果"></p>
 <h1 id="控制调试"><a href="#控制调试" class="headerlink" title="控制调试"></a>控制调试</h1><p>　　上面我们创建了蓝天、海水等物体，我们会看到材质的uniforms属性中有很多参数，但对每个参数的用法却并不清楚；本节我们就看实际看下每个参数的实际效果。</p>
 <h2 id="太阳位置调试"><a href="#太阳位置调试" class="headerlink" title="太阳位置调试"></a>太阳位置调试</h2><p>　　我们在创建物体之后，先来添加太阳位置的调试看下效果：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> dat <span class="token keyword">from</span> <span class="token string">"dat.gui"</span><span class="token punctuation">;</span>
-
-<span class="token keyword">class</span> <span class="token class-name">Index</span> <span class="token punctuation">&#123;</span>
-  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>gui <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">dat<span class="token punctuation">.</span>GUI</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">initMeshes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">enableGui</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-  <span class="token function">enableGui</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">const</span> folderSun <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>gui<span class="token punctuation">.</span><span class="token function">addFolder</span><span class="token punctuation">(</span><span class="token string">"太阳位置"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    folderSun
-      <span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>sun<span class="token punctuation">,</span> <span class="token string">"x"</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">onChange</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">updateSunPosition</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    folderSun
-      <span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>sun<span class="token punctuation">,</span> <span class="token string">"y"</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">onChange</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">updateSunPosition</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    folderSun
-      <span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>sun<span class="token punctuation">,</span> <span class="token string">"z"</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">onChange</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">updateSunPosition</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-  <span class="token comment">// 更新太阳的位置</span>
-  <span class="token function">updateSunPosition</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>water<span class="token punctuation">.</span>material<span class="token punctuation">.</span>uniforms<span class="token punctuation">[</span><span class="token string">"sunDirection"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value
-      <span class="token punctuation">.</span><span class="token function">copy</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>sun<span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">normalize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>sky<span class="token punctuation">.</span>material<span class="token punctuation">.</span>uniforms<span class="token punctuation">[</span><span class="token string">"sunPosition"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value<span class="token punctuation">.</span><span class="token function">copy</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>sun<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> dat <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;dat.gui&quot;</span>;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">gui</span> = <span class="hljs-keyword">new</span> dat.<span class="hljs-title function_">GUI</span>();<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">initMeshes</span>();<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">enableGui</span>();<br>  &#125;<br>  <span class="hljs-title function_">enableGui</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> folderSun = <span class="hljs-variable language_">this</span>.<span class="hljs-property">gui</span>.<span class="hljs-title function_">addFolder</span>(<span class="hljs-string">&quot;太阳位置&quot;</span>);<br>    folderSun<br>      .<span class="hljs-title function_">add</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">sun</span>, <span class="hljs-string">&quot;x&quot;</span>, -<span class="hljs-number">100</span>, <span class="hljs-number">100</span>)<br>      .<span class="hljs-title function_">onChange</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">updateSunPosition</span>.<span class="hljs-title function_">bind</span>(<span class="hljs-variable language_">this</span>));<br>    folderSun<br>      .<span class="hljs-title function_">add</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">sun</span>, <span class="hljs-string">&quot;y&quot;</span>, -<span class="hljs-number">100</span>, <span class="hljs-number">100</span>)<br>      .<span class="hljs-title function_">onChange</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">updateSunPosition</span>.<span class="hljs-title function_">bind</span>(<span class="hljs-variable language_">this</span>));<br>    folderSun<br>      .<span class="hljs-title function_">add</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">sun</span>, <span class="hljs-string">&quot;z&quot;</span>, -<span class="hljs-number">100</span>, <span class="hljs-number">100</span>)<br>      .<span class="hljs-title function_">onChange</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">updateSunPosition</span>.<span class="hljs-title function_">bind</span>(<span class="hljs-variable language_">this</span>));<br>  &#125;<br>  <span class="hljs-comment">// 更新太阳的位置</span><br>  <span class="hljs-title function_">updateSunPosition</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">water</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>[<span class="hljs-string">&quot;sunDirection&quot;</span>].<span class="hljs-property">value</span><br>      .<span class="hljs-title function_">copy</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">sun</span>)<br>      .<span class="hljs-title function_">normalize</span>();<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">sky</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>[<span class="hljs-string">&quot;sunPosition&quot;</span>].<span class="hljs-property">value</span>.<span class="hljs-title function_">copy</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">sun</span>);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 
 
 <p>　　通过<code>addFolder</code>单独创建一个单独展开的文件菜单，然后像里面添加对应的变量设置；由于这里我们已经有了全局的this.sun变量，它里面也有xyz属性，因此我们直接拿来用即可。更新参数后，我们需要同步更新water和sky的uniforms，因此这里我们抽离一个单独的函数updateSunPosition。</p>
 <p>　　我们改变太阳方位后，发现小球表面的光照辐射强度还是没有改变，这是因为我们在初始化的时候调用了<code>pmremGenerator.fromScene</code>生成了辐射环境贴图；因此在updateSunPosition函数中，我们再次调用，给小球表面进行重新渲染：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Index</span> <span class="token punctuation">&#123;</span>
-  <span class="token function">updateSunPosition</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">// 其他代码...</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>renderTarget<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token keyword">this</span><span class="token punctuation">.</span>renderTarget<span class="token punctuation">.</span><span class="token function">dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>renderTarget <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>pmremGenerator<span class="token punctuation">.</span><span class="token function">fromScene</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>scene<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>scene<span class="token punctuation">.</span>environment <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>renderTarget<span class="token punctuation">.</span>texture<span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">updateSunPosition</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 其他代码...</span><br>    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">renderTarget</span>) &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderTarget</span>.<span class="hljs-title function_">dispose</span>();<br>    &#125;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderTarget</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">pmremGenerator</span>.<span class="hljs-title function_">fromScene</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-property">environment</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderTarget</span>.<span class="hljs-property">texture</span>;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
 
 <h2 id="海水调试"><a href="#海水调试" class="headerlink" title="海水调试"></a>海水调试</h2><p>　　我们还记得海水的WaterOptions参数中有很多的属性字段，我们看下不同属性的效果，首先是time属性，控制海水波浪起伏的速度，我们单独创建一个参数变量：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token punctuation">&#123;</span>
-  <span class="token function">enableGui</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">const</span> folderWater <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>gui<span class="token punctuation">.</span><span class="token function">addFolder</span><span class="token punctuation">(</span><span class="token string">"海水"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>waterParams <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-      <span class="token literal-property property">speed</span><span class="token operator">:</span> <span class="token number">1.0</span><span class="token punctuation">,</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">&#123;<br>  <span class="hljs-title function_">enableGui</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> folderWater = <span class="hljs-variable language_">this</span>.<span class="hljs-property">gui</span>.<span class="hljs-title function_">addFolder</span>(<span class="hljs-string">&quot;海水&quot;</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">waterParams</span> = &#123;<br>      <span class="hljs-attr">speed</span>: <span class="hljs-number">1.0</span>,<br>    &#125;;<br><br>    folderWater.<span class="hljs-title function_">add</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">waterParams</span>, <span class="hljs-string">&quot;speed&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">10</span>).<span class="hljs-title function_">name</span>(<span class="hljs-string">&quot;水流速度&quot;</span>).<span class="hljs-title function_">step</span>(<span class="hljs-number">0.1</span>);<br>  &#125;<br>  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>    - <span class="hljs-variable language_">this</span>.<span class="hljs-property">water</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>[<span class="hljs-string">&quot;time&quot;</span>].<span class="hljs-property">value</span> += <span class="hljs-number">1.0</span> / <span class="hljs-number">60</span>;<br>    + <span class="hljs-variable language_">this</span>.<span class="hljs-property">water</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>[<span class="hljs-string">&quot;time&quot;</span>].<span class="hljs-property">value</span> += <span class="hljs-variable language_">this</span>.<span class="hljs-property">waterParams</span>.<span class="hljs-property">speed</span> / <span class="hljs-number">60</span>;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
-    folderWater<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>waterParams<span class="token punctuation">,</span> <span class="token string">"speed"</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">"水流速度"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">step</span><span class="token punctuation">(</span><span class="token number">0.1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token operator">-</span> <span class="token keyword">this</span><span class="token punctuation">.</span>water<span class="token punctuation">.</span>material<span class="token punctuation">.</span>uniforms<span class="token punctuation">[</span><span class="token string">"time"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value <span class="token operator">+=</span> <span class="token number">1.0</span> <span class="token operator">/</span> <span class="token number">60</span><span class="token punctuation">;</span>
-    <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>water<span class="token punctuation">.</span>material<span class="token punctuation">.</span>uniforms<span class="token punctuation">[</span><span class="token string">"time"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value <span class="token operator">+=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>waterParams<span class="token punctuation">.</span>speed <span class="token operator">/</span> <span class="token number">60</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
-
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　在render函数渲染的时候，将固定变量1.0替换成我们的参数变量，我们可以<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/ocean">查看效果</a>。</p>
 <p>　　除了time，还有两个属性alpha和distortionScale可以加到我们的调试面板调试，alpha控制透明通道的值，色值越小越泛白；而distortionScale控制水面波纹的扭曲程度，数值越大，波纹越扭曲。</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token punctuation">&#123;</span>
-  <span class="token function">enableGui</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>waterParams <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-      <span class="token literal-property property">speed</span><span class="token operator">:</span> <span class="token number">1.0</span><span class="token punctuation">,</span>
-      <span class="token literal-property property">alpha</span><span class="token operator">:</span> <span class="token number">1.0</span><span class="token punctuation">,</span>
-      <span class="token literal-property property">distortionScale</span><span class="token operator">:</span> <span class="token number">20</span><span class="token punctuation">,</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
-
-    folderWater<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>waterParams<span class="token punctuation">,</span> <span class="token string">"alpha"</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">onChange</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">value</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>water<span class="token punctuation">.</span>material<span class="token punctuation">.</span>uniforms<span class="token punctuation">[</span><span class="token string">"alpha"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value <span class="token operator">=</span> value<span class="token punctuation">;</span>
-      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    folderWater
-      <span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>waterParams<span class="token punctuation">,</span> <span class="token string">"distortionScale"</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">240</span><span class="token punctuation">,</span> <span class="token number">0.1</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">"扭曲比例"</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">onChange</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">value</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>water<span class="token punctuation">.</span>material<span class="token punctuation">.</span>uniforms<span class="token punctuation">[</span><span class="token string">"distortionScale"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value <span class="token operator">=</span> value<span class="token punctuation">;</span>
-      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">&#123;<br>  <span class="hljs-title function_">enableGui</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">waterParams</span> = &#123;<br>      <span class="hljs-attr">speed</span>: <span class="hljs-number">1.0</span>,<br>      <span class="hljs-attr">alpha</span>: <span class="hljs-number">1.0</span>,<br>      <span class="hljs-attr">distortionScale</span>: <span class="hljs-number">20</span>,<br>    &#125;;<br><br>    folderWater.<span class="hljs-title function_">add</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">waterParams</span>, <span class="hljs-string">&quot;alpha&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>)<br>      .<span class="hljs-title function_">onChange</span>(<span class="hljs-function">(<span class="hljs-params">value</span>) =&gt;</span> &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">water</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>[<span class="hljs-string">&quot;alpha&quot;</span>].<span class="hljs-property">value</span> = value;<br>      &#125;);<br>    folderWater<br>      .<span class="hljs-title function_">add</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">waterParams</span>, <span class="hljs-string">&quot;distortionScale&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">240</span>, <span class="hljs-number">0.1</span>)<br>      .<span class="hljs-title function_">name</span>(<span class="hljs-string">&quot;扭曲比例&quot;</span>)<br>      .<span class="hljs-title function_">onChange</span>(<span class="hljs-function">(<span class="hljs-params">value</span>) =&gt;</span> &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">water</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>[<span class="hljs-string">&quot;distortionScale&quot;</span>].<span class="hljs-property">value</span> = value;<br>      &#125;);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
 <p>　　我们将属性添加到gui中调试时默认展示属性的英文名称，比如这里的distortionScale，很多时候会不知道这个属性的作用；因此我们加个<code>name函数</code>给它一个中文的名称，在调试时更容易知道其作用。</p>
 <p>　　这里就不截图展示具体效果了，大家可以<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/ocean">点击这里</a>自己手动调试查看效果。</p>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="天空参数调试"><a href="#天空参数调试" class="headerlink" title="天空参数调试"></a>天空参数调试</h2><p>　　下面就来调试天空的参数，我们看下最重要的两个参数，turbidity浑浊度和rayleigh锐利值；还是和上面一个，我们在gui里给天空单独创建一个折叠的菜单：</p>
-<figure><div class="code-wrapper"><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token punctuation">&#123;</span>
-  <span class="token function">enableGui</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">const</span> folderSky <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>gui<span class="token punctuation">.</span><span class="token function">addFolder</span><span class="token punctuation">(</span><span class="token string">"天空"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>skyParams <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-      <span class="token literal-property property">turbidity</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-      <span class="token literal-property property">rayleigh</span><span class="token operator">:</span> <span class="token number">1.5</span><span class="token punctuation">,</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
-    folderSky
-      <span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>skyParams<span class="token punctuation">,</span> <span class="token string">"turbidity"</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">"浑浊度"</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">onChange</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">value</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>sky<span class="token punctuation">.</span>material<span class="token punctuation">.</span>uniforms<span class="token punctuation">[</span><span class="token string">"turbidity"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value <span class="token operator">=</span> value<span class="token punctuation">;</span>
-      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    folderSky
-      <span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>skyParams<span class="token punctuation">,</span> <span class="token string">"rayleigh"</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">"锐利值"</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">onChange</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">value</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>sky<span class="token punctuation">.</span>material<span class="token punctuation">.</span>uniforms<span class="token punctuation">[</span><span class="token string">"rayleigh"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value <span class="token operator">=</span> value<span class="token punctuation">;</span>
-      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">&#123;<br>  <span class="hljs-title function_">enableGui</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> folderSky = <span class="hljs-variable language_">this</span>.<span class="hljs-property">gui</span>.<span class="hljs-title function_">addFolder</span>(<span class="hljs-string">&quot;天空&quot;</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">skyParams</span> = &#123;<br>      <span class="hljs-attr">turbidity</span>: <span class="hljs-number">1</span>,<br>      <span class="hljs-attr">rayleigh</span>: <span class="hljs-number">1.5</span>,<br>    &#125;;<br>    folderSky<br>      .<span class="hljs-title function_">add</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">skyParams</span>, <span class="hljs-string">&quot;turbidity&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">100</span>)<br>      .<span class="hljs-title function_">name</span>(<span class="hljs-string">&quot;浑浊度&quot;</span>)<br>      .<span class="hljs-title function_">onChange</span>(<span class="hljs-function">(<span class="hljs-params">value</span>) =&gt;</span> &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">sky</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>[<span class="hljs-string">&quot;turbidity&quot;</span>].<span class="hljs-property">value</span> = value;<br>      &#125;);<br>    folderSky<br>      .<span class="hljs-title function_">add</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">skyParams</span>, <span class="hljs-string">&quot;rayleigh&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">100</span>)<br>      .<span class="hljs-title function_">name</span>(<span class="hljs-string">&quot;锐利值&quot;</span>)<br>      .<span class="hljs-title function_">onChange</span>(<span class="hljs-function">(<span class="hljs-params">value</span>) =&gt;</span> &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">sky</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>[<span class="hljs-string">&quot;rayleigh&quot;</span>].<span class="hljs-property">value</span> = value;<br>      &#125;);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
 
 <p>　　浑浊度turbidity大概的效果就是太阳被云层遮挡的光晕的浑浊程度，数值越小，太阳的轮廓就越清晰；锐利值rayleigh则更像是太阳被乌云遮住的感觉，数值越大越有日落西山的感觉。</p>
@@ -1362,101 +408,47 @@ console<span class="token punctuation">.</span><span class="token function">log<
 <p>　　最终所有调试效果可以<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/ocean">点击这里查看</a>。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　学习Three.js很痛苦的一点就是很多时候不知道这里调用这个函数有什么用，还找不到资料解释，很多函数里面都会涉及到了数学或者图形学方面的知识，调试的不方便也极大的增加了我们学习的成本；同时网络上也充斥着各种版本的代码，质量也都参差不齐；比如笔者在学习water和sky的uniforms设置时，water后面调用了一个normalize函数，而sky没有，让人很费解，一开始并不了解其中的原理；不过通过更深层的学习查资料，加上不断的尝试，最终透彻理解了就有种恍然顿悟的感觉。</p>
 <blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>本文所有源码敬请关注公众号【前端壹读】，后台回复关键词【海天一色】即可获取。</p>
 </blockquote>
 
+            </div>
+            <hr>
+            <div>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Threejs/">Threejs</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Animation/">动画</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Graphical/">图形化</a>
+                    
+                  </div>
                 
               </div>
-            
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/programing/" class="category-chain-item">编程</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/FrontEnd/" class="print-no-link">#前端</a>
-      
-        <a href="/tags/Threejs/" class="print-no-link">#Threejs</a>
-      
-        <a href="/tags/Animation/" class="print-no-link">#动画</a>
-      
-        <a href="/tags/Graphical/" class="print-no-link">#图形化</a>
-      
-    </div>
-  
-</div>
-
-
               
-  
-
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>Threejs海水效果学习</div>
-      <div>https://xieyufei.com/2024/01/30/Threejs-Ocean.html</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>Corner</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2024年1月30日</div>
-        </div>
-      
-      
-      
-        <div class="license-meta-item">
-          <div>许可协议</div>
-          <div>
-            
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
               
               
-                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                    <i class="iconfont icon-by"></i>
-                  </span>
-                </a>
-              
-            
-          </div>
-        </div>
-      
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
-
-
-
-              
-                <div class="post-prevnext my-3">
+                <div class="post-prevnext">
                   <article class="post-prev col-6">
                     
                     
@@ -1464,7 +456,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/01/17/Turn-Round-Arrow.html" title="记一次CSS3和SVG实现箭头拐弯动画">
+                      <a href="/2024/01/17/Turn-Round-Arrow.html">
                         <span class="hidden-mobile">记一次CSS3和SVG实现箭头拐弯动画</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -1476,95 +468,55 @@ console<span class="token punctuation">.</span><span class="token function">log<
             </div>
 
             
-  
-  
-    <article id="comments" lazyload>
-      
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
   <div id="waline"></div>
   <script type="text/javascript">
     Fluid.utils.loadComments('#waline', function() {
-      Fluid.utils.createCssLink('https://xieyufei.com/npm/waline@2.15.5/waline.min.css')
-      Fluid.utils.createScript('https://xieyufei.com/npm/waline@2.15.5/waline.min.js', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
         var options = Object.assign(
-          {"serverURL":"https://comment.xieyufei.com","placeholder":"你认为这篇文章怎么样？","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
           {
             el: '#waline',
             path: window.location.pathname
           }
         )
-        Waline.init(options);
-        Fluid.utils.waitElementVisible('#waline .vcontent', () => {
-          var imgSelector = '#waline .vcontent img:not(.vemoji)';
-          Fluid.plugins.imageCaption(imgSelector);
-          Fluid.plugins.fancyBox(imgSelector);
-        })
+        new Waline(options);
       });
     });
   </script>
   <noscript>Please enable JavaScript to view the comments</noscript>
 
 
-    </article>
-  
-
-
+              </article>
+            
           </article>
         </div>
       </div>
     </div>
-
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header">
-    <i class="iconfont icon-list"></i>
-    <span>目录</span>
-  </p>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
-
-
-  </aside>
-
-
-    </div>
+      </div>
+    
   </div>
 </div>
 
-
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-
-
+<!-- Custom -->
 
 
     
 
     
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+      <a id="scroll-top-button" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
     
@@ -1583,62 +535,45 @@ console<span class="token punctuation">.</span><span class="token function">log<
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
     </div>
   </div>
 </div>
-
     
 
     
   </main>
 
-  <footer>
-    <div class="footer-inner">
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
   
-    <div class="footer-content">
-       <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
-    </div>
+
   
-  
-  
-    <!-- 备案信息 ICP for China -->
-    <div class="beian">
-  <span>
-    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
-      苏ICP备19064103号-1
-    </a>
-  </span>
-  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备19064103号-1
+      </a>
+    </span>
     
-      <span>
-        <a
-          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=19064103"
-          rel="nofollow noopener"
-          class="beian-police"
-          target="_blank"
-        >
-          
-            <span style="visibility: hidden; width: 0">|</span>
-            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
-          
-          <span>苏ICP备19064103号-1</span>
-        </a>
-      </span>
-    
-  
-</div>
+  </div>
+
 
   
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
   
-</div>
+</footer>
 
-  </footer>
 
-  <!-- Scripts -->
+  <!-- SCRIPTS -->
   
   <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
   <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
@@ -1657,23 +592,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
 <script  src="/js/events.js" ></script>
 <script  src="/js/plugins.js" ></script>
 
-
-  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var subtitle = document.getElementById('subtitle');
-      if (!subtitle || !typing) {
-        return;
-      }
-      var text = subtitle.getAttribute('data-typed-text');
-      
-        typing(text);
-      
-    })(window, document);
-  </script>
-
-
+<!-- Plugins -->
 
 
   
@@ -1682,101 +601,25 @@ console<span class="token punctuation">.</span><span class="token function">log<
 
 
 
-
   
-<script>
-  Fluid.utils.createScript('https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init(Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc));
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-      }
-    });
-  });
-</script>
 
 
-  <script  src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
 
-  <script src=https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js></script>
-
-  <script>Fluid.plugins.codeWidget();</script>
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
 
 
-  
-<script>
-  Fluid.utils.createScript('https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
 
-    Fluid.events.registerRefreshCallback(function() {
-      if ('anchors' in window) {
-        anchors.removeAll();
-        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-        var res = [];
-        for (var item of el) {
-          res.push('.markdown-body > ' + item.trim());
-        }
-        if (CONFIG.anchorjs.placement === 'left') {
-          anchors.options.class = 'anchorjs-link-left';
-        }
-        anchors.add(res.join(', '));
-      }
-    });
-  });
-</script>
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
 
 
-  
-<script>
-  Fluid.utils.createScript('https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
 
 
-  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
 
   <script  src="/js/local-search.js" ></script>
 
@@ -1784,15 +627,63 @@ console<span class="token punctuation">.</span><span class="token function">log<
 
 
 
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
 
 
   
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
 
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
 </body>
 </html>
