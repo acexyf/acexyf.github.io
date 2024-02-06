@@ -267,26 +267,27 @@
 <p>　　大多数Linux发行版都提供了Node.js的安装包，我们可以直接使用包管理器进行安装：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ sudo apt-get update<br>$ sudo apt-get install nodejs <br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　但是包管理器安装的Nodejs版本比较老旧，有些是10或者12版本的，因此我们可以通过去官网通过下载源码包的方式进行安装。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　首先打开<a target="_blank" rel="noopener" href="http://nodejs.cn/download/">Node.js中文网</a>，官网提供了不同系统平台的安装包，我们下载对应平台的即可，例如这里的<code>node-v18.18.0-linux-x64.tar.gz</code>：</p>
 <p><img src="/images/Install-Linux-Nodejs/download.png" srcset="/img/loading.gif" lazyload alt="官网下载"></p>
 <p>　　我们可以选择这里Linux（x64）版本的，如果想要其他版本的，也可以选择<code>全部安装包</code>；这里我们用wget命令下载：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ <span class="hljs-built_in">cd</span> ~/下载/<br>$ wget https://registry.npmmirror.com/-/binary/node/v18.<span class="hljs-number">18</span>.<span class="hljs-number">0</span>/node-v18.<span class="hljs-number">18</span>.<span class="hljs-number">0</span>-linux-x64.tar.gz<br></code></pre></div></td></tr></table></figure>
 
 <p>　　解压压缩包并且移动到/usr/local目录下：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ tar -zxvf node-v18.<span class="hljs-number">18</span>.<span class="hljs-number">0</span>-linux-x64.tar.gz<br>$ sudo mv node-v18.<span class="hljs-number">18</span>.<span class="hljs-number">0</span>-linux-x64 /usr/local/nodejs/<br></code></pre></div></td></tr></table></figure>
 
 <p>　　创建软链接：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ ln -s /usr/local/nodejs/bin/node /usr/local/bin/<br>$ ln -s /usr/local/nodejs/bin/npm /usr/local/bin/<br></code></pre></div></td></tr></table></figure>
 
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　验证node是否安装成功：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ node -v<br>v18.<span class="hljs-number">18</span>.<span class="hljs-number">0</span><br>$ npm -v<br><span class="hljs-number">9</span>.<span class="hljs-number">8</span>.<span class="hljs-number">1</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
             </div>
             <hr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
             <div>
               <div class="post-metas mb-3">
                 
@@ -349,7 +350,7 @@
   <div id="waline"></div>
   <script type="text/javascript">
     Fluid.utils.loadComments('#waline', function() {
-      Fluid.utils.createScript('https://xieyufei.com/npm/waline@0.16.2/Waline.min.js', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
         var options = Object.assign(
           {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
           {

@@ -2,13 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://xieyufei.com/npm/waline@0.16.2/index.html</loc>
-    
-    <lastmod>2024-02-06</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://xieyufei.com/2024/01/30/Threejs-Ocean.html</loc>
     
     <lastmod>2024-01-30</lastmod>
@@ -478,6 +471,13 @@
   </url>
   
   <url>
+    <loc>https://xieyufei.com/categories/index.html</loc>
+    
+    <lastmod>2021-06-16</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://xieyufei.com/demo/mySnake.html</loc>
     
     <lastmod>2021-06-16</lastmod>
@@ -500,13 +500,6 @@
   
   <url>
     <loc>https://xieyufei.com/demo/wxshare.html</loc>
-    
-    <lastmod>2021-06-16</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://xieyufei.com/categories/index.html</loc>
     
     <lastmod>2021-06-16</lastmod>
     
