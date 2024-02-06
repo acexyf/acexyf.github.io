@@ -156,6 +156,18 @@
             </li>
           
         
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
         
           <li class="nav-item" id="search-btn">
             <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
@@ -266,23 +278,23 @@
 <p><img src="/images/Hubot-Chat-Machine/step1.png" srcset="/img/loading.gif" lazyload alt="step1"></p>
 <p>　　输好后会根据你输入的创建对应的配置文件，然后进行处理，并且安装一些模块文件等。等待安装完成就可以使用了。</p>
 <p><img src="/images/Hubot-Chat-Machine/step2.png" srcset="/img/loading.gif" lazyload alt="step2"></p>
-<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><p>　　安装完后启动Hubot，在命令行输入<code>bin/hubot</code>，看到有报错：</p>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><p>　　安装完后启动Hubot，在命令行输入<code>bin/hubot</code>，看到有报错：</p>
 <p><img src="/images/Hubot-Chat-Machine/error.png" srcset="/img/loading.gif" lazyload alt="error"></p>
 <p>　　出现这个报错是因为没有配置heroku和redis服务没有开启。可以忽略，也可以在external-script.json中把hubot-heroku-keepalive和hubot-redis-brain注释掉。</p>
 <p>　　然后把/scripts目录下的example.coffee打开，将下面两行代码中的<code>#</code>删除：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">#   robot.hear /badger/i, (res) -&gt;<br>#     res.send <span class="hljs-string">&quot;Badgers? BADGERS? WE DON&#x27;T NEED NO STINKIN BADGERS&quot;</span><br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　然后再次启动，这时候就能看到我们的jarvis正常启动。在命令行里输入<code>jarvis ping</code>，如果能看到jarvis回复pong，Hubot就安装完成了。 </p>
 <h1 id="三、脚本"><a href="#三、脚本" class="headerlink" title="三、脚本"></a>三、脚本</h1><p>　　首先查看一下我们可以使用哪些命令。在命令行里输入<code>jarvis help</code>，可以看到所有可以使用的命令以及描述，比如map、pug、time、image命令等。在安装过其他插件后可以使用同样的命令查看新增加的命令。<br>　　需要注意的是，这里的<code>jarvis help</code>中的jarvis是笔者的自定义机器人名称，读者需要替换成自己的机器人名称，比如<code>myhubot help</code>。</p>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="自定义脚本"><a href="#自定义脚本" class="headerlink" title="自定义脚本"></a>自定义脚本</h2><p>　　Hubot是基于事件监听机制的，我们可以为他自定义事件发生时的回调，当触发这个事件时执行回调。<br>　　在项目目录下有一个/scripts目录，存放的就是我们自己定义的脚本，像之前的example.coffee就是一个小的demo。<br>　　我们新建一个greet.coffee，输入一下代码：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-built_in">module</span>.exports = (robot) -&gt;<br>   robot.hear /greet/i, (res) -&gt;<br>     res.send <span class="hljs-string">&quot;Hello,My Master&quot;</span><br></code></pre></div></td></tr></table></figure>
 <p>　　每个自定义的脚本都需要导出一个函数function，默认有一个robot的参数。这里的module.exports = (robot) -&gt;就相当于JavaScript中的module.exports = function(rebot){}。<br>　　这里的robot的hear方法相当于一个监听事件，它有两个参数，第一个是一个正则表达式，只要匹配了这个正则表达式就执行下面的回调函数，回调函数中我们通过send方法返回一个字符串。<br>　　再次重启我们的Hubot，输入<code>jarvis greet</code>，会看到Hubot跟我们打招呼了。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h2 id="添加命令到help中"><a href="#添加命令到help中" class="headerlink" title="添加命令到help中"></a>添加命令到help中</h2><p>　　但是这时候使用help命令，没有看到可以使用greet命令的提示，怎么样将我们自定义的greet命令添加到help中去呢？如下修改我们的greet.coffee脚本，添加头部注释说明。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"># Description:<br># 	Greet To Master<br># Commands:<br># 	hubot greet - Greet To Master<br><span class="hljs-built_in">module</span>.exports = (robot) -&gt;<br>   robot.hear /greet/i, (res) -&gt;<br>     res.send <span class="hljs-string">&quot;Hello,My Master&quot;</span><br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h2 id="添加路由地址"><a href="#添加路由地址" class="headerlink" title="添加路由地址"></a>添加路由地址</h2><p>　　Hubot不仅能通过命令行监听命令，还能够通过路由监听地址。<br>　　我们新建一个文件router.coffee。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-built_in">module</span>.exports = (robot) -&gt;<br>  robot.router.get <span class="hljs-string">&quot;/foo&quot;</span>, (req, res) -&gt;<br>    res.end <span class="hljs-string">&quot;bar&quot;</span><br></code></pre></div></td></tr></table></figure>
 
@@ -297,10 +309,9 @@
 
 <h1 id="四、插件"><a href="#四、插件" class="headerlink" title="四、插件"></a>四、插件</h1><p>　　虽然我们写了很多的脚本，但是有的功能已经有现成的，可以直接使用。</p>
 <h2 id="自带插件"><a href="#自带插件" class="headerlink" title="自带插件"></a>自带插件</h2><p>　　Hubot自带了几个插件，让我们来看一下。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h3 id="hubot-pugme"><a href="#hubot-pugme" class="headerlink" title="hubot-pugme"></a>hubot-pugme</h3><p>　　这个插件有两个命令，一个是<code>hubot pug me</code>，另一个是<code>hubot pug bomb [number]</code>。<br>　　输入第一个命令看到出现一个链接，在浏览器中打开我们看到了一只可爱的哈巴狗，输入第二个链接，我们把[number]改成随意的一个数字6，我们看到出来6张照片，打开是6张哈巴狗的照片，没错，这个插件就是给你看狗狗的(难道是狗狗爱好者做的？)。<br>　　我顿时就忍不住吐槽了，居然还标榜自己是最重要的Hubot插件(Pugme is the most important hubot script)，简直鸡肋啊。</p>
 <h3 id="hubot-google-images"><a href="#hubot-google-images" class="headerlink" title="hubot-google-images"></a>hubot-google-images</h3><p>　　这个插件有两个命令，一个是<code>hubot image me</code>，另一个是<code>hubot animate me</code>。<br>　　官网解释它是用来搜索图片地址的，那么就让我们用官网的例子来尝试一下吧<code>jarvis image me bananas</code>。<br>　　很遗憾的是Hubot提醒我这个谷歌的图片搜索引擎不能用了，要设置自定义的引擎。再看了一下官方的文档，这个谷歌图片搜索引擎还要注册，并且每天只能免费搜索一百次，超过了还要收费，有点坑啊。</p>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h3 id="hubot-maps"><a href="#hubot-maps" class="headerlink" title="hubot-maps"></a>hubot-maps</h3><p>　　这个插件看样子是地图插件，看了一下官方说明，也有两个命令<code>hubot map me</code>和<code>hubot direction me</code>。抱着希望再次尝试了一下<code>jarvis map me wuxi</code>，幸运的是结果出来了，是一个地图的地址，再看了一下是谷歌地图的地址，那不用说了，绝壁要科学上网了。</p>
 <h2 id="下载插件"><a href="#下载插件" class="headerlink" title="下载插件"></a>下载插件</h2><p>　　自带的插件用完了，笔者顿时累觉不爱了，想着去网上找找有没有其他的插件。<br>　　笔者在网上看到能够使用<code>npm search hubot-scripts github</code>命令查看Hubot的插件，但是试了一下老是报错，求好心人告知。<br>　　于是又找到了<a target="_blank" rel="noopener" href="https://github.com/hubot-scripts">Hubot在线插件库</a>的链接，进去看到确实有不少插件。详细的插件用法本文不再赘述，读者可以自行根据需要下载使用，使用前需要把插件名称添加到<code>/external-scripts.json</code>文件中去</p>
 <h1 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h1><p>　　经过这几天对Hubot的学习，对Hubot我有以下几点感悟：</p>
@@ -309,13 +320,14 @@
 <li>Hubot能够聊天但是没有很智能，基于事件监听的基础上，只能够设置几种固定的回复语句，实现类似于京东JIMI的效果，距离电影中的效果还差的很远。</li>
 <li>插件数量不多，只有一百多个，实用的插件数量更少，很多插件都比较的鸡肋，不具实用性。</li>
 <li>很多插件还不能用，比如Hubot-WeChat据说能够集成到微信，我用了一直有报错，希望有好心人成功了交流下经验。</li>
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
 </ul>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
             </div>
             <hr>
             <div>
-              <div class="post-metas mb-3">
+              
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p><div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
@@ -368,6 +380,32 @@
               
             </div>
 
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@waline/client@0.16.2/dist/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
             
           </article>
         </div>
