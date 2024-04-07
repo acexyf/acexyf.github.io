@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>微信分享</title>
+</head>
+<body>
+测试
+<script type="text/javascript">
+
+var shareImg = 'http://file.40017.cn/baoxian/images/zt/20170420/bicycle_share_icon.jpg';
+var shareTitle = '共享单车意外险 能免费领了';
+var shareUrl = window.location.href;
+var shareDesc = '共享单车风险高事故多！您需要一份专业意外险保驾';
+console.log(111)
+function sendMessage(){
+    try{
+        WeixinJSBridge;
+    } catch(e){
+        return;
+    };
+    console.log(222);
+    // 分享到朋友圈
+    WeixinJSBridge.on('menu:share:timeline', function (argv) {
+        console.log('朋友圈分享');
+        WeixinJSBridge.invoke('shareTimeline', {
+            "img_url": shareImg,
+            "img_width": "120",
+            "img_height": "120",
+            "link": shareUrl,
+            "desc": shareDesc,
+            "title": shareTitle
+        }, function (res) {
+            console.log('朋友圈分享成功');
+        });
+    });
+    // 分享给好友
+    WeixinJSBridge.on('menu:share:appmessage', function (argv) {
+        console.log('分享给好友');
+        WeixinJSBridge.invoke('sendAppMessage', {
+            "img_url": shareImg,
+            "img_width": "120",
+            "img_height": "120",
+            "link": shareUrl,
+            "desc": shareDesc,
+            "title": shareTitle
+        }, function (res) {
+            console.log('分享给好友成功');
+        });
+    });
+    // 微博分享
+    WeixinJSBridge.on('menu:share:weibo', function (argv) {
+        WeixinJSBridge.invoke('shareWeibo', {
+            "content": shareDesc,
+            "img_url": shareImg,
+            "img_width": "120",
+            "img_height": "120",
+            "link": shareUrl,
+            "desc": shareDesc,
+            "title": shareTitle
+        }, function (res) {
+        });
+    });
+}
+sendMessage();
+if(document.addEventListener){
+    document.addEventListener('WeixinJSBridgeReady', sendMessage, false);  
+}else if(document.attachEvent){
+    document.attachEvent('WeixinJSBridgeReady', sendMessage);    
+    document.attachEvent('onWeixinJSBridgeReady', sendMessage);  
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+# welcome to : www.xieyufei.com
+User-agent: *
+Allow: /
+Allow: /archives/
+Allow: /categories/
+Allow: /about/
+
+Disallow: /js/
+Disallow: /css/
+Disallow: /fonts/
+Disallow: /vendors/
+Disallow: /lib/
+Sitemap: http://www.xieyufei.com/sitemap.xml
+Sitemap: http://www.xieyufei.com/baidusitemap.xml
