@@ -17,11 +17,11 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="　　粒子云">
+  <meta name="description" content="　　在上一篇文章粒子云切换效果中我们介绍了如何将模型转换成粒子云并且进行切换的效果，我们还看到了二维码的粒子效果，那么这样的效果是如何实现呢？本文从建模开始，一步一步实现这样的效果。">
   <meta name="author" content="Corner">
   <meta name="keywords" content="Corner">
   
-  <title>Threejs粒子云效果切换的实现 - 谢小飞的博客</title>
+  <title>二维码还能这么玩？制作一个3D动态粒子二维码！ - 谢小飞的博客</title>
 
   <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
 
@@ -191,7 +191,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="Threejs粒子云效果切换的实现">
+            <span class="h2" id="subtitle" title="二维码还能这么玩？制作一个3D动态粒子二维码！">
               
             </span>
 
@@ -201,8 +201,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2024-04-28 13:14" pubdate>
-        2024年4月28日 下午
+      <time datetime="2024-06-02 11:00" pubdate>
+        2024年6月2日 上午
       </time>
     </span>
   
@@ -213,7 +213,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.1k 字
+      768 字
     </span>
   
 
@@ -223,7 +223,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      12
+      7
        分钟
     </span>
   
@@ -257,48 +257,48 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Threejs粒子云效果切换的实现</h1>
+            <h1 style="display: none">二维码还能这么玩？制作一个3D动态粒子二维码！</h1>
             
             <div class="markdown-body">
-              <p>　　粒子云</p>
+              <p>　　在上一篇文章<a href="https://xieyufei.com/2024/05/28/Threejs-Points-Effect.html">粒子云切换效果</a>中我们介绍了如何将模型转换成粒子云并且进行切换的效果，我们还看到了二维码的粒子效果，那么这样的效果是如何实现呢？本文从建模开始，一步一步实现这样的效果。</p>
 <span id="more"></span>
 
-<p>　　在学习Three.js粒子之前，我们还是老规矩，先来讲一下基础知识，只有把基础知识搞清楚了，我们才能够知道后面的粒子是如何来移动变换位置的；那么本文涉及到的图形学的基础知识就是两个：</p>
-<ul>
-<li>Float32Array数组</li>
-<li>物体的形状Geometry</li>
-</ul>
-<h1 id="Float32Array"><a href="#Float32Array" class="headerlink" title="Float32Array"></a>Float32Array</h1><p>　　介绍物体的形状之前，我们先来看下Float32Array这个类数组的用法；这个Float32Array类是JS原生的一个类，相信很多小伙伴（包括笔者），在接触three.js之前都没怎么听说过这个类；不过在构建粒子形状的时候，需要使用这个类来构建物体的形状，所以先来简单了解一下这个类。</p>
-<p>　　既然有Float32Array，那么也就有Float64Array了，他们两的区别是：Float32Array存储的是32位浮点数，Float64Array存储的是64位浮点数；存储的位数越高，存储数据的精确度也就越好，能表示的浮点数上下限范围就越大。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-<p>　　Float32Array就好比是4车道的高速公路，而Float64Array则是8车道高速，很明显是8车道的高速通行效率更高了；但我们为什么还要用Float32Array呢？因为8车道高速带来高效率的同时，建设的代价也很高；虽然看似是扩展了一倍的车道数量，但实际建设可能是指数级的区别；但我们大部分路段其实根本不需要8车道高速，用4车道的高速就已经足够了。</p>
-<p>　　我们在Three.js中存储粒子的顶点位置时，一般也就是从个位数到百位数的区间范围；因此使用64位的Float64Array就明显有点浪费内存空间了，而使用Float32Array来表示精度已经足够了。</p>
-<p>　　Float32Array简单来说就是一个固定长度、用来存储浮点类型数据的数组；这句话的解释包含了两层含义，一层是这个数组是固定长度，也就是在创建的时候就确定了数组长度，不能再改了；另一层意思是它是用来存储浮点数的，而JS中整数和浮点数都属于Number数据类型，因此Float32Array只能存储Number类型的数据。</p>
-<p>　　说了这么多的Float32Array，我们甚至都还没有创建它，Float32Array有以下三种创建方式：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// 使用长度创建</span><br><span class="hljs-keyword">let</span> f1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Float32Array</span>(<span class="hljs-number">3</span>);<br><br><span class="hljs-comment">// 使用数组创建</span><br><span class="hljs-keyword">let</span> f2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Float32Array</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]);<br><br><span class="hljs-comment">// 使用类数组作为参数创建</span><br><span class="hljs-keyword">let</span> f3 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Float32Array</span>(f2);<br></code></pre></div></td></tr></table></figure>
 
-<h2 id="固定长度"><a href="#固定长度" class="headerlink" title="固定长度"></a>固定长度</h2><p>　　Float32Array是一种类数组，有部分数组Array的属性和函数，但是不是真正的数组，更像是一种被阉割了的数组；它最重要的一个属性就是<code>length</code>，由于它的长度在构造时已经确定了，因此length是只读数学：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> f1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Float32Array</span>(<span class="hljs-number">3</span>);<br><br><span class="hljs-comment">// 3</span><br>f1.<span class="hljs-property">length</span>;<br></code></pre></div></td></tr></table></figure>
-
+<p>　　我们知道，在一些内容创作网站，比如掘金、知乎等，直接贴二维码的话文章会被限流警告，那么如何才能够光明正大的贴出二维码呢？看完本文，相信你就会有答案了。</p>
+<h1 id="建模"><a href="#建模" class="headerlink" title="建模"></a>建模</h1><p>　　要实现这样的效果，首先我们需要将二维码进行建模处理；网络上也有很多建模工具，这里笔者使用了开源且好用的<a target="_blank" rel="noopener" href="https://www.blender.org/download/">Blender4.1</a>进行建模，整个建模的过程较为繁琐，因此需要一定的耐心和细心；如果有更好的建模方式，欢迎在评论区留言讨论。</p>
+<p>　　选中右上角的Z轴，将图片拖拽入编辑器中，最好将二维码的四周白边进行裁切；然后调整其XYZ轴位置，让其居中：</p>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-<p>　　我们说了这么多Float32Array是固定长度的，它的长度不可改变，我们通过实验来验证一下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> f2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Float32Array</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]);<br><br>f2[<span class="hljs-number">1</span>] = <span class="hljs-number">4</span>;<br><span class="hljs-comment">// [1, 4, 3]</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(f2);<br><br>f2[<span class="hljs-number">3</span>] = <span class="hljs-number">5</span>;<br><span class="hljs-comment">// [1, 4, 3]</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(f2);<br><br>f2.<span class="hljs-property">length</span> = <span class="hljs-number">4</span> <br><span class="hljs-comment">// [1, 4, 3]</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(f2);<br><br><span class="hljs-comment">//Uncaught TypeError: f2.push is not a function</span><br>f2.<span class="hljs-title function_">push</span>(<span class="hljs-number">2</span>)<br></code></pre></div></td></tr></table></figure>
+<p><img src="/images/Make-3D-Qrcode/import.png" srcset="/img/loading.gif" lazyload alt="导入"></p>
+<p>　　<code>Shift+A键</code>，我们添加一个<code>网格=&gt;平面</code>进来，再次调整位置，然后选择右上角的<code>切换透视模式</code>，快捷键是<code>Alt+Z键</code>；开启透视模式后，我们就可以调整平面的大小，和二维码中间部分大小相同即可。</p>
+<p><img src="/images/Make-3D-Qrcode/plane.png" srcset="/img/loading.gif" lazyload alt="添加并调整平面"></p>
+<p>　　选择平面后，继续点击Tab键进入编辑模式，<code>Ctrl+R</code>添加分割线，在平面的横向和纵向都添加多个分割线，滚动鼠标滚轮可以增加或减少数量，当数量刚好可以切割每个二维码的方块时点击右键确定：</p>
+<p><img src="/images/Make-3D-Qrcode/cut.png" srcset="/img/loading.gif" lazyload alt="添加分割线"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　点击左上角的<code>面选择模式</code>以及<code>扩展当前选中项模式</code>，将白色块的部分选中出来，然后点击del键进行删除，选择<code>面选项</code>，这个过程需要耐心慢慢选择：</p>
+<blockquote>
+<p>注意框选面中间的小点，才能选中面。</p>
+</blockquote>
+<p><img src="/images/Make-3D-Qrcode/select.png" srcset="/img/loading.gif" lazyload alt="选择删除面"></p>
+<p>　　删除后我们得到了这样一个图形，我们发现依然可以进行扫码：</p>
+<p><img src="/images/Make-3D-Qrcode/del-done.png" srcset="/img/loading.gif" lazyload alt="删除完成"></p>
+<p>　　我们给每个黑色的小方块同时添加横向和纵向的分割线，选择所有的面，点击del删除，选择<code>仅边和面选项</code></p>
+<blockquote>
 <script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
+<p>这一步也需要细心和耐心，当然你也可以在前面第一次分割的时候，分割得更细。</p>
+</blockquote>
+<p><img src="/images/Make-3D-Qrcode/cut-more.png" srcset="/img/loading.gif" lazyload alt="删除面和边"></p>
+<p>　　面和边删除了，我们的界面上看似什么都没有了，不过别着急，然后右上角选择<code>点模式</code>，我们就能看到删除了边和面之后，还有很多的小点剩余下来，我们只需要保留黑色方块中心的点；这里我们在点模式下框选黑色方块中的点后，然后使用<code>Ctrl+I键</code>进行反向选择，删除其他所有的点：</p>
+<p><img src="/images/Make-3D-Qrcode/select-point.png" srcset="/img/loading.gif" lazyload alt="选择点"></p>
+<p>　　最终我们得到这样一个点图，导出到glb文件即可：</p>
+<p><img src="/images/Make-3D-Qrcode/done.png" srcset="/img/loading.gif" lazyload alt="最终生成的"></p>
+<h1 id="导入模型"><a href="#导入模型" class="headerlink" title="导入模型"></a>导入模型</h1><p>　　</p>
 
-
-<p>　　我们看到，通过<code>f2[1]</code>赋值可以成功，而<code>f2[3]</code>超出了f2的数组长度，因此赋值失败了；f2.length也是只读属性，也导致赋值失败；最后我们发现它也没有push方法，并不能向数组中插入元素。</p>
-<h2 id="浮点类型数据"><a href="#浮点类型数据" class="headerlink" title="浮点类型数据"></a>浮点类型数据</h2><p>　　Float32Array只能存储浮点类型数据，那我们创建一个数组，包含非浮点数，看看会发生什么：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> f1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Float32Array</span>([<span class="hljs-number">1</span>])<br><br>f1[<span class="hljs-number">0</span>] = <span class="hljs-number">1.1</span><br><span class="hljs-comment">// 1.1</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(f1)<br><br>f1[<span class="hljs-number">0</span>] = <span class="hljs-string">&#x27;2.4&#x27;</span><br><span class="hljs-comment">// 2.4</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(f1)<br><br><br>f1[<span class="hljs-number">0</span>] = <span class="hljs-string">&#x27;asdasd&#x27;</span><br><span class="hljs-comment">// NaN</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(f1)<br><br>f1[<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span><br><span class="hljs-comment">// 1</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(f1)<br><br>f1[<span class="hljs-number">0</span>] = <span class="hljs-literal">false</span><br><span class="hljs-comment">// 0</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(f1)<br><br>f1[<span class="hljs-number">0</span>] = []<br><span class="hljs-comment">// 0</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(f1)<br><br><br>f1[<span class="hljs-number">0</span>] = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]<br><span class="hljs-comment">// Nan</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(f1)<br><br>f1[<span class="hljs-number">0</span>] = &#123;&#125;<br><span class="hljs-comment">// Nan</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(f1)<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-
-<p>　　通过上面的案例，我们很明显的就能看出，Float32Array会把存入的数据自动转换成Number类型的数据，如果转换不了就赋值NaN。</p>
-<h1 id="物体的形状"><a href="#物体的形状" class="headerlink" title="物体的形状"></a>物体的形状</h1><p>　　我们知道，在Three.js中，一个物体由几何体Geometry和材质Material组成，几何体就是物体形状，而材质就是物体的材质；我们想要通过粒子模拟几何体的形状，就需要了解Geometry。</p>
-<h1 id="粒子系统"><a href="#粒子系统" class="headerlink" title="粒子系统"></a>粒子系统</h1>
             </div>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
             <hr>
             <div>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-              <div class="post-metas mb-3">
+              
+<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script><div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
