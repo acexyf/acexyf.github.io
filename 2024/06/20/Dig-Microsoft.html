@@ -17,11 +17,11 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="　　在上一篇文章粒子云切换效果中我们介绍了如何将模型转换成粒子云并且进行切换的效果，我们还看到了二维码的粒子效果，那么这样的效果是如何实现呢？本文从建模开始，一步一步实现这样的效果。">
+  <meta name="description" content="　　在知乎上有这么一个问题：中国几千万大学生，为什么出不了比尔盖茨，乔布斯，马斯克？很多回答都归咎于国内的科技创新、政策、制度、公平性等等因素；但是很少有人真正去关注他们成功背后的真正原因和动机，本文就从微软的创业史开始，深入挖掘大佬创业背后的真正故事。">
   <meta name="author" content="Corner">
   <meta name="keywords" content="Corner">
   
-  <title>二维码还能这么玩？制作一个3D动态粒子二维码！ - 谢小飞的博客</title>
+  <title>深入挖掘微软的创业史 - 谢小飞的博客</title>
 
   <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
 
@@ -191,7 +191,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="二维码还能这么玩？制作一个3D动态粒子二维码！">
+            <span class="h2" id="subtitle" title="深入挖掘微软的创业史">
               
             </span>
 
@@ -201,8 +201,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2024-06-02 11:00" pubdate>
-        2024年6月2日 上午
+      <time datetime="2024-06-20 12:00" pubdate>
+        2024年6月20日 中午
       </time>
     </span>
   
@@ -213,7 +213,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      768 字
+      557 字
     </span>
   
 
@@ -223,7 +223,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      7
+      5
        分钟
     </span>
   
@@ -257,53 +257,33 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">二维码还能这么玩？制作一个3D动态粒子二维码！</h1>
+            <h1 style="display: none">深入挖掘微软的创业史</h1>
             
             <div class="markdown-body">
-              <p>　　在上一篇文章<a href="https://xieyufei.com/2024/05/28/Threejs-Points-Effect.html">粒子云切换效果</a>中我们介绍了如何将模型转换成粒子云并且进行切换的效果，我们还看到了二维码的粒子效果，那么这样的效果是如何实现呢？本文从建模开始，一步一步实现这样的效果。</p>
+              <p>　　在知乎上有这么一个问题：中国几千万大学生，为什么出不了比尔盖茨，乔布斯，马斯克？很多回答都归咎于国内的科技创新、政策、制度、公平性等等因素；但是很少有人真正去关注他们成功背后的真正原因和动机，本文就从微软的创业史开始，深入挖掘大佬创业背后的真正故事。</p>
 <span id="more"></span>
 
 
-<p>　　我们知道，在一些内容创作网站，比如掘金、知乎等，直接贴二维码的话文章会被限流警告，那么如何才能够光明正大的贴出二维码呢？看完本文，相信你就会有答案了。</p>
-<h1 id="建模"><a href="#建模" class="headerlink" title="建模"></a>建模</h1><p>　　要实现这样的效果，首先我们需要将二维码进行建模处理；网络上也有很多建模工具，这里笔者使用了开源且好用的<a target="_blank" rel="noopener" href="https://www.blender.org/download/">Blender4.1</a>进行建模，整个建模的过程较为繁琐，因此需要一定的耐心和细心；如果有更好的建模方式，欢迎在评论区留言讨论。</p>
-<p>　　选中右上角的Z轴，将图片拖拽入编辑器中，最好将二维码的四周白边进行裁切；然后调整其XYZ轴位置，让其居中：</p>
+<p>　　我们传统印象中的比尔盖茨就是连年霸榜世界首富、做慈善以及他的科技大House等等标签；但是如果你去网上搜索一些之前的创业历程，很多经历都是经过包装美化后的，案例和事迹的真实过程都被有意无意的淡化弱化了。</p>
+<p>　　所以很多大佬的创业过程你会觉得很励志，但是看完了啥也没学会，只觉得好像被人灌了一碗鸡汤，很补很好喝，但是对你的身体没有任何的益处，除了让你更加的油腻以外；比如媒体文章只会介绍大佬们在某个时间点做了某件事，突然就预测对了未来的科技发展方向，莫名其妙的就成功了。</p>
+<p>　　但其实如果有过创业经历的小伙伴都知道，要预测未来是很困难的，预测未来意味着投入一定的精力和金钱到一个未知的领域，风险是很高的；因此真实的创业过程远没有媒体说的那么简单轻松，可以说是充满了辛酸；一家企业能够在激烈的市场化竞争中活下来已是艰难；而要想做到世界级别的企业，更是难上加难，除了非凡的商业头脑和眼光，隐藏在背光灯底下的那些不为人知的手段和阴谋，同样值得我们去关注和警醒；正如那句老话说的那样：</p>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-<p><img src="/images/Make-3D-Qrcode/import.png" srcset="/img/loading.gif" lazyload alt="导入"></p>
-<p>　　<code>Shift+A键</code>，我们添加一个<code>网格=&gt;平面</code>进来，再次调整位置，然后选择右上角的<code>切换透视模式</code>，快捷键是<code>Alt+Z键</code>；开启透视模式后，我们就可以调整平面的大小，和二维码中间部分大小相同即可。</p>
-<p><img src="/images/Make-3D-Qrcode/plane.png" srcset="/img/loading.gif" lazyload alt="添加并调整平面"></p>
-<p>　　选择平面后，继续点击Tab键进入编辑模式，<code>Ctrl+R</code>添加分割线，在平面的横向和纵向都添加多个分割线，滚动鼠标滚轮可以增加或减少数量，当数量刚好可以切割每个二维码的方块时点击右键确定：</p>
-<p><img src="/images/Make-3D-Qrcode/cut.png" srcset="/img/loading.gif" lazyload alt="添加分割线"></p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-<p>　　点击左上角的<code>面选择模式</code>以及<code>扩展当前选中项模式</code>，将白色块的部分选中出来，然后点击del键进行删除，选择<code>面选项</code>，这个过程需要耐心慢慢选择：</p>
 <blockquote>
-<p>注意框选面中间的小点，才能选中面。</p>
+<p>没有人能够随随便便成功。</p>
 </blockquote>
-<p><img src="/images/Make-3D-Qrcode/select.png" srcset="/img/loading.gif" lazyload alt="选择删除面"></p>
-<p>　　删除后我们得到了这样一个图形，我们发现依然可以进行扫码：</p>
-<p><img src="/images/Make-3D-Qrcode/del-done.png" srcset="/img/loading.gif" lazyload alt="删除完成"></p>
-<p>　　我们给每个黑色的小方块同时添加横向和纵向的分割线，选择所有的面，点击del删除，选择<code>仅边和面选项</code></p>
-<blockquote>
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script>
-<p>这一步也需要细心和耐心，当然你也可以在前面第一次分割的时候，分割得更细。</p>
-</blockquote>
-<p><img src="/images/Make-3D-Qrcode/cut-more.png" srcset="/img/loading.gif" lazyload alt="删除面和边"></p>
-<p>　　面和边删除了，我们的界面上看似什么都没有了，不过别着急，然后右上角选择<code>点模式</code>，我们就能看到删除了边和面之后，还有很多的小点剩余下来，我们只需要保留黑色方块中心的点；这里我们在点模式下框选黑色方块中的点后，然后使用<code>Ctrl+I键</code>进行反向选择，删除其他所有的点：</p>
-<p><img src="/images/Make-3D-Qrcode/select-point.png" srcset="/img/loading.gif" lazyload alt="选择点"></p>
-<p>　　最终我们得到这样一个点图，导出到glb文件即可：</p>
-<p><img src="/images/Make-3D-Qrcode/done.png" srcset="/img/loading.gif" lazyload alt="最终生成的"></p>
-<h1 id="导入模型"><a href="#导入模型" class="headerlink" title="导入模型"></a>导入模型</h1><p>　　</p>
+<h1 id="童年及学生时期"><a href="#童年及学生时期" class="headerlink" title="童年及学生时期"></a>童年及学生时期</h1><h1 id="创业"><a href="#创业" class="headerlink" title="创业"></a>创业</h1><h1 id="世纪官司"><a href="#世纪官司" class="headerlink" title="世纪官司"></a>世纪官司</h1><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/33474750/">浪潮之巅（第四版）</a></p>
+<p><a target="_blank" rel="noopener" href="https://sspai.com/post/78801">施乐和他的两个小偷邻居</a></p>
 
-            </div>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+            </div>
             <hr>
             <div>
-              
-<script>if(window.location.hostname != "xieyufei.com"){ window.location.href = "https://xieyufei.com" }</script><div class="post-metas mb-3">
+              <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                      <a class="hover-with-bg" href="/categories/life/">代码人生</a>
                     
                   </div>
                 
@@ -311,13 +291,9 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                      <a class="hover-with-bg" href="/tags/Internet/">互联网科技</a>
                     
-                      <a class="hover-with-bg" href="/tags/Animation/">动画</a>
-                    
-                      <a class="hover-with-bg" href="/tags/Threejs/">Threejs</a>
-                    
-                      <a class="hover-with-bg" href="/tags/Graphical/">图形化</a>
+                      <a class="hover-with-bg" href="/tags/History/">历史</a>
                     
                   </div>
                 
