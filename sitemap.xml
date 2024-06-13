@@ -2,9 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://xieyufei.com/baidu_verify_codeva-0Zj1I5AX92.html</loc>
+    
+    <lastmod>2024-06-13</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://xieyufei.com/baidu_verify_codeva-wCMoY935JZ.html</loc>
+    
+    <lastmod>2024-06-12</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://xieyufei.com/2024/06/03/Make-3D-Qrcode.html</loc>
     
-    <lastmod>2024-06-01</lastmod>
+    <lastmod>2024-06-03</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -164,7 +182,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2023/02/06/GSAP-Learn.html</loc>
+    <loc>https://xieyufei.com/2023/04/14/GSAP-Practise.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -173,7 +191,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2023/04/14/GSAP-Practise.html</loc>
+    <loc>https://xieyufei.com/2023/02/06/GSAP-Learn.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -281,7 +299,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2020/07/30/Webpack-Optimize.html</loc>
+    <loc>https://xieyufei.com/2023/03/07/Whatis-Chatgpt.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -290,7 +308,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2023/03/07/Whatis-Chatgpt.html</loc>
+    <loc>https://xieyufei.com/2020/07/30/Webpack-Optimize.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -335,7 +353,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2020/02/29/Vue-One-Root.html</loc>
+    <loc>https://xieyufei.com/2020/03/20/Vue-Communicate.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -344,7 +362,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2020/03/20/Vue-Communicate.html</loc>
+    <loc>https://xieyufei.com/2020/02/29/Vue-One-Root.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -398,6 +416,15 @@
   </url>
   
   <url>
+    <loc>https://xieyufei.com/2017/01/08/SERVER-OPEN-GZIP.html</loc>
+    
+    <lastmod>2024-04-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://xieyufei.com/2021/09/06/Revealjs.html</loc>
     
     <lastmod>2024-04-07</lastmod>
@@ -407,7 +434,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2017/01/08/SERVER-OPEN-GZIP.html</loc>
+    <loc>https://xieyufei.com/2022/04/28/React-Native-Component.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -434,15 +461,6 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2022/08/28/React-Native-Safebox.html</loc>
-    
-    <lastmod>2024-04-07</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://xieyufei.com/2021/10/26/React-Native-Style.html</loc>
     
     <lastmod>2024-04-07</lastmod>
@@ -452,7 +470,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2022/04/28/React-Native-Component.html</loc>
+    <loc>https://xieyufei.com/2022/08/28/React-Native-Safebox.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -461,7 +479,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2020/05/19/Promises-A-Plus.html</loc>
+    <loc>https://xieyufei.com/2021/01/28/Package-Tool-Compare.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -479,7 +497,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2021/01/28/Package-Tool-Compare.html</loc>
+    <loc>https://xieyufei.com/2020/05/19/Promises-A-Plus.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -515,7 +533,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2017/09/25/Nodejs-File-Upload.html</loc>
+    <loc>https://xieyufei.com/2016/12/05/Nodejs-Query-Mysql.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -524,7 +542,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2016/12/05/Nodejs-Query-Mysql.html</loc>
+    <loc>https://xieyufei.com/2017/09/25/Nodejs-File-Upload.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -560,7 +578,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2017/02/19/JS-Standard.html</loc>
+    <loc>https://xieyufei.com/2017/12/06/JS-Moment.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -578,7 +596,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2017/12/06/JS-Moment.html</loc>
+    <loc>https://xieyufei.com/2017/02/19/JS-Standard.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -596,15 +614,6 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2016/09/20/Js-Closure.html</loc>
-    
-    <lastmod>2024-04-07</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://xieyufei.com/2020/04/10/Js-Class-Inherit.html</loc>
     
     <lastmod>2024-04-07</lastmod>
@@ -614,7 +623,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2018/08/06/Http-Cache.html</loc>
+    <loc>https://xieyufei.com/2016/09/20/Js-Closure.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -624,6 +633,15 @@
   
   <url>
     <loc>https://xieyufei.com/2020/05/20/Handwrite-Promise.html</loc>
+    
+    <lastmod>2024-04-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://xieyufei.com/2018/08/06/Http-Cache.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -659,7 +677,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2016/09/11/Git-Command-Start.html</loc>
+    <loc>https://xieyufei.com/2022/11/15/FrontEnd-Sideline.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -668,7 +686,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2022/11/15/FrontEnd-Sideline.html</loc>
+    <loc>https://xieyufei.com/2016/09/11/Git-Command-Start.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -686,15 +704,6 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2017/04/16/FrontEnd-JS-Prototype.html</loc>
-    
-    <lastmod>2024-04-07</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://xieyufei.com/2022/02/22/FrontEnd-Docker.html</loc>
     
     <lastmod>2024-04-07</lastmod>
@@ -704,7 +713,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2017/04/09/FrontEnd-Panorama.html</loc>
+    <loc>https://xieyufei.com/2017/04/16/FrontEnd-JS-Prototype.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -714,6 +723,15 @@
   
   <url>
     <loc>https://xieyufei.com/2017/01/28/FrontEnd-Promise-jQuery.html</loc>
+    
+    <lastmod>2024-04-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://xieyufei.com/2017/04/09/FrontEnd-Panorama.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -749,7 +767,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2016/10/21/Front-Webpack-First.html</loc>
+    <loc>https://xieyufei.com/2022/03/22/FrontEnd-Docker-Advance.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -758,7 +776,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2022/03/22/FrontEnd-Docker-Advance.html</loc>
+    <loc>https://xieyufei.com/2016/10/21/Front-Webpack-First.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -803,7 +821,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2016/09/23/Film-TrainToBusan.html</loc>
+    <loc>https://xieyufei.com/2017/06/13/Fiddler-Usage.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -812,7 +830,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2017/06/13/Fiddler-Usage.html</loc>
+    <loc>https://xieyufei.com/2016/09/23/Film-TrainToBusan.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -848,7 +866,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2020/06/12/Diff-Get-Post.html</loc>
+    <loc>https://xieyufei.com/2021/03/10/DesignPattern-Observer.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -857,7 +875,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2021/03/10/DesignPattern-Observer.html</loc>
+    <loc>https://xieyufei.com/2020/06/12/Diff-Get-Post.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -884,7 +902,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2019/08/29/Cors.html</loc>
+    <loc>https://xieyufei.com/2021/01/08/CommonJS-ES6.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -893,7 +911,7 @@
   </url>
   
   <url>
-    <loc>https://xieyufei.com/2021/01/08/CommonJS-ES6.html</loc>
+    <loc>https://xieyufei.com/2019/08/29/Cors.html</loc>
     
     <lastmod>2024-04-07</lastmod>
     
@@ -967,7 +985,7 @@
 
   <url>
     <loc>https://xieyufei.com/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -975,315 +993,315 @@
   
   <url>
     <loc>https://xieyufei.com/tags/Algorithm/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/FrontEnd/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/SourceCode/</loc>
-    <lastmod>2024-06-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://xieyufei.com/tags/Browser/</loc>
-    <lastmod>2024-06-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://xieyufei.com/tags/Plugin/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/Interview/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/PackTool/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://xieyufei.com/tags/Installation/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <loc>https://xieyufei.com/tags/Browser/</loc>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://xieyufei.com/tags/Server/</loc>
-    <lastmod>2024-06-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://xieyufei.com/tags/CrossDomain/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <loc>https://xieyufei.com/tags/Plugin/</loc>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/Modularization/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://xieyufei.com/tags/Installation/</loc>
+    <lastmod>2024-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://xieyufei.com/tags/Server/</loc>
+    <lastmod>2024-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://xieyufei.com/tags/CrossDomain/</loc>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/CraftyJs/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/DesignPattern/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/Vue/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/Internet/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/History/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/Recommend/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/JS/</loc>
-    <lastmod>2024-06-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://xieyufei.com/tags/Movie/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/Tips/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://xieyufei.com/tags/WeChat/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <loc>https://xieyufei.com/tags/Movie/</loc>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/Componentization/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://xieyufei.com/tags/Webpack/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <loc>https://xieyufei.com/tags/WeChat/</loc>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/Nodejs/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://xieyufei.com/tags/Game/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <loc>https://xieyufei.com/tags/Webpack/</loc>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/Promise/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://xieyufei.com/tags/git/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <loc>https://xieyufei.com/tags/Game/</loc>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/Animation/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://xieyufei.com/tags/git/</loc>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/CSS/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/Chat/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/Machine/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/js/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/Java/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/%E5%BC%82%E6%AD%A5%E8%B7%A8%E5%9F%9F/</loc>
-    <lastmod>2024-06-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://xieyufei.com/tags/Threejs/</loc>
-    <lastmod>2024-06-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://xieyufei.com/tags/Graphical/</loc>
-    <lastmod>2024-06-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://xieyufei.com/tags/Mysql/</loc>
-    <lastmod>2024-06-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://xieyufei.com/tags/DataBase/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/Linux/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://xieyufei.com/tags/Mysql/</loc>
+    <lastmod>2024-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://xieyufei.com/tags/DataBase/</loc>
+    <lastmod>2024-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://xieyufei.com/tags/Threejs/</loc>
+    <lastmod>2024-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://xieyufei.com/tags/Graphical/</loc>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/OpenSource/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/Apps/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/React/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/ReactNative/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/tags/Test/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -1292,28 +1310,28 @@
   
   <url>
     <loc>https://xieyufei.com/categories/programing/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/categories/tools/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/categories/life/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xieyufei.com/categories/film/</loc>
-    <lastmod>2024-06-03</lastmod>
+    <lastmod>2024-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
