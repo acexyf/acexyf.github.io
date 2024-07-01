@@ -17,11 +17,11 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="　　在知乎上有这么一个问题：中国几千万大学生，为什么出不了比尔盖茨，乔布斯，马斯克？很多回答都归咎于国内的科技创新、政策、制度、公平性等等因素；但是很少有人真正去关注他们成功背后的真正原因和动机，本文就从微软的创业史开始，深入挖掘大佬创业背后的真正故事。">
+  <meta name="description" content="　　Linux">
   <meta name="author" content="Corner">
   <meta name="keywords" content="Corner">
   
-  <title>深入挖掘微软的创业史 - 谢小飞的博客</title>
+  <title>Linux下搭建Glances+Grafana监控平台 - 谢小飞的博客</title>
 
   <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
 
@@ -191,7 +191,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="深入挖掘微软的创业史">
+            <span class="h2" id="subtitle" title="Linux下搭建Glances+Grafana监控平台">
               
             </span>
 
@@ -201,8 +201,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2024-06-20 12:00" pubdate>
-        2024年6月20日 中午
+      <time datetime="2024-07-20 21:09" pubdate>
+        2024年7月20日 晚上
       </time>
     </span>
   
@@ -213,7 +213,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.1k 字
+      1 字
     </span>
   
 
@@ -223,7 +223,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      11
+      1
        分钟
     </span>
   
@@ -257,44 +257,26 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">深入挖掘微软的创业史</h1>
+            <h1 style="display: none">Linux下搭建Glances+Grafana监控平台</h1>
             
             <div class="markdown-body">
-              <p>　　在知乎上有这么一个问题：中国几千万大学生，为什么出不了比尔盖茨，乔布斯，马斯克？很多回答都归咎于国内的科技创新、政策、制度、公平性等等因素；但是很少有人真正去关注他们成功背后的真正原因和动机，本文就从微软的创业史开始，深入挖掘大佬创业背后的真正故事。</p>
+              <p>　　Linux</p>
 <span id="more"></span>
 
 
-<p>　　我们传统印象中的比尔盖茨就是连年霸榜世界首富、做慈善以及他的科技大House等等标签；但是如果你去网上搜索一些之前的创业历程，很多经历都是经过包装美化后的，案例和事实都被有意无意的剥离和掩盖了。</p>
-<p>　　所以很多大佬的创业过程你会觉得很励志，比如媒体文章只会介绍大佬们在某个时间点做了某件事，突然就预测对了未来的科技发展方向，莫名其妙的就成功了；但是看完了之后啥也没学会，只觉得好像被人灌了一碗鸡汤，很补很好喝，但是对你的身体没有任何的益处，除了让你更加的油腻以外。</p>
-<p>　　但其实如果有过创业经历的小伙伴都知道，要预测未来是十分困难的，因为预测未来意味着投入一定的精力和金钱到一个未知的领域，风险是很高的；而且即使对未来的预测基本正确，也有极大的可能会经历失败；典型的案例如创造出了第一批个人电脑的<code>施乐公司</code>，有技术有资金，更有大批优秀的人才，但是最后还是无奈的消失在历史的舞台上。</p>
-<blockquote>
-<p>具体故事可以参考<a target="_blank" rel="noopener" href="https://sspai.com/post/78801">施乐和他的两个小偷邻居</a>，本文不再展开。</p>
-</blockquote>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-<p>　　因此真实的创业过程远没有媒体说的那么简单轻松，可以说是充满了辛酸；一家企业能够在激烈的市场化竞争中生存下来已是艰难；而要想做到世界级别的企业，更是难上加难，除了非凡的商业头脑和眼光，隐藏在背光灯底下的那些不为人知的手段和阴谋，同样值得我们去关注和警醒；正如那句老话说的那样：</p>
-<blockquote>
-<p>没有人能够随随便便成功。</p>
-</blockquote>
-<h1 id="童年时期"><a href="#童年时期" class="headerlink" title="童年时期"></a>童年时期</h1><h1 id="创业"><a href="#创业" class="headerlink" title="创业"></a>创业</h1><h1 id="世纪官司"><a href="#世纪官司" class="headerlink" title="世纪官司"></a>世纪官司</h1><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　很多文章都喜欢将比尔盖茨的成功总结为高瞻远瞩的眼光、和好友勇敢的去追求毕生事业、毅然从名校退学，最终成为了世界首富，但是如果你真的相信了这套说辞并且去做了，世界首富不一定，但是找不到工作失业是大概率的；因为我们可以从微软的整个创业经历来看，本质上，微软的崛起就是合法的利用法律，“坑”合伙人、供应商以及客户，以此逐渐的形成了在操作系统市场上的垄断地位。</p>
-<p>　　因此，回到我们文章开头的那个问题：中国几千万大学生，为什么出不了比尔盖茨，乔布斯，马斯克？客观原因上，是因为我们的制度，决定了我们是不允许存在垄断企业，因此这些年我们看到很多的高科技企业被罚款、上市被叫停等等，这都是国家层面为了民生考虑的。最主要的原因还是因为这些科技企业利用市场形成了垄断的地位，不过不可否认的是，这些科技企业在早期确实为科技的进步做出过不少的贡献。</p>
-<p>　　虽然我们没有出现垄断的高科技企业，不过幸运的是我们几千万大学生还是出了王传福（中南工业大学）、汪滔（香港科技大学）、雷军（武汉大学）、刘强东（中国人民大学）等等一大批优秀的企业家，更有那些在科研单位默默为国家科技进步做出卓越贡献的“无名”科学家们。</p>
-<blockquote>
-<p>谨以此文献给那些刚毕业的大学生、迷茫的创业者以及更多默默无闻的科研工作者们。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-</blockquote>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://book.douban.com/subject/33474750/">浪潮之巅（第四版）</a></p>
-<p><a target="_blank" rel="noopener" href="https://sspai.com/post/78801">施乐和他的两个小偷邻居</a></p>
+
+<p>　　</p>
 
             </div>
             <hr>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
             <div>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
               <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/life/">代码人生</a>
+                      <a class="hover-with-bg" href="/categories/tools/">工具</a>
                     
                   </div>
                 
@@ -302,9 +284,9 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/Internet/">互联网科技</a>
+                      <a class="hover-with-bg" href="/tags/Installation/">安装教程</a>
                     
-                      <a class="hover-with-bg" href="/tags/History/">历史</a>
+                      <a class="hover-with-bg" href="/tags/Linux/">Linux</a>
                     
                   </div>
                 
