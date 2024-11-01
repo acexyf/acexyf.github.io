@@ -1,0 +1,575 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　在Vue3中，reactive和ref两个响应式API相信大家用的都比较熟练了，但是在使用时还有众多的响应式API函数，本文就从源码角度，来看下不同API及其实现方式，相信看完本文之后会加深对Vue3响应式的理解。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>从Vue3源码深入理解reactive和ref - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="从Vue3源码深入理解reactive和ref">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-05-10 12:00" pubdate>
+        2024年5月10日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      12
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">从Vue3源码深入理解reactive和ref</h1>
+            
+            <div class="markdown-body">
+              <p>　　在Vue3中，reactive和ref两个响应式API相信大家用的都比较熟练了，但是在使用时还有众多的响应式API函数，本文就从源码角度，来看下不同API及其实现方式，相信看完本文之后会加深对Vue3响应式的理解。</p>
+<span id="more"></span>
+
+
+
+
+<h1 id="源码介绍"><a href="#源码介绍" class="headerlink" title="源码介绍"></a>源码介绍</h1><p>222</p>
+<figure class="highlight nginx"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs nginx"><span class="hljs-attribute">ERR_PNPM_SPEC_NOT_SUPPORTED_BY_ANY_RESOLVER</span>  <span class="hljs-variable">@babel</span>/parser<span class="hljs-variable">@catalog</span>: isn<span class="hljs-string">&#x27;t supported by any available resolver.</span><br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>升级pnpm</p>
+<figure class="highlight cmake"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmake">changelogs/ <span class="hljs-comment"># 包含了项目的变更日志，记录了每个版本的更新内容和修复的问题。</span><br>script/ <span class="hljs-comment"># 存放构建脚本和其他与开发流程相关的脚本，如linting、测试和发布脚本。</span><br><br>packages/ <span class="hljs-comment"># 存放了Vue3核心的各种包和模块，例如编译器、响应性系统、运行时和服务器端渲染等。</span><br>├── compiler-core <span class="hljs-comment"># 编译时核心包，提供与平台无关的编译功能</span><br>├── compiler-dom <span class="hljs-comment"># 编译时针对浏览器DOM的实现</span><br>├── compiler-sfc <span class="hljs-comment"># 编译时SFC（单文件组件）的实现</span><br>├── compiler-ssr <span class="hljs-comment"># 编译时服务端渲染的实现</span><br>├── dts-built-<span class="hljs-keyword">test</span> <span class="hljs-comment">#</span><br>├── dts-<span class="hljs-keyword">test</span> <span class="hljs-comment"># 与TypeScript声明文件的生成和测试有关。</span><br>├── reactivity <span class="hljs-comment"># 包含Composition API、响应式系统等的实现</span><br>├── runtime-core <span class="hljs-comment"># 提供与平台无关的运行时核心代码</span><br>├── runtime-dom <span class="hljs-comment"># 针对浏览器DOM的运行时实现</span><br>├── runtime-<span class="hljs-keyword">test</span> <span class="hljs-comment"># 运行时测试工具</span><br>├── server-renderer <span class="hljs-comment"># 服务端渲染器</span><br>├── sfc-playground <span class="hljs-comment"># 单文件组件（Single File Components）的实验场，用于Vue组件的开发和测试。</span><br>├── shared <span class="hljs-comment"># Vue内部使用的共享工具代码</span><br>├── template-explorer <span class="hljs-comment"># 模板探索器，用于学习和实验Vue的模板语法。</span><br>├── vue <span class="hljs-comment"># Vue.js框架的核心代码。</span><br>└── vue-compat <span class="hljs-comment"># 是一个兼容性构建，提供可配置的Vue 2兼容行为，用于帮助从Vue 2迁移到Vue 3。</span><br><br>    <span class="hljs-comment"># 每个子包下一层的文件通常包括src文件夹、__tests__文件夹（包含测试代码）、以及package.json文件（定义包的依赖和配置）。例如，compiler-core文件夹下可能会包含：</span><br>    compiler-core<br>    ├── src <span class="hljs-comment"># 源代码</span><br>    ├── __tests__ <span class="hljs-comment"># 测试代码</span><br>    └── package.json <span class="hljs-comment"># 包配置文件</span><br></code></pre></div></td></tr></table></figure>
+
+
+
+<figure class="highlight vim"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vim">Compiler（编译器模块）<br>功能：负责将Vue模板解析并转换为渲染函数。<br>子模块：包括<span class="hljs-keyword">compiler</span>-core（编译核心）、<span class="hljs-keyword">compiler</span>-dom（浏览器相关）、<span class="hljs-keyword">compiler</span>-sfc（单文件组件）等。<br><br>Renderer（渲染器模块）<br>功能：负责将组件的虚拟DOM转换为真实的DOM元素，并处理相关的DOM操作。<br>特点：Renderer模块有两个实现，一个是针对浏览器环境的浏览器渲染器，另一个是针对服务器端渲染的服务端渲染器。<br><br>Reactivity（响应式模块）<br>功能：实现了Vue <span class="hljs-number">3</span>的响应式系统，能够将普通的JavaScript对象转换为响应式对象，并在对象属性发生变化时自动触发视图更新。<br><br>Runtime-core（运行时核心模块）<br>功能：实现了Vue组件的实例化、生命周期管理、事件处理等核心功能。<br>作用：Runtime-core模块是Vue <span class="hljs-number">3</span>运行时的核心，它负责将组件的渲染函数和响应式数据结合起来，共同实现组件的渲染和更新。<br></code></pre></div></td></tr></table></figure>
+
+<p>Compiler与Renderer的联系<br>Compiler模块负责将Vue模板解析为渲染函数，而Renderer模块则负责将这些渲染函数转换为真实的DOM元素。<br>两者之间的交互是通过渲染函数来实现的，Compiler模块生成的渲染函数是Renderer模块的输入。</p>
+<p>Reactivity与Runtime-core的联系<br>Reactivity模块提供了响应式系统的实现，而Runtime-core模块则负责在组件实例化时创建响应式数据，并在数据变化时触发视图更新。<br>两者之间的交互是通过响应式对象来实现的，Runtime-core模块在创建组件时会调用Reactivity模块提供的API来创建响应式数据。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>Runtime-core与其他模块的联系<br>Runtime-core模块是Vue 3运行时的核心，它与其他模块都有紧密的交互。<br>它负责调用Compiler模块生成的渲染函数来渲染组件，同时它也负责调用Reactivity模块提供的API来处理响应式数据。<br>此外，Runtime-core模块还负责处理组件的生命周期事件、事件处理等核心功能。</p>
+<p>Shared模块的作用<br>Shared模块包含了一些公共的工具函数和类型定义，这些函数和类型定义被其他模块广泛使用。<br>通过Shared模块，Vue 3的源码实现了代码的重用和类型的统一，提高了代码的可读性和可维护性。</p>
+<p>　　</p>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+            </div>
+            <hr>
+            <div>
+              
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p><div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Vue/">Vue</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/05/28/Threejs-Points-Effect.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Threejs粒子云切换效果的实现</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/17/Threejs-Scene-Transition.html">
+                        <span class="hidden-mobile">Threejs多场景切换的过渡效果</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
