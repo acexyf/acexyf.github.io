@@ -1,3 +1,4 @@
+https://xieyufei.com/2024/11/06/Threejs-Chair.html
 https://xieyufei.com/2024/11/02/Accept-Cookie.html
 https://xieyufei.com/2024/09/26/Vite-Tool-Library.html
 https://xieyufei.com/2024/09/17/Install-Linux-Frp.html
@@ -7,4 +8,3 @@ https://xieyufei.com/2024/06/03/Make-3D-Qrcode.html
 https://xieyufei.com/2024/05/28/Threejs-Points-Effect.html
 https://xieyufei.com/2024/04/17/Threejs-Scene-Transition.html
 https://xieyufei.com/2024/04/08/Vue-Click-Outside.html
-https://xieyufei.com/2024/02/19/Glow-Card.html
