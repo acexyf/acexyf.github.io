@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://xieyufei.com/2024/11/25/Vue3-Ref.html</loc>
+    <lastmod>2024-11-25</lastmod>
+  </url>
+  <url>
     <loc>https://xieyufei.com/2024/11/06/Threejs-Chair.html</loc>
     <lastmod>2024-11-06</lastmod>
   </url>
@@ -69,10 +73,6 @@
     <lastmod>2024-04-07</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2023/09/05/Install-Windows-Cuda.html</loc>
-    <lastmod>2024-04-07</lastmod>
-  </url>
-  <url>
     <loc>https://xieyufei.com/2023/08/11/Chrome-Plugin-Practise.html</loc>
     <lastmod>2024-04-07</lastmod>
   </url>
@@ -82,6 +82,10 @@
   </url>
   <url>
     <loc>https://xieyufei.com/2023/02/06/GSAP-Learn.html</loc>
+    <lastmod>2024-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2023/09/05/Install-Windows-Cuda.html</loc>
     <lastmod>2024-04-07</lastmod>
   </url>
   <url>
@@ -101,43 +105,27 @@
     <lastmod>2024-04-07</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2016/09/11/Git-Command-Start.html</loc>
+    <loc>https://xieyufei.com/2017/09/25/Nodejs-File-Upload.html</loc>
     <lastmod>2024-04-07</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2017/09/11/Git-Learning.html</loc>
+    <loc>https://xieyufei.com/2016/12/05/Nodejs-Query-Mysql.html</loc>
     <lastmod>2024-04-07</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2018/08/06/Http-Cache.html</loc>
+    <loc>https://xieyufei.com/2021/12/28/Npm-Package.html</loc>
     <lastmod>2024-04-07</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2020/05/20/Handwrite-Promise.html</loc>
+    <loc>https://xieyufei.com/2021/01/28/Package-Tool-Compare.html</loc>
     <lastmod>2024-04-07</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2016/11/12/Hubot-Chat-Machine.html</loc>
+    <loc>https://xieyufei.com/2017/03/29/Project-Summary.html</loc>
     <lastmod>2024-04-07</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2017/09/02/JS-Array-Remove-Duplicate.html</loc>
-    <lastmod>2024-04-07</lastmod>
-  </url>
-  <url>
-    <loc>https://xieyufei.com/2018/03/07/JS-Decimal-Accuracy.html</loc>
-    <lastmod>2024-04-07</lastmod>
-  </url>
-  <url>
-    <loc>https://xieyufei.com/2017/12/06/JS-Moment.html</loc>
-    <lastmod>2024-04-07</lastmod>
-  </url>
-  <url>
-    <loc>https://xieyufei.com/2017/02/19/JS-Standard.html</loc>
-    <lastmod>2024-04-07</lastmod>
-  </url>
-  <url>
-    <loc>https://xieyufei.com/2016/09/21/JS-Variate-Scope.html</loc>
+    <loc>https://xieyufei.com/2020/05/19/Promises-A-Plus.html</loc>
     <lastmod>2024-04-07</lastmod>
   </url>
   <url>
@@ -265,6 +253,46 @@
     <lastmod>2024-04-07</lastmod>
   </url>
   <url>
+    <loc>https://xieyufei.com/2016/09/11/Git-Command-Start.html</loc>
+    <lastmod>2024-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2017/09/11/Git-Learning.html</loc>
+    <lastmod>2024-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2020/05/20/Handwrite-Promise.html</loc>
+    <lastmod>2024-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2018/08/06/Http-Cache.html</loc>
+    <lastmod>2024-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2016/11/12/Hubot-Chat-Machine.html</loc>
+    <lastmod>2024-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2017/09/02/JS-Array-Remove-Duplicate.html</loc>
+    <lastmod>2024-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2018/03/07/JS-Decimal-Accuracy.html</loc>
+    <lastmod>2024-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2017/12/06/JS-Moment.html</loc>
+    <lastmod>2024-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2017/02/19/JS-Standard.html</loc>
+    <lastmod>2024-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2016/09/21/JS-Variate-Scope.html</loc>
+    <lastmod>2024-04-07</lastmod>
+  </url>
+  <url>
     <loc>https://xieyufei.com/2016/05/28/Java-Ajax.html</loc>
     <lastmod>2024-04-07</lastmod>
   </url>
@@ -286,30 +314,6 @@
   </url>
   <url>
     <loc>https://xieyufei.com/2016/11/15/Nodejs-Connect-Mysql.html</loc>
-    <lastmod>2024-04-07</lastmod>
-  </url>
-  <url>
-    <loc>https://xieyufei.com/2017/09/25/Nodejs-File-Upload.html</loc>
-    <lastmod>2024-04-07</lastmod>
-  </url>
-  <url>
-    <loc>https://xieyufei.com/2016/12/05/Nodejs-Query-Mysql.html</loc>
-    <lastmod>2024-04-07</lastmod>
-  </url>
-  <url>
-    <loc>https://xieyufei.com/2021/12/28/Npm-Package.html</loc>
-    <lastmod>2024-04-07</lastmod>
-  </url>
-  <url>
-    <loc>https://xieyufei.com/2021/01/28/Package-Tool-Compare.html</loc>
-    <lastmod>2024-04-07</lastmod>
-  </url>
-  <url>
-    <loc>https://xieyufei.com/2017/03/29/Project-Summary.html</loc>
-    <lastmod>2024-04-07</lastmod>
-  </url>
-  <url>
-    <loc>https://xieyufei.com/2020/05/19/Promises-A-Plus.html</loc>
     <lastmod>2024-04-07</lastmod>
   </url>
   <url>
