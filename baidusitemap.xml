@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://xieyufei.com/2024/12/02/Zerotier.html</loc>
+    <lastmod>2024-12-02</lastmod>
+  </url>
+  <url>
     <loc>https://xieyufei.com/2024/11/25/Vue3-Ref.html</loc>
     <lastmod>2024-11-25</lastmod>
   </url>
@@ -110,22 +114,6 @@
   </url>
   <url>
     <loc>https://xieyufei.com/2016/12/05/Nodejs-Query-Mysql.html</loc>
-    <lastmod>2024-04-07</lastmod>
-  </url>
-  <url>
-    <loc>https://xieyufei.com/2021/12/28/Npm-Package.html</loc>
-    <lastmod>2024-04-07</lastmod>
-  </url>
-  <url>
-    <loc>https://xieyufei.com/2021/01/28/Package-Tool-Compare.html</loc>
-    <lastmod>2024-04-07</lastmod>
-  </url>
-  <url>
-    <loc>https://xieyufei.com/2017/03/29/Project-Summary.html</loc>
-    <lastmod>2024-04-07</lastmod>
-  </url>
-  <url>
-    <loc>https://xieyufei.com/2020/05/19/Promises-A-Plus.html</loc>
     <lastmod>2024-04-07</lastmod>
   </url>
   <url>
@@ -314,6 +302,22 @@
   </url>
   <url>
     <loc>https://xieyufei.com/2016/11/15/Nodejs-Connect-Mysql.html</loc>
+    <lastmod>2024-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2021/12/28/Npm-Package.html</loc>
+    <lastmod>2024-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2021/01/28/Package-Tool-Compare.html</loc>
+    <lastmod>2024-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2017/03/29/Project-Summary.html</loc>
+    <lastmod>2024-04-07</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2020/05/19/Promises-A-Plus.html</loc>
     <lastmod>2024-04-07</lastmod>
   </url>
   <url>

@@ -1,3 +1,4 @@
+https://xieyufei.com/2024/12/02/Zerotier.html
 https://xieyufei.com/2024/11/25/Vue3-Ref.html
 https://xieyufei.com/2024/11/06/Threejs-Chair.html
 https://xieyufei.com/2024/11/02/Accept-Cookie.html
@@ -7,4 +8,3 @@ https://xieyufei.com/2024/08/15/Black-Apple.html
 https://xieyufei.com/2024/07/01/Dig-Microsoft.html
 https://xieyufei.com/2024/06/03/Make-3D-Qrcode.html
 https://xieyufei.com/2024/05/28/Threejs-Points-Effect.html
-https://xieyufei.com/2024/04/17/Threejs-Scene-Transition.html
