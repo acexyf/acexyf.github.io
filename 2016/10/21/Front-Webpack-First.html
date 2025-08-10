@@ -1,0 +1,618 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　作为当下最流行的前端打包工具，webpack有自己无与伦比的优势和功能特性，使用webpack打包自己的项目能够大大地提高我们的开发效率。小编整理了一下webpack在项目中的最佳实战分享给大家。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>搭建自己的Webpack项目:入门（一） - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="搭建自己的Webpack项目:入门（一）">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2016-10-21 12:15" pubdate>
+        2016年10月21日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      25
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">搭建自己的Webpack项目:入门（一）</h1>
+            
+            <div class="markdown-body">
+              <p>　　作为当下最流行的前端打包工具，webpack有自己无与伦比的优势和功能特性，使用webpack打包自己的项目能够大大地提高我们的开发效率。小编整理了一下webpack在项目中的最佳实战分享给大家。</p>
+<span id="more"></span>
+
+<h1 id="一、什么是webpack"><a href="#一、什么是webpack" class="headerlink" title="一、什么是webpack"></a>一、什么是webpack</h1><p>　　随着网页内容的越来越丰富，在我们的网页上我们经常要用到很多的脚本文件，比如幻灯模块的脚本、列表模块的脚本和搜索模块的脚本等等。如果不对这些文件进行统一的打包，整个页面就会非常的凌乱。<br>　　于是，webpack就诞生了，我们可以把它想象成一台洗衣机+烘干机+叠衣机(据说岛国已经发明类似的机器人了)，我们可以把杂七杂八的衣服、裤子、袜子等等都丢进去，然后它就会帮我们洗干净、烘干、叠整齐了，一系列工作全自动完成，不需要我们亲自动手，怎么样，是不是很心动。</p>
+<p><img src="/images/Front-Webpack-First/what-is-webpack.png" srcset="/img/loading.gif" lazyload alt="stage"></p>
+<p>　　借用webpack官网的一张图来解释一下webpack的工作原理。左边就是我们杂乱的页面资源，有脚本文件、样式文件、图片文件等等，各种文件之间互相引用。经过webpack的打包整理，生成静态文件。<br>　　webpack的工作方式是：通过一个配置文件找到入口文件，从这个入口文件找到你项目依赖的所有资源文件，使用对应的资源加载器(loaders)来处理这些资源文件，最后打包成静态文件。</p>
+<h1 id="二、安装webpack"><a href="#二、安装webpack" class="headerlink" title="二、安装webpack"></a>二、安装webpack</h1><p>　　使用webpack之前需要安装webpack，在这里我们需要在两个地方安装：全局目录和项目目录，在项目目录下执行以下命令：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">//全局安装的作用是直接在命令行中使用</span><br>npm install -g webpack<br><span class="hljs-comment">//安装到项目目录，使用webpack的功能</span><br>npm install --save-dev webpack<br></code></pre></div></td></tr></table></figure>
+
+<h1 id="三、使用webpack"><a href="#三、使用webpack" class="headerlink" title="三、使用webpack"></a>三、使用webpack</h1><p>　　在开始上手项目之前首先来搭建我们的目录结构。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="目录结构说明"><a href="#目录结构说明" class="headerlink" title="目录结构说明"></a>目录结构说明</h2><p>　　我们可以把项目目录搭建成如下，当然只是给大家做一个参考而已：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html">-- package.json<br>-- webpack.config.js<br>-- public/<br>   -- images/<br>   -- javascript/<br>   -- stylesheet/<br>-- view/<br>-- build/<br></code></pre></div></td></tr></table></figure>
+
+<p>　　package.json使用<code>npm init</code>命令可以自动生成，在这里不过多的阐述；build目录主要是webpack构建的产物，自动生成；这里的核心文件就是我们的webpack.config.js文件，需要自己手动编写。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="webpack配置文件"><a href="#webpack配置文件" class="headerlink" title="webpack配置文件"></a>webpack配置文件</h2><p>　　<code>webpack.config.js</code>配置文件通过exports导出一个对象，这个对象中有三个模块比较重要：entry、output和module，具体如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;webpack&#x27;</span>);<br><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;path&#x27;</span>)<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>    <span class="hljs-attr">entry</span>: &#123;<br>        <span class="hljs-attr">index</span>: <span class="hljs-string">&#x27;./public/javascript/index.js&#x27;</span><br>    &#125;,<br>    <span class="hljs-attr">output</span>: &#123;<br>        <span class="hljs-attr">path</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&#x27;build&#x27;</span>),<br>        <span class="hljs-attr">filename</span>: <span class="hljs-string">&#x27;[name].bundle.js&#x27;</span>,<br>        <span class="hljs-attr">publicPath</span>: <span class="hljs-string">&#x27;./build/&#x27;</span><br>    &#125;,<br>    <span class="hljs-attr">module</span>: &#123;<br>        <span class="hljs-attr">loaders</span>: []<br>    &#125;,<br>    <span class="hljs-attr">plugins</span>:&#123;&#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="entry属性"><a href="#entry属性" class="headerlink" title="entry属性"></a>entry属性</h3><p>　　entry属性是页面的主入口，所有页面的文件都在这个入口文件中进行引用。<br>　　当然，一个项目肯定有不止一个页面，需要多个入口，entry属性可以这样配置：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-attr">entry</span>: &#123;<br>    <span class="hljs-attr">index</span>: <span class="hljs-string">&#x27;./public/javascript/index.js&#x27;</span>,<br>    <span class="hljs-attr">list</span>: <span class="hljs-string">&#x27;./public/javascript/list.js&#x27;</span>,<br>	<span class="hljs-comment">//...多个页面的入口</span><br>&#125;,<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="output属性"><a href="#output属性" class="headerlink" title="output属性"></a>output属性</h3><p>　　在webpack打包之后，生成的js文件、css文件、图片文件等等就会放到output属性所指定的文件目录下。<br>　　path属性就是所在文件夹的路径，需要使用绝对路径，这里用path的resolve方法进行解析；filename属性指定了输出的文件名，[name]表示入口的属性名叫什么就输出对应的文件，比如这里的index输入的文件名就是index.bundle.js。<br>　　publicPath是以http方式请求的静态资源的路径，webpack-dev-server(webpack的一个插件)会根据你请求的url来匹配这个publicPath下的文件。</p>
+<h3 id="module属性"><a href="#module属性" class="headerlink" title="module属性"></a>module属性</h3><p>　　module属性主要存放解析资源文件的各个加载器，每一个对象表示了一个加载器。<br>　　test属性表示正则匹配，用来匹配文件的后缀名；loader属性表示如果文件相匹配，则调用对应的加载器来解析文件。比如样式加载器有css-loader、sass-loader。<br>　　加载器的后缀都是<code>-loader</code>，在loader属性中配置加载器不用写后缀，配置不同的加载器需要使用<code>!</code>分隔并串联起来。</p>
+<h3 id="plugins属性"><a href="#plugins属性" class="headerlink" title="plugins属性"></a>plugins属性</h3><p>　　plugins属性是用来放webpack的插件，这个属性下面会用到</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h2 id="编写入口文件"><a href="#编写入口文件" class="headerlink" title="编写入口文件"></a>编写入口文件</h2><p>　　在/public/javascript/目录下，编写我们的入口文件index.js，我们的入口文件非常简单，就在页面上打印一句话：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">/public/javascript/index.<span class="hljs-property">js</span><br><span class="hljs-variable language_">document</span>.<span class="hljs-title function_">write</span>(<span class="hljs-string">&#x27;webpack works&#x27;</span>)<br><span class="hljs-variable language_">document</span>.<span class="hljs-title function_">write</span>(<span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./module.js&#x27;</span>))<br></code></pre></div></td></tr></table></figure>
+<p>　　还有我们的模块文件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">/public/javascript/<span class="hljs-variable language_">module</span>.<span class="hljs-property">js</span><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span>=<span class="hljs-string">&#x27;It works from module.js.&#x27;</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　这样一个简单的webpack项目就完成了，通过在项目根目录使用webpack命令，在build文件中生成index.bundle.js文件就是我们的构建产物，在页面上直接引用这个js就能看到效果了</p>
+<h2 id="给页面点“颜色”看看"><a href="#给页面点“颜色”看看" class="headerlink" title="给页面点“颜色”看看"></a>给页面点“颜色”看看</h2><p>　　在页面上我们肯定会用到很多的样式文件，那么怎么在页面上使用呢？首先需要有对应的加载器，这里我们就要用到样式加载器。<br>　　首先安装我们的加载器：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">npm install css-loader style-loader sass-loader --save-dev<br></code></pre></div></td></tr></table></figure>
+
+<p>　　然后改写配置文件中的加载器模块：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-attr">module</span>: &#123;<br>    <span class="hljs-attr">loaders</span>: [<br>		&#123; <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.css$/</span>, <span class="hljs-attr">loader</span>: <span class="hljs-string">&#x27;style!css&#x27;</span> &#125;,<br>		&#123;<span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.scss$/</span>, <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;style!css!sass&quot;</span>&#125;<br>    ]<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>　　css-loader会遍历css文件，找到所有的url(…)并且处理。style-loader会把所有的样式插入到你页面的一个style标签中。<br>　　接下来就可以编写我们的样式文件了：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs stylesheet">/stylesheet/style.css<br>body&#123;background:#f5f5f5&#125;<br></code></pre></div></td></tr></table></figure>
+<p>　　在index.js中我们添加对样式文件的引用：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;../stylesheet/style.css&#x27;</span>);<br></code></pre></div></td></tr></table></figure>
+<p>　　在根目录我们再次执行webpack命令，再次生成构建的js文件就能看到页面上有颜色了。</p>
+<h2 id="提取公共的脚本并压缩"><a href="#提取公共的脚本并压缩" class="headerlink" title="提取公共的脚本并压缩"></a>提取公共的脚本并压缩</h2><p>　　有时候多个公共脚本中有公用的部分，如果多写就显得有点多余，我们可以利用webpack的提取公共部分的插件来帮助我们提取。<br>　　在plugins属性中添加如下代码：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-attr">plugins</span>: [<br>    <span class="hljs-comment">//压缩代码</span><br>    <span class="hljs-keyword">new</span> webpack.<span class="hljs-property">optimize</span>.<span class="hljs-title class_">UglifyJsPlugin</span>(),<br>    <span class="hljs-comment">//提取公共部分</span><br>    <span class="hljs-keyword">new</span> webpack.<span class="hljs-property">optimize</span>.<span class="hljs-title class_">CommonsChunkPlugin</span>(<span class="hljs-string">&#x27;common.js&#x27;</span>)<br>]<br></code></pre></div></td></tr></table></figure>
+<p>　　再次执行webpack命令，我们在build文件夹里看到多出了一个common.js文件，这个就是提取出的公共部分。</p>
+<h2 id="独立出样式文件"><a href="#独立出样式文件" class="headerlink" title="独立出样式文件"></a>独立出样式文件</h2><p>　　通过<code>style</code>标签引入样式可能会让页面的代码看起来非常的庞大非常的凌乱，有时候我们需要将所有的样式导出到一个独立的样式文件，然后通过<code>link</code>标签引入样式文件。<br>　　这时候我们就需要用新的插件。通过<code>npm install</code>命令安装extract-text-webpack-plugin插件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">npm install extract-text-webpack-plugin --save-dev<br></code></pre></div></td></tr></table></figure>
+<p>　　安装完插件我们就需要在<code>webpack.config.js</code>文件中进行配置了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> <span class="hljs-title class_">ExtractTextPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;extract-text-webpack-plugin&quot;</span>);<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>    <span class="hljs-comment">// ...省略部分代码</span><br>    <span class="hljs-attr">module</span>: &#123;<br>        <span class="hljs-attr">loaders</span>: [<br>            <span class="hljs-comment">// ...省略部分代码</span><br>            &#123;<span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.css$/</span>, <span class="hljs-attr">loader</span>: <span class="hljs-title class_">ExtractTextPlugin</span>.<span class="hljs-title function_">extract</span>(<span class="hljs-string">&quot;style-loader&quot;</span>, <span class="hljs-string">&quot;css-loader&quot;</span>)&#125;<br>        ]<br>    &#125;,<br>    <span class="hljs-attr">plugins</span>: [<br>        <span class="hljs-keyword">new</span> webpack.<span class="hljs-property">optimize</span>.<span class="hljs-title class_">CommonsChunkPlugin</span>(<span class="hljs-string">&#x27;common.js&#x27;</span>),<br>        <span class="hljs-keyword">new</span> <span class="hljs-title class_">ExtractTextPlugin</span>(<span class="hljs-string">&quot;[name].css&quot;</span>)<br>    ]<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　我们再使用webpack命令打包一下，看到<code>build</code>文件夹中看到多了一个index.css文件，就是插件提取出来的所有页面样式，都在一个文件中。</p>
+<h2 id="使用高逼格的ES6"><a href="#使用高逼格的ES6" class="headerlink" title="使用高逼格的ES6"></a>使用高逼格的ES6</h2><p>　　ES6简洁的语法糖、性能的提升都让开发者对其深深的“迷恋”，下面来让我们的项目也来支持ES6的语法。<br>　　要想支持ES6首先要安装对应的解码器，es6的解码器就是babel，首先安装<code>babel-loader</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">npm install babel-loader --save-dev<br></code></pre></div></td></tr></table></figure>
+<p>　　然后改写配置文件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-attr">loaders</span>: [<br>    <span class="hljs-comment">// ...省略部分代码</span><br>    &#123; <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.js[x]?$/</span>, <span class="hljs-attr">loader</span>: <span class="hljs-string">&#x27;babel&#x27;</span> &#125;<br>]<br></code></pre></div></td></tr></table></figure>
+<p>　　配置完成后我们就可以在js中尽情地使用es6的语法糖了。</p>
+<h1 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h1><p>　　在这里我们编写了webpack的配置文件，对配置文件的属性进行了详细地说明，也添加了webpack的几个插件。但是还是欠缺以下几点：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<ul>
+<li>没有图片加载器</li>
+<li>没有构建本地服务器，没有热加载</li>
+<li>没有引导命令执行</li>
+</ul>
+<p>　　本文所涉及到的代码都在<a target="_blank" rel="noopener" href="//github.com/acexyf/WebpackTest">我的github仓库</a>，需要的读者可以去fork，喜欢的给个赞啊亲。希望在后续的文章中对代码进行优化，添加更多的插件来丰富功能。</p>
+
+            </div>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/PackTool/">打包工具</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Webpack/">Webpack</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2016/11/12/Hubot-Chat-Machine.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">打造自己的聊天机器人Hubot</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2016/10/11/Front-Tiny-WeChat-Next.html">
+                        <span class="hidden-mobile">微信小程序上手开发和使用总结（下）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

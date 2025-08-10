@@ -1,0 +1,987 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="With great power comes great responsibility">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 80vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="欢迎来到谢小飞的网站">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2023/10/19/Vue3-Setup.html" target="_self">
+          <img src="/images/Vue3-Setup/logo.png" srcset="/img/loading.gif" lazyload alt="学好setup语法糖，快速上手Vue3">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/10/19/Vue3-Setup.html" target="_self">
+          学好setup语法糖，快速上手Vue3
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/10/19/Vue3-Setup.html" target="_self">
+          
+          
+            
+          
+          　　在之前的文章中，我们在代码里都使用了setup的语法糖，写起来十分简洁方便，但是有些小伙伴对它的用法不是很了解，私信说希望能讲一讲；本文我们就结合typescript，详细讲透setup语法糖的一些用法。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-10-19 12:00" pubdate>
+              2023-10-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/programing/">编程</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/FrontEnd/">前端</a>
+            
+              <a href="/tags/Vue/">Vue</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2023/09/05/Install-Windows-Cuda.html" target="_self">
+          <img src="/images/Install-Windows-Cuda/logo.png" srcset="/img/loading.gif" lazyload alt="Win10下CUDA和cuDNN安装教程">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/09/05/Install-Windows-Cuda.html" target="_self">
+          Win10下CUDA和cuDNN安装教程
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/09/05/Install-Windows-Cuda.html" target="_self">
+          
+          
+            
+          
+          　　CUDA是一种由NVIDIA开发的并行计算平台和API模型，它允许开发者使用NVIDIA的GPU进行高性能的计算任务。要使用CUDA，需要先安装支持CUDA的NVIDIA显卡和NVIDIA驱动程序。本文详细介绍在Win10下，CUDA和cuDNN安装教程。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-09-05 20:00" pubdate>
+              2023-09-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/tools/">工具</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Installation/">安装教程</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2023/08/20/Tailwindcss.html" target="_self">
+          <img src="/images/Tailwindcss/logo.png" srcset="/img/loading.gif" lazyload alt="大量重复写样式怎么办？当然是用TailwindCSS咯！">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/08/20/Tailwindcss.html" target="_self">
+          大量重复写样式怎么办？当然是用TailwindCSS咯！
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/08/20/Tailwindcss.html" target="_self">
+          
+          
+            
+          
+          　　Tailwind CSS作为一款原子化的CSS框架，提供了一组高度可定制化的CSS程序和组件；帮助前端开发人员快捷、方便地构建美观的用户界面；相比于传统的CSS框架，Tailwind CSS更注重简洁性和灵活性，可以和现有的前端框架如React、Vue、Angular等无缝集成，同时也避免了传统CSS开发中需要编写大量重复的样式代码。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-08-20 18:12" pubdate>
+              2023-08-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/programing/">编程</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/FrontEnd/">前端</a>
+            
+              <a href="/tags/Tips/">技巧</a>
+            
+              <a href="/tags/CSS/">CSS</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2023/08/11/Chrome-Plugin-Practise.html" target="_self">
+          <img src="/images/Chrome-Plugin/logo.png" srcset="/img/loading.gif" lazyload alt="Chrome插件实战开发">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/08/11/Chrome-Plugin-Practise.html" target="_self">
+          Chrome插件实战开发
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/08/11/Chrome-Plugin-Practise.html" target="_self">
+          
+          
+            
+          
+          　　在上一篇文章中，我们介绍了Chrome插件的页面如何写，以及各个组件之间是如何来通信的，得到了不少朋友的积极反馈，大家对Chrome插件的相关内容也都比较感兴趣，也存在着相当大的应用市场；本文就结合项目开发中遇到的的一些实际问题，分享一些开发经验。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-08-11 16:12" pubdate>
+              2023-08-11
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/programing/">编程</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/FrontEnd/">前端</a>
+            
+              <a href="/tags/Browser/">浏览器</a>
+            
+              <a href="/tags/Plugin/">插件</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2023/04/28/Threejs-Panorama.html" target="_self">
+          <img src="/images/Threejs-Panorama/logo.png" srcset="/img/loading.gif" lazyload alt="一文掌握你所需Threejs3D全景预览">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/04/28/Threejs-Panorama.html" target="_self">
+          一文掌握你所需Threejs3D全景预览
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/04/28/Threejs-Panorama.html" target="_self">
+          
+          
+            
+          
+          　　我们经常会在一些景区、展厅、酒店民宿的宣传页面上，或者卖房看房网站，都能频繁的看到各种3D全景预览的网页效果，这样就可以如临其境般的看到所在场景的360度范围内的各种事物；那么，这样的效果是如何来实现的呢，本文我们就来探讨一下其中所有的技术实现细节，本文干货满满，记得点赞+收藏。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-04-28 13:14" pubdate>
+              2023-04-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/programing/">编程</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/FrontEnd/">前端</a>
+            
+              <a href="/tags/Animation/">动画</a>
+            
+              <a href="/tags/Threejs/">Threejs</a>
+            
+              <a href="/tags/Graphical/">图形化</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2023/04/14/GSAP-Practise.html" target="_self">
+          <img src="/images/GSAP-Practise/logo.png" srcset="/img/loading.gif" lazyload alt="GSAP实战仿荣耀官网的页面滚动效果">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/04/14/GSAP-Practise.html" target="_self">
+          GSAP实战仿荣耀官网的页面滚动效果
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/04/14/GSAP-Practise.html" target="_self">
+          
+          
+            
+          
+          　　在上一篇文章中，我们对GSAP的用法有了一个简单的了解，本文我们就结合GSAP的用法教程，仿照荣耀官网MagicOS的页面，实现一个酷炫的网页效果。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-04-14 20:00" pubdate>
+              2023-04-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/programing/">编程</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/FrontEnd/">前端</a>
+            
+              <a href="/tags/Animation/">动画</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2023/03/07/Whatis-Chatgpt.html" target="_self">
+          <img src="/images/Whatis-Chatgpt/logo.jpg" srcset="/img/loading.gif" lazyload alt="ChatGPT的狂飙之路">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/03/07/Whatis-Chatgpt.html" target="_self">
+          ChatGPT的狂飙之路
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/03/07/Whatis-Chatgpt.html" target="_self">
+          
+          
+            
+          
+          　　最近随着ChatGPT爆火出圈，网络上各种关于ChatGPT的争论声也不断；有些人把它当成一个更高级的聊天机器人，有人兴奋地看到了创业的风口，而另一些人对它取代人类的工作露出了不少担忧；那么它到底是推动社会不断前进的工具，还是妄图颠覆人类社会的T-1000？本文我们来深入的探讨一下ChatGPT的那些事。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-03-07 20:00" pubdate>
+              2023-03-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/life/">代码人生</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Chat/">聊天</a>
+            
+              <a href="/tags/Machine/">机器</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2023/02/06/GSAP-Learn.html" target="_self">
+          <img src="/images/GSAP-Learn/gsap.gif" srcset="/img/loading.gif" lazyload alt="GSAP从入门到精通">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/02/06/GSAP-Learn.html" target="_self">
+          GSAP从入门到精通
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/02/06/GSAP-Learn.html" target="_self">
+          
+          
+            
+          
+          　　我们在网上浏览时，经常能看到很多网站，随着页面滚动条向下滑动时，有非常丰富的页面动画效果；相信很多小伙伴也都很好奇，这样的网站效果是如何做出来的。我们本文就来深入的学习一下GSAP这个库的用法，为后面实现酷炫的动画效果打下基础。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-02-06 20:00" pubdate>
+              2023-02-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/programing/">编程</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/FrontEnd/">前端</a>
+            
+              <a href="/tags/Animation/">动画</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2023/01/12/Linux-Office.html" target="_self">
+          <img src="/images/Linux-Office/logo.jpg" srcset="/img/loading.gif" lazyload alt="Linux下好用的神级办公软件">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/01/12/Linux-Office.html" target="_self">
+          Linux下好用的神级办公软件
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/01/12/Linux-Office.html" target="_self">
+          
+          
+            
+          
+          　　多年之后，当我们在Word文档中玩游戏和聊天时，是否也会想起过第一次打开Office时懵懂、激动、好奇的那个遥远的下午，以及从不会安分地蹲在屏幕旁边，时不时吸引你注意力的那个小小的曲别针。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-01-12 20:00" pubdate>
+              2023-01-12
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/life/">代码人生</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Linux/">Linux</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/12/10/Recommend-Linux.html" target="_self">
+          <img src="/images/Recommend-Linux/linux.jpeg" srcset="/img/loading.gif" lazyload alt="为什么很多程序员都建议使用Linux？">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/12/10/Recommend-Linux.html" target="_self">
+          为什么很多程序员都建议使用Linux？
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/12/10/Recommend-Linux.html" target="_self">
+          
+          
+            
+          
+          　　在知乎上有这么一个问题：为什么很多程序员都建议使用Linux？在这个问题上我其实有挺多想聊的，虽然比不上专门用C/C++编译的工程师了解的那么底层，也比不上运维工程师每天接触Linux，但是我们的工作中还是会接触到不少Linux的，今天我们来讨论一下学习Linux的必要性以及带来的价值。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-12-10 11:00" pubdate>
+              2022-12-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/life/">代码人生</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Internet/">互联网科技</a>
+            
+              <a href="/tags/Linux/">Linux</a>
+            
+              <a href="/tags/OpenSource/">开源</a>
+            
+              <a href="/tags/History/">历史</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/2/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#board">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/#board">4</a><a class="page-number" href="/page/5/#board">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/#board">11</a><a class="extend next" rel="next" href="/page/4/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

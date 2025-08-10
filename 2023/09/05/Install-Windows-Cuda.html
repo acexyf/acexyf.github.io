@@ -1,0 +1,594 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　CUDA是一种由NVIDIA开发的并行计算平台和API模型，它允许开发者使用NVIDIA的GPU进行高性能的计算任务。要使用CUDA，需要先安装支持CUDA的NVIDIA显卡和NVIDIA驱动程序。本文详细介绍在Win10下，CUDA和cuDNN安装教程。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>Win10下CUDA和cuDNN安装教程 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Win10下CUDA和cuDNN安装教程">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-09-05 20:00" pubdate>
+        2023年9月5日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      990 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      11
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Win10下CUDA和cuDNN安装教程</h1>
+            
+            <div class="markdown-body">
+              <p>　　CUDA是一种由NVIDIA开发的并行计算平台和API模型，它允许开发者使用NVIDIA的GPU进行高性能的计算任务。要使用CUDA，需要先安装支持CUDA的NVIDIA显卡和NVIDIA驱动程序。本文详细介绍在Win10下，CUDA和cuDNN安装教程。</p>
+<span id="more"></span>
+
+
+<p>　　CUDA（Compute Unified Device Architecture，统一计算架构）是由NVIDIA推出的基于GPU的并行计算平台和编程模型。它允许开发者使用NVIDIA GPU进行高性能的计算，从而加快了深度学习等领域的计算速度。</p>
+<p>　　cuDNN（CUDA Deep Neural Network library）是一个由NVIDIA开发的深度神经网络库，它基于CUDA，可以与GPU结合使用，以实现深度学习应用的加速。cuDNN可以用于深度神经网络的训练和推理，如卷积神经网络（CNN）、循环神经网络（RNN）等。</p>
+<p>　　CUDA和cuDNN的结合使用，使得开发者可以使用NVIDIA GPU进行深度学习应用的开发。这种结合不仅可以提高计算速度，而且还可以降低内存开销，使得深度学习应用可以在更少的硬件资源下运行。</p>
+<p>　　在实践中，CUDA和cuDNN被广泛应用于图像识别、语音识别、自然语言处理等人工智能领域。此外，它们还被用于科学计算、大数据分析、虚拟现实等领域。本文在Windows10环境下进行CUDA和cuDNN的安装。</p>
+<h1 id="显卡驱动"><a href="#显卡驱动" class="headerlink" title="显卡驱动"></a>显卡驱动</h1><p>　　首先查看电脑有没有安装NVIDIA的显卡驱动，鼠标在桌面空白处右击<code>NVIDIA控制面板</code>，或者在右下角双击NVIDIA控制面板的绿色图标：</p>
+<p><img src="/images/Install-Windows-Cuda/icon.png" srcset="/img/loading.gif" lazyload alt="控制面板图标"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　两种方式都能打开控制面板界面，可以看到我们的显卡型号以及驱动程序的版本：</p>
+<p><img src="/images/Install-Windows-Cuda/panel.png" srcset="/img/loading.gif" lazyload alt="NVIDIA控制面板"></p>
+<p>　　如果上述方式都没有找到，则需要下载安装，打开<a target="_blank" rel="noopener" href="https://www.nvidia.cn/Download/index.aspx?lang=cn">NVIDIA官方驱动https://www.nvidia.cn/Download/index.aspx?lang=cn</a>，选择和自己显卡适配的驱动，下载进行安装。</p>
+<p><img src="/images/Install-Windows-Cuda/download-nvidia.png" srcset="/img/loading.gif" lazyload alt="下载驱动程序"></p>
+<h1 id="安装CUDA"><a href="#安装CUDA" class="headerlink" title="安装CUDA"></a>安装CUDA</h1><p>　　显卡驱动安装完成后，我们就来安装CUDA了，需要注意的是显卡驱动的版本决定了CUDA的版本，并不可以无限安装最新版本，我们还是在控制面板中查看，打开<code>帮助 =&gt; 系统信息 =&gt; 组件</code>：</p>
+<p><img src="/images/Install-Windows-Cuda/support.png" srcset="/img/loading.gif" lazyload alt="查看CUDA支持版本"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　可以看到我电脑最高能安装12.2.79的版本，然后就可以去下载我们需要的CUDA了，打开<a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-downloads">CUDA下载页面</a>：</p>
+<p><img src="/images/Install-Windows-Cuda/download-cuda.png" srcset="/img/loading.gif" lazyload alt="下载CUDA"></p>
+<p>　　默认是最新的版本，如果我们需要低版本，可以点击页面下方的<code>Previouse Release</code>，打开<a href="%E5%AD%98%E6%A1%A3%E7%89%88%E6%9C%AC%E9%A1%B5%E9%9D%A2">https://developer.nvidia.com/cuda-toolkit-archive</a>，找到我们对应的版本下载即可：</p>
+<p><img src="/images/Install-Windows-Cuda/archive.png" srcset="/img/loading.gif" lazyload alt="存档版本页面"></p>
+<p>　　完成后双击我们下载的<code>cuda_12.0.0_527.41_windows.exe</code>安装包，出现安装界面，默认安装即可；这里需要记住安装目录，后面配置环境变量时需要：</p>
+<blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>安装过程中可能出现闪屏现象，属于正常。</p>
+</blockquote>
+<p><img src="/images/Install-Windows-Cuda/install-cuda.png" srcset="/img/loading.gif" lazyload alt="安装界面"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　安装成功后我们运行<code>nvcc -V</code>就能看到CUDA的版本号。</p>
+<h1 id="安装cuDNN"><a href="#安装cuDNN" class="headerlink" title="安装cuDNN"></a>安装cuDNN</h1><p>　　打开<a target="_blank" rel="noopener" href="https://developer.nvidia.com/rdp/cudnn-download">cuDNN下载页面</a>，这里需要注册一个NVIDIA的账号，填写邮箱很方便：</p>
+<p><img src="/images/Install-Windows-Cuda/download-cudnn.png" srcset="/img/loading.gif" lazyload alt="下载cudNN"></p>
+<p>　　我们也选择适合自己版本的进行下载，解压后我们得到以下的目录结构：</p>
+<p><img src="/images/Install-Windows-Cuda/cudnn.png" srcset="/img/loading.gif" lazyload alt="cuDNN"></p>
+<p>　　我们将文件夹覆盖到上面的CUDA安装目录下，比如我的CUDA的安装目录是<code>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0</code>，将压缩包内对应的文件夹复制到bin、include、lib目录下即可</p>
+<p>　　然后添加环境变量，<code>鼠标右键此电脑 =&gt; 属性 =&gt; 高级系统设置 =&gt; 环境变量</code>，将CUDA的安装目录添加到<code>CUDA_PATH</code>变量中</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/Install-Windows-Cuda/cuda-path.png" srcset="/img/loading.gif" lazyload alt="环境变量"></p>
+<p>　　然后在PATH中添加以下路径：</p>
+<figure class="highlight livescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs livescript">C:<span class="hljs-string">\Program</span> Files<span class="hljs-string">\NVIDIA</span> GPU Computing Toolkit<span class="hljs-string">\CUDA\v12.0\bin</span><br>C:<span class="hljs-string">\Program</span> Files<span class="hljs-string">\NVIDIA</span> GPU Computing Toolkit<span class="hljs-string">\CUDA\v12.0\libnvvp</span><br>C:<span class="hljs-string">\Program</span> Files<span class="hljs-string">\NVIDIA</span> GPU Computing Toolkit<span class="hljs-string">\CUDA\v12.0</span><br>C:<span class="hljs-string">\Program</span> Files<span class="hljs-string">\NVIDIA</span> GPU Computing Toolkit<span class="hljs-string">\CUDA\v12.0\lib\x64</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　命令行输入<code>nvidia-smi</code>，能够正确显示各种信息就安装完成了。</p>
+<p><img src="/images/Install-Windows-Cuda/smi.png" srcset="/img/loading.gif" lazyload alt="检查安装"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+            </div>
+            <hr>
+            <div>
+              
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p><div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/tools/">工具</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Installation/">安装教程</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/10/19/Vue3-Setup.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">学好setup语法糖，快速上手Vue3</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/08/20/Tailwindcss.html">
+                        <span class="hidden-mobile">大量重复写样式怎么办？当然是用TailwindCSS咯！</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

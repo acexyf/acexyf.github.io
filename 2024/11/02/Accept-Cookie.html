@@ -1,0 +1,675 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　我们在浏览网站时，尤其是一些国外网站的时候，经常会出现这样的弹框，提醒你接受全部Cookie；如果不接受，有些弹框甚至会一直出现，不让你访问；那么这个弹框为什么要出现呢？如果你接受了，对你后续浏览网站会有啥影响呢？你的隐私是否会泄露呢？带着这么多的疑惑本文就带你一探究竟。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>浏览网站时为什么老是要我接受Cookie - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="浏览网站时为什么老是要我接受Cookie">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-11-02 12:00" pubdate>
+        2024年11月2日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      42
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">浏览网站时为什么老是要我接受Cookie</h1>
+            
+            <div class="markdown-body">
+              <p>　　我们在浏览网站时，尤其是一些国外网站的时候，经常会出现这样的弹框，提醒你接受全部Cookie；如果不接受，有些弹框甚至会一直出现，不让你访问；那么这个弹框为什么要出现呢？如果你接受了，对你后续浏览网站会有啥影响呢？你的隐私是否会泄露呢？带着这么多的疑惑本文就带你一探究竟。</p>
+<span id="more"></span>
+
+<h1 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h1><p>　　首先我们要知道什么是Cookie？相信对于很多Web开发的同学，尤其是前端小伙伴来说，Cookie并不陌生；很多开发同学刚上手做项目的时候，就使用过很多第三方的库对Cookie进行过存储操作；根据MDN上对Cookie的<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies">解释</a>：</p>
+<blockquote>
+<p>HTTP Cookie是服务器发送到用户浏览器并保存在本地的一小块数据。浏览器会存储 cookie 并在下次向同一服务器再发起请求时携带并发送到服务器上。通常，它用于告知服务端两个请求是否来自同一浏览器，如保持用户的登录状态。</p>
+</blockquote>
+<p>　　其实说到底，Cookie就是网站在我们浏览器中存储的一小块字符串数据而已，一般总的大小也就限制在几MB以内；它刚开始只是让网站能够确认访问的用户身份，因为我们都知道Http请求是无状态的，并不能确认是哪个请求是哪个用户发起的；但在请求上带了Cookie之后，就能够确认用户身份。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　Cookie主要以键值对的形式进行存储，如name=jack，我们打开面板查看淘宝网的Cookie：</p>
+<p><img src="/images/Accept-Cookie/taobao.png" srcset="/img/loading.gif" lazyload alt="淘宝网的Cookie"></p>
+<p>　　我们会看到很多的Name和Value，这里有不同的字段我们看下它们所代表的含义：</p>
+<ul>
+<li>Name：Cookie的名称。</li>
+<li>Value：Cookie的值。</li>
+<li>Domain：可以访问该Cookie的域名。</li>
+<li>Path：Cookie的访问路径。</li>
+<li>Expires：失效时间。</li>
+<li>Size：Cookie大小。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>Secure：标记为Secure的Cookie只通过HTTPS请求发送给服务端。</li>
+<li>SameSite：允许服务器设定Cookie不随着跨站请求一起发送。</li>
+<li>Priority：优先级。</li>
+</ul>
+<p>　　这里字段比较多，例如Expires、Path等，一般都是在开发中才会用到的，这里就不过多介绍了；我们着重来介绍下<code>Domain字段</code>，因为本文后面的内容主要都是围绕着这个字段所展开的。</p>
+<p>　　这里假设我网站的域名是<code>example.com</code>，我给Domain设置的是<code>.example.com</code>，那么我所有example.com子域名下面的网站都是能共享Cookie的，比如<code>a.example.com</code>和<code>b.example.com</code>，这种一般用于很多个项目单点登陆，避免用户在类似的网站上重复登陆。</p>
+<p>　　一个不太典型的案例就是淘宝网和天猫网，虽然他们俩是两个域名，但是都属于阿里旗下，我们在一个网站登陆后就可以访问另外的网站了；比如我们在上图中就能看到，笔者是在淘宝登陆后的，能看到不少的<code>.tmall.com</code>的Cookie；再去访问天猫也是免登陆的。</p>
+<p>　　但是如果我网站的域名是example.com，但是我给Domain设置的是其他的网址，那这里面可操作的空间就很大了，如果是我们浏览的网站自己跟踪存储的Cookie，我们一般叫做<code>第一方Cookie</code>，这个其实还算正常。</p>
+<p>　　但是，如果存储的Cookie可访问地址不是我们当前访问的网站，而是别的什么网站，这里就需要特别留意了，是不是把我们的浏览记录提供给友商了，这种Cookie就叫做：<code>第三方Cookie</code>。</p>
+<h2 id="第三方Cookie"><a href="#第三方Cookie" class="headerlink" title="第三方Cookie"></a>第三方Cookie</h2><p>　　很多小伙伴相信都有这样的经历，我在搜索平台搜索某样东西，没过多久，会在购物平台上立即推送给我，或者我在购物平台搜索了某样东西，在浏览器的广告中又会给我推送；确实，这其中起到作用的就是上面提到的<code>第三方Cookie</code></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　那么第三方Cookie是如何生成的呢？主要是通过两种方式；第一种就是使用Javascript的<code>document.cookie</code>的方式写入，这种方式一般是两方同属一个集团或者一家公司，因为这里面涉及到数据的传输和加密方式；我们存储到Cookie中的数据一般都会经过加密，如果是两家公司，我不太可能把我的加密方式也告诉你；顶多给你一个npm包，让你来调用，但这里面就涉及代码逻辑了，这就比较复杂了。</p>
+<p>　　另一种方式就是通过服务端来在请求中带上<code>Set-Cookie</code>字段进行设置，这种方式不会侵入太多的代码，只需要在页面上向第三方资源发起一个请求即可，一般这个请求返回的资源也比较少，比如一个几kb的gif图片。</p>
+<p>　　比如我们在上面淘宝网中看到很多Cookie都指向了<code>.mmstat.com</code>域名，然后我们搜索请求记录会看到taobao.com向这个域名下发送了很多的图片资源，但是啥都没有返回，反而在响应头中带了很多的Set-Cookie内容。</p>
+<p><img src="/images/Accept-Cookie/mmstat.png" srcset="/img/loading.gif" lazyload alt="Set-Cookie设置"></p>
+<p>　　这样就很明显了，mmstat应该就是淘宝旗下的统计以及广告跟踪的平台，笔者找了网上不少资料，大概率是大数据营销平台<code>阿里妈妈统计</code>（Alimama Statistic）的缩写。</p>
+<h1 id="GDPR"><a href="#GDPR" class="headerlink" title="GDPR"></a>GDPR</h1><p>　　说了这么多的Coookie的知识，这和我们的弹窗有什么关系呢？这里就要说到欧盟出台的一部重要的数据安全保护条例，也就是：<code>《通用数据保护条例》</code>（General Data Protection Regulation，下面简称GDPR），它取代的是1995年推出的欧盟<code>《数据保护指令》</code>。</p>
+<p>　　这部法例是在2016年4月14日于欧盟议会上正式通过，并于2018年5月25日在欧盟成员国内正式生效实施的；我们发现这部法例和1995年的<code>《数据保护指令》</code>在时间跨度上有20年之久，我们都知道在这20年间互联网发生了天翻地覆的改变，同时也发生过很多大企业数据泄露的重大安全隐患，因此原来的法律对数据的保护已经跟不上时代的发展了。</p>
+<p>　　正是由于GDPR的出台，严格规范和限制了企业在个人数据的采集、存储、处理等一系列操作，因此我们才能看到很多网站上出现的接受Cookie的弹框；这里面的内容很多，包含了10个章节，99款条例，本文挑其中一些重要的细节来简单讲解一下，有兴趣的小伙伴可以在下面参考中找到<a target="_blank" rel="noopener" href="https://www.tisi.org/5029">GDPR中文版全文</a>。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　首先就是这部法律的适用范围，哪些企业适用呢？主要是两方面：</p>
+<ol>
+<li>欧盟境内成立的任何一家从事个人数据处理活动的公司或实体。</li>
+<li>在欧盟境外成立的公司，只要其数据处理活动与向欧盟境内的个体提供产品或服务。</li>
+</ol>
+<p>　　也就是说不管你的公司成立是否在欧盟境内，只要你在欧盟境内开展了业务，那你都会被这部法律所约束；那么它究竟约束你去做什么呢？我们继续来看下。</p>
+<p>　　首先，企业在收集用户的个人信息之前，应当<code>以一种简洁、透明、易懂和容易获取的形式，以清晰和平白的语言</code>向用户说明：</p>
+<ul>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>将收集用户的哪些信息；</li>
+<li>收集到的信息将如何进行存储；</li>
+<li>存储的信息会如如何使用；</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>企业的联系方式；</li>
+</ul>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<blockquote>
+<p>信息应当以<code>书面形式</code>或其他形式提供，包括在合适的情况下通过电子方式提供。</p>
+</blockquote>
+<p>　　这点比较重要了，明确说明了信息需要通过书面的形式来提供给用户，这就是我们所看到的弹框的根本原因所在。其次是处罚力度也是相当大的，条款中明确写道：</p>
+<blockquote>
+<p>违反如下条款，应当按第2段的规定施加最高2000万欧元的行政罚款，如果是企业的话，最高可处相当于其上一年全球总营业额4%的金额的罚款，两者取其高的一项进行罚款。</p>
+</blockquote>
+<p>　　对于一些大公司，还勉强能够承担这样的罚款，但是对于小公司，这种处罚力度可能就是致命的了；比如腾讯QQ就向国际版用户发布通知，宣布5月20日起停止为欧洲用户提供服务；随后又表示，更新到5.0及以上版本的QQ国际版可继续使用，旧版本则在5月20日停止使用。</p>
+<p>　　面对如此严格的法律，很多企业也将这样的弹框普及到了其他国家的业务；比如我们都知道Ubuntu是由一家南非的公司Canonical来运营的，但是在欧盟也提供了相关业务，因此，我们去Ubuntu官网下载时也能看到这样的弹框。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Accept-Cookie/ubuntu.png" srcset="/img/loading.gif" lazyload alt="Ubuntu官网"></p>
+<h1 id="我国现状"><a href="#我国现状" class="headerlink" title="我国现状"></a>我国现状</h1><p>　　说了这么多GDPR的限制，大家肯定会觉得还是西方的月亮圆啊，还是西方保护人权自由，我们国内的的法律还是不够完善，都没有这样的弹框来保护我的知情权益。</p>
+<p>　　但其实，为了避免个人信息泄露、滥用等问题，其实我们国家从21年开始，也是出台了相关的法律法规，只是我们平时不太去关注而已，这部法律就是：<code>《中华人民共和国个人信息保护法》</code>，下面简称<code>《保护法》</code>，主要适用于在中华人民共和国境内处理自然人个人信息的活动。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　为了避免本文从技术文章变成冗长乏味的法律讲解文章，况且笔者也不是专业的法律出身，因此斗胆引用了网上几段法律条文来解释一下；首先既然是个人信息保护法，那么什么个人信息，它包括哪些呢？《保护法》中明确指出了：</p>
+<blockquote>
+<p>个人信息，包括生物识别、宗教信仰、特定身份、医疗健康、金融账户、行踪轨迹等信息。</p>
+</blockquote>
+<p>　　没错，最后的<code>行踪轨迹</code>，从宽泛的角度来说，就包括了我们的网页浏览记录等信息，因为这些记录能够间接或直接地反映出个人的身份、兴趣、行为等信息。</p>
+<p><img src="/images/Accept-Cookie/logo1.jpg" srcset="/img/loading.gif" lazyload alt="Cookie"></p>
+<p>　　那么对于个人信息，《保护法》是怎么来做出要求的呢？原文中有详细的说明：</p>
+<blockquote>
+<p>处理敏感个人信息应当取得个人的单独同意；法律、行政法规规定处理敏感个人信息应当取得书面同意的，从其规定。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</blockquote>
+<blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>以向境内自然人<code>提供产品或者服务为目的</code>，或者为分析、评估境内自然人的行为等发生在我国境外的个人信息处理活动，也适用本法。</p>
+</blockquote>
+<p>　　没错，最后一条已经说得很明确了，只要你是以提供产品或者服务为目的的分析评估我的浏览记录，那你必须要取的我的书面同意，否则就是违法行为。</p>
+<p>　　那么我。。。。。。同意了吗？没错，打开<a target="_blank" rel="noopener" href="https://terms.alicdn.com/legal-agreement/terms/suit_bu1_taobao/suit_bu1_taobao201703241622_61002.html?spm=0.0.0-ft.0.5mEGXe">淘宝网隐私政策</a>，我们就能清楚的看到其中加粗加黑的条文。</p>
+<p>　　笔者摘录一下其中比较关键的两条给大家看一下：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<blockquote>
+<p>为向您展示和推荐您可能感兴趣的商品或服务信息，我们会<code>收集和使用</code>您在访问或使用淘宝平台网站或<code>客户端时的浏览、搜索、加购、交易记录</code>并结合依法收集的设备信息、服务日志信息以及其他取得您授权的信息，通过算法模型预测您的偏好特征。</p>
+</blockquote>
+<blockquote>
+<p>我们会基于您的偏好特征在淘宝及<code>其他第三方应用程序</code>或终端向您推送您可能感兴趣的商业广告及其他信息，或者向您发送商业性消息。我们还会基于对淘宝平台用户浏览、搜索商品或服务的热点、潮流与趋势的统计分析，使用排序精选类算法形成相关精选的榜单，并向您进行推荐。 </p>
+</blockquote>
+<p>　　隐私政策中其实也已经说的很明确了，第三方应用程序推送感兴趣的商业广告；而且我们在注册登陆的时候就已经授权过了，只是大多情况下没有时间去仔细看网站政策里面说的是什么；但是至于是否要像GDPR中规定的那样，需要通过一个明确的弹框，这个需要从各方面来综合考虑了，例如企业经营成本，需要额外的开发成本，中小企业是否有能力应对，还有用户使用习惯等等方面。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　因此看完本文，我们该怎么做呢？笔者进行了如下几点总结：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　第一，如果你是广告不敏感用户，不介意有广告，或者说觉得重新登录很麻烦，那你看到类似的弹框直接点击接受所有就行了，不用管什么条条框框的内容。</p>
+<p>　　第二，如果出现接受Cookie的弹框，看下是否有<code>接受必要Cookie</code>的按钮或者选项，然后进行勾选；还有一些网站会把<code>必要Cookie</code>的选项隐藏在<code>设置</code>中。</p>
+<p>　　比如我们在AdblockPlus的官网，点开设置，就只勾选<code>必要的Cookie</code>，还有一些网站上出现<code>Necessary</code>的字样，也是同样的意思。</p>
+<p><img src="/images/Accept-Cookie/adblockplus.png" srcset="/img/loading.gif" lazyload alt="AdblockPlus"></p>
+<p>　　第三，当然，上面的Cookie弹框国内还没有这样来做，但是我们可以打开浏览器的<code>阻止第三方Cookie</code>的选项，后续我们会在浏览器地址栏右侧发现一个捂住眼睛的图标。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　比如我们常用的Chrome浏览器，打开<code>设置 =&gt; 隐私和安全</code>，然后勾选<code>阻止第三方Cookie</code>的选项；同时也要勾选<code>Do Not Track</code>（不过这个选项对网站没有强制性）。</p>
+<p><img src="/images/Accept-Cookie/chrome.png" srcset="/img/loading.gif" lazyload alt="Chrome阻止第三方Cookie"></p>
+<p>　　第四，除此之外，如果对浏览器隐私还是不放心，还可以使用额外的保护，通过安装额外插件，如著名的AdGuard和Adblick Plus等，会自动帮助你拦截一些广告，也能防止被标记和追踪；这里笔者也为大家整理准备好了两款软件的Chrome插件，直接在Chrome浏览器中添加安装即可，获取方式在文末。</p>
+<p>　　这就没了？是的，没了，Cookie的影响其实比较有限，毕竟一般网站的Cookie中也不会存密码等个人信息，而且还经过了加密，能泄漏的用户信息比较有限，最多的就是记录用户的行为习惯、浏览记录等等数据。</p>
+<p>　　相比Cookie，其实我们更应该当心那些带有“颜色”的钓鱼网站、中奖邮件以及不明来源的二维码等，更要避免在陌生的网站输入自己的真实信息，导致泄漏和诈骗的风险；诶，本文怎么从一篇技术性文章，写成了普法文章，最后居然还写成了防诈骗的了，不过没关系，快来将本文分享并艾特给你身边最容易上当受骗的朋友，提高警惕把。</p>
+<blockquote>
+<p>本文所有软件敬请关注公众号【前端壹读】，后台回复关键词【防止广告追踪】即可获取。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</blockquote>
+<img src="/images/qrcode.png" srcset="/img/loading.gif" lazyload alt="" align="center" width="40%" style="display:block;margin:0 auto;"/>
+
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/401330458">一文读懂GDPR</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/thlzjfefe/article/details/118278542">什么是第三方Cookie</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/131256002">当浏览器全面禁用三方Cookie</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.tisi.org/5029">GDPR中文版全文</a></p>
+<p><a target="_blank" rel="noopener" href="https://ubuntu.com/legal/data-privacy">Ubuntu策略</a></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><a target="_blank" rel="noopener" href="https://sspai.com/post/44706">GDPR 规定了什么？</a></p>
+<p><a target="_blank" rel="noopener" href="https://terms.alicdn.com/legal-agreement/terms/suit_bu1_taobao/suit_bu1_taobao201703241622_61002.html">淘宝网隐私</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Browser/">浏览器</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Internet/">互联网科技</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/11/06/Threejs-Chair.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">我做了三把椅子原来纹理这样加载切换</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/26/Vite-Tool-Library.html">
+                        <span class="hidden-mobile">Vite封装ts工具库并发布npm包</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

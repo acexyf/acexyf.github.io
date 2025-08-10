@@ -1,0 +1,921 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　在大部分童鞋的印象里，Nginx应该都是属于后台工作的范畴，前端只要写好页面就好了；然后随着大前端范围的不断扩展，前端也在不断的进军服务器领域，而Nginx就是进军服务器领域必备的技能之一；以前我们都需要“低声下气”的让后端的同事给我们配置页面域名，但是学会了Nginx配置，域名配置、代理转发什么的完全就可以我们自己来了，这样抢来的饭碗它。。。。它难道不香吗？">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>前端抢饭碗系列之深入Nginx - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="前端抢饭碗系列之深入Nginx">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-06-22 18:33" pubdate>
+        2021年6月22日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      7.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      86
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">前端抢饭碗系列之深入Nginx</h1>
+            
+            <div class="markdown-body">
+              <p>　　在大部分童鞋的印象里，Nginx应该都是属于后台工作的范畴，前端只要写好页面就好了；然后随着大前端范围的不断扩展，前端也在不断的进军服务器领域，而Nginx就是进军服务器领域必备的技能之一；以前我们都需要“低声下气”的让后端的同事给我们配置页面域名，但是学会了Nginx配置，域名配置、代理转发什么的完全就可以我们自己来了，这样抢来的饭碗它。。。。它难道不香吗？</p>
+<span id="more"></span>
+
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>　　那么Nginx到底是什么，首先我们来看一下百度百科对Nginx的定义：</p>
+<blockquote>
+<p>Nginx是一个高性能的HTTP和反向代理web服务器，同时也提供了IMAP/POP3/SMTP服务。</p>
+</blockquote>
+<p>　　这里有三个词很关键，我们来拆解一下，分别是是高性能、反向代理和web服务器；首先这个web服务器自不用多说，像我们熟知的Apache、IIS、Tomcat等都是web服务器；然后是高性能，一个服务器的性能自然是网站开发者最为关心的，那么服务器的性能如何来进行衡量呢？一般可以通过CPU和内存的使用量来进行衡量。经过笔者简单的并发测试，在20000个并发链接时，CPU和内存占用也非常低，CPU仅占5%，内存占用也才2MB不到。</p>
+<p>　　我们可以通过一个web压力测试工具<code>Apache Bench</code>，对Nginx进行简单的压力测试；通过在命令行<code>ab -n 20000 -c 10000 [url]</code>，我们对Nginx的首页发起请求总数为20000，并发数为10000的请求测试，测试结果如下：</p>
+<p><img src="/images/Front-Nginx/ab.png" srcset="/img/loading.gif" lazyload alt="压力测试结果"></p>
+<p>　　我们看到总的请求时间（Time taken for tests）是25秒，平均每个请求耗时（Time per request）1.25毫秒，在这么高的并发量下面，服务器响应性能还是挺不错的。</p>
+<p>　　然后是反向代理，与之对应的就是正向代理，这两者的区别也是面试中经常被问到的。我们先来看一下什么是正向代理，一个正向代理最典型的例子就是我们常用的“梯子”。</p>
+<p><img src="/images/Front-Nginx/catch.png" srcset="/img/loading.gif" lazyload alt="表情包"></p>
+<p>　　我们直接访问Google，是访问不到的，但是如果我们使用了代理服务器，那么通过访问代理服务器就可以浏览Google，这里的代理服务器就属于<code>正向代理</code>；通过正向代理我们可以访问原来无法访问的资源。</p>
+<p><img src="/images/Front-Nginx/positive-proxy.jpg" srcset="/img/loading.gif" lazyload alt="正向代理"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　那么什么是反向代理呢？反向代理最典型的例子就是我们的Nginx服务器了；比如我们在访问某个网站时，由代理服务器去目标服务器获取数据后返回给客户端，这样就能够隐藏真实服务器的IP地址，只对外开放代理服务器，以防止外网对内网服务器的恶性攻击。</p>
+<p><img src="/images/Front-Nginx/negative-proxy.jpg" srcset="/img/loading.gif" lazyload alt="反向代理"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　理解了上面两个典型的案例，相信大家对正向反向代理也了解了，我们总结一下：</p>
+<ul>
+<li>正向代理，<strong>代理客户端</strong>，服务端不知道实际发起请求的客户端。</li>
+<li>反向代理，<strong>代理服务端</strong>，客户端不知道实际提供服务的服务端。</li>
+</ul>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h1 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h1><p>　　Nginx安装程序分为Linux版和Windows版，Windows版本的Nginx下载解压后就可以直接运行了，而Linux版本的需要make、configure等命令编译安装，好处是可以方便灵活的编译不同的模块到Nginx；网上也有很多的安装教程，这里就不再赘述了，可以从<a target="_blank" rel="noopener" href="http://nginx.org/en/download.html">官网</a>下载适合自己的版本，下载好后我们来看一下他的目录结构：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">├── conf            <span class="hljs-comment">#所有配置文件的目录</span><br>    ├── nginx.conf  <span class="hljs-comment">#主配置文件</span><br>    ├── mime.types  <span class="hljs-comment">#媒体类型控制文件</span><br>├── contrib         <span class="hljs-comment">#存放一些实用工具</span><br>├── docs            <span class="hljs-comment">#文档资料</span><br>├── html            <span class="hljs-comment">#默认解析的静态文件目录</span><br>├── logs            <span class="hljs-comment">#日志目录</span><br>├── sbin            <span class="hljs-comment">#启动运行程序</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们经常用到的就是conf目录和html目录；而在根目录可以运行常用的一些命令对Nginx进行操作控制：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">nginx -s reopen 	<span class="hljs-comment">#重启Nginx</span><br>nginx -s reload 	<span class="hljs-comment">#重新加载Nginx配置文件，然后以优雅的方式重启Nginx</span><br>nginx -s stop   	<span class="hljs-comment">#强制停止Nginx服务</span><br>nginx -s quit   	<span class="hljs-comment">#优雅地停止Nginx服务（即处理完所有请求后再停止服务）</span><br>nginx -h 		    <span class="hljs-comment">#打开帮助信息</span><br>nginx -v 		    <span class="hljs-comment">#显示版本信息并退出</span><br>nginx -V		    <span class="hljs-comment">#显示版本和配置选项信息，然后退出</span><br>nginx -t		    <span class="hljs-comment">#检测配置文件是否有语法错误，然后退出</span><br>nginx -T	 	    <span class="hljs-comment">#检测配置文件是否有语法错误，转储并退出</span><br>nginx -q 	  	    <span class="hljs-comment">#在检测配置文件期间屏蔽非错误信息</span><br>nginx -p prefix   	<span class="hljs-comment">#设置前缀路径(默认是:/usr/share/nginx/)</span><br>nginx -c filename	<span class="hljs-comment">#设置配置文件(默认是:/etc/nginx/nginx.conf)</span><br>nginx -g directives <span class="hljs-comment">#设置配置文件外的全局指令</span><br>killall nginx		<span class="hljs-comment">#杀死所有nginx进程</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们看前四个命令会发现，这四个命令可以分为两种，重启和停止Nginx，不过一种是强制的方式，另一种是优雅的方式；强制的方式就是让Nginx立即停止当前处理的所有请求，丢弃链接，停止工作；而优雅的方式是允许Nginx将当前正在处理的请求处理完成，但是不再接收新的请求，所有处理完成后再停止工作。</p>
+<p>　　我们再来看一下主要配置文件nginx.conf的基本结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf"># nginx进程数，建议设置为等于CPU总核心数<br>worker_processes  1;<br># 进程文件<br>pid        logs/nginx.pid;<br># 单个进程最大连接数<br>events &#123;<br>    worker_connections  1024;<br>&#125;<br>http &#123;<br>    # 文件扩展名与类型映射表<br>    include       mime.types;<br>    # 默认文件类型<br>    default_type  application/octet-stream;<br>    # 开启gzip压缩<br>    gzip  on;<br>    sendfile        on;<br>    keepalive_timeout  65;<br>    server &#123;<br>        # 监听端口<br>        listen       80;<br>        server_name  localhost;<br>        location / &#123;<br>            root   html;<br>            index  index.html index.htm;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　配置文件中主要可以分为以下几个块：</p>
+<ul>
+<li>全局模块：从配置文件开始到events块之间的内容，此处的配置影响nginx服务器整体的运⾏，⽐如worker进程的数量、错误⽇志的位置等</li>
+<li>events：配置影响nginx服务器或与用户的网络连接。</li>
+<li>http：<strong>可以嵌套多个server</strong>，配置代理，缓存，日志定义等绝大多数功能和第三方模块的配置。</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>server：配置虚拟主机的相关参数，一个http中可以有多个server。</li>
+<li>location：配置请求的路由，以及各种页面的处理情况。</li>
+</ul>
+<p>　　很多时候，我们不会将所有的配置全都写在一个主配置文件，因为这样会显得冗长，也不知道每个模块是做什么用的；而是会根据项目来拆分多个配置文件，每个配置文件彼此独立，互不干扰，然后在主配置文件中引入；我们在conf目录下新建一个projects目录，然后可以新建多个.conf配置文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf"># /conf/projects/home.conf<br>server &#123;<br>    listen       8080;<br>    server_name  localhost;<br>    location / &#123;<br>        root   html;<br>        index  index.html index.htm;<br>    &#125;<br>&#125;<br>server &#123;<br>    listen       8081;<br>    server_name  localhost;<br>    location / &#123;<br>        root   html;<br>        index  index.html index.htm;<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　然后在主配置nginx.conf中将projects目录下的所有配置文件引入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">http &#123;<br>    include       mime.types;<br>    default_type  application/octet-stream;<br>    gzip  on;<br>    sendfile        on;<br>    keepalive_timeout  65;<br>    ## 引入projects目录下所有的配置文件<br>    include       projects/*.conf;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样我们可以直接在projects目录下新增.conf后缀的配置文件，而不用修改主配置文件；但是我们修改完还不能确定是否会有错误，可以通过命令对配置文件进行检测：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">nginx -t<br><span class="hljs-comment">#nginx: the configuration file nginx/conf/nginx.conf syntax is ok</span><br><span class="hljs-comment">#nginx: configuration file nginx/conf/nginx.conf test is successful</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　通过检测发现没有任何报错，就可以优雅的重启服务器了：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">nginx -s reload<br></code></pre></div></td></tr></table></figure>
+
+<h1 id="静态服务器"><a href="#静态服务器" class="headerlink" title="静态服务器"></a>静态服务器</h1><p>　　作为一个web服务器，最重要的就是能够对静态资源提供访问服务，我们的Nginx服务器可以用来托管一些静态的资源，比如js、css、图片等，访问某一特定的静态资源路径时会转发到本地目录文件上；那么我们就来看Nginx是如何一步一步的通过域名配置、URI配置以及目录配置来命中请求的。</p>
+<p><img src="/images/Front-Nginx/welcome.png" srcset="/img/loading.gif" lazyload alt="Nginx首页"></p>
+<h2 id="server-name配置"><a href="#server-name配置" class="headerlink" title="server_name配置"></a>server_name配置</h2><p>　　在上面的配置中，我们主要是将<code>server_name</code>设置为<code>localhost</code>，但是这样仅能让局域网内的主机访问到；我们想要让广域网上的其他主机访问，可以将<code>server_name</code>匹配域名，它的参数值可以是以下几种：</p>
+<ul>
+<li>精确的域名，如<a target="_blank" rel="noopener" href="http://www.my.com/">www.my.com</a></li>
+<li>通配符名称，但通配符只能用在由三段字符串组成的名称的首段或尾段，如<code>*.my.com或者www.my.*</code></li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>正则表达式，使用波浪号<code>~</code>作为正则表达式字符串的开始标记，如<code>~^www\d+\.my\.com$</code></li>
+<li>ip地址</li>
+</ul>
+<p>　　在上面正则表达式中，<code>^</code>表示以www开头，紧跟一个或多个数字（\d+），然后跟上域名my.com，最后以<code>$</code>结尾；因此上面的表达式可以匹配的域名比如www1.my.com，但是<a target="_blank" rel="noopener" href="http://www.my.com就不行./">www.my.com就不行。</a></p>
+<p>　　正则表达式还支持字符串捕获功能，即将正则表达式匹配成功的名称中的一部分字符串截取出来，放在变量中供后面使用；比如将server_name进行如下设置：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">server &#123;<br>  listen       80;<br>  server_name  ~^(.+)?\.my\.com$;<br>  location / &#123;<br>    root   /usr/share/nginx/html/$1;<br>    index  index.html index.htm;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样，通过二级域名home.my.com到达Nginx时，被<code>server_name</code>正则表达式捕获，将其中的<code>home</code>字符串存入<code>$1</code>变量中，我们在<code>/usr/share/nginx/html/home</code>目录下的静态资源就能通过home.my.com域名来访问了；我们服务器的目录就可以是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs file">/usr/share/nginx/html/<br>    |- home<br>        |- index.html<br>    |- blog<br>        |- index.html<br>    |- mail<br>        |- index.html<br>    |- photo<br>        |- index.html<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　这样就只需要一个server块来完成多个站点的配置。</p>
+<p>　　nginx允许一个虚拟主机有多个域名，因此我们可以给server_name同时配置多个域名，多个之间以空格分隔：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">server &#123;<br>  listen       80;<br>  server_name  a.com b.com c.com;<br>  # ...其他配置<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　由于server_name支持以上三种配置方式，如果出现多个server块同时匹配了相同的域名，那么这个请求交给哪个server呢？因此优先级顺序如下：</p>
+<ol>
+<li>精确匹配server_name</li>
+<li>通配符在开始时匹配server_name</li>
+<li>通配符在结尾时匹配server_name</li>
+<li>正则表达式匹配server_name</li>
+</ol>
+<p>　　如果我们想让局域网内的设备访问nginx，可以将<code>server_name</code>设置ip地址的方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">server &#123;<br>  listen       80;<br>  server_name  localhost 192.168.1.101;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　如果还不能访问，可以查看下是否是防火墙的原因，在防火墙允许通过的应用中将Nginx勾选（没有找到Nginx可以点击<code>允许其他应用</code>进行新增）：</p>
+<p><img src="/images/Front-Nginx/fireware.png" srcset="/img/loading.gif" lazyload alt="Windows防火墙"></p>
+<p>　　有时候我们还会见到将server_name设置为<code>_</code>（下划线），意味着server_name为空，即匹配全部的主机；我们可以配置host，将a.com、b.com和c.com都指向本机，然后配置nginx：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">server &#123;<br>  listen       80;<br>  server_name  _;<br>  location / &#123;<br>    root   html;<br>    index  index.html index.htm;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样我们不仅可以通过域名a.com、b.com、c.com来访问，也能通过ip的方式。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h2 id="location配置"><a href="#location配置" class="headerlink" title="location配置"></a>location配置</h2><p>　　location用于匹配不同的URI请求，它的语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">location [ = | ~ | ~* | ^~ ] uri &#123; ... &#125;<br>location @/name/ &#123; … &#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里的<code>uri</code>就是待匹配的请求字符串，可以是不含正则的字符串，比如<code>/home</code>，称为<code>标准URI</code>；也可以是包含正则的字符串，比如<code>\.html$</code>（表示以.html结尾），称为<code>正则URI</code>。而方括号中的四种匹配符都是可选的，用来改变请求字符串与URI的匹配方式，我们来看下四种匹配符的解释：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<table>
+<thead>
+<tr>
+<th>匹配符</th>
+<th>解释</th>
+</tr>
+</thead>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<tbody><tr>
+<td>不填</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>location后没有参数，直接跟着标准URI，表示前缀匹配，代表跟请求中的URI从头开始匹配</td>
+</tr>
+<tr>
+<td>=</td>
+<td>用于标准URI前，要求请求字符串与其精准匹配，成功则立即处理，nginx停止搜索其他匹配</td>
+</tr>
+<tr>
+<td>^~</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<td>用于标准URI前，要求一旦匹配就会立即处理，不再去匹配其他正则URI，一般用来匹配目录</td>
+</tr>
+<tr>
+<td>~</td>
+<td>用于正则URI前，表示URI包含正则表达式，<code>区分大小写</code></td>
+</tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<tr>
+<td>~*</td>
+<td>用于正则URI前，表示URI包含正则表达式，<code>不区分大小写</code></td>
+</tr>
+<tr>
+<td>@</td>
+<td>定义一个命名的location，@定义的location名字一般用在内部定向</td>
+</tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</tbody></table>
+<p>　　我们来看下每种匹配规则能匹配的url，首先不填代表的话表示前缀匹配，如果我们有多个相似的前缀匹配：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">location /pre/fix &#123;<br>  # ...<br>&#125;<br>location /pre &#123;<br>  # ...<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　对于请求<code>/pre/fix/home</code>，根据最大匹配原则，匹配第一个location。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　然后是<code>=</code>，要求路径完全匹配：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">location = /abc &#123;<br>  # ...<br>&#125;<br><br># /abc    匹配<br># /abcde  不匹配<br># /abc/   不匹配，带有结尾的/<br># /cde/abc不匹配<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　其次是<code>^~</code>最佳匹配，它的优先级高于正则表达式：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">location ^~ /login &#123;<br>  # ...<br>&#125;<br><br># /login      匹配<br># /loginss    匹配<br># /login/     匹配<br># /home/login 不匹配<br></code></pre></div></td></tr></table></figure>
+
+<p>　　接着是<code>~</code>正则表达式匹配，它区分大小写匹配（注意：windows版本nginx不区分）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">location ~ \.(gif|jpg|png|js|css)$ &#123;<br>  # ...<br>&#125;<br># /bg.png     匹配<br># /bg.PNG     不匹配 <br># /bg.png?a=1 匹配<br># /bg.jpeg    不匹配<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　<code>~*</code>同样也是正则匹配，只不过它不区分大小写，这里就不再演示。</p>
+<p>　　如果我们的URI匹配到了多个location，其并不完全按照在配置文件中出现的顺序来进行匹配，URI会按照如下规则进行匹配：</p>
+<ol>
+<li>= 精确匹配会第一个被处理。如果发现精确匹配，nginx停止搜索其他匹配。</li>
+<li>普通字符匹配，正则表达式规则和长的块规则将被优先和查询匹配，也就是说如果该项匹配还需去看有没有正则表达式匹配和更长的匹配。</li>
+<li>^~ 则只匹配该规则，nginx停止搜索其他匹配，否则nginx会继续处理其他location指令。</li>
+<li>最后匹配理带有<code>~</code>和<code>~*</code>的指令，如果找到相应的匹配，则nginx停止搜索其他匹配；当没有正则表达式或者没有正则表达式被匹配的情况下，那么匹配程度最高的逐字匹配指令会被使用。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</ol>
+<h2 id="请求目录配置"><a href="#请求目录配置" class="headerlink" title="请求目录配置"></a>请求目录配置</h2><p>　　在location匹配URI后，就需要在服务器指定的目录中寻找请求资源，而<code>root</code>和<code>alias</code>就是用来指定目录的两种指令，两者主要的区别在于如何解析location后面的路径；我们首先来看下root的用法，假如我们需要将<code>/data/</code>下面的所有路径转发到<code>html/roottest</code>下面：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">location /data/ &#123;<br>  root html/roottest;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　当location接收到<code>/data/index.html</code>的请求时，会在<code>html/roottest/data/</code>目录下找到index.html文件并进行相应，root会将root路径和location路径进行拼接。</p>
+<p>　　而alias指令则改变location接收到的请求路径，假如我们需要将<code>/data1/</code>下面的所有路径转发到<code>html/aliastest</code>下面：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">location /data1/ &#123;<br>  alias html/aliastes/;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　当location接收到<code>/data1/index.html</code>的请求时，会在<code>html/aliastes/</code>目录下查找index.html文件并响应。</p>
+<blockquote>
+<p>需要注意的是：alias指令后面的路径<code>必须以/结束</code>，否则会找不到文件，而root则可有可无。</p>
+</blockquote>
+<h2 id="访问权限控制"><a href="#访问权限控制" class="headerlink" title="访问权限控制"></a>访问权限控制</h2><p>　　针对一些静态资源，我们可能会设置一些用户访问权限，比如和js一起打包产出的<code>.map</code>文件，会对源码进行映射；但是我们想让它只能针对公司的ip进行开放，对外网的ip禁止访问，这时就需要用到<code>allow</code>和<code>deny</code>命令了。</p>
+<p>　　假如局域网还有两个设备，我们只能让这两个设备的ip通过访问：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">location / &#123;<br>  alias html/aliastes/;<br>  allow 192.168.1.102;<br>  allow 192.168.1.103;<br>  deny all;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　deny和allow指令是由ngx_http_access_module模块提供，Windows版本的Nginx并不包含该模块。</p>
+<p>　　还可以对前端的.map文件进行访问权限控制，打包后的map文件一般会放在服务器上，但是如果能对所有人开放，别人就能查看到对应源码；因此我们可以控制只有公司的ip才有访问权限：</p>
+<h2 id="try-files"><a href="#try-files" class="headerlink" title="try_files"></a>try_files</h2><p>　　前端在配置路由时经常会用到history路由模式，因此后台就需要映射对应的路由到index.html；但是如果我们给每个路由都配置一个location就会比较繁琐，因此可以通过<code>try_files</code>指令来进行尝试解析；<code>try_files</code>的语法规则如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 格式1：</span><br>try_files file ... uri;  <br><span class="hljs-comment"># 格式2：</span><br>try_files file ... =code;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　假设我们打包出来的单页面位于<code>/html/my/index.html</code>，我们想要将/login、/regisrer等路由指向index.html，我们可以配置try_files：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">server &#123;<br>    listen       8080;<br>    server_name  localhost;<br>    location / &#123;<br>        try_files $uri /my/index.html;<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　对于多页面的应用，假设我们的页面都放在<code>/html/pages/</code>目录下，我们想要访问<code>/login</code>时响应<code>/html/pages/login.html</code>页面，可以通过<code>$uri</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">server &#123;<br>    listen       8080;<br>    server_name  localhost;<br>    location / &#123;<br>        index  index.html index.htm;<br>        root html/pages;<br>        try_files $uri /$uri.html $uri/index.html /index.html;<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里我们设置root目录为html/pages，当我们访问<code>/login</code>路由时，这里的$uri就是/login，try_files会去尝试在根目录下找<code>/login.html</code>；如果找不到就尝试<code>/login/index.html</code>，最后找不到则会默认返回index.html。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="gzip"><a href="#gzip" class="headerlink" title="gzip"></a>gzip</h2><p>　　我们都知道在服务端开启gzip压缩能够使得js、css、html等文件在传输时大幅提高访问速度，优化网站性能；gzip压缩后的文件大小可以变为原来的30%甚至更小；而对于图片、视频、音频等其他多媒体文件，因为压缩效果不好，所以不会开启压缩。</p>
+<p>　　gzip压缩本质上是服务器端压缩，传输到浏览器后解压解析，我们来看下gzip的原理示意：</p>
+<p><img src="/images/Front-Nginx/gzip.jpg" srcset="/img/loading.gif" lazyload alt="Gzip原理"></p>
+<p>　　可以看到在请求和相应头上分别加了accept-encoding和content-encoding来进行传输；我们可以通过一个js的请求数据来查看：</p>
+<p><img src="/images/Front-Nginx/gzip-header.png" srcset="/img/loading.gif" lazyload alt="Gzip请求响应头"></p>
+<p>　　既然gzip有这么多的好处，我们来看下nginx如何进行配置，gzip的配置可以在http块或者server块中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf"># 开启gzip<br>gzip        on;<br># 设置gzip申请内存的大小<br>gzip_buffers 32 4K;<br># 设置gzip压缩等级<br># 压缩级别 1-9，级别越高压缩率越大但耗CPU<br>gzip_comp_level 6;<br># 正则匹配User-Agent中的值，匹配上则不进行gzip<br>gzip_disable &quot;MSIE [1-6]\.(?!.*SV1)&quot;;<br># 设置允许压缩的页面最小字节数<br>gzip_min_length 1024;<br># 设定进行gzip压缩的最小http版本<br>gzip_http_version 1.0;<br># 需要压缩哪些响应类型的资源<br>gzip_types application/javascript text/css text/xml;<br># 添加“Vary: Accept-Encoding”响应头<br>gzip_vary on;<br></code></pre></div></td></tr></table></figure>
+
+
+<h2 id="密码控制"><a href="#密码控制" class="headerlink" title="密码控制"></a>密码控制</h2><p>　　对于一些简单的页面，我们想要通过密码来限制其他用户的访问，但是又不想接入复杂的账号体系，Nginx提供了简单的账号密码控制；首先我们通过Linux的工具创建一个密码本存放账号密码：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">sudo yum install httpd-tools -y<br>sudo htpasswd -c passwd/passwd admin<br></code></pre></div></td></tr></table></figure>
+
+<p>　　<code>passwd/passwd</code>文件就是生成的密码文件，运行后会要求连续两次输入密码，成功后为admin用户添加了密码；然后我们就修改nginx的配置文件，对站点开启密码验证：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">server &#123;<br>  listen 8000;<br>	server_name localhost;<br>	auth_basic &quot;请输入账号密码&quot;;<br>	auth_basic_user_file /etc/nginx/conf/passwd/passwd;<br>	location / &#123;<br>    # .....<br>	&#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　重启nginx，再次访问站点就会出现需要身份验证的弹框了。</p>
+<h1 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h1><p>　　上面我们介绍了正向代理和反向代理的区别，反向代理功能是nginx的三大主要功能之一（静态web服务器、反向代理、负载均衡）。反向代理不需要额外的模块，默认自带proxy_pass和fastcgi_pass指令，通过在location块中配置即可实现：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">server &#123;<br>  listen 80;<br>  server_name a.com;<br>  location / &#123;<br>    proxy_pass http://192.168.1.102:8080;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　在配置proxy_pass时，我们需要注意url后面的<code>/`；当我们通过下面几种情况访问</code>/proxy/home.html``时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">location /proxy/ &#123;<br>  proxy_pass http://192.168.1.102:8080/;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　第一种情况url后面带上/，则会被代理到<code>http://192.168.1.102:8080/home.html</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">location /proxy/ &#123;<br>  proxy_pass http://192.168.1.102:8080;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　第二种情况url后不带/，则会被代理到<code>http://192.168.1.102:8080/proxy/home.html</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">location /proxy/ &#123;<br>  proxy_pass http://192.168.1.102:8080/doc/;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　第三种情况代理/doc/，则会被代理到<code>http://192.168.1.102:8080/doc/home.html</code></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">location /proxy/ &#123;<br>  proxy_pass http://192.168.1.102:8080/doc;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　第四种情况代理/doc，则会被代理到<code>http://192.168.1.102:8080/dochome.html</code></p>
+<p>　　在配置反向代理时，我们还可以修改代理请求的请求参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">location /proxy/ &#123;<br>  proxy_pass http://192.168.1.102:8080/;<br>  # 修改请求的method<br>  proxy_method GET;<br>  # 修改请求的http协议版本<br>  proxy_http_version 1.1;<br>  # 将原来host字段放到转发请求中<br>  proxy_set_header Host $host;<br>  #获取真实ip<br>  proxy_set_header X-Real-IP $remote_addr;<br>  # 代理服务器每成功收到一个请求，就把请求来源IP地址添加到右边<br>  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;<br>  proxy_redirect  off;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<p>　　经过反向代理后，由于客户端和web服务器之间增加了一个代理层，因此web服务器无法拿到客户端请求的host和真实ip，我们通过proxy_set_header指令修改代理请求的头部；$host和$remote_addr是用户真实的host和ip，这里作为变量传入Host和X-Real-IP字段，因此我们在客户端服务器想要获取真实ip就可以通过request.getAttribute(“X-real-ip”)的方式。</p>
+<h1 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h1><p>　　随着互联网的发展，用户规模的增加，服务器的压力也越来越大，如果只使用一台服务器有时候不能承受流量的压力，这时我们就需要将部分流量分散到多台服务器上，使得每台服务器都均衡的承担压力。</p>
+<p>　　nginx负载均衡目前支持六种策略：轮询策略、加权轮询策略、ip_hash策略、url_hash策略、fair策略和sticky策略；六种策略可以分为两大类，内置策略（轮询、加权轮询、ip_hash）和扩展策略（url_hash、fair、sticky）；默认情况下内置策略自动编译在Nginx中，而扩展策略需要额外安装。</p>
+<p>　　既然是负载，那么我们需要启用多台服务器；这里为了方便演示，我们在一台电脑上运行node脚本来模拟3台服务器；同时为了方便看到每台服务器有多少流量，每访问一次就计数一次：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;express&quot;</span>);<br><span class="hljs-keyword">const</span> app = <span class="hljs-title function_">express</span>();<br><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">PORT</span> = <span class="hljs-number">8080</span>;<br><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>);<br><span class="hljs-keyword">let</span> count = <span class="hljs-number">0</span>;<br>app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;*&quot;</span>, <span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> &#123;<br>  count++;<br>  res.<span class="hljs-title function_">sendFile</span>(path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;./index.html&quot;</span>));<br>&#125;);<br>app.<span class="hljs-title function_">listen</span>(<span class="hljs-variable constant_">PORT</span>);<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　然后我们修改端口号，这样我们就有8080、8081、8082三个服务器了。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="轮询策略"><a href="#轮询策略" class="headerlink" title="轮询策略"></a>轮询策略</h2><p>　　轮询策略，顾名思义，就是按照请求顺序，逐一分配到不同的服务器节点；如果某台服务器出现问题，会自动剔除。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">upstream myserver &#123;<br>    server 192.168.1.101:8080;<br>    server 192.168.1.101:8081;<br>    server 192.168.1.101:8082;<br>&#125;<br>server &#123;<br>    listen      8070;<br>    server_name _;<br>    location / &#123;<br>        proxy_pass http://myserver;<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们还是通过测试工具<code>Apache Bench</code>来并发100个请求到Nginx：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">ab -n 100 -c 10 http://localhost:8070/<br></code></pre></div></td></tr></table></figure>
+
+<p>　　最后统计每台服务器的结果，每台服务器的请求还是很平均的：</p>
+<figure class="highlight text"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs text">8080：34个请求<br>8081：33个请求<br>8082：33个请求<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<h2 id="加权轮询策略"><a href="#加权轮询策略" class="headerlink" title="加权轮询策略"></a>加权轮询策略</h2><p>　　加权轮询在基本轮询策略上考虑各服务器节点接受请求的权重，指定服务器节点被轮询的权重，主要用于服务器节点性能不均的情况。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　通过在server节点后配置weight来设置权重，weight的大小和访问比率成正比（weight的默认值为1）；我们给三台服务器设置访问比是<code>1:3:2</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">upstream myserver &#123;<br>    server 192.168.1.101:8080;<br>    server 192.168.1.101:8081 weight=3;<br>    server 192.168.1.101:8082 weight=2;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　压力测试后统计服务器的请求结果，和我们配置的比率还是几乎相同的：</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">8080</span>：<span class="hljs-number">16</span>个请求<br><span class="hljs-attribute">8081</span>：<span class="hljs-number">51</span>个请求<br><span class="hljs-attribute">8082</span>：<span class="hljs-number">33</span>个请求<br></code></pre></div></td></tr></table></figure>
+
+<blockquote>
+<p>注：由于weight是内置，所以可以直接和其他策略配合使用。</p>
+</blockquote>
+<h2 id="ip-hash策略"><a href="#ip-hash策略" class="headerlink" title="ip_hash策略"></a>ip_hash策略</h2><p>　　ip_hash策略是将前端访问的ip进行hash操作后，然后根据hash的结果将请求分配到不同的节点上，这样使得每个ip都会固定访问服务节点；这样做的好处是用户的session只在一个后端服务器节点上，不必考虑一个session存在多台服务器节点出现session共享问题。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">upstream myserver &#123;<br>    ip_hash;<br>    server 192.168.1.101:8080;<br>    server 192.168.1.101:8081 weight=3;<br>    server 192.168.1.101:8082 weight=2;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　压力测试后统计服务器的请求结果，我们发现所有的请求都到固定一台服务器上了：</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">8080</span>：<span class="hljs-number">0</span>个请求<br><span class="hljs-attribute">8081</span>：<span class="hljs-number">0</span>个请求<br><span class="hljs-attribute">8082</span>：<span class="hljs-number">100</span>个请求<br></code></pre></div></td></tr></table></figure>
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<h2 id="url-hash策略"><a href="#url-hash策略" class="headerlink" title="url_hash策略"></a>url_hash策略</h2><p>　　url_hash策略是将url地址进行hash操作，根据hash结果请求定向到同一服务器节点上；url_hash的优点是能够提高后端缓存服务器的效率。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">upstream myserver &#123;<br>    hash $request_uri;<br>    server 192.168.1.101:8080;<br>    server 192.168.1.101:8081;<br>    server 192.168.1.101:8082;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<p>　　压力测试后统计服务器的请求结果：</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">8080</span>：<span class="hljs-number">0</span>个请求<br><span class="hljs-attribute">8081</span>：<span class="hljs-number">0</span>个请求<br><span class="hljs-attribute">8082</span>：<span class="hljs-number">100</span>个请求<br></code></pre></div></td></tr></table></figure>
+
+<p>　　如果我们切换不同的url，/home、/list等，都会分配到不同的服务器节点。</p>
+<h2 id="fair策略"><a href="#fair策略" class="headerlink" title="fair策略"></a>fair策略</h2><p>　　fair策略请求转发到负载最小的后端服务器节点上。Nginx通过服务器节点对响应时间来判断负载情况，响应时间最短的节点负载就相对较轻，Nginx就会将前端请求转发到此服务器节点上。</p>
+<blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>注：fair策略默认不被编译进nginx内核，需要额外安装</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">upstream myserver &#123;<br>    fair;<br>    server 192.168.1.101:8080;<br>    server 192.168.1.101:8081;<br>    server 192.168.1.101:8082;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　压力测试后统计服务器的请求结果：</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">8080</span>：<span class="hljs-number">33</span>个请求<br><span class="hljs-attribute">8081</span>：<span class="hljs-number">33</span>个请求<br><span class="hljs-attribute">8082</span>：<span class="hljs-number">34</span>个请求<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="sticky策略"><a href="#sticky策略" class="headerlink" title="sticky策略"></a>sticky策略</h2><p>　　sticky策略是基于cookie的一种负载均衡解决方案，通过分发和识别cookie，使来自同一个客户端的请求落在同一台服务器上，默认cookie标识名为route。</p>
+<p>　　sticky策略看起来和ip_hash策略类似，但是又有一定区别。假设在一个局域网内有3台电脑，他们有3个内网IP，但是他们发起请求时，却只有一个外网IP，如果使用ip_hash方式，则Nginx会将请求分配到同一服务器；如果使用sticky策略，则会把请求分配到不同服务器上，这是ip_hash无法做到的。</p>
+<blockquote>
+<p>注：sticky策略默认不被编译进nginx内核，需要额外安装</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">upstream myserver &#123;<br>    sticky name=sticky_cookie expires=6h;<br>    server 192.168.1.101:8080;<br>    server 192.168.1.101:8081;<br>    server 192.168.1.101:8082;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　sticky默认的cookie的名称是<code>route</code>，我们可以通过name修改，还有一些其他的cookie参数可以进行修改：</p>
+<ul>
+<li>[name=route]　　　　　　　设置用来记录会话的cookie名称</li>
+<li>[domain=.foo.bar]　　　　设置cookie作用的域名</li>
+<li>[path=/]　　　　　　　　  设置cookie作用的URL路径，默认根目录</li>
+<li>[expires=1h] 　　　　　　 设置cookie的生存期，默认不设置，浏览器关闭即失效</li>
+<li>[hash=index|md5|sha1]   设置cookie中服务器的标识是用明文还是使用md5值，默认使用md5</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>[no_fallback]　　　　　　 设置该项，当sticky的后端机器挂了以后，nginx返回502 (Bad Gateway or Proxy Error) ，而不转发到其他服务器，不建议设置</li>
+<li>[secure]　　　　　　　　  设置启用安全的cookie，需要HTTPS支持</li>
+<li>[httponly]　　　　　　　  允许cookie不通过JS泄漏，没用过</li>
+</ul>
+<p>　　我们通过浏览器来访问，在cookie中可以看到sticky下发的cookie</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Front-Nginx/sticky.png" srcset="/img/loading.gif" lazyload alt="sticky策略cookie"></p>
+<blockquote>
+<p>注：由于cookie最初由服务器端下发，如果客户端禁用cookie，则cookie不会生效。</p>
+</blockquote>
+<h2 id="其他参数"><a href="#其他参数" class="headerlink" title="其他参数"></a>其他参数</h2><p>　　upstream还有一些参数我们可以配合负载均衡：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>fail_timeout</td>
+<td>与max_fails结合使用</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</tr>
+<tr>
+<td>max_fails</td>
+<td>设置在fail_timeout参数设置的时间内最大失败次数，如果在这个时间内，所有针对该服务器的请求都失败了，那么认为该服务器会被认为是停机了</td>
+</tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<tr>
+<td>fail_time</td>
+<td>服务器会被认为停机的时间长度,默认为10s。</td>
+</tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<tr>
+<td>backup</td>
+<td>标记该服务器为备用服务器。当主服务器停止时，请求会被发送到它这里。</td>
+</tr>
+<tr>
+<td>down</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<td>标记服务器永久停机了。</td>
+</tr>
+<tr>
+<td>keepalive</td>
+<td>连接数（keepalive的值）指定了每个工作进程中保留的持续连接到nginx负载均衡器缓存的最大值。如果超过这个设置值的闲置进程想链接到nginx负载均衡器组，最先连接的将被关闭。</td>
+</tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">upstream backserver&#123; <br>  ip_hash;<br>  # down 表示单前的server暂时不参与负载 <br>  server 192.168.1.101:8080 down; <br>  server 192.168.1.101:8081;<br>  # max_fails允许请求失败的次数默认为1，此处允许失败的次数为3。每次失败后暂停的时间为30s<br>  server 192.168.1.101:8082 max_fails=3 fail_timeout=30s; <br>  # 其它所有的非backup机器down或者忙的时候，请求backup机器<br>  server 192.168.1.101:8083 backup;<br>  # 连接到nginx负载均衡器的最大<br>  keepalive 16;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+            </div>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/07/17/Verdaccio.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Verdaccio搭建npm私有服务器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/06/10/Front-Package-Vite.html">
+                        <span class="hidden-mobile">深度测评次世代打包工具Vite</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

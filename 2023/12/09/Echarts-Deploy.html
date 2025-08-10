@@ -1,0 +1,612 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　经常需要用到Echarts的小伙伴应该都有这样的体验，官网打开访问很慢，往往几分钟还打不开，而且动不动就访问不了，我们又等着查文档的某一个属性的用法；如果能把Echarts的网站部署到我们自己的内网服务器，那么查文档的体验友好度肯定上升了一个台阶。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>本地部署Echarts官网 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="本地部署Echarts官网">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-12-09 12:00" pubdate>
+        2023年12月9日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      16
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">本地部署Echarts官网</h1>
+            
+            <div class="markdown-body">
+              <p>　　经常需要用到Echarts的小伙伴应该都有这样的体验，官网打开访问很慢，往往几分钟还打不开，而且动不动就访问不了，我们又等着查文档的某一个属性的用法；如果能把Echarts的网站部署到我们自己的内网服务器，那么查文档的体验友好度肯定上升了一个台阶。</p>
+<span id="more"></span>
+
+
+<h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h1><p>　　首先看一下笔者的系统环境，这里由于之前一篇文章中笔者建议使用Linux，而有一些评论说笔者没用过Linux，这里手头正好有一台Ubuntu22系统就用来折腾一下吧：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ node -v<br>v16.<span class="hljs-number">14</span>.<span class="hljs-number">0</span><br><br>$ cat /proc/version <br>Ubuntu <span class="hljs-number">11</span>.<span class="hljs-number">4</span>.<span class="hljs-number">0</span>-<span class="hljs-number">1</span>ubuntu1~<span class="hljs-number">22</span>.<span class="hljs-number">04</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　下面我们就需要准备仓库了，首先我们新建一个文件夹用来存放克隆的仓库：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ <span class="hljs-built_in">mkdir</span> echarts-deploy &amp;&amp; <span class="hljs-built_in">cd</span> echarts-deploy<br></code></pre></div></td></tr></table></figure>
+
+<p>　　然后克隆众多的Echarts仓库，有些仓库文件比较大，受限于不同的网络环境，可能会有失败的情况，需要多次尝试。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">git clone https://github.com/apache/echarts-website.git<br><br>git clone https://github.com/apache/echarts-www.git<br><br>git clone https://github.com/apache/echarts-examples.git<br><br>git clone https://github.com/apache/echarts-doc.git<br><br>git clone https://github.com/apache/echarts-theme-builder<br><br>git clone https://github.com/apache/echarts-handbook.git<br></code></pre></div></td></tr></table></figure>
+
+<p>　　最后我们看到的目录结构就是这样的：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs 1c"><span class="hljs-string">|- echarts-deploy</span><br>    <span class="hljs-string">|- echarts-website</span><br>    <span class="hljs-string">|- echarts-www</span><br>    <span class="hljs-string">|- echarts-examples</span><br>    <span class="hljs-string">|- echarts-doc</span><br>    <span class="hljs-string">|- echarts-theme-builder</span><br>    <span class="hljs-string">|- echarts-handbook</span><br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<h1 id="开始构建"><a href="#开始构建" class="headerlink" title="开始构建"></a>开始构建</h1><p>　　文件夹准备好了，之后就可以对我们的克隆下来的仓库进行构建了；这里需要说一下的是<code>echarts-website</code>这个文件夹，这个仓库主要用来其他仓库存放构建出来的静态资源文件，因此最后我们的服务器也是在这里启动的；如果不构建，直接在这里启动服务器，我们会发现浏览器自动跳转到Echarts的官方地址；因此下面我们对各个仓库进行构建操作。</p>
+<h2 id="echarts-handbook"><a href="#echarts-handbook" class="headerlink" title="echarts-handbook"></a>echarts-handbook</h2><p>　　进入echarts-handbook，首先我们<code>npm i</code>安装依赖，然后打开<code>configs/config.localsite.js</code>，修改配置；这里我们需要确定最后的服务器的IP和端口端口，比如这里笔者就使用8070端口：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-attr">routerBase</span>: <span class="hljs-string">&#x27;/handbook&#x27;</span>,<br>  <span class="hljs-attr">rootPath</span>: <span class="hljs-string">&#x27;http://localhost:8070/handbook&#x27;</span>,<br>  <span class="hljs-attr">exampleViewPath</span>:<br>    <span class="hljs-string">&#x27;http://localhost:8070/examples/$&#123;lang&#125;/view.html?c=&#x27;</span>,<br>  <span class="hljs-attr">exampleEditorPath</span>:<br>    <span class="hljs-string">&#x27;http://localhost:8070/examples/$&#123;lang&#125;/editor.html?c=&#x27;</span>,<br>  <span class="hljs-attr">mainSitePath</span>: <span class="hljs-string">&#x27;http://localhost:8070/&#x27;</span>,<br>  <span class="hljs-attr">optionPath</span>: <span class="hljs-string">&#x27;http://localhost:8070/option.html#&#x27;</span>,<br>  <span class="hljs-attr">gitRepo</span>: <span class="hljs-string">&#x27;apache/echarts-handbook&#x27;</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　最后执行<code>npm run build:localsite</code>构建，如果出现下面的日志就说明构建成功了：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/Echarts-Deploy/echarts-handbook.png" srcset="/img/loading.gif" lazyload alt="echarts-handbook"></p>
+<h2 id="echarts-examples"><a href="#echarts-examples" class="headerlink" title="echarts-examples"></a>echarts-examples</h2><p>　　echarts-examples是示例的目录，我们进入目录，<code>npm i</code>安装依赖，然后执行<code>npm run localsite</code>构建，如果出现下面的日志就说明构建成功了：</p>
+<p><img src="/images/Echarts-Deploy/echarts-examples.png" srcset="/img/loading.gif" lazyload alt="echarts-examples"></p>
+<h2 id="echarts-doc"><a href="#echarts-doc" class="headerlink" title="echarts-doc"></a>echarts-doc</h2><p>　　进入echarts-doc，还是<code>npm i</code>安装依赖，修改<code>config/env.localsite.js</code>，还是改成需要部署的主机IP和端口号</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;path&#x27;</span>);<br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>    <span class="hljs-attr">galleryViewPath</span>: <span class="hljs-string">&#x27;http://localhost:8070/examples/$&#123;lang&#125;/view.html?c=&#x27;</span>,<br>    <span class="hljs-attr">galleryEditorPath</span>: <span class="hljs-string">&#x27;http://localhost:8070/examples/$&#123;lang&#125;/editor.html?c=&#x27;</span>,<br>    <span class="hljs-attr">handbookPath</span>: <span class="hljs-string">&#x27;http://localhost:8070/handbook/$&#123;lang&#125;/&#x27;</span>,<br>    <span class="hljs-comment">// .. 其他</span><br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　打开<code>echarts-doc/build.js</code>，在public后添加<code>zh</code>，否则会提示找不到<code>public/js/doc-bundle.js</code>文件。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">copySite</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> jsSrcPath = path.<span class="hljs-title function_">resolve</span>(projectDir, <span class="hljs-string">&#x27;public/zh/js/doc-bundle.js&#x27;</span>);<br>    <span class="hljs-keyword">const</span> cssSrcDir = path.<span class="hljs-title function_">resolve</span>(projectDir, <span class="hljs-string">&#x27;public/zh/css&#x27;</span>);<br>    <span class="hljs-comment">// .. 其他</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　然后执行<code>npm run localsite</code>进行构建，如果出现下面的日志就说明构建成功了：</p>
+<p><img src="/images/Echarts-Deploy/echarts-doc.png" srcset="/img/loading.gif" lazyload alt="echarts-doc"></p>
+<h2 id="echarts-www"><a href="#echarts-www" class="headerlink" title="echarts-www"></a>echarts-www</h2><p>　　进入echarts-www目录，执行<code>npm i</code>安装依赖，打开<code>config/env.localsite.js</code>，将下面三个地方的地址更换成自己服务器的IP和端口</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;path&#x27;</span>);<br><span class="hljs-keyword">const</span> config = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./common&#x27;</span>);<br><br>config.<span class="hljs-property">host</span> = <span class="hljs-string">&#x27;http://localhost:8070&#x27;</span>;<span class="hljs-comment">// 改这里，注意后面不带斜杠</span><br><br>config.<span class="hljs-property">cdnPayRootMap</span> = &#123;<br>    <span class="hljs-attr">zh</span>: config.<span class="hljs-property">host</span>,<br>    <span class="hljs-attr">en</span>: <span class="hljs-string">&#x27;http://localhost:8070&#x27;</span> <span class="hljs-comment">// 改这里，注意后面不带斜杠</span><br>&#125;;<br>config.<span class="hljs-property">cdnFreeRootMap</span> = &#123;<br>    <span class="hljs-attr">zh</span>: config.<span class="hljs-property">host</span>,<br>    <span class="hljs-attr">en</span>: config.<span class="hljs-property">host</span><br>&#125;;<br><br>config.<span class="hljs-property">galleryPath</span> = <span class="hljs-string">&#x27;https://localhost:8070/examples/&#x27;</span>; <span class="hljs-comment">// 改这里</span><br>config.<span class="hljs-property">releaseDestDir</span> = path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&#x27;../../echarts-website&#x27;</span>);<br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = config;<br></code></pre></div></td></tr></table></figure>
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　然后执行<code>npm run localsite</code>构建，本次构建过程比较长，如果出现下面的日志就说明构建成功了：</p>
+<p><img src="/images/Echarts-Deploy/echarts-www.png" srcset="/img/loading.gif" lazyload alt="echarts-www"></p>
+<h1 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h1><p>　　上面所有仓库构建完成后，我们回到<code>echarts-website</code>目录，这里我们可以通过一个简易方便的node服务器工具来启动服务器，<code>-p</code>参数可以用来指定端口号：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ npm i -g http-server<br><br>$ http-server -p <span class="hljs-number">8070</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<p>　　我们打开服务器的地址<code>localhost:8070</code>，这边可以换成你自己的服务器IP+端口，就可以看到Echarts文档了，很多示例和手册都是可以正常查看的，打开某一个具体的示例也能看到效果，和Echarts官网简直是一毛一样，内网访问基本就是秒开了：</p>
+<p><img src="/images/Echarts-Deploy/echars1.png" srcset="/img/loading.gif" lazyload alt="Echarts网站1"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/Echarts-Deploy/echars2.png" srcset="/img/loading.gif" lazyload alt="Echarts网站2"></p>
+<p><img src="/images/Echarts-Deploy/echars3.png" srcset="/img/loading.gif" lazyload alt="Echarts网站3"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Echarts-Deploy/echars4.png" srcset="/img/loading.gif" lazyload alt="Echarts网站4"></p>
+<p>　　笔者已经将本文打包好的echarts-website目录整理上传，公众号【前端壹读】后台回复关键字<code>【Echarts官网】</code>即可获取。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+            </div>
+            <hr>
+            <div>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/tools/">工具</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Installation/">安装教程</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Server/">服务器</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/12/22/Install-Linux-Nodejs.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Linux下源码包Nodejs安装教程</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/11/02/Install-Linux-StableDiffusion.html">
+                        <span class="hidden-mobile">Linux下Stable Diffusion安装使用教程</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,702 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　在浏览网页时，笔者发现华为云一个有趣的效果，就是将地球上布局的城市标注出来，当城市出现在地球正面视线范围内时，就显示出来，而在靠近边缘时，就慢慢的隐藏直至消失不见；那么这种效果是如何实现的呢？里面又包含了哪些的逻辑呢？本文我们就来看下这个效果的实现过程。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>Threejs全球坐标分布效果 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Threejs全球坐标分布效果">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2025-04-09 08:12" pubdate>
+        2025年4月9日 早上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      41
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Threejs全球坐标分布效果</h1>
+            
+            <div class="markdown-body">
+              <p>　　在浏览网页时，笔者发现华为云一个有趣的效果，就是将地球上布局的城市标注出来，当城市出现在地球正面视线范围内时，就显示出来，而在靠近边缘时，就慢慢的隐藏直至消失不见；那么这种效果是如何实现的呢？里面又包含了哪些的逻辑呢？本文我们就来看下这个效果的实现过程。</p>
+<span id="more"></span>
+
+<p>　　我们先来看下效果示例：</p>
+<p><img src="/images/Threejs-Global/cloud.png" srcset="/img/loading.gif" lazyload alt="全球坐标分布效果"></p>
+<blockquote>
+<p>由于gif文件太大了，这里就不截取动图效果了，感兴趣的小伙伴可以直接滑到文末查看实现的效果。</p>
+</blockquote>
+<h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h1><p>　　首先还是准备我们画布的基础环境，初始化场景、相机、渲染器、控制器四件套：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 初始化场景</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span> = <span class="hljs-title function_">initScene</span>();<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-property">background</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Color</span>(<span class="hljs-number">0xf7f7f7</span>);<br><br>    <span class="hljs-comment">// 初始化相机</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span> = <span class="hljs-title function_">initCamera</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Vector3</span>(<span class="hljs-number">10</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>), <span class="hljs-number">55</span>, <span class="hljs-number">0.001</span>, <span class="hljs-number">20000</span>);<br><br>    <span class="hljs-comment">// 初始化渲染器</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span> = <span class="hljs-title function_">initRenderer</span>();<br><br>    <span class="hljs-comment">// 初始化控制器哦</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">controls</span> = <span class="hljs-title function_">initOrbitControls</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>);<br>    <span class="hljs-comment">// 禁止缩放</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">controls</span>.<span class="hljs-property">enableZoom</span> = <span class="hljs-literal">false</span>;<br>    <span class="hljs-comment">// 阻尼</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">controls</span>.<span class="hljs-property">enableDamping</span> = <span class="hljs-literal">true</span>;<br>    <span class="hljs-comment">// 自动旋转</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">controls</span>.<span class="hljs-property">autoRotate</span> = <span class="hljs-literal">true</span>;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　我们再向场景中添加一个地球，这里我们直接用一个地球的纹理贴图即可：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// 球体的半径大小</span><br><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">SPHERE_RADIUX</span> = <span class="hljs-number">3</span>;<br><br><span class="hljs-title function_">initMesh</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">loader</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TextureLoader</span>();<br>    <span class="hljs-keyword">const</span> mat = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MeshBasicMaterial</span>(&#123;<br>        <span class="hljs-attr">map</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">loader</span>.<span class="hljs-title function_">load</span>(<span class="hljs-string">&quot;ditu.jpg&quot;</span>),<br>    &#125;);<br>    <span class="hljs-keyword">const</span> geo = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SphereGeometry</span>(<span class="hljs-variable constant_">SPHERE_RADIUX</span>);<br>    <span class="hljs-keyword">const</span> sphere = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Mesh</span>(geo, mat);<br>    sphere.<span class="hljs-property">position</span>.<span class="hljs-title function_">set</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(sphere);<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　下面就需要在地球🌍上贴上一个个的城市定位了，这里用到一个新的渲染器：<code>CSS2DRenderer</code>，这个渲染器用于将Html元素嵌入到3D场景中去，用于在场景中展示一些额外的信息；比如VR看房时候的标签，使用html标签有更好的操控，比如使用CSS还可以实现点击、悬浮、激活等等效果。</p>
+<p>　　我们在初始化场景的时候添加一个CSS2DRenderer渲染器：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123;<br>  <span class="hljs-title class_">CSS2DRenderer</span>,<br>  <span class="hljs-title class_">CSS2DObject</span>,<br>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;three/examples/jsm/renderers/CSS2DRenderer.js&quot;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 其他场景代码</span><br>    <span class="hljs-keyword">const</span> labelRenderer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">CSS2DRenderer</span>();<br>    labelRenderer.<span class="hljs-title function_">setSize</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">innerWidth</span>, <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerHeight</span>);<br>    labelRenderer.<span class="hljs-property">domElement</span>.<span class="hljs-property">style</span>.<span class="hljs-property">position</span> = <span class="hljs-string">&quot;absolute&quot;</span>; <span class="hljs-comment">// 设置渲染器样式</span><br>    labelRenderer.<span class="hljs-property">domElement</span>.<span class="hljs-property">style</span>.<span class="hljs-property">top</span> = <span class="hljs-string">&quot;0&quot;</span>;<br>    labelRenderer.<span class="hljs-property">domElement</span>.<span class="hljs-property">style</span>.<span class="hljs-property">left</span> = <span class="hljs-string">&quot;0&quot;</span>;<br>    labelRenderer.<span class="hljs-property">domElement</span>.<span class="hljs-property">style</span>.<span class="hljs-property">zIndex</span> = <span class="hljs-string">&quot;1&quot;</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">labelRenderer</span> = labelRenderer;<br>    <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">appendChild</span>(labelRenderer.<span class="hljs-property">domElement</span>);<br><br>    <span class="hljs-comment">// 这里修改</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">controls</span> = <span class="hljs-title function_">initOrbitControls</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">labelRenderer</span>, <span class="hljs-literal">false</span>);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<blockquote>
+<p>这里要注意的是，我们在初始化controls控制器的时候，需要修改将CSS2DRenderer传入控制器的构造函数中，否则就会出现画布无法转动的情况。</p>
+</blockquote>
+<p>　　下面我们就需要将Html标签添加到CSS2DRenderer中去，</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> list = [<br>  &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;北京&quot;</span>, <span class="hljs-attr">lng</span>: <span class="hljs-number">116.39</span>, <span class="hljs-attr">lat</span>: <span class="hljs-number">39.9</span> &#125;,<br>  <span class="hljs-comment">// 省略其他城市</span><br>];<br><br><span class="hljs-keyword">const</span> tagsList = [];<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; list.<span class="hljs-property">length</span>; i++) &#123;<br>  <span class="hljs-keyword">const</span> &#123; name, lng, lat &#125; = list[i];<br><br>  <span class="hljs-keyword">const</span> pos = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">latLongToVector3</span>(lng, lat, <span class="hljs-variable constant_">SPHERE_RADIUX</span>);<br><br>  <span class="hljs-keyword">const</span> box = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&quot;div&quot;</span>);<br>  box.<span class="hljs-property">className</span> = <span class="hljs-string">&quot;global_position-box&quot;</span>;<br>  box.<span class="hljs-property">innerHtml</span> = name;<br><br>  <span class="hljs-keyword">const</span> tag = <span class="hljs-keyword">new</span> <span class="hljs-title class_">CSS2DObject</span>(box);<br>  tag.<span class="hljs-property">position</span>.<span class="hljs-title function_">copy</span>(pos);<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(tag);<br>  tagsList.<span class="hljs-title function_">push</span>(tag);<br>&#125;<br><br><span class="hljs-variable language_">this</span>.<span class="hljs-property">tagsList</span> = tagsList;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里在循环列表的时候，需要将数据的经纬度坐标转换成在三维空间里的x、y、z坐标，我们用到一个<code>latLongToVector3</code>函数进行转换处理，我们下面会介绍到这个函数。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　通过CSS2DObject实例化标签后，设置标签的左边；但是将标签添加到页面上去后，我们会看到，如果是在我们视线背面的标签，同时也显现出来了。</p>
+<p><img src="/images/Threejs-Global/effect.png" srcset="/img/loading.gif" lazyload alt="CSS2DObject效果"></p>
+<p>　　这样的效果肯定不是我们想要的，因此，我们需要在每次render的时候，就需要不断的去控制每个html标签的透明度，当标签在我们视线后面的时候就设置为0，这才是我们想要的效果；那么标签的透明怎么来计算呢？我们先来学习三个工具函数的使用。</p>
+<h2 id="经纬度vs球坐标系"><a href="#经纬度vs球坐标系" class="headerlink" title="经纬度vs球坐标系"></a>经纬度vs球坐标系</h2><p>　　首先我们要学习的一个就是经纬度和三维球体坐标转换的一个关系函数，它也是Three.js中做三维地图经常会遇到的一个问题，下面我们就来看下它的原理和实现逻辑。</p>
+<p>　　我们知道在三维坐标系中，我们用xyz能很快确定一个点在空间上的坐标；但是在球体坐标系中，我们需要另外三个参数来确定一个点的位置，我们看下数学中是如何来表示的：</p>
+<ul>
+<li>径向距离：也就是我们常说的球体半径，是球面坐标点到球心的距离，用r表示。</li>
+<li>极角：是z轴与r的交角，一般用<code>θ</code>表示。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>方位角：是赤道面（由 x 轴与 y 轴确定的平面）上起始于 x 轴，沿逆时针方向量出的角度，通常用<code>φ</code>表示。</li>
+</ul>
+<blockquote>
+<p>我们假设地球是一个完美的球体。</p>
+</blockquote>
+<p><img src="/images/Threejs-Global/sphere.jpg" srcset="/img/loading.gif" lazyload alt="球体坐标"></p>
+<blockquote>
+<p>需要注意的是，Three.js中，y轴和z轴与数学描述中的位置是相反的，即y轴是纵向的，z轴是从后往前延伸的；这也导致了下面代码中y和z的计算方式与公式的计算方式互换。</p>
+</blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　如果用公式来表示，直角坐标和球坐标的对应关系如下：</p>
+<p><img src="/images/Threejs-Global/formula.png" srcset="/img/loading.gif" lazyload alt="转换公式"></p>
+<p>　　公式有了，我们下面就要来看公式中的极角θ和方位角φ分别如何来得到；我们知道，纬度是点相对于赤道平面的角度，从-90°的南极到90°的北极，而极角是Three.js中的Y轴和点之间的夹角，因此北极是0，赤道是90，而南极是180；因此我们需要用90减去纬度，再通过度数和弧度的转换即可得到如下代码：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">const</span> phi = (<span class="hljs-number">90</span> - latitude) * (<span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span> / <span class="hljs-number">180</span>);<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　其次是方位角，由于是沿逆时针方向量出的角度，我们对其取反：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">const</span> theta = (longitude + <span class="hljs-number">180</span>) * (<span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span> / <span class="hljs-number">180</span>); <br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>但是我们实际开发中拿到的地图不一定是标准的地图，需要对方位角进行处理，不一定是加180。</p>
+</blockquote>
+<p>　　极角和方位角得到了，我们通过公式得到一个标准的经纬度转换三维空间坐标的函数如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 将经纬度转换为三维空间坐标</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">number</span>&#125; <span class="hljs-variable">longitude</span> - 经度（-180到180）</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">number</span>&#125; <span class="hljs-variable">latitude</span> - 纬度（-90到90）</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">number</span>&#125; <span class="hljs-variable">radius</span> - 球体半径</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@returns</span> &#123;<span class="hljs-type">THREE.Vector3</span>&#125; 返回Three.js的三维向量坐标</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">latLongToVector3</span>(<span class="hljs-params">longitude, latitude, radius</span>): <span class="hljs-title class_">Vector3</span> &#123;<br>  <span class="hljs-comment">// 极角（从北极开始）</span><br>    <span class="hljs-keyword">const</span> phi = (<span class="hljs-number">90</span> - latitude) * (<span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span> / <span class="hljs-number">180</span>); <br>    <span class="hljs-comment">// 方位角（从本初子午线开始）</span><br>    <span class="hljs-keyword">const</span> theta = (longitude + <span class="hljs-number">180</span>) * (<span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span> / <span class="hljs-number">180</span>); <br><br>    <span class="hljs-comment">// 计算球体上的点坐标（Y轴向上）</span><br>    <span class="hljs-keyword">const</span> x = -radius * <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">sin</span>(phi) * <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">cos</span>(theta);<br>    <span class="hljs-keyword">const</span> y = radius * <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">cos</span>(phi);<br>    <span class="hljs-keyword">const</span> z = radius * <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">sin</span>(phi) * <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">sin</span>(theta);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-variable constant_">THREE</span>.<span class="hljs-title class_">Vector3</span>(x, y, z);<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<h2 id="角度计算函数"><a href="#角度计算函数" class="headerlink" title="角度计算函数"></a>角度计算函数</h2><p>　　下面我们再来看一个数学问题：</p>
+<blockquote>
+<p>在三维空间中，已知ABC三个点的坐标，求每个点的角度？</p>
+</blockquote>
+<p>　　经常学高数的朋友都知道，不要把它想象成三维，而是一个平面上的三角形；根据下面三角形的余弦定理：</p>
+<p><img src="/images/Threejs-Global/cos.png" srcset="/img/loading.gif" lazyload alt="余弦定理"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　我们看上面的公式，根据任意三条边的长度，我们都可以计算出角度的余弦值；因此我们需要一个函数来计算三维空间下两个点之间的距离：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// 计算空间上的两个点之间的距离</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">calc3DPointDist</span>(<span class="hljs-params">x1, y1, z1, x2, y2, z2</span>) &#123;<br>  <span class="hljs-keyword">const</span> distX = x2 - x1;<br>  <span class="hljs-keyword">const</span> distY = y2 - y1;<br>  <span class="hljs-keyword">const</span> distZ = z2 - z1;<br>  <span class="hljs-keyword">return</span> <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">sqrt</span>(distX * distX + distY * distY + distZ * distZ);<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　有了这个函数，我们就可以计算每个角对应边的长度了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 已经ABC三维坐标，求各个点的角度</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">A</span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">B</span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">*</span>&#125; <span class="hljs-variable">C</span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">String</span>&#125; <span class="hljs-variable">pos</span></span><br><span class="hljs-comment"> * <span class="hljs-doctag">@returns</span></span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">calc3DAngle</span>(<span class="hljs-params">A, B, C, pos = <span class="hljs-string">&quot;A&quot;</span></span>) &#123;<br>  <span class="hljs-comment">// 三角形每条边的长度</span><br>  <span class="hljs-keyword">const</span> a = <span class="hljs-title function_">calc3DPointDist</span>(B.<span class="hljs-property">x</span>, B.<span class="hljs-property">y</span>, B.<span class="hljs-property">z</span>, C.<span class="hljs-property">x</span>, C.<span class="hljs-property">y</span>, C.<span class="hljs-property">z</span>);<br>  <span class="hljs-keyword">const</span> b = <span class="hljs-title function_">calc3DPointDist</span>(A.<span class="hljs-property">x</span>, A.<span class="hljs-property">y</span>, A.<span class="hljs-property">z</span>, C.<span class="hljs-property">x</span>, C.<span class="hljs-property">y</span>, C.<span class="hljs-property">z</span>);<br>  <span class="hljs-keyword">const</span> c = <span class="hljs-title function_">calc3DPointDist</span>(A.<span class="hljs-property">x</span>, A.<span class="hljs-property">y</span>, A.<span class="hljs-property">z</span>, B.<span class="hljs-property">x</span>, B.<span class="hljs-property">y</span>, B.<span class="hljs-property">z</span>);<br>  <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　将上面的余弦定理继续推导一下，我们可以得到每个角度的cos计算公式：</p>
+<p><img src="/images/Threejs-Global/cos1.png" srcset="/img/loading.gif" lazyload alt="余弦定理推导"></p>
+<p>　　再利用<code>Math.acos</code>，我们就得到了ABC三个角的角度；再通过传入的参数pos，直接得到我们想要角的角度：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">calc3DAngle</span>(<span class="hljs-params">A, B, C, pos = <span class="hljs-string">&quot;A&quot;</span></span>) &#123;<br>    <span class="hljs-comment">// 省略上面a、b、c的计算</span><br>    <span class="hljs-keyword">let</span> cosA = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">acos</span>((b * b + c * c - a * a) / (b * c * <span class="hljs-number">2</span>));<br>    <span class="hljs-keyword">let</span> cosB = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">acos</span>((a * a + c * c - b * b) / (a * c * <span class="hljs-number">2</span>));<br>    <span class="hljs-keyword">let</span> cosC = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">acos</span>((a * a + b * b - c * c) / (a * b * <span class="hljs-number">2</span>));<br>  <br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-attr">A</span>: (cosA * <span class="hljs-number">180</span>) / <span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span>,<br>      <span class="hljs-attr">B</span>: (cosB * <span class="hljs-number">180</span>) / <span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span>,<br>      <span class="hljs-attr">C</span>: (cosC * <span class="hljs-number">180</span>) / <span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span>,<br>    &#125;[pos];<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<h2 id="clamp函数"><a href="#clamp函数" class="headerlink" title="clamp函数"></a>clamp函数</h2><p>　　clamp函数很多同学可能都没用过，一般在c++或者python中用的比较多，它的作用是；它需要传入三个值：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">clamp</span>(<span class="hljs-params">num, min, max</span>) &#123;<br>  <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　三个参数分别代表如下含义：</p>
+<ul>
+<li>num：需要判断的数值。</li>
+<li>min：范围的最小值。</li>
+<li>max：范围的最大值。</li>
+</ul>
+<p>　　为了方便大家理解，我们还是举几个例子🌰来简单看下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// 返回10，小于最小值，返回最小值</span><br><span class="hljs-title function_">clamp</span>(<span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">20</span>)<br><br><br><span class="hljs-comment">// 返回16，在返回内，返回原值</span><br><span class="hljs-title function_">clamp</span>(<span class="hljs-number">16</span>, <span class="hljs-number">10</span>, <span class="hljs-number">20</span>)<br><br><br><span class="hljs-comment">// 返回20，超出最大值，返回最大值</span><br><span class="hljs-title function_">clamp</span>(<span class="hljs-number">36</span>, <span class="hljs-number">10</span>, <span class="hljs-number">20</span>)<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<p>　　通过三个demo，相信大家就能理解这个函数的作用了，函数的实现其实也非常简单：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">clamp</span>(<span class="hljs-params">num, min, max</span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">min</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">max</span>(num, min), max);<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="显示还是隐藏标签"><a href="#显示还是隐藏标签" class="headerlink" title="显示还是隐藏标签"></a>显示还是隐藏标签</h2><p>　　对上面两个函数理解后，我们就可以回到地球上坐标的处理了；我们在threejs每次render的时候循环tagsList：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">&#123;<br>  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 当前摄像头的位置</span><br>    <span class="hljs-keyword">const</span> cameraPos = <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>.<span class="hljs-property">position</span>;<br><br>    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">tagsList</span> &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">tagsList</span>.<span class="hljs-property">length</span>) &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">tagsList</span>.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">tag</span>) =&gt;</span> &#123;<br>        <span class="hljs-keyword">const</span> &#123; position, element &#125; = tag;<br>      &#125;);<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<p>　　首先我们将tag打印出来看下，里面有两个属性position和element，是我们所需要的；position属性是一个Vector3类型，表示tag当前的位置信息，element属性是一个dom节点，表示标签对应的dom元素。</p>
+<p>　　我们想象一下，在三维空间中，我们的相机位置Camera一直在旋转的，因为设置了autoRotate自动旋转；而标签的位置position是固定的；因此这两个点和原点之间就形成了一个特殊的三角形：</p>
+<p><img src="/images/Threejs-Global/diqiu.png" srcset="/img/loading.gif" lazyload alt="三维视角的位置"></p>
+<p>　　临界情况就是以原点为顶点的角正好是90度，此时我们刚刚能看到标签；当相机位置不断旋转时，如果小于90度，我们还是可以看到标签的；但是如果大于90度，标签已经到了球体的后面了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> originPoint = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Vector3</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)<br><span class="hljs-variable language_">this</span>.<span class="hljs-property">tagsList</span>.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">tag</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> &#123; position &#125; = tag;<br>  <span class="hljs-comment">// 以原点为顶点的角度</span><br>  <span class="hljs-keyword">const</span> ang = <span class="hljs-title function_">calc3DAngle</span>(cameraPos, originPoint, position, <span class="hljs-string">&quot;B&quot;</span>);<br>  <span class="hljs-comment">// 省略其他</span><br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<blockquote>
+<p>这里传入的顺序无所谓，我们只要计算以原点为顶点的角度即可。</p>
+</blockquote>
+<p>　　利用上面的<code>calc3DAngle</code>函数，我们将三个位置传入，就可以很轻松的得到角度ang；有了这个角度，我们就可以计算标签的透明度了；我们上面提到了，透明度的临界值就是90度，但是实际上由于视角和球体的缘故，这个角度不是很准确，笔者测试之后大概是在85度左右。</p>
+<p>　　同时，我们的标签也并不是一下子透明度就从1变到0的，我们需要给它一个缓冲范围，让它也缓缓，在这个范围内会进行变化；这个范围大致就是从80度到85度之间，透明度会从1到0逐渐的变化。</p>
+<p><img src="/images/Threejs-Global/opacity.png" srcset="/img/loading.gif" lazyload alt="透明度映射"></p>
+<p>　　看到这样的映射关系图，相信大家已经猜到了，没错，这里就要用到我们上面介绍的<code>clamp函数</code>了，我们将角度ang夹到80到85之间，然后使用<code>scale函数</code>进行映射后就得到了我们的透明度opacity，给element元素的样式赋值即可：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 映射范围</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Number</span>&#125; number 需要映射的数值</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Number</span>&#125; inMin 映射入口的最小</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Number</span>&#125; inMax 映射入口的最大</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Number</span>&#125; outMin 映射出口的最小</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Number</span>&#125; outMax 映射出口的最大</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">scale</span>(<span class="hljs-params">number, inMin, inMax, outMin, outMax</span>) &#123;<br>  <span class="hljs-keyword">return</span> ((number - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;<br>&#125;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">ANG1</span> = <span class="hljs-number">80</span>;<br><span class="hljs-keyword">const</span> <span class="hljs-title class_">ANG2</span> = <span class="hljs-number">85</span>;<br><br><span class="hljs-variable language_">this</span>.<span class="hljs-property">tagsList</span>.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">tag</span>) =&gt;</span> &#123;<br>  <span class="hljs-comment">// 省略其他代码</span><br>  <span class="hljs-keyword">const</span> opacity = <span class="hljs-title function_">scale</span>(<span class="hljs-title function_">clamp</span>(ang, <span class="hljs-title class_">ANG1</span>, <span class="hljs-title class_">ANG2</span>), <span class="hljs-title class_">ANG1</span>, <span class="hljs-title class_">ANG2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>);<br>  tag.<span class="hljs-property">element</span>.<span class="hljs-property">style</span>.<span class="hljs-property">opacity</span> = opacity;<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<p>　　这样我们的标签就实现了一个过渡变化；最后，在vue页面卸载之后，别忘记还需要将CSS2DRenderer渲染器的dom节点删除，否则会导致页面会有问题：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">&#123;<br>  <span class="hljs-title function_">beforeDestroy</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">labelRenderer</span>) &#123;<br>      <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">removeChild</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">labelRenderer</span>.<span class="hljs-property">domElement</span>);<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们来看下实现的效果，跟原页面的效果已经十分接近了：</p>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="500" src="https://gallery.xieyufei.com/case/three/global"></iframe>
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<blockquote>
+<p>本文所有源码敬请关注公众号【前端壹读】，后台回复关键词【全球坐标分布】即可获取。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</blockquote>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　我们发现很多3D场景下的问题，其本质都是一个个数学问题；本文我们研究了球体和经纬度转换函数、三个点之间的角度计算函数，这两个问题无不考验着我们的数学推理能力；笔者甚至发现，在完成这个案例的过程中，学习的数学知识，甚至比写代码的时间更长、更费时间。</p>
+
+            </div>
+            <hr>
+            <div>
+              
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p><div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Animation/">动画</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Threejs/">Threejs</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Graphical/">图形化</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/08/11/Threejs-Cube-Loading.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">一款解压的3D方块加载动画效果</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/12/02/Zerotier.html">
+                        <span class="hidden-mobile">穿越防火墙的秘籍，打造个人专属内网穿透网络</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

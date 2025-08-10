@@ -1,0 +1,579 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　前段时间，有一个叫“狗屁不通文章生成器”的项目一下子吸引了大家的兴趣，还引起各大科技媒体；36Kr、新浪专栏IT之家都不约而同的刊文报道。然而，综看整个项目，除去README、LICENSE和gitignore，一共就6个文件，却达到了惊人的11.6k的Star和2.2k的Fork，平均下来每个文件有将近2k的Star。你可能会发出疑问了，这究竟是人性的扭曲还是道德的沦丧？今天就让我们来看一下">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>源码剖析Bullshit文章生成器 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="源码剖析Bullshit文章生成器">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-12-16 18:56" pubdate>
+        2019年12月16日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      24
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">源码剖析Bullshit文章生成器</h1>
+            
+            <div class="markdown-body">
+              <p>　　前段时间，有一个叫“狗屁不通文章生成器”的项目一下子吸引了大家的兴趣，还引起各大科技媒体；36Kr、新浪专栏IT之家都不约而同的刊文报道。然而，综看整个项目，除去README、LICENSE和gitignore，一共就6个文件，却达到了惊人的11.6k的Star和2.2k的Fork，平均下来每个文件有将近2k的Star。你可能会发出疑问了，这究竟是人性的扭曲还是道德的沦丧？今天就让我们来看一下它究竟有何黑科技能自动生成文章。</p>
+<span id="more"></span>
+
+<p>　　事情的起因来源于知乎上的一篇提问，有人提问“学生会退会申请六千字怎么写？”于是乎，各路大神纷纷前来献计献策，有复制粘贴六千字“不干了”的，有复制粘贴六千字《道德经》的，更有提议使用美人计撩学长的；然而其中的一个回答横空出世，答主随手就写了一个开源项目<a target="_blank" rel="noopener" href="https://github.com/menzi11/BullshitGenerator">狗屁不通文章生成器</a>；通过该项目，快速生成了一篇相关文章，不仅解决了题主的问题，还得到了广大网友的认同。</p>
+<p><img src="/images/Article-Generate/cause.png" srcset="/img/loading.gif" lazyload alt="cause.png"></p>
+<p>　　文章太长了，这边就不放完整版的了，有兴趣的童鞋可以去知乎观摩一下原文<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/349794499/answer/873505410">《学生会退会申请六千字怎么写?》</a>，我试了下，果然是滑到底都需要半分钟之久。</p>
+<p><img src="/images/Article-Generate/shadiao.jpg" srcset="/img/loading.gif" lazyload alt="shadiao.jpg"></p>
+<p>　　该项目一开始为python3版本，后来有网友整理了网页版的，现在我们常用的是由suulnnka修改的<a target="_blank" rel="noopener" href="https://suulnnka.github.io/BullshitGenerator/index.html">在线版本</a>，对页面的样式进行了优化，将生成的主题放入query参数中，使用更加的方便，这里我们随机来生成一篇文章看一下效果：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Article-Generate/generate-test.png" srcset="/img/loading.gif" lazyload alt="generate-test.png"></p>
+<p>　　可以看出整篇文章虽然废话连篇、狗屁不通，但是段段扣题，旁征博引，引用各种名人名言，什么爱迪生曾经提到，什么康德曾经说过，每一段说的貌似都有理有据，令人无法反驳。</p>
+<p>　　那么作者到底是如何来生成这么一长串的长篇大论的呢？最开始我还猜测是不是通过某种神经网络算法来将每一段话拼接起来，但是作者很明确的在README中写道：</p>
+<blockquote>
+<p>鄙人才疏学浅并不会任何自然语言处理相关算法. 而且目前比较偏爱简单有效的方式达到目的方式. 除非撞到了天花板, 否则暂时不会引入任何神经网络等算法. 不过欢迎任何人另开分支实现更复杂, 效果更好的算法. 不过除非效果拔群, 否则鄙人暂时不会融合.</p>
+</blockquote>
+<p>　　很明显，作者只是通过某种<code>简单有效的</code>方式来实现这个功能的，那让我来深扒一下源码，看看这种到底是怎么样一种<code>简单有效的</code>方式。</p>
+<p>　　首先放在项目开始的是定义的一些论述、名人名言、前后垫话以及用到的公用函数等：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> 论述 = [<br>    <span class="hljs-string">&#x27;现在，解决主题的问题，是非常非常重要的。 所以， &#x27;</span>,<br>    <span class="hljs-string">&#x27;我们不得不面对一个非常尴尬的事实，那就是， &#x27;</span>,<br>    <span class="hljs-comment">//省略若干论述</span><br>]<br><span class="hljs-keyword">let</span> 名人名言 = [<br>    <span class="hljs-string">&#x27;伏尔泰曾经说过，不经巨大的困难，不会有伟大的事业。这不禁令我深思&#x27;</span>,<br>    <span class="hljs-string">&#x27;富勒曾经说过，苦难磨炼一些人，也毁灭另一些人。这不禁令我深思&#x27;</span>,<br>    <span class="hljs-string">&quot;文森特·皮尔曾经说过，改变你的想法，你就改变了自己的世界。这不禁令我深思&quot;</span>,<br>    <span class="hljs-comment">//省略若干名人名言</span><br>]<br><span class="hljs-keyword">let</span> 后面垫话 = [<br>    <span class="hljs-string">&quot;这不禁令我深思。 &quot;</span>,<br>    <span class="hljs-string">&quot;带着这句话，我们还要更加慎重的审视这个问题： &quot;</span>,<br>    <span class="hljs-string">&quot;这启发了我， &quot;</span>,<br>    <span class="hljs-string">&quot;我希望诸位也能好好地体会这句话。 &quot;</span>,<br>    <span class="hljs-string">&quot;这句话语虽然很短，但令我浮想联翩。 &quot;</span>,<br>]<br><span class="hljs-keyword">let</span> 前面垫话 = [<br>    <span class="hljs-string">&quot;曾经说过&quot;</span>,<br>    <span class="hljs-string">&quot;在不经意间这样说过&quot;</span>,<br>]<br><span class="hljs-keyword">function</span> 随便取一句(列表)&#123;<br>    <span class="hljs-keyword">let</span> 坐标 = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>( <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() * 列表.<span class="hljs-property">length</span> );<br>    <span class="hljs-keyword">return</span> 列表[坐标];<br>&#125;<br><span class="hljs-keyword">function</span> 随便取一个数(最小值 = <span class="hljs-number">0</span>,最大值 = <span class="hljs-number">100</span>)&#123;<br>    <span class="hljs-keyword">let</span> 数字 = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>()*( 最大值 - 最小值 ) + 最小值;<br>    <span class="hljs-keyword">return</span> 数字;<br>&#125;<br><span class="hljs-keyword">function</span> 来点名人名言()&#123;<br>    <span class="hljs-keyword">let</span> 名言 = 随便取一句(名人名言)<br>    名言 = 名言.<span class="hljs-title function_">replace</span>(<span class="hljs-string">&quot;曾经说过&quot;</span>, 随便取一句(前面垫话) )<br>    名言 = 名言.<span class="hljs-title function_">replace</span>(<span class="hljs-string">&quot;这不禁令我深思&quot;</span>, 随便取一句(后面垫话) )<br>    <span class="hljs-keyword">return</span> 名言<br>&#125;<br><span class="hljs-keyword">function</span> 来点论述()&#123;<br>    <span class="hljs-keyword">let</span> 句子 = 随便取一句(论述);<br>    句子 = 句子.<span class="hljs-title function_">replace</span>(<span class="hljs-title class_">RegExp</span>(<span class="hljs-string">&quot;主题&quot;</span>, <span class="hljs-string">&quot;g&quot;</span>),主题);<br>    <span class="hljs-keyword">return</span> 句子;<br>&#125;<br><span class="hljs-keyword">function</span> 增加段落(章节)&#123;<br>    <span class="hljs-keyword">if</span>(章节[章节.<span class="hljs-property">length</span>-<span class="hljs-number">1</span>] === <span class="hljs-string">&quot; &quot;</span>)&#123;<br>        章节 = 章节.<span class="hljs-title function_">slice</span>(<span class="hljs-number">0</span>,-<span class="hljs-number">2</span>)<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;　　&quot;</span> + 章节 + <span class="hljs-string">&quot;。 &quot;</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　在广大网友的帮助下，整理了一百条的名人名言，整理的格式都是固定的：人名+曾经说过+一段话+这不禁令我深思，然后把<code>曾经说过</code>替换前面垫话，把<code>这不禁令我深思</code>替换成后面垫话。公用函数定义好了，最核心最精彩的部分就是生成文章的代码了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> 生成文章()&#123;<br>    主题 = $(<span class="hljs-string">&#x27;input&#x27;</span>).<span class="hljs-property">value</span><br>    <span class="hljs-keyword">let</span> 文章 = []<br>    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> 空 <span class="hljs-keyword">in</span> 主题)&#123;<br>        <span class="hljs-keyword">let</span> 章节 = <span class="hljs-string">&quot;&quot;</span>;<br>        <span class="hljs-keyword">let</span> 章节长度 = <span class="hljs-number">0</span>;<br><br>        <span class="hljs-keyword">while</span>( 章节长度 &lt; <span class="hljs-number">6000</span> )&#123;<br>            <span class="hljs-keyword">let</span> 随机数 = 随便取一个数();<br>            <span class="hljs-keyword">if</span>(随机数 &lt; <span class="hljs-number">5</span> &amp;&amp; 章节.<span class="hljs-property">length</span> &gt; <span class="hljs-number">200</span>)&#123;<br>                章节 = 增加段落(章节);<br>                文章.<span class="hljs-title function_">push</span>(章节); <br>                章节 = <span class="hljs-string">&quot;&quot;</span>;<br>            &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(随机数 &lt; <span class="hljs-number">20</span>)&#123;<br>                <span class="hljs-keyword">let</span> 句子 = 来点名人名言();<br>                章节长度 = 章节长度 + 句子.<span class="hljs-property">length</span>;<br>                章节 = 章节 + 句子;<br>            &#125;<span class="hljs-keyword">else</span>&#123;<br>                <span class="hljs-keyword">let</span> 句子 = 来点论述();<br>                章节长度 = 章节长度 + 句子.<span class="hljs-property">length</span>;<br>                章节 = 章节 + 句子;<br>            &#125;<br>        &#125;<br>        章节 = 增加段落(章节);<br>        文章.<span class="hljs-title function_">push</span>(章节);<br>    &#125;<br>    <span class="hljs-keyword">let</span> 排版 = <span class="hljs-string">&quot;&lt;div&gt;&quot;</span> + 文章.<span class="hljs-title function_">join</span>(<span class="hljs-string">&quot;&lt;/div&gt;&lt;div&gt;&quot;</span>) + <span class="hljs-string">&quot;&lt;/div&gt;&quot;</span>;<br>    $(<span class="hljs-string">&quot;#论文&quot;</span>).<span class="hljs-property">innerHTML</span> = 排版;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>　　首先作者的思路是把一篇文章作为一个数组存起来，数组中的每个元素都是一个章节，这里的章节可以理解为一个自然段，是文章的基本组成部分；最后再把整个数组通过div拼接起来。其中，最重要的就是如何来生成一个章节。</p>
+<p>　　刚开始我对<code>for(let 空 in 主题)</code>这个遍历感到十分困惑，主题很好理解是一个字符串，但是将字符串中每一个字符遍历出来有什么作用么？经过多次debug，猜测其实是为了多生成几次章节，凑字数而已；原本6000字，经过多次遍历，实际可能会远超6000字，达到好几万的字数（6000*主题字数）；因此在suulnnka改版后的函数中，也将这段代码优化成了<code>while( 文章长度 &lt; 12000 )</code>，控制整篇文章的字数略大于12000字。</p>
+<p>　　<code>随便取一个数</code>函数用来生成一个0到100的随机数，首先让我们看一下<code>随机数 &lt; 20</code>的情况，也就是15%的概率（20-5）用来在章节中添加一句名人名言；然后80%的概率（100-5-15）用来在章节中添加一句论述；最后我们回到最难理解的<code>随机数 &lt; 5</code>的情况，也就是5%的概率来将这段章节给结束掉，通过把章节最后两个字符截取替换成句号，然后把章节push到文章中，最后把章节变量的内容给清空了。</p>
+<p>　　通过对源码的分析，我们看出作者的方法确实很<code>简单有效</code>，通过预存的名人名言和大段论述来生成文章；也正是因为简单，所以整个生成出来的文章重复率偏高了；因此作者也意识到这个问题，在项目中明确表示下一步计划是防止文章过于内容重复。</p>
+<p>　　广大网友还在此基础上开发了日语版的和嘴臭版的（LOL喷人神器？），更有网友调侃李小璐离婚宣言都是用这个项目生成的。</p>
+<p><img src="/images/Article-Generate/japanese.png" srcset="/img/loading.gif" lazyload alt="japanese.png">    </p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　除此之外，我们还发现项目中的代码使用了大量的中文函数名和中文变量，这也是我第一次知道了编程中还能使用中文变量名，太硬核了。作者也在项目中表示，使用中文变量名只是因为懒得切英文输入法，于是，分支作者还特地帮忙把漏网的英文变量名，也给改成了中文。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/SourceCode/">源码</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/12/30/Quiz-Eventloop.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">从一道面试题来理解JS事件循环</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/11/08/Front-Summary.html">
+                        <span class="hidden-mobile">面试完50个人后我写下这篇总结</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

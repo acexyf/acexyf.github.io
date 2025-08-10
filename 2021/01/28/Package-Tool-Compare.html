@@ -1,0 +1,697 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　我们在之前用了两篇文章来介绍了Webpack的配置和优化，那么为什么这篇文章还要来对比Parcel和Rollup呢？配置过Webpack的童鞋可能会发现了，虽然它具有很高的可配置性和扩展性，以及丰富的插件系统，但是这些无一不给我们的上手带来限制，有很高的上手门槛。相信大多童鞋在配置时遇到都会遇到莫名其妙的报错和各种查资料的烦恼，那么今天就来看一下Parcel和Rollup能给我们的打包带来哪些">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>深入对比Webpack、Parcel、Rollup打包工具的不同 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="深入对比Webpack、Parcel、Rollup打包工具的不同">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-01-28 12:00" pubdate>
+        2021年1月28日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      41
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">深入对比Webpack、Parcel、Rollup打包工具的不同</h1>
+            
+            <div class="markdown-body">
+              <p>　　我们在之前用了两篇文章来介绍了Webpack的配置和优化，那么为什么这篇文章还要来对比Parcel和Rollup呢？配置过Webpack的童鞋可能会发现了，虽然它具有很高的可配置性和扩展性，以及丰富的插件系统，但是这些无一不给我们的上手带来限制，有很高的上手门槛。相信大多童鞋在配置时遇到都会遇到莫名其妙的报错和各种查资料的烦恼，那么今天就来看一下Parcel和Rollup能给我们的打包带来哪些便利。</p>
+<span id="more"></span>
+
+
+
+<h1 id="Parcel"><a href="#Parcel" class="headerlink" title="Parcel"></a>Parcel</h1><p>　　Parcel官网的定义就是<code>极速零配置Web应用打包工具</code>，它利用多核处理提供了极快的速度，并且不需要任何配置。</p>
+<p><img src="/images/Package-Tool-Compare/parcel.gif" srcset="/img/loading.gif" lazyload alt="parcel.gif"></p>
+<p>　　它有以下优点：</p>
+<ul>
+<li>极速打包：Parcel使用worker进程去启用多核编译。同时有文件系统缓存，即使在重启构建后也能快速再编译。</li>
+<li>将你所有的资源打包：Parcel 具备开箱即用的对 JS, CSS, HTML, 文件 及更多的支持，而且不需要插件。</li>
+<li>自动转换：如若有需要，Babel, PostCSS, 和PostHTML甚至 node_modules 包会被用于自动转换代码.</li>
+<li>零配置代码分拆：使用动态<code>import()</code>语法, Parcel 将你的输出文件束(bundles)分拆，因此你只需要在初次加载时加载你所需要的代码。</li>
+<li>热模块替换：Parcel 无需配置，在开发环境的时候会自动在浏览器内随着你的代码更改而去更新模块。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>友好的错误日志：当遇到错误时，Parcel 会输出 语法高亮的代码片段，帮助你定位问题。</li>
+</ul>
+<p>　　我们从以下几个方面分别来看下Parcel如何进行配置。</p>
+<h2 id="入口文件"><a href="#入口文件" class="headerlink" title="入口文件"></a>入口文件</h2><p>　　Parcel可以使用任何类型的文件作为入口，但是最好还是使用Html或者JS文件。我们新建一个项目，创建html和js文件：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- index.html --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./index.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//index.js</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;hello parcel&#x27;</span>)<br></code></pre></div></td></tr></table></figure>
+
+<p>　　文件创建好后我们就可以启动Parcel了，它默认内置了一个用于开发环境的服务器，如果将入口设置为js文件，我们可以在浏览器里查看到js文件内容，但这样看不到任何页面效果，因此我们将入口设置为html文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">parcel index.html<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　现在可以在浏览器打开<code>http://localhost:1234/</code>，也可以添加<code>-p &lt;prot number&gt;</code>覆盖默认的1234端口号；这个开发服务器也支持模块热更新，我们改变js或者html内容，浏览器就会自动更新。同时，Parcel也支持多页面入口，假设我们的项目结构如下：</p>
+<figure class="highlight axapta"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs axapta">- pages<br>    - home<br>        <span class="hljs-keyword">index</span>.html<br>        <span class="hljs-keyword">index</span>.js<br>    - list<br>        <span class="hljs-keyword">index</span>.html<br>        <span class="hljs-keyword">index</span>.js<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们可以繁琐的手动指定需要加载入口的文件名称，比如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">parcel ./pages/home/index.html ./pages/list/index.html<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<p>　　也可以通过glob文件匹配模式来匹配所有的html文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">parcel ./pages/**/*.html<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样，我们就可以通过<code>http://localhost:1234/home/index.html</code>来访问到页面了。</p>
+<p>　　我们发现在入口文件这方面，Parcel相较于Webpack要灵活不少，在Webpack中我们需要通过<code>entry</code>字段来指定入口，而且入口只能是JS文件，要以html为入口还需要使用第三方插件如html-webpack-plugin；而Parcel在入口文件则宽松很多，可以用html文件作为入口，Parcel会自动加载html文件中引用的脚本或者样式进行打包；我们甚至还可以将一张图片或者vue文件直接作为入口文件。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h2 id="模块转换"><a href="#模块转换" class="headerlink" title="模块转换"></a>模块转换</h2><p>　　通常打包工具只知道如何处理JS文件，在处理其他资源时，比如less/sass、图片、vue文件等，都需要通过通过转换器进行转换，比如webpack的loader就是充当了转换器的角色；而Parcel支持许多开箱即用的转换器，比如在项目根目录配置<code>.babelrc</code>和<code>.postcssrc</code>，Parcel就会自动在所有的JS和css上进行转换。</p>
+<p>　　再比如我们一般在项目中使用sass或者less，然后在js中import来引入样式，如果在webpack中也是需要通过配置loader才能解析；而我们在Parcel可以不通过任何配置直接import进来，Parcel会自动给我们安装sass的依赖包：</p>
+<p><img src="/images/Package-Tool-Compare/auto-install.png" srcset="/img/loading.gif" lazyload alt="auto-install.png"></p>
+<h2 id="代码分割"><a href="#代码分割" class="headerlink" title="代码分割"></a>代码分割</h2><p>　　虽然项目代码的增多，打包出来的文件也会随之增大；通过代码分割我们可以将首屏不加载的页面或者模块拆分到独立的包中，然后进行按需加载。</p>
+<p>　　在Webpack中实现代码分割主要是通过配置splitChunks和模块内的内联函数动态引入来实现代码分割，而Parcel支持零配置代码分割，并且开箱即用。我们可以将代码拆分成单独的包，这些包可以按需加载；主要是通过动态<code>import()</code>函数来实现，这个函数与普通的<code>import</code>语句类似，但返回一个Promise对象：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//about.js</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;about run&quot;</span>);<br>&#125;<br><span class="hljs-comment">//index.js</span><br><span class="hljs-keyword">let</span> body = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementsByTagName</span>(<span class="hljs-string">&#x27;body&#x27;</span>)[<span class="hljs-number">0</span>]<br>body.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;click&quot;</span>, <span class="hljs-function">()=&gt;</span>&#123;<br>  <span class="hljs-keyword">import</span>(<span class="hljs-string">&quot;./about.js&quot;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">page</span>) =&gt;</span> &#123;<br>    page.<span class="hljs-title function_">render</span>();<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;index import&quot;</span>);<br>  &#125;);<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样，Parcel在打包时会将<code>about.js</code>单独进行打包，然后点击body时才按需加载。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="模块热更新"><a href="#模块热更新" class="headerlink" title="模块热更新"></a>模块热更新</h2><p>　　模块热更新（HMR）我们在Webpack中也介绍过，是通过在运行时自动更新浏览器中的模块而无需刷新整个页面，从而改善了开发体验；其实现的原理主要是在服务器和浏览器之间维护了一个websocket连接，服务器自动推送每次代码改变。</p>
+<p>　　在webpack中主要是通过官方的<code>webpack-dev-server</code>服务器来实现的，而在Parcel中HMR服务器是内置的，开箱即用，在启动开发环境服务器时自动启用，无需配置。</p>
+<h2 id="Tree-Shaking"><a href="#Tree-Shaking" class="headerlink" title="Tree Shaking"></a>Tree Shaking</h2><p>　　Parcel不支持Tree Shaking</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>　　我们体验完整个Parcel，发现确实一行配置代码都没有写，和官网的slogan<code>极速零配置</code>确实符合；在Webpack最难配置的模块转换方面，Parcel做到了自动识别处理导入的模块，这是让我们眼前一亮的地方；而且内部启用了多进程工作，在打包相同体量的项目时，Parcel会比Webpack快很多；不过Webpack的很多功能Parcel也并不具备，比如常用的Tree Shaking、提取公共代码等，因此我们在使用它时需要考虑到这些功能是否是我们项目所必须的。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h1 id="Rollup"><a href="#Rollup" class="headerlink" title="Rollup"></a>Rollup</h1><p>　　我们有时候在开发一些自己项目中用的JS类库时，比如弹框组件、校验组件、工具组件等，如果使用Webpack，在打包时会产生很多冗余代码，导致一个简单的类库打包出来体积也比较庞大；而Rollup就是专门针对类库进行打包，它的优点是小巧而专注，因此现在很多我们熟知的库都都使用它进行打包，比如：Vue、React和three.js等。</p>
+<p><img src="/images/Package-Tool-Compare/rollupjs.jpg" srcset="/img/loading.gif" lazyload alt="rollupjs.jpg"></p>
+<blockquote>
+<p>Rollup 是一个<code>JavaScript</code>模块打包器，可以将小块代码编译成大块复杂的代码，例如 library 或应用程序。</p>
+</blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="入口文件-1"><a href="#入口文件-1" class="headerlink" title="入口文件"></a>入口文件</h2><p>　　Rollup既然是打包类库文件，那么它的入口也就只能是JS文件了（通过第三方插件可以支持Html，这里不作展开），因此我们新建一个<code>main.js</code>作为入口文件，打包出来的文件我们命名为<code>bundle.js</code>，我们可以简单的通过命令行进行打包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 针对浏览器环境打包</span><br>rollup main.js --file bundle.js --format iife<br><span class="hljs-comment"># 针对Nodejs环境打包</span><br>rollup main.js --file bundle.js --format cjs<br></code></pre></div></td></tr></table></figure>
+
+<p>　　但是和Webpack一样，推荐使用配置文件进行打包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 默认使用rollup.config.js配置文件</span><br>rollup --config<br><br><span class="hljs-comment"># 使用自定义my.config.js配置文件</span><br>$ rollup --config my.config.js<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　我们来看下<code>rollup.config.js</code>配置文件需要包含哪些选项：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-comment">// 核心选项</span><br>  input,     <span class="hljs-comment">// 必须</span><br>  external,<br>  plugins,<br>  <span class="hljs-comment">// 额外选项</span><br>  onwarn,<br>  <span class="hljs-comment">// 高危选项</span><br>  acorn,<br>  context,<br>  moduleContext,<br>  legacy<br>  <span class="hljs-comment">// 必须 (如果要输出多个，可以是一个数组)</span><br>  <span class="hljs-attr">output</span>: &#123;  <br>    <span class="hljs-comment">// 核心选项</span><br>    file,    <span class="hljs-comment">// 必须</span><br>    format,  <span class="hljs-comment">// 必须</span><br>    name,<br>    globals,<br>    <span class="hljs-comment">// 额外选项</span><br>    paths,<br>    banner,<br>    footer,<br>    intro,<br>    outro,<br>    sourcemap,<br>    sourcemapFile,<br>    interop,<br>    <span class="hljs-comment">// 高危选项</span><br>    <span class="hljs-built_in">exports</span>,<br>    amd,<br>    indent<br>    strict<br>  &#125;,<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　我们发现这里<code>input</code>、<code>output.file</code>和<code>output.format</code>都是必传的，因此，一个基础配置文件如下：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// rollup.config.js</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&quot;main.js&quot;</span>,<br>  <span class="hljs-attr">output</span>: &#123;<br>    <span class="hljs-attr">file</span>: <span class="hljs-string">&quot;bundle.js&quot;</span>,<br>    <span class="hljs-attr">format</span>: <span class="hljs-string">&quot;cjs&quot;</span>,<br>  &#125;,<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里的<code>format</code>字段大家看了可能不太理解，尤其是里面的<code>cjs</code>代表什么意思；由于JS有多种模块化方式，Rollup可以针对不同的模块规范打包出不同的文件，它有以下五种选项；</p>
+<ul>
+<li>amd： 异步模块定义，用于像RequireJS这样的模块加载器</li>
+<li>cjs：CommonJS，适用于 Node 和 Browserify/Webpack</li>
+<li>es：ES模块文件</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>iife：自执行模块，适用于浏览器环境<code>script</code>标签</li>
+<li>umd：通用模块定义，以amd，cjs 和 iife 为一体</li>
+</ul>
+<p>　　和Webpack一样，Rollup也支持配置多个文件入口，我们新建<code>foo.js</code>和<code>bar.js</code>两个入口文件：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-attr">input</span>: &#123;<br>    <span class="hljs-attr">foo</span>: <span class="hljs-string">&quot;./foo.js&quot;</span>,<br>    <span class="hljs-attr">bar</span>: <span class="hljs-string">&quot;./bar.js&quot;</span>,<br>  &#125;,<br>  <span class="hljs-attr">output</span>: &#123;<br>    <span class="hljs-attr">dir</span>: <span class="hljs-string">&quot;dist&quot;</span>,<br>    <span class="hljs-attr">format</span>: <span class="hljs-string">&quot;cjs&quot;</span>,<br>  &#125;,<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样打包出来的两个文件就放入dist中。</p>
+<h2 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h2><p>　　插件拓展了Rollup处理其他类型文件的能力，它的功能有点类似于Webpack的<code>loader</code>和<code>plugin</code>的组合；不过配置比webpack中要简单很多，不用逐个声明哪个文件用哪个插件处理，只需要在<code>plugins</code>中声明，在引入对应文件类型时就会自动加载；我们来看几个常用的插件。</p>
+<p>　　首先是<code>rollup-plugin-json</code>，让Rollup可以从JSON文件中读取数据：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> json <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;rollup-plugin-json&quot;</span>;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&quot;main.js&quot;</span>,<br>  <span class="hljs-attr">output</span>: &#123;<br>    <span class="hljs-attr">file</span>: <span class="hljs-string">&quot;bundle.js&quot;</span>,<br>    <span class="hljs-attr">format</span>: <span class="hljs-string">&quot;iife&quot;</span>,<br>  &#125;,<br>  <span class="hljs-attr">plugins</span>: [<span class="hljs-title function_">json</span>()],<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　Rollup默认只能加载ES6模块的js，但是我们项目中通常也会用到CommonJS的模块，这样Rollup解析就会出现问题，比如：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//add.js</span><br><span class="hljs-keyword">let</span> count = <span class="hljs-number">1</span>;<br><span class="hljs-keyword">let</span> <span class="hljs-title function_">add</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-keyword">return</span> count + <span class="hljs-number">1</span>;<br>&#125;;<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  count,<br>  add,<br>&#125;;<br><br><span class="hljs-comment">//main.js</span><br><span class="hljs-comment">//报错</span><br><span class="hljs-keyword">import</span> add <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./add&quot;</span>;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;foo&quot;</span>, add.<span class="hljs-property">count</span>);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　由于ES6模块导入默认会去找<code>default</code>，因此这里打包会报错；这时就需要用到<code>rollup-plugin-commonjs</code>插件来进行转换：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> commonjs <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;rollup-plugin-commonjs&quot;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&quot;./main.js&quot;</span>,<br>  <span class="hljs-attr">output</span>: &#123;<br>    <span class="hljs-attr">file</span>: <span class="hljs-string">&quot;bundle.js&quot;</span>,<br>    <span class="hljs-attr">format</span>: <span class="hljs-string">&quot;iife&quot;</span>,<br>  &#125;,<br>  <span class="hljs-attr">plugins</span>: [<span class="hljs-title function_">commonjs</span>()],<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　而且目前npm中大多数依赖包都是以CommonJS模块形式出现，都需用通过这个插件来进行模块化解析；除此之外，我们引用<code>node_modules</code>中的第三方模块，还需要用到<code>rollup-plugin-node-resolve</code>进行解析，这两个插件通常组合使用：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> resolve <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;rollup-plugin-node-resolve&quot;</span>;<br><span class="hljs-keyword">import</span> commonjs <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;rollup-plugin-commonjs&quot;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&quot;./main.js&quot;</span>,<br>  <span class="hljs-attr">output</span>: &#123;<br>    <span class="hljs-attr">file</span>: <span class="hljs-string">&quot;bundle.js&quot;</span>,<br>    <span class="hljs-attr">format</span>: <span class="hljs-string">&quot;iife&quot;</span>,<br>  &#125;,<br>  <span class="hljs-attr">plugins</span>: [<span class="hljs-title function_">commonjs</span>(), <span class="hljs-title function_">resolve</span>()],<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　除此之外还有很多有用的插件，这里就不一一赘述使用方法，列出来有需要的童鞋可以根据情况进行使用：</p>
+<ul>
+<li>rollup-plugin-vue：解析vue文件</li>
+<li>rollup-plugin-postcss：解析、转换、提取css文件</li>
+<li>rollup-plugin-alias：提供modules名称的alias和reslove功能</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>rollup-plugin-babel：babel转换</li>
+<li>rollup-plugin-eslint：eslint代码检测</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>rollup-plugin-uglify：js代码压缩</li>
+<li>rollup-plugin-replace：类似Webpack的DefinePlugin, 可在源码中通过process.env.NODE_ENV用于构建区分环境.</li>
+</ul>
+<h2 id="模块热更新-1"><a href="#模块热更新-1" class="headerlink" title="模块热更新"></a>模块热更新</h2><p>　　Rollup本身不支持启动开发服务器，我们可以通过<code>rollup-plugin-serve</code>第三方插件来启动一个静态资源服务器：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> serve <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;rollup-plugin-serve&quot;</span>;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&quot;./main.js&quot;</span>,<br>  <span class="hljs-attr">output</span>: &#123;<br>    <span class="hljs-attr">file</span>: <span class="hljs-string">&quot;dist/bundle.js&quot;</span>,<br>    <span class="hljs-attr">format</span>: <span class="hljs-string">&quot;iife&quot;</span>,<br>  &#125;,<br>  <span class="hljs-attr">plugins</span>: [<span class="hljs-title function_">serve</span>(<span class="hljs-string">&quot;dist&quot;</span>)],<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　不过由于其本质就是一个静态资源的服务器，因此不支持模块热更新</p>
+<h2 id="Tree-Shaking-1"><a href="#Tree-Shaking-1" class="headerlink" title="Tree Shaking"></a>Tree Shaking</h2><p>　　由于Rollup本身支持ES6模块化规范，因此不需要额外配置即可进行Tree Shaking</p>
+<h2 id="代码分割-1"><a href="#代码分割-1" class="headerlink" title="代码分割"></a>代码分割</h2><p>　　Rollup代码分割和Parcel一样，也是通过按需导入的方式；但是我们输出的格式format不能使用iife，因为iife自执行函数会把所有模块放到一个文件中，可以通过<code>amd</code>或者<code>cjs</code>等其他规范。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&quot;./main.js&quot;</span>,<br>  <span class="hljs-attr">output</span>: &#123;<br>    <span class="hljs-comment">//输出文件夹</span><br>    <span class="hljs-attr">dir</span>: <span class="hljs-string">&quot;dist&quot;</span>,<br>    <span class="hljs-attr">format</span>: <span class="hljs-string">&quot;amd&quot;</span>,<br>  &#125;,<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样我们通过<code>import()</code>动态导入的代码就会单独分割到独立的js中，在调用时按需引入；不过对于这种amd模块的文件，不能直接在浏览器中引用，必须通过实现AMD标准的库加载，比如<code>Require.js</code>。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h2><p>　　通过对Rollup的使用介绍，我们发现它有以下优点：</p>
+<ol>
+<li>配置简单，打包速度快</li>
+<li>自动移除未引用的代码（内置tree shaking）</li>
+</ol>
+<p>　　但是他也有以下不可忽视的缺点：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<ol>
+<li>开发服务器不能实现模块热更新，调试繁琐</li>
+<li>浏览器环境的代码分割依赖amd</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>加载第三方模块比较复杂</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　经过以上对三个打包工具多方面的使用对比，相信大家都有了一个初步的印象；我们来简单总结一下三个打包工具的使用环境，如果我们需要构建一个简单的小型应用并让它快速运行起来，可以使用Parcel；如果需要构建一个类库只需要导入很少第三方库，可以使用Rollup；如果需要构建一个复杂的应用，需要集成很多第三方库，并且需要代码分拆、HMR等功能，推荐使用Webpack。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/PackTool/">打包工具</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/02/23/Front-Element.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">跟着Element源码学组件化</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/01/08/CommonJS-ES6.html">
+                        <span class="hidden-mobile">深入学习CommonJS和ES6模块化规范</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,694 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　有时候，我们回家了想要访问公司电脑上的一些资料，或者远程到公司的电脑，再或者访问公司内网的网页服务，但是我们并不知道公司的网络地址，也不知道如何访问局域网中的服务；这时候我们就需要用到一个叫内网穿透的工具了，世面上有很多类似的工具，其中大部分都是需要收费的，这里我们介绍一款成本较低、开源的软件Frp。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>FRP搭建内网穿透服务指南 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="FRP搭建内网穿透服务指南">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-09-17 22:09" pubdate>
+        2024年9月17日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      40
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">FRP搭建内网穿透服务指南</h1>
+            
+            <div class="markdown-body">
+              <p>　　有时候，我们回家了想要访问公司电脑上的一些资料，或者远程到公司的电脑，再或者访问公司内网的网页服务，但是我们并不知道公司的网络地址，也不知道如何访问局域网中的服务；这时候我们就需要用到一个叫内网穿透的工具了，世面上有很多类似的工具，其中大部分都是需要收费的，这里我们介绍一款成本较低、开源的软件Frp。</p>
+<span id="more"></span>
+
+
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>　　Frp是一款开源的高性能的反向代理软件，专注于内网穿透，它支持多种协议，包括TCP、UDP、HTTP、HTTPS 等；通过frp，我们可以很方便的将内网的服务暴露到公网，通过有公网IP的服务器节点进行中转，例如Linux的ssh或者windows的远程控制服务；而世面上的很多内网穿透软件也是基于Frp开发的。</p>
+<p>　　Frp是一种典型的C/S架构，其大致流程如下图所示：</p>
+<p><img src="/images/Install-Linux-Frp/framework.png" srcset="/img/loading.gif" lazyload alt="流程架构"></p>
+<blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>截至本文发稿时，frp最新版本为0.60.0。</p>
+</blockquote>
+<p>　　通过流程图发现，我们前期需要完成以下准备工作：</p>
+<ul>
+<li>一个域名</li>
+<li>一台有公网IP的服务器</li>
+<li>需要访问的内网服务器，部署了某些服务或开通端口</li>
+</ul>
+<p>　　域名的话，可以去<a target="_blank" rel="noopener" href="https://wanwang.aliyun.com/domain">万网</a>注册一个，选一些不常用的，如vip或者fun等，一年也就一包烟的价格。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Install-Linux-Frp/domain.png" srcset="/img/loading.gif" lazyload alt="域名注册"></p>
+<p>　　下面是准备一台公网IP的服务器，如果是电信的小伙伴，且家里有闲置电脑，可以百度一下：电信公网IP申请，然后自行打电话跟客服小姐姐说一下，记得千万不要说是因为家里的监控摄像头需要公网IP，也千万不要去为难人家小姐姐说去投诉说公网IP是我们的权利。</p>
+<p>　　如果拿到了公网IP，就可以在路由器里面进行端口映射，这一步主要针对的是那些动手能力强外加脸皮厚的童鞋；但是如果你不想自己动手并且嫌麻烦的话，<a target="_blank" rel="noopener" href="https://www.aliyun.com/minisite/goods?userCode=oe95ob41">阿里云新推出的99计划</a>，助力广大的开发者和企业上云，开发者可享99一年的服务器折扣权益，而且重点来了<strong>新老同享优惠</strong>，是的，你没看错，不会再出现老用户下单时价格突然暴涨的情况了，新老用户下单都统一价格：</p>
+<p><img src="/images/Install-Linux-Frp/cloud-server.png" srcset="/img/loading.gif" lazyload alt="服务器购买"></p>
+<h1 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h1><p>　　首先我们进行服务端的安装，在<a target="_blank" rel="noopener" href="https://github.com/fatedier/frp/releases">frp的release页面</a>下载程序，一般使用Linux服务器选择amd版本进行下载即可，这里笔者以自己手上安装的Ubuntu Server为例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">wget https://github.com/fatedier/frp/releases/download/v0.60.0/frp_0.60.0_linux_amd64.tar.gz<br>tar -zxcf frp_0.60.0_linux_amd64.tar.gz<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　解压后的文件夹得到四个文件，分别是服务端和客户端的运行程序和配置文件，带s的是服务器运行的，带c的是客户端运行的程序：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight 1c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs 1c"><span class="hljs-string">|- frps</span><br><span class="hljs-string">|- frps.toml</span><br><span class="hljs-string">|- frpc</span><br><span class="hljs-string">|- frpc.tom</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　因为是在服务端，我们编辑<code>frps.toml</code>文件，加入以下配置：</p>
+<figure class="highlight ini"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ini"><span class="hljs-attr">bindPort</span> = <span class="hljs-number">7000</span><br><span class="hljs-attr">vhostHTTPPort</span> = <span class="hljs-number">7000</span><br><span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;your token&quot;</span><br><br><span class="hljs-attr">webServer.addr</span> = <span class="hljs-string">&quot;0.0.0.0&quot;</span><br><span class="hljs-attr">webServer.port</span> = <span class="hljs-number">7500</span><br><span class="hljs-attr">webServer.user</span> = <span class="hljs-string">&quot;frp&quot;</span><br><span class="hljs-attr">webServer.password</span> = <span class="hljs-string">&quot;frp&quot;</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<blockquote>
+<p>auth.token是服务端和客户端的认证token，需要一致，frp的配置文件有很多，这里只列举了常用的几个配置。</p>
+</blockquote>
+<p>　　7000端口就是frp监听的主端口，我们所有的连接访问都是需要通过这端口，而webServer的7500端口是控制面板的访问端口；我们新建一个<code>run.sh</code>文件，加入以下内容，让frp能够在后台启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-built_in">nohup</span> ./frps -c ./frps.toml &gt; /dev/null 2&gt;&amp;1 &amp;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　给run.sh启动权限并运行即可；我们的服务端启动后，访问7500可能并不能直接看到页面，需要在安全组里面将两个端口添加进去。</p>
+<p><img src="/images/Install-Linux-Frp/port.png" srcset="/img/loading.gif" lazyload alt="放开端口"></p>
+<p>　　在浏览器打开7500端口就可以看到我们的管理后台界面了，在这个界面上我们可以看到启动的Frp服务器的信息、链接数量等等。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/Install-Linux-Frp/dashboard.png" srcset="/img/loading.gif" lazyload alt="管理界面"></p>
+<h1 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h1><p>　　我们上面服务端部署好了，就可以来部署我们客户端的服务了，主要以下面四种场景作为案例，看下每个场景的客户端代码是如何部署的。</p>
+<h2 id="临时文件服务器"><a href="#临时文件服务器" class="headerlink" title="临时文件服务器"></a>临时文件服务器</h2><p>　　第一个案例就是临时的文件服务器，我们在工作或者生活中，偶尔需要发送个保密的文件资料给朋友，有时候又不想通过微信（懂得都懂），百度网盘速度又太慢，这个时候就可以利用我们自己的frp服务器做中转，在本地电脑上搭建一个临时的文件服务器。</p>
+<p>　　还是下载上面release页面的frp压缩包，我们这个时候就需要修改frpc.toml客户端的配置文件：</p>
+<figure class="highlight ini"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ini"><span class="hljs-attr">serverAddr</span> = <span class="hljs-string">&quot;your domain&quot;</span><br><span class="hljs-attr">serverPort</span> = <span class="hljs-number">7000</span><br><span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;your token&quot;</span><br><br><span class="hljs-section">[[proxies]]</span><br><span class="hljs-attr">name</span> = <span class="hljs-string">&quot;file-static&quot;</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;tcp&quot;</span><br><span class="hljs-attr">remotePort</span> = <span class="hljs-number">7810</span><br><span class="hljs-attr">transport.useEncryption</span> = <span class="hljs-literal">true</span><br><span class="hljs-attr">transport.useCompression</span> = <span class="hljs-literal">true</span><br><span class="hljs-attr">transport.bandwidthLimit</span> = <span class="hljs-string">&quot;10MB&quot;</span><br><span class="hljs-section">[proxies.plugin]</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;static_file&quot;</span><br><span class="hljs-attr">localPath</span> = <span class="hljs-string">&quot;your path&quot;</span><br><span class="hljs-attr">httpUser</span> = <span class="hljs-string">&quot;frp&quot;</span><br><span class="hljs-attr">httpPassword</span> = <span class="hljs-string">&quot;frp&quot;</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　将上面的serverAddr地址换成自己服务器的地址和token，<code>localPath</code>这里就是本地电脑的文件夹的路径，需要注意的是，Windows的写法和Linux的路径写法都是不一样的；这里笔者的电脑用的是windows，就填写<code>D:/software</code>；同样的，windows的启动命令和linux也不一样，需要用到反斜杠：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">.\frpc.exe -c .\frpc.toml<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　这样我们在浏览器打开7810端口就可以看到我们本地的文件列表了：</p>
+<p><img src="/images/Install-Linux-Frp/files.png" srcset="/img/loading.gif" lazyload alt="静态文件服务器"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<blockquote>
+<p>注意开放服务器的7810端口，避免访问不到的情况。</p>
+</blockquote>
+<h2 id="转发ssh服务"><a href="#转发ssh服务" class="headerlink" title="转发ssh服务"></a>转发ssh服务</h2><p>　　我们经常在公司内网有一些服务器，想要在家里或者出差的时候通过ssh服务来远程访问，虽然可以通过向日葵等工具使用界面访问，但是有时候不是很稳定；而且视频传输，容易有卡顿的情况，这时候frp就能很好的派上用处了；我们知道ssh的默认端口都是22端口，通过frp直接转发22端口就行了。</p>
+<p>　　在内网的服务器上创建如下配置文件：</p>
+<figure class="highlight ini"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ini"><span class="hljs-attr">serverAddr</span> = <span class="hljs-string">&quot;your domain&quot;</span><br><span class="hljs-attr">serverPort</span> = <span class="hljs-number">7000</span><br><span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;your token&quot;</span><br><br><span class="hljs-section">[[proxies]]</span><br><span class="hljs-attr">name</span> = <span class="hljs-string">&quot;linux-ssh&quot;</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;tcp&quot;</span><br><span class="hljs-attr">localIP</span> = <span class="hljs-string">&quot;127.0.0.1&quot;</span><br><span class="hljs-attr">localPort</span> = <span class="hljs-number">22</span><br><span class="hljs-attr">remotePort</span> = <span class="hljs-number">7820</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　这样，我们访问的时候可以通过<code>[your domain]:7820</code>的方式，使用任意你喜欢的ssh工具来进行访问；这里笔者推荐一款超好用，颜值超高的ssh工具<a target="_blank" rel="noopener" href="https://termius.com/">Termius</a>。</p>
+<p>　　但是这种方式相当于是直接将公网的7820端口映射到了远程服务器的22端口，我们都知道端口直接暴露在公网，会存在一定的风险性，很容易被网络攻击扫描到，因此我们需要一种更安全的方式；frp提供了<code>stcp类型</code>的代理，这里的s也是secret的意思，本质上还是tcp连接。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　我们继续修改上面服务器上的frpc.toml文件，添加以下配置：</p>
+<figure class="highlight ini"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ini"><span class="hljs-attr">serverAddr</span> = <span class="hljs-string">&quot;your domain&quot;</span><br><span class="hljs-attr">serverPort</span> = <span class="hljs-number">7000</span><br><span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;your token&quot;</span><br><br><span class="hljs-section">[[proxies]]</span><br><span class="hljs-attr">name</span> = <span class="hljs-string">&quot;linux-ssh&quot;</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;stcp&quot;</span><br><span class="hljs-attr">localIP</span> = <span class="hljs-string">&quot;127.0.0.1&quot;</span><br><span class="hljs-attr">localPort</span> = <span class="hljs-number">22</span><br><span class="hljs-comment"># 加入secretKey，一致的用户才能访问此服务</span><br><span class="hljs-attr">secretKey</span> = <span class="hljs-string">&quot;abcdefg&quot;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　然后回到我们本地计算机，创建一个访问者的配置文件：</p>
+<figure class="highlight ini"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ini"><span class="hljs-attr">serverAddr</span> = <span class="hljs-string">&quot;your domain&quot;</span><br><span class="hljs-attr">serverPort</span> = <span class="hljs-number">7000</span><br><span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;your token&quot;</span><br><br><span class="hljs-section">[[visitors]]</span><br><span class="hljs-attr">name</span> = <span class="hljs-string">&quot;local-visitor&quot;</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;stcp&quot;</span><br><span class="hljs-attr">serverName</span> = <span class="hljs-string">&quot;linux-ssh&quot;</span><br><span class="hljs-attr">secretKey</span> = <span class="hljs-string">&quot;abcdefg&quot;</span><br><span class="hljs-attr">bindAddr</span> = <span class="hljs-string">&quot;127.0.0.1&quot;</span><br><span class="hljs-attr">bindPort</span> = <span class="hljs-number">6000</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<p>　　serverName和上面proxies中的name保持一致，secretKey也要一致，在本地启动frp服务后，在Termius中，我们就可以添加访问地址了；不过这次是我们本地的地址，直接是通过<code>127.0.0.1:6000</code>访问即可，没有暴露任何服务器的端口。</p>
+<p><img src="/images/Install-Linux-Frp/ssh.png" srcset="/img/loading.gif" lazyload alt="SSH服务"></p>
+<h2 id="代理web服务"><a href="#代理web服务" class="headerlink" title="代理web服务"></a>代理web服务</h2><p>　　代理web服务是我们最常见，也是经常需要用到的服务，比如我们在公司内部有某个网站，我们希望在公网也能访问到这个网站；通过frp我们可以将这个网站暴露到公网中访问。又或者经常开发小程序的同学，肯定遇到过这样的需求，我们在公司内部项目上开发好了小程序的代码，想要给领导或者测试预览一下小程序，但是恰好他不在公司内部，小程序的码访问不了，这时也可以通过frp将服务器的端口暴露到公网上面。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　我们编辑frpc.tome文件，将内网的ip、端口以及自定义域名添加进去：</p>
+<figure class="highlight text"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs text">serverAddr = &quot;your domain&quot;<br>serverPort = 7000<br>auth.token = &quot;your token&quot;<br><br>[[proxies]]<br>name = &quot;com-sd-http&quot;<br>type = &quot;http&quot;<br>localIP = &quot;127.0.0.1&quot;<br>localPort = 7860<br>customDomains = [&quot;frpsd.xxx.xxx&quot;]<br>transport.useEncryption = true<br>transport.useCompression = true<br></code></pre></div></td></tr></table></figure>
+
+
+<blockquote>
+<p>这里需要确保自定义域名已经正确解析到了阿里云服务器上，否则将无法访问。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</blockquote>
+<p>　　这时，我们打开网址<code>http://frpsd.xxx.xxx:7000</code>就可以正常访问到内网127.0.0.1:7860上的服务了。</p>
+<p><img src="/images/Install-Linux-Frp/sd.png" srcset="/img/loading.gif" lazyload alt="FRP代理内网的stable diffusion服务"></p>
+<p>　　不过需要注意的是，网页和接口暴露到公网服务有一定风险，注意权限及账号验证。frp支持通过简单的HTTP Basic Auth来验证用户，用户需要通过用户名和密码才能访问服务，我们通过添加<code>httpUser</code>和<code>httpPassword</code>字段来添加验证：</p>
+<figure class="highlight text"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs text">serverAddr = &quot;your domain&quot;<br>serverPort = 7000<br>auth.token = &quot;your token&quot;<br><br>[[proxies]]<br>name = &quot;com-sd-http&quot;<br>type = &quot;http&quot;<br>localIP = &quot;127.0.0.1&quot;<br>localPort = 7860<br>customDomains = [&quot;frpsd.xxx.xxx&quot;]<br>httpUser = &quot;abc&quot;<br>httpPassword = &quot;abc&quot;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样我们访问web服务后，会弹出一个登录框，要求我们输入账号密码才能进入。</p>
+<h2 id="穿透Windows远程控制"><a href="#穿透Windows远程控制" class="headerlink" title="穿透Windows远程控制"></a>穿透Windows远程控制</h2><p>　　Windows远程控制相信不少小伙伴都使用过，如果在内网使用自带的Windows远程控制软件，我们可以很流畅很方便的的控制远程电脑，但是在外网就很难访问到内网中的Windows了；这里使用的连接方式也是frp的stcp类型，只不过将端口改到了3389；我们在远程被控端的电脑上创建如下配置文件：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight ini"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ini"><span class="hljs-attr">serverAddr</span> = <span class="hljs-string">&quot;your domain&quot;</span><br><span class="hljs-attr">serverPort</span> = <span class="hljs-number">7000</span><br><span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;your token&quot;</span><br><br><span class="hljs-section">[[proxies]]</span><br><span class="hljs-attr">name</span> = <span class="hljs-string">&quot;windows-mstsc&quot;</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;stcp&quot;</span><br><span class="hljs-attr">localIP</span> = <span class="hljs-string">&quot;127.0.0.1&quot;</span><br><span class="hljs-attr">localPort</span> = <span class="hljs-number">3389</span><br><span class="hljs-attr">secretKey</span> = <span class="hljs-string">&quot;abcd&quot;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　在我们本地控制端的电脑，同样写入配置文件，启动一个frp的程序：</p>
+<figure class="highlight ini"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ini"><span class="hljs-attr">serverAddr</span> = <span class="hljs-string">&quot;your domain&quot;</span><br><span class="hljs-attr">serverPort</span> = <span class="hljs-number">7000</span><br><span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;your token&quot;</span><br><br><span class="hljs-section">[[visitors]]</span><br><span class="hljs-attr">name</span> = <span class="hljs-string">&quot;mstsc-visitor&quot;</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;stcp&quot;</span><br><span class="hljs-attr">serverName</span> = <span class="hljs-string">&quot;windows-mstsc&quot;</span><br><span class="hljs-attr">secretKey</span> = <span class="hljs-string">&quot;abcd&quot;</span><br><span class="hljs-attr">bindAddr</span> = <span class="hljs-string">&quot;127.0.0.1&quot;</span><br><span class="hljs-attr">bindPort</span> = <span class="hljs-number">8090</span><br></code></pre></div></td></tr></table></figure>
+
+<blockquote>
+<p>需要注意的是，这里的serverName和secretKey字段都要和上面受控端的name和secretKey保持一直，</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</blockquote>
+<p>　　我们打开Windows远程，输入<code>127.0.0.1:8090</code>就可以远程上我们的目标计算机了。</p>
+<p><img src="/images/Install-Linux-Frp/mstsc.jpg" srcset="/img/loading.gif" lazyload alt="Windows远程"></p>
+<p>　　另外说个小技巧，有一些Linux发行版带有图形界面，比如笔者常用的Ubuntu，也是能够支持Windows的远程软件来连接的，在系统设置中打开<code>远程登录</code>选项即可。</p>
+<p><img src="/images/Install-Linux-Frp/ubuntu.png" srcset="/img/loading.gif" lazyload alt="Windows远程Ubuntu系统"></p>
+<h1 id="Ubuntu客户端设置开机启动"><a href="#Ubuntu客户端设置开机启动" class="headerlink" title="Ubuntu客户端设置开机启动"></a>Ubuntu客户端设置开机启动</h1><p>　　在一些Linux的受控端上，我们希望frp能够做到重启或者断电后开机自启动，这里笔者以家里的一台Ubuntu24为例子，看下如何让frp开机启动；在新的Ubuntu发行版上已经没有rc.local文件了，我们需要自己新建一个：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">sudo vim /etc/systemd/system/rc-local.service<br></code></pre></div></td></tr></table></figure>
+
+<p>　　写入如下内容：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight text"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs text">[Unit]<br> Description=/etc/rc.local Compatibility<br> ConditionPathExists=/etc/rc.local<br><br>[Service]<br> Type=forking<br> ExecStart=/etc/rc.local start<br> TimeoutSec=0<br> StandardOutput=tty<br> RemainAfterExit=yes<br> SysVStartPriority=99<br><br>[Install]<br> WantedBy=multi-user.target<br></code></pre></div></td></tr></table></figure>
+
+<p>　　激活上面创建的rc-local.service：</p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">sudo systemctl <span class="hljs-built_in">enable</span> rc-local.service<br></code></pre></div></td></tr></table></figure>
+
+<p>　　创建/etc/rc.local文件：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh">sudo vim /etc/rc.local<br></code></pre></div></td></tr></table></figure>
+
+<p>　　写入以下内容：</p>
+<figure class="highlight text"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs text">#!/bin/sh -e<br># <br># rc.local<br>#<br># This script is executed at the end of each multiuser runlevel.<br># Make sure that the script will &quot;exit 0&quot; on success or any other<br># value on error.<br>#<br># In order to enable or disable this script just change the execution<br># bits.<br>#<br># By default this script does nothing.<br><br># 开机启动的命令<br>nohup /home/software/frp/frpc -c /home/software/frp/frpc-ssh.toml &gt; /dev/null 2&gt;&amp;1 &amp;<br><br>exit 0<br></code></pre></div></td></tr></table></figure>
+
+<p>　　最后给rc.local添加执行权限：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">sudo chmod +x /etc/rc.local<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<p>　　这样我们就实现了frp的开机启动。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　本文我们总结了frp常见的几种使用场景，frp在实际使用中，确实能够帮助笔者解决很多网络上的问题，解决了笔者在远程办公、远程调试、远程控制等场景下的不少问题；在办公中，让笔者能够轻松穿越地域限制，访问家庭网络中的各种影音、文档资源；回到家中，通过搭建安全高效的反向代理隧道，也能够直接连接到公司远程服务器上，让笔者能够流畅的调试、部署项目，极大地提升了工作效率。总而言之，frp以其强大的功能和灵活的部署方式，极大地丰富了我们的网络操作手段，为远程工作与学习带来了极大的便利，绝对是摸鱼听歌、居家办公的不二利器。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://github.com/fatedier/frp">Github</a><br><a target="_blank" rel="noopener" href="https://gofrp.org/zh-cn/docs/">文档地址</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39809339/article/details/126615591">ubuntu 20.04 没有rc.local文件的解决方法</a></p>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+            </div>
+            <hr>
+            <div>
+              
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script><div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/tools/">工具</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Installation/">安装教程</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Linux/">Linux</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Server/">服务器</a>
+                    
+                      <a class="hover-with-bg" href="/tags/OpenSource/">开源</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/09/26/Vite-Tool-Library.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Vite封装ts工具库并发布npm包</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/08/15/Black-Apple.html">
+                        <span class="hidden-mobile">黑果Apple安装教程</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

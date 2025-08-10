@@ -1,0 +1,643 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　在翻阅设计模式的文章中，很多文章都是将观察者模式等同于发布订阅模式，虽然两者在本质一样，但在设计思想上还是存在一些差异的；今天我们来看一下两者有什么异同，以及在Vue源码中是如何利用发布订阅模式来实现数据响应式的。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>JS设计模式之观察者模式 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="JS设计模式之观察者模式">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-03-10 20:48" pubdate>
+        2021年3月10日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      44
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JS设计模式之观察者模式</h1>
+            
+            <div class="markdown-body">
+              <p>　　在翻阅设计模式的文章中，很多文章都是将观察者模式等同于发布订阅模式，虽然两者在本质一样，但在设计思想上还是存在一些差异的；今天我们来看一下两者有什么异同，以及在Vue源码中是如何利用发布订阅模式来实现数据响应式的。</p>
+<span id="more"></span>
+
+
+<h1 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h1><p>　　我们先来看一下什么是观察者模式的定义：</p>
+<blockquote>
+<p>观察者模式定义了对象间的一种<code>一对多</code>的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都将得到通知，并自动更新。观察者模式属于行为型模式。</p>
+</blockquote>
+<p>　　这里又多了一个术语，行为型模式，它是对在不同的对象之间<code>划分责任</code>和<code>算法</code>的抽象化，行为型模式不仅仅关注类和对象的结构，而且重点关注它们之间的相互作用；行为型模式一共有以下11种，今天我们要说的观察者模式就是其中的一种：</p>
+<ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>模板方法模式（Template Method）</li>
+<li>策略模式（Strategy）</li>
+<li>命令模式（Command）</li>
+<li>中介者模式（Mediator）</li>
+<li>观察者模式（Observer）</li>
+<li>迭代器模式（Iteratior）</li>
+<li>访问者模式（Visiter）</li>
+<li>责任链模式（Chain of Responsibility）</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>备忘录模式（Memento）</li>
+<li>状态模式（State）</li>
+<li>解释器模式（Interpreter）</li>
+</ul>
+<p>　　我们回到观察者模式的定义，它定义一种<code>一对多</code>的关系；这里的<code>一</code>我们称为目标对象（Subject），它有增加/删除/通知等方法，而<code>多</code>则称为观察者对象（Observer），它可以接收目标对象（Subject）的状态改变并进行处理；目标对象可以添加一系列的观察者对象，当目标对象的状态发生改变时，就会通知所有的观察者对象。</p>
+<p>　　下面我们通过代码来更具体的看一下目标对象和观察者对象是如何进行联系的：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 定义一个目标对象</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Subject</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">Observers</span> = [];<br>  &#125;<br>  <span class="hljs-title function_">add</span>(<span class="hljs-params">observer</span>) &#123;<br>    <span class="hljs-comment">//添加</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">Observers</span>.<span class="hljs-title function_">push</span>(observer);<br>  &#125;<br>  <span class="hljs-title function_">remove</span>(<span class="hljs-params">observer</span>) &#123;<br>    <span class="hljs-comment">//移除</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">Observers</span>.<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> item === observer);<br>  &#125;<br>  <span class="hljs-title function_">notify</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">//通知所有观察者</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">Observers</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> &#123;<br>      item.<span class="hljs-title function_">update</span>();<br>    &#125;);<br>  &#125;<br>&#125;<br><span class="hljs-comment">//定义观察者对象</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Observer</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name;<br>  &#125;<br>  <span class="hljs-title function_">update</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`my name is:<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.name&#125;</span>`</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">let</span> sub = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Subject</span>();<br><span class="hljs-keyword">let</span> obs1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Observer</span>(<span class="hljs-string">&quot;observer11&quot;</span>);<br><span class="hljs-keyword">let</span> obs2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Observer</span>(<span class="hljs-string">&quot;observer22&quot;</span>);<br>sub.<span class="hljs-title function_">add</span>(obs1);<br>sub.<span class="hljs-title function_">add</span>(obs2);<br>sub.<span class="hljs-title function_">notify</span>();<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　我们在这里定义了目标对象和观察者对象两个类，在目标对象中维护了一个观察者的数组，新增时将观察者向数组中push；然后通过notify通知所有的观察者；而观察者只有一个update函数，用来接收观察者更新后的一个回调；在有些版本的代码中会将观察者直接定义为一个函数，而非一个类，但是其本质都是一样的，都是调用观察者的更新接口进行通知。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　这种模式的应用在日常中也很常见，比如我们给div绑定click监听事件，其本质就是观察者模式的一种应用：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> btn = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;btn&#x27;</span>)<br>btn.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">ev</span>)&#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">1</span>)<br>&#125;)<br>btn.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">ev</span>)&#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">2</span>)<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里的btn可以看作是我们的目标对象（被观察对象），当它被点击时，也就是它的状态发生了变化，那么它就会通知内部添加的观察者对象，也就是我们通过<code>addEventListener</code>函数添加的两个匿名函数。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　我们发现，观察者模式好处是能够降低耦合，目标对象和观察者对象逻辑互不干扰，两者都专注于自身的功能，只提供和调用了更新接口；而缺点也很明显，在目标对象中维护的所有观察者都能接收到通知，无法进行过滤筛选。</p>
+<h1 id="发布订阅模式"><a href="#发布订阅模式" class="headerlink" title="发布订阅模式"></a>发布订阅模式</h1><p>　　我们去搜索24种基本的设计模式，会发现其中并没有发布订阅模式；刚开始发布订阅模式只是观察者模式的一个别称，但是经过时间的沉淀，他改进了观察者模式的缺点，渐渐地开始独立于观察者模式；我们也来看一下它的一个定义：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<blockquote>
+<p>发布订阅模式是基于一个事件（主题）通道，希望接收通知的对象<code>Subscriber</code>通过自定义事件订阅主题，被激活事件的对象<code>Publisher</code>通过发布主题事件的方式通知各个订阅该主题的<code>Subscriber</code>对象。</p>
+</blockquote>
+<p>　　我们看到定义里面也涉及到了两种对象：接收通知的对象（Subscriber）和被激活事件的对象（Publisher）；被激活事件对象（Publisher）我们可以类比为观察者模式中的目标对象，来发布事件通知，而接收通知对象（Subscriber）可以类比为观察者对象，订阅各种通知。</p>
+<p>　　发布订阅模式和观察者模式的不同在于，增加了第三方即<code>事件中心</code>；目标对象状态的改变并直接通知观察者，而是通过第三方的事件中心来派发通知。</p>
+<p><img src="/images/DesignPattern-Observer/publisher-subscriber.gif" srcset="/img/loading.gif" lazyload alt="publisher-subscriber"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　为了加深理解，我们以生活中的情形为例；比如我们订阅报纸杂志等，一般不会直接跑到报社去订阅，而是通过一个平台，比如街边的报亭或者邮局也可以订阅；而报纸杂志也会有多种，比如晨报晚报日报等等；我们订阅报纸后报社出版后会通过平台来给我们投递，通过邮局邮寄或者自取等等，那么这里就涉及到了报社、订阅者和第三方平台三个对象，我们通过代码来模拟三者的动作：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 报社</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Publisher</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name, channel</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">channel</span> = channel;<br>  &#125;<br>  <span class="hljs-comment">// 注册报纸</span><br>  <span class="hljs-title function_">addTopic</span>(<span class="hljs-params">topicName</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">channel</span>.<span class="hljs-title function_">addTopic</span>(topicName);<br>  &#125;<br>  <span class="hljs-comment">// 推送报纸</span><br>  <span class="hljs-title function_">publish</span>(<span class="hljs-params">topicName</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">channel</span>.<span class="hljs-title function_">publish</span>(topicName);<br>  &#125;<br>&#125;<br><span class="hljs-comment">// 订阅者</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Subscriber</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name, channel</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">channel</span> = channel;<br>  &#125;<br>  <span class="hljs-comment">//订阅报纸</span><br>  <span class="hljs-title function_">subscribe</span>(<span class="hljs-params">topicName</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">channel</span>.<span class="hljs-title function_">subscribeTopic</span>(topicName, <span class="hljs-variable language_">this</span>);<br>  &#125;<br>  <span class="hljs-comment">//取消订阅</span><br>  <span class="hljs-title function_">unSubscribe</span>(<span class="hljs-params">topicName</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">channel</span>.<span class="hljs-title function_">unSubscribeTopic</span>(topicName, <span class="hljs-variable language_">this</span>);<br>  &#125;<br>  <span class="hljs-comment">//接收推送</span><br>  <span class="hljs-title function_">update</span>(<span class="hljs-params">topic</span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;topic&#125;</span>已经送到<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.name&#125;</span>家了`</span>);<br>  &#125;<br>&#125;<br><span class="hljs-comment">// 第三方平台</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Channel</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">topics</span> = &#123;&#125;;<br>  &#125;<br>  <span class="hljs-comment">//报社在平台注册报纸</span><br>  <span class="hljs-title function_">addTopic</span>(<span class="hljs-params">topicName</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">topics</span>[topicName] = [];<br>  &#125;<br>  <span class="hljs-comment">//报社取消注册</span><br>  <span class="hljs-title function_">removeTopic</span>(<span class="hljs-params">topicName</span>) &#123;<br>    <span class="hljs-keyword">delete</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">topics</span>[topicName];<br>  &#125;<br>  <span class="hljs-comment">//订阅者订阅报纸</span><br>  <span class="hljs-title function_">subscribeTopic</span>(<span class="hljs-params">topicName, sub</span>) &#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">topics</span>[topicName]) &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">topics</span>[topicName].<span class="hljs-title function_">push</span>(sub);<br>    &#125;<br>  &#125;<br>  <span class="hljs-comment">//订阅者取消订阅</span><br>  <span class="hljs-title function_">unSubscribeTopic</span>(<span class="hljs-params">topicName, sub</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">topics</span>[topicName].<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">item, index</span>) =&gt;</span> &#123;<br>      <span class="hljs-keyword">if</span> (item === sub) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">topics</span>[topicName].<span class="hljs-title function_">splice</span>(index, <span class="hljs-number">1</span>);<br>      &#125;<br>    &#125;);<br>  &#125;<br>  <span class="hljs-comment">//平台通知某个报纸下所有订阅者</span><br>  <span class="hljs-title function_">publish</span>(<span class="hljs-params">topicName</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">topics</span>[topicName].<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> &#123;<br>      item.<span class="hljs-title function_">update</span>(topicName);<br>    &#125;);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里的报社我们可以理解为发布者（Publisher）的角色，订报纸的读者理解为订阅者（Subscriber），第三方平台就是事件中心；报社在平台上注册某一类型的报纸，然后读者就可以在平台订阅这种报纸；三个类准备好了，我们来看下他们彼此如何进行联系：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> channel = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Channel</span>();<br><br><span class="hljs-keyword">var</span> pub1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Publisher</span>(<span class="hljs-string">&quot;报社1&quot;</span>, channel);<br><span class="hljs-keyword">var</span> pub2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Publisher</span>(<span class="hljs-string">&quot;报社2&quot;</span>, channel);<br><br>pub1.<span class="hljs-title function_">addTopic</span>(<span class="hljs-string">&quot;晨报1&quot;</span>);<br>pub1.<span class="hljs-title function_">addTopic</span>(<span class="hljs-string">&quot;晚报1&quot;</span>);<br>pub2.<span class="hljs-title function_">addTopic</span>(<span class="hljs-string">&quot;晨报2&quot;</span>);<br><br><span class="hljs-keyword">var</span> sub1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Subscriber</span>(<span class="hljs-string">&quot;小明&quot;</span>, channel);<br><span class="hljs-keyword">var</span> sub2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Subscriber</span>(<span class="hljs-string">&quot;小红&quot;</span>, channel);<br><span class="hljs-keyword">var</span> sub3 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Subscriber</span>(<span class="hljs-string">&quot;小张&quot;</span>, channel);<br><br>sub1.<span class="hljs-title function_">subscribe</span>(<span class="hljs-string">&quot;晨报1&quot;</span>);<br>sub2.<span class="hljs-title function_">subscribe</span>(<span class="hljs-string">&quot;晨报1&quot;</span>);<br>sub2.<span class="hljs-title function_">subscribe</span>(<span class="hljs-string">&quot;晨报2&quot;</span>);<br>sub3.<span class="hljs-title function_">subscribe</span>(<span class="hljs-string">&quot;晚报1&quot;</span>);<br><br>sub3.<span class="hljs-title function_">subscribe</span>(<span class="hljs-string">&quot;晨报2&quot;</span>);<br>sub3.<span class="hljs-title function_">unSubscribe</span>(<span class="hljs-string">&quot;晨报2&quot;</span>);<br><br>pub1.<span class="hljs-title function_">publish</span>(<span class="hljs-string">&quot;晨报1&quot;</span>);<br>pub1.<span class="hljs-title function_">publish</span>(<span class="hljs-string">&quot;晚报1&quot;</span>);<br>pub2.<span class="hljs-title function_">publish</span>(<span class="hljs-string">&quot;晨报2&quot;</span>);<br><br><span class="hljs-comment">//晨报1已经送到小明家了</span><br><span class="hljs-comment">//晨报1已经送到小红家了</span><br><span class="hljs-comment">//晚报1已经送到小张家了</span><br><span class="hljs-comment">//晨报2已经送到小红家了</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　由于平台是沟通的桥梁，因此我们先定义了一个调度中心channel，然后分别定义了两个报社pub1、pub2，以及三个读者sub1、sub2和sub3；两家报社在平台注册了晨报1、晚报1和晨报2三种类型的报纸，三个读者各自订阅各家的报纸，也能取消订阅。</p>
+<p>　　我们可以发现在发布者中并没有直接维护订阅者列表，而是注册了一个事件主题，这里的报纸类型相当于一个事件主题；订阅者订阅主题，发布者推送某个主题时，订阅该主题的所有读者都会被通知到；这样就避免了观察者模式无法进行过滤筛选的缺陷。</p>
+<h1 id="主要区别"><a href="#主要区别" class="headerlink" title="主要区别"></a>主要区别</h1><p>　　我们通过一张图来形象的描述两种模式的区别。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/DesignPattern-Observer/diff.jpg" srcset="/img/loading.gif" lazyload alt="diff.jpg"></p>
+<ul>
+<li>观察者模式把观察者对象维护在目标对象中的，需要发布消息时直接发消息给观察者。在观察者模式中，目标对象本身是知道观察者存在的。</li>
+<li>而发布/订阅模式中，发布者并不维护订阅者，也不知道订阅者的存在，所以也不会直接通知订阅者，而是通知调度中心，由调度中心通知订阅者。</li>
+</ul>
+<h1 id="Vue中的发布订阅模式"><a href="#Vue中的发布订阅模式" class="headerlink" title="Vue中的发布订阅模式"></a>Vue中的发布订阅模式</h1><p>　　我们在<a href="https://xieyufei.com/2020/12/16/DefineProperty-Proxy.html">深入学习Object.defineProperty和Proxy</a>中介绍过，Vue2.0响应式是通过<code>Object.defineProperty()</code>来处理的，将每个组件data中的数据进行get/set劫持（也就是Reactive化），那么劫持后是如何来通知页面进行更新操作呢？这里就用到了发布订阅模式，我们首先来看下官网是如何介绍的：</p>
+<p><img src="/images/DesignPattern-Observer/data.png" srcset="/img/loading.gif" lazyload alt="data.png"></p>
+<blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>每个组件实例都对应一个 watcher 实例，它会在组件渲染的过程中把“接触”过的数据 property 记录为依赖。之后当依赖项的 setter 触发时，会通知 watcher，从而使它关联的组件重新渲染。</p>
+</blockquote>
+<p>　　相信看过源码的同学对Watcher和Dep的代码看的是云里雾里，不了解这两个类的作用；我们剔除不相关的代码，对主要代码逐段分析。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//defineReactive部分源码</span><br><span class="hljs-comment">//src\core\observer\index.js</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">defineReactive</span> (<br>  <span class="hljs-attr">obj</span>: <span class="hljs-title class_">Object</span>,<br>  <span class="hljs-attr">key</span>: string,<br>  <span class="hljs-attr">val</span>: any,<br>  customSetter?: <span class="hljs-title class_">Function</span><br>) &#123;<br>  <span class="hljs-comment">// 每个data的属性都会有一个dep对象，用来进行收集依赖</span><br>  <span class="hljs-keyword">const</span> dep = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Dep</span>()<br><br>  <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(obj, key, &#123;<br>    <span class="hljs-attr">enumerable</span>: <span class="hljs-literal">true</span>,<br>    <span class="hljs-attr">configurable</span>: <span class="hljs-literal">true</span>,<br>    <span class="hljs-attr">get</span>: <span class="hljs-keyword">function</span> <span class="hljs-title function_">reactiveGetter</span> () &#123;<br>      <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Dep</span>.<span class="hljs-property">target</span>) &#123;<br>        dep.<span class="hljs-title function_">depend</span>()<br>      &#125;<br>      <span class="hljs-keyword">return</span> value<br>    &#125;,<br>    <span class="hljs-attr">set</span>: <span class="hljs-keyword">function</span> <span class="hljs-title function_">reactiveSetter</span> (newVal) &#123;<br>      val = newVal<br>      dep.<span class="hljs-title function_">notify</span>()<br>    &#125;<br>  &#125;)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们在初始化data时或者用$set给data新增属性都会给每个属性循环遍历调用defineReactive进行数据劫持；我们看到在每个属性中构造了一个dep对象，并且在属性触发getter和setter时都会调用，它其实是依赖收集和触发更新的一个第三方，相当于发布订阅模式中事件中心的一个角色；而且由于getter/setter函数内对它闭包引用，因此我们在<code>this.num</code>和<code>this.num=1</code>都是调用它下面的函数，因此我们来看下它的实现原理：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//src\core\observer\dep.js</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Dep</span> &#123;<br>  <span class="hljs-keyword">static</span> <span class="hljs-attr">target</span>: ?<span class="hljs-title class_">Watcher</span>;<br>  <span class="hljs-attr">id</span>: number;<br>  <span class="hljs-attr">subs</span>: <span class="hljs-title class_">Array</span>&lt;<span class="hljs-title class_">Watcher</span>&gt;;<br>  <span class="hljs-title function_">constructor</span> () &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">id</span> = uid++<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">subs</span> = []<br>  &#125;<br>  <span class="hljs-comment">//新增观察者</span><br>  addSub (<span class="hljs-attr">sub</span>: <span class="hljs-title class_">Watcher</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">subs</span>.<span class="hljs-title function_">push</span>(sub)<br>  &#125;<br>  <span class="hljs-comment">//移除观察者</span><br>  removeSub (<span class="hljs-attr">sub</span>: <span class="hljs-title class_">Watcher</span>) &#123;<br>    <span class="hljs-title function_">remove</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">subs</span>, sub)<br>  &#125;<br>  <span class="hljs-comment">// 依赖收集</span><br>  depend () &#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Dep</span>.<span class="hljs-property">target</span>) &#123;<br>      <span class="hljs-title class_">Dep</span>.<span class="hljs-property">target</span>.<span class="hljs-title function_">addDep</span>(<span class="hljs-variable language_">this</span>)<br>    &#125;<br>  &#125;<br>  <span class="hljs-comment">// 通知所有的观察者</span><br>  notify () &#123;<br>    <span class="hljs-keyword">const</span> subs = <span class="hljs-variable language_">this</span>.<span class="hljs-property">subs</span>.<span class="hljs-title function_">slice</span>()<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>, l = subs.<span class="hljs-property">length</span>; i &lt; l; i++) &#123;<br>      subs[i].<span class="hljs-title function_">update</span>()<br>    &#125;<br>  &#125;<br>&#125;<br><span class="hljs-title class_">Dep</span>.<span class="hljs-property">target</span> = <span class="hljs-literal">null</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　Dep的全程是Dependency，翻译过来也是依赖、依赖关系的意思，从意思上能看出来是用来做依赖收集的；我们看到Dep下面有一个subs数组，它是一组Watcher的列表，存放的就是我们收集的依赖列表；然后通过addSub和removeSub新增和删除某个依赖，当数据更新时通过notify通知列表中所有的依赖对象；可以发现这些函数和我们的事件中心的代码很相似，不过它不是基于事件主题，而是直接通过一个列表。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　Dep源码看完了，下面就来看我们收集的依赖Watcher，也就是订阅者，都做了哪些事情：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//src\core\observer\watcher.js</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Watcher</span> &#123;<br>  <span class="hljs-title function_">constructor</span> (<br>    <span class="hljs-attr">vm</span>: <span class="hljs-title class_">Component</span>,<br>    <span class="hljs-attr">expOrFn</span>: string | <span class="hljs-title class_">Function</span>,<br>    <span class="hljs-attr">cb</span>: <span class="hljs-title class_">Function</span>,<br>    options?: <span class="hljs-title class_">Object</span><br>  ) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">vm</span> = vm<br>  &#125;<br>  addDep (<span class="hljs-attr">dep</span>: <span class="hljs-title class_">Dep</span>) &#123;<br>    dep.<span class="hljs-title function_">addSub</span>(<span class="hljs-variable language_">this</span>)<br>  &#125;<br>  <span class="hljs-comment">//执行数据更新</span><br>  update () &#123;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们看到Watcher和我们的订阅者代码也很相似，在update中对视图进行更新操作；由于data数据可以传入不同的子组件，而在data中数据更新时，每个子组件中的页面都需要重新更新，因此每一个Vue组件都会在mount阶段都会创建一个Watcher，然后保存在_watcher上：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//src\core\instance\lifecycle.js</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">mountComponent</span> (<br>  <span class="hljs-attr">vm</span>: <span class="hljs-title class_">Component</span>,<br>  <span class="hljs-attr">el</span>: ?<span class="hljs-title class_">Element</span>,<br>  hydrating?: boolean<br>): <span class="hljs-title class_">Component</span> &#123;<br>  <span class="hljs-title function_">callHook</span>(vm, <span class="hljs-string">&#x27;beforeMount&#x27;</span>)<br>  <span class="hljs-keyword">let</span> <span class="hljs-title function_">updateComponent</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>    vm.<span class="hljs-title function_">_update</span>(vm.<span class="hljs-title function_">_render</span>(), hydrating)<br>  &#125;<br>  vm.<span class="hljs-property">_watcher</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Watcher</span>(vm, updateComponent, noop)<br>  <span class="hljs-title function_">callHook</span>(vm, <span class="hljs-string">&#x27;mounted&#x27;</span>)<br>  <span class="hljs-keyword">return</span> vm<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　因此Dep和Watcher两者关系如下图：</p>
+<p><img src="/images/DesignPattern-Observer/dep-watch.png" srcset="/img/loading.gif" lazyload alt="dep-watch.png"></p>
+<p>　　我们回到Dep的源码中，发现有一个静态属性Dep.target是Watcher，进行依赖收集的时候也是通过Dep.target，那么它是做什么用的呢？让我们继续回到Watcher的构造器：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//src\core\observer\dep.js</span><br><span class="hljs-title class_">Dep</span>.<span class="hljs-property">target</span> = <span class="hljs-literal">null</span><br><span class="hljs-keyword">const</span> targetStack = []<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">pushTarget</span> (<span class="hljs-attr">_target</span>: <span class="hljs-title class_">Watcher</span>) &#123;<br>  <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Dep</span>.<span class="hljs-property">target</span>) targetStack.<span class="hljs-title function_">push</span>(<span class="hljs-title class_">Dep</span>.<span class="hljs-property">target</span>)<br>  <span class="hljs-title class_">Dep</span>.<span class="hljs-property">target</span> = _target<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">popTarget</span> () &#123;<br>  <span class="hljs-title class_">Dep</span>.<span class="hljs-property">target</span> = targetStack.<span class="hljs-title function_">pop</span>()<br>&#125;<br><span class="hljs-comment">//src\core\observer\watcher.js</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Watcher</span> &#123;<br>  <span class="hljs-title function_">constructor</span> (<br>    <span class="hljs-attr">vm</span>: <span class="hljs-title class_">Component</span>,<br>    <span class="hljs-attr">expOrFn</span>: string | <span class="hljs-title class_">Function</span>,<br>    <span class="hljs-attr">cb</span>: <span class="hljs-title class_">Function</span>,<br>    options?: <span class="hljs-title class_">Object</span><br>  ) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">getter</span> = expOrFn<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">get</span>()<br>  &#125;<br>  get () &#123;<br>    <span class="hljs-title function_">pushTarget</span>(<span class="hljs-variable language_">this</span>)<br>    value = <span class="hljs-variable language_">this</span>.<span class="hljs-property">getter</span>.<span class="hljs-title function_">call</span>(vm, vm)<br>    <span class="hljs-title function_">popTarget</span>()<br>    <span class="hljs-keyword">return</span> value<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　在Dep代码中同时维护了一个targetStack，也就是我们常说的堆栈，它遵从着先进后出的原则，我们只能通过pushTarget（压栈）和popTarget（出栈）来对它进行操作，那么它是什么时候需要进行压栈和出栈的操作呢？</p>
+<p>　　在Watcher的源码中我们发现的原因，由于Water实例是在组件mounted时被构建的，在构建时需要把实例暂存到Dep.target上以便Dep进行依赖收集；如果Dep.target上有其他组件的watcher实例，需要先把其他的watcher实例暂存到<code>targetStack</code>中，然后调用<code>expOrFn函数</code>渲染组件；这里的expOrFn渲染组件时会将data中定义的数据取值，取值的过程就会自动调用Reactive化后的getter函数，因此就把Dep.target上的watcher实例收集到了每个数据的Dep中，收集完成后再把上一个watcher出栈。</p>
+<p>　　总结，经过两者关系的分析，我们发现Vue是一个典型的发布订阅模式，data中的数据就是我们需要观察的目标对象，Dep相当于事件中心，而Watcher则是订阅者。</p>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/SourceCode/">源码</a>
+                    
+                      <a class="hover-with-bg" href="/tags/DesignPattern/">设计模式</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Vue/">Vue</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/04/10/Debounce-Throttle.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">金三银四面试季，防抖节流要牢记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/02/23/Front-Element.html">
+                        <span class="hidden-mobile">跟着Element源码学组件化</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

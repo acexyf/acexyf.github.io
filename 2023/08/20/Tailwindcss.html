@@ -1,0 +1,745 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　Tailwind CSS作为一款原子化的CSS框架，提供了一组高度可定制化的CSS程序和组件；帮助前端开发人员快捷、方便地构建美观的用户界面；相比于传统的CSS框架，Tailwind CSS更注重简洁性和灵活性，可以和现有的前端框架如React、Vue、Angular等无缝集成，同时也避免了传统CSS开发中需要编写大量重复的样式代码。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>大量重复写样式怎么办？当然是用TailwindCSS咯！ - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="大量重复写样式怎么办？当然是用TailwindCSS咯！">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-08-20 18:12" pubdate>
+        2023年8月20日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      60
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">大量重复写样式怎么办？当然是用TailwindCSS咯！</h1>
+            
+            <div class="markdown-body">
+              <p>　　Tailwind CSS作为一款原子化的CSS框架，提供了一组高度可定制化的CSS程序和组件；帮助前端开发人员快捷、方便地构建美观的用户界面；相比于传统的CSS框架，Tailwind CSS更注重简洁性和灵活性，可以和现有的前端框架如React、Vue、Angular等无缝集成，同时也避免了传统CSS开发中需要编写大量重复的样式代码。</p>
+<span id="more"></span>
+
+
+<p>　　CSS框架发展到现在，主要经历了四个阶段，第一个阶段是以CSS2.0和CSS3.0为主的，原生CSS阶段，需要用到什么样式就写什么样式，也会有一些简单的复用；第二个阶段是将CSS组件化，将具有相同视觉效果的元素封装成同一个组件类，比如07年Twitter推出的Bootstrap框架，后面以及React和Vue等框架涌现出来的Element UI、Antd等各种各样的组件库，都对自身的组件进行了封装，提供相当丰富的预设组件。</p>
+<p>　　第三个阶段是出现以Sass、Less和Stylus为代表的的CSS预处理器，弥补了常规CSS语法不够强大，没有变量和样式复用的机制；使得我们在开发样式时可以使用样式嵌套、循环、变量、条件控制等更高级的语法，更加灵活方便的开发样式。</p>
+<p>　　但是丰富的组件库在面对高度定制化的UI设计界面时，有时候也无可避免的需要自己写一些样式，不同组件中也会有重复封装的样式；同时高度封装的组件，还需要一定的学习成本，知道组件样式如何来控制；因此第四个阶段以Tailwind CSS为主的CSS原子化，直接将CSS样式打散，就像一个个原子一样，将每个CSS的样式应用到对应的类名。</p>
+<p>　　比如我们最常用的flex布局，如果封装到组件中，我们会在很多组件中不断重复的写flex样式，比如下面的组件，我们对下面每个层级的flex布局都需要来写对应的样式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vue">&lt;template&gt;<br>&lt;div class=&quot;container&quot;&gt;<br>  &lt;div class=&quot;left&quot;&gt; ... &lt;/div&gt;<br>  &lt;div class=&quot;right&quot;&gt; ... &lt;/div&gt;<br>&lt;/div&gt;<br>&lt;/template&gt;<br>&lt;style  lang=&quot;scss&quot; scoped&gt;<br>.container &#123;<br>  display: flex;<br>  justify-content: space-around;<br>  .left &#123;<br>    display: flex;<br>    justify-content: space-between;<br>  &#125;<br>  .right &#123;<br>    display: flex;<br>    flex-wrap: wrap;<br>    align-items: center;<br>  &#125;<br>&#125;<br>&lt;/style&gt;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　但是，如果使用了Tailwind CSS，你只需要写下面几行代码即可：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vue">&lt;template&gt;<br>  &lt;div class=&quot;flex justify-around&quot;&gt;<br>    &lt;div class=&quot;flex justify-between&quot;&gt;&lt;/div&gt;<br>    &lt;div class=&quot;flex flex-wrap items-center&quot;&gt;&lt;/div&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　怎么样？是不是比上面的代码简洁多了；有些小伙伴可能会问，这些CSS类名都是什么意思？还是有一定的学习成本啊；别着急，Tailwind CSS的语义化CSS，再结合VS Code强大的插件功能，可以让我们很轻松的记住这些类名；因此，笔者在做一些管理后台类的项目时，由于对页面样式要求不高，在实际项目中大多数页面都不用写样式，直接用类名即可，极大的提高了工作效率。下面，我们继续来看Tailwind CSS还有哪些强大的功能吧。</p>
+<h1 id="安装集成"><a href="#安装集成" class="headerlink" title="安装集成"></a>安装集成</h1><p>　　首先我们在项目中安装Tailwind CSS，将其作为PostCSS的一个插件，这样我们就能和webpack、rollup、vite以及parcel等打包工具集成了；因此通过npm安装相关的依赖：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">npm install -D tailwindcss postcss autoprefixer<br>npx tailwindcss init<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　<code>tailwindcss init</code>在项目中自动创建了一个配置文件<code>tailwind.config.js</code>，一些主题、插件等就可以在这里配置，我们将项目中的模板文件路径添加进来：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">/** <span class="hljs-doctag">@type</span> &#123;<span class="hljs-type">import(&#x27;tailwindcss&#x27;).Config</span>&#125; */</span><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">content</span>: [<br>    <span class="hljs-comment">// 这里手动添加项目中需要的模板文件</span><br>    <span class="hljs-string">&quot;./index.html&quot;</span>, <span class="hljs-string">&quot;./src/**/*.&#123;vue,ts,tsx&#125;&quot;</span><br>  ],<br>  <span class="hljs-attr">theme</span>: &#123;<br>    <span class="hljs-attr">extend</span>: &#123;&#125;,<br>  &#125;,<br>  <span class="hljs-attr">plugins</span>: [],<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　别忘记把tailwindcss配置到postcss.config.js中：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">plugins</span>: &#123;<br>    <span class="hljs-attr">tailwindcss</span>: &#123;&#125;,<br>    <span class="hljs-attr">autoprefixer</span>: &#123;&#125;,<br>  &#125;,<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　创建一个<code>/src/tailwind.css</code>文件，通过<code>@tailwind</code>指令来添加每一个用到的功能模块：</p>
+<figure class="highlight css"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs css"><span class="hljs-comment">/*! @import */</span><br><span class="hljs-keyword">@tailwind</span> base;<br><span class="hljs-keyword">@tailwind</span> components;<br><span class="hljs-keyword">@tailwind</span> utilities;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　最后在我们的项目入口文件中引入<code>tailwind.css</code>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// main.js</span><br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;./styles/tailwind.css&#x27;</span>;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　这样我们就能启动查看项目了；项目启动后，我们在写class类名时，肯定记不住那么多繁杂的类名，就需要用到编辑器插件了；打开VS Code的扩展面板，搜索<code>Tailwind CSS IntelliSense</code>：</p>
+<p><img src="/images/Tailwindcss/vs-code.png" srcset="/img/loading.gif" lazyload alt="VSCode插件"></p>
+<p>　　这里可以看到很多扩展，选择第一个官方扩展进行安装，就可以增强Tailwind的开发体验；我们在写类名时，模糊写一个flex，就会带出flex相关的类名，并且每个旁边都会有对应的类名的详细属性；甚至鼠标放在现有类名上也会呈现具体样式细节，这样就不用担心用错类名了。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Tailwindcss/enhance.png" srcset="/img/loading.gif" lazyload alt="扩展增强开发体验"></p>
+<h1 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h1><p>　　我们来看下Tailwind CSS有哪些特性。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h2 id="实用主义"><a href="#实用主义" class="headerlink" title="实用主义"></a>实用主义</h2><p>　　Tailwind CSS设计思路是优先考虑如何来满足实际需求（Utility-First Fundamentals），因此提供了大量使用的CSS类名，可以款速构建常见的界面元素，我们以官网的一个案例来理解它的实用主义优先的原则：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span></span><br><span class="hljs-tag">  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg flex items-center space-x-4&quot;</span></span><br><span class="hljs-tag">&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;shrink-0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;h-12 w-12&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/img/logo.svg&quot;</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">&quot;ChitChat Logo&quot;</span> /&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-xl font-medium text-black&quot;</span>&gt;</span>ChitChat<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-500&quot;</span>&gt;</span>You have a new message!<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　我们看下呈现的效果，也比较简单。</p>
+<p><img src="/images/Tailwindcss/utility-first.png" srcset="/img/loading.gif" lazyload alt="第一个案例"></p>
+<p>　　在这个案例中，我们使用了下面几种样式：</p>
+<ul>
+<li>宽高：最外层的元素使用max-w-sm限制最大宽度，图片使用w-12和h12来限制图片具体的宽度高度。</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>边距：mx-auto来设置margin实现左右居中，p-6控制内边距padding。</li>
+<li>flex布局：flex开启flex布局、items-center设置items-center实现上下居中，shrink-0不收缩。</li>
+<li>背景样式：bg-white背景白色，rounded-xl圆角，shadow-lg阴影。</li>
+<li>文字样式：text-xl字体大小，font-medium字体加粗，text-black和text-slate-500字体颜色。</li>
+</ul>
+<p>　　这里margin和padding比较特殊，有多种方式来设置；我们知道margin: 24px是设置上下左右四个方向的边距，在Tailwind CSS就可以简写成<code>m-6</code>；如果是margin: 24px 12px，Tailwind CSS就可以设置成X轴方向和Y轴方向，对应的类名就是：<code>mx-3 my-6</code>，因此上面的mx-auto就非常好理解了；而上下左右对应四个字母t、b、l、r，加上margin（m）和padding（p），就可以分别对应不同方向的设置了，比如<code>pb-4</code>。</p>
+<p>　　更多的样式缩写，如果小伙伴不知道怎么写的话，可以查看官网的文档，查一两次语法基本就能记住了，还是比较语义化的。</p>
+<p>　　我们发现这样的写法，会让页面显得比较臃肿，喜欢这种写法的人会非常喜欢，不喜欢它的人会觉得页面很混乱，难以接受；但是笔者用下来发现确实有以下优势：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<ul>
+<li>不用费时费力的去想各种类名，尤其是对于英文不好的小伙伴，思考类名也会占用我们小一部分的时间和精力。</li>
+<li>样式文件占用项目空间急剧下降，很多页面写少量甚至不用写样式，简直不要太爽了。</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>不用担心样式覆盖问题，有些样式文件可能会被不同的页面引用，改动的时候非常小心翼翼；现在样式都在页面上，再也不用担心覆盖了。</li>
+</ul>
+<h2 id="悬停聚焦"><a href="#悬停聚焦" class="headerlink" title="悬停聚焦"></a>悬停聚焦</h2><p>　　相较于常规的类名，我们页面上更多的是鼠标悬浮、聚焦等状态，还有很多的伪元素和伪类修饰符，我们看下他们是如何通过类名的方式来实现的。</p>
+<h3 id="状态更改修饰符"><a href="#状态更改修饰符" class="headerlink" title="状态更改修饰符"></a>状态更改修饰符</h3><p>　　我们可以给按钮元素设置悬浮、聚焦状态的改变，在CSS中是通过<code>:hover</code>，<code>:focus</code>等实现的，Tailwind CSS添加<code>hover:</code>前缀来实现，比如下面</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> </span><br><span class="hljs-tag">  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-sky-500 hover:bg-sky-700 ..&quot;</span>&gt;</span><br>  点我<br><span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　这样鼠标悬浮后，背景颜色就会加深；还可以使用<code>active:</code>激活和<code>focus:</code>聚焦：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">button</span></span><br><span class="hljs-tag">  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:bg-violet-800&quot;</span></span><br><span class="hljs-tag">&gt;</span><br>  点我<br><span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　对于a链接，<code>visited:</code>修饰符表示链接已经访问过。</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> </span><br><span class="hljs-tag">  <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;https://xieyufei.com&quot;</span> </span><br><span class="hljs-tag">  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-red-500 visited:text-red-500&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　还有一些<code>first-of-type:</code>、<code>last-of-type:</code>、<code>empty:</code>、<code>disabled:</code>、<code>checked:</code>修饰符，这里就不再赘述。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h3 id="元素修饰符"><a href="#元素修饰符" class="headerlink" title="元素修饰符"></a>元素修饰符</h3><p>　　对于第一个和最后一个元素，使用<code>first:</code>和<code>last:</code>来选择元素：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">li</span></span><br><span class="hljs-tag">  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-blue-200 first:mt-10 last:bg-blue-300&quot;</span></span><br><span class="hljs-tag">  <span class="hljs-attr">v-for</span>=<span class="hljs-string">&quot;item in 10&quot;</span></span><br><span class="hljs-tag">  <span class="hljs-attr">:key</span>=<span class="hljs-string">&quot;item&quot;</span></span><br><span class="hljs-tag">&gt;</span><br>  &#123;&#123; item &#125;&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　对于奇偶元素，可以使用<code>odd:</code>和<code>even:</code>修饰符来选择元素：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">li</span></span><br><span class="hljs-tag">  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-blue-200 odd:bg-blue-300 even:text-yellow-600&quot;</span></span><br><span class="hljs-tag">  <span class="hljs-attr">v-for</span>=<span class="hljs-string">&quot;item in 10&quot;</span></span><br><span class="hljs-tag">  <span class="hljs-attr">:key</span>=<span class="hljs-string">&quot;item&quot;</span></span><br><span class="hljs-tag">&gt;</span><br>  &#123;&#123; item &#125;&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<p><img src="/images/Tailwindcss/odd-even.png" srcset="/img/loading.gif" lazyload alt="奇偶元素"></p>
+<p>　　对于一些特殊的子元素，比如选择第几个元素:nth-child，我们通过<code>[&amp;:nth-child(n)]</code>前缀：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">li</span></span><br><span class="hljs-tag">  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-blue-200 [&amp;:nth-child(3)]:bg-blue-500&quot;</span></span><br><span class="hljs-tag">  <span class="hljs-attr">v-for</span>=<span class="hljs-string">&quot;item in 10&quot;</span></span><br><span class="hljs-tag">  <span class="hljs-attr">:key</span>=<span class="hljs-string">&quot;item&quot;</span></span><br><span class="hljs-tag">&gt;</span><br>  &#123;&#123; item &#125;&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<h3 id="父级修饰符"><a href="#父级修饰符" class="headerlink" title="父级修饰符"></a>父级修饰符</h3><p>　　还有一些子元素的样式依赖于父级元素，我们通过给父级元素标记<code>group</code>类名，并且使用<code>group-*</code>的修饰符来标记目标元素，比如下面的例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span></span><br><span class="hljs-tag">  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;group hover:bg-blue-300&quot;</span></span><br><span class="hljs-tag">&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span></span><br><span class="hljs-tag">    <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-black group-hover:text-white group-active:text-red-500&quot;</span></span><br><span class="hljs-tag">  &gt;</span><br>    ChitChat<br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-500 group-hover:text-white&quot;</span>&gt;</span><br>    You have a new message!<br>  <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p><img src="/images/Tailwindcss/group.gif" srcset="/img/loading.gif" lazyload alt="group修饰符"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　除了<code>group-hover</code>，还支持<code>group-active</code>、<code>group-focus</code>或者<code>group-odd</code>等修饰符；如果有多个组嵌套的情况，我们可以使用<code>group/&#123;name&#125;</code>来标记该父级元素，其中的子元素使用<code>group-hover/&#123;name&#125;</code>修饰符来设置样式：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">li</span></span><br><span class="hljs-tag">  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;group/item&quot;</span></span><br><span class="hljs-tag">  <span class="hljs-attr">v-for</span>=<span class="hljs-string">&quot;item in 10&quot;</span></span><br><span class="hljs-tag">  <span class="hljs-attr">:key</span>=<span class="hljs-string">&quot;item&quot;</span></span><br><span class="hljs-tag">&gt;</span><br>  &#123;&#123; item &#125;&#125;<br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;invisible group-hover/item:visible text-red-400 group/opt&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;group-hover/opt:text-red-700&quot;</span>&gt;</span>hover me<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　比如上面的案例中，最外层的元素使用了<code>group/item</code>，而下面的按钮使用了<code>group/opt</code>单独变成一个组，用来控制该组下面的元素样式。</p>
+<h3 id="同级修饰符"><a href="#同级修饰符" class="headerlink" title="同级修饰符"></a>同级修饰符</h3><p>　　当我们需要根据同级元素的状态对目标元素进行样式设置时，使用<code>peer</code>标记同级的元素，使用<code>peer-*</code>修饰符对目标元素进行样式设计，比如下面的案例：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Email<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;email&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;peer ...&quot;</span> /&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mt-2 invisible peer-invalid:visible text-pink-600&quot;</span>&gt;</span><br>    请输入正确的邮箱地址<br>  <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们给同级的输入框标记为peer，而p标签就是我们需要设计样式的目标元素，使用<code>peer-invalid:visible</code>让p标签当输入框输入内容无效时进行内容的显示，效果如下：</p>
+<p><img src="/images/Tailwindcss/peer.png" srcset="/img/loading.gif" lazyload alt="同级修饰符"></p>
+<p>　　和<code>group</code>的使用一样，peer也可以使用<code>peer/&#123;name&#125;</code>来标记某个具体的元素，然后使用<code>peer-*/&#123;name&#125;</code>来设计目标元素的样式。</p>
+<p>todo</p>
+<h3 id="伪元素修饰符"><a href="#伪元素修饰符" class="headerlink" title="伪元素修饰符"></a>伪元素修饰符</h3><p>　　对于::after和::before等伪元素，我们也可以使用<code>before:</code>和<code>after:</code>修饰符：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">span</span></span><br><span class="hljs-tag">  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;after:content-[&#x27;*&#x27;] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700&quot;</span></span><br><span class="hljs-tag">&gt;</span><br>  Email<br><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<p>　　当使用<code>before:</code>和<code>after:</code>修饰符这类修饰符时，Tailwind CSS会默认添加<code>content: &#39;&#39;</code>样式，除非我们需要在content中添加其他内容，否则不需要额外的声明。</p>
+<p>　　对于输入框input的placeholder，我们可以使用<code>placeholder:</code>修饰符很方便的更改占位符样式：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">input</span> </span><br><span class="hljs-tag">  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;placeholder:italic placeholder:text-slate-400 ...&quot;</span></span><br><span class="hljs-tag">/&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h2 id="夜间模式"><a href="#夜间模式" class="headerlink" title="夜间模式"></a>夜间模式</h2><p>　　我们在浏览有些网站或者App时都会看到有夜间模式的功能，启用夜间模式可以让网站展示不同的风格样式，Tailwind CSS可以通过类名很容易的控制；要开启夜间模式，我们先在<code>tailwind.config.js</code>配置darkMode：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// tailwind.config.js</span><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">darkMode</span>: <span class="hljs-string">&quot;class&quot;</span>,<br>  <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　这样我们就可以通过全局根节点上控制类名来控制整体的页面风格是否呈现夜间模式了，比如在html节点或者App.vue上添加/移除<code>dark</code>类名；下面就来对页面进行改造，对于夜间模式下的背景颜色或者文字颜色，使用<code>dark:</code>修饰符，</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;app&quot;</span> <span class="hljs-attr">:class</span>=<span class="hljs-string">&quot;isDark ? &#x27;dark&#x27; : &#x27;&#x27;&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span></span><br><span class="hljs-tag">    <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-white dark:bg-black&quot;</span></span><br><span class="hljs-tag">  &gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">h3</span></span><br><span class="hljs-tag">      <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-900 dark:text-white&quot;</span></span><br><span class="hljs-tag">    &gt;</span><br>      谢小飞的博客地址：<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text-slate-500 dark:text-slate-400&quot;</span>&gt;</span><br>        https://xieyufei.com<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　在上面代码中，我们使用了<code>bg-white</code>在默认模式下的背景颜色为白色，以及<code>dark:bg-black</code>夜间模式下背景颜色为黑色，通过isDark变量来实现控制根节点开启/关闭夜间模式；效果如下：</p>
+<p><img src="/images/Tailwindcss/dark.gif" srcset="/img/loading.gif" lazyload alt="夜间模式"></p>
+<h2 id="自定义样式"><a href="#自定义样式" class="headerlink" title="自定义样式"></a>自定义样式</h2><p>　　对于一些全局的样式，比如颜色模式、自适应缩放模式、间距等等，我们可以添加到<code>tailwind.config.js</code>配置文件中：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">theme</span>: &#123;<br>    <span class="hljs-attr">screens</span>: &#123;<br>      <span class="hljs-attr">sm</span>: <span class="hljs-string">&#x27;480px&#x27;</span>,<br>      <span class="hljs-attr">md</span>: <span class="hljs-string">&#x27;768px&#x27;</span>,<br>      <span class="hljs-attr">lg</span>: <span class="hljs-string">&#x27;976px&#x27;</span>,<br>      <span class="hljs-attr">xl</span>: <span class="hljs-string">&#x27;1440px&#x27;</span>,<br>    &#125;,<br>    <span class="hljs-attr">colors</span>: &#123;<br>      <span class="hljs-attr">red</span>: <span class="hljs-string">&#x27;#ff0000&#x27;</span>,<br>      <span class="hljs-string">&quot;main-color&quot;</span>: <span class="hljs-string">&quot;#ff7849&quot;</span>,<br>    &#125;,<br>    <span class="hljs-attr">extend</span>: &#123;<br>      <span class="hljs-attr">spacing</span>: &#123;<br>        <span class="hljs-string">&#x27;128&#x27;</span>: <span class="hljs-string">&#x27;32rem&#x27;</span>,<br>        <span class="hljs-string">&#x27;144&#x27;</span>: <span class="hljs-string">&#x27;36rem&#x27;</span>,<br>      &#125;,<br>      <span class="hljs-attr">borderRadius</span>: &#123;<br>        <span class="hljs-string">&#x27;4xl&#x27;</span>: <span class="hljs-string">&#x27;2rem&#x27;</span>,<br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　比如觉得全局的red红色，红的不够鲜艳，我们可以在colors中重新设置一个色值；或者设置一个全局的主要色值<code>main-color</code>，在页面中使用<code>bg-main-color</code>或者<code>text-main-color</code>就可以设置一个全局的颜色。</p>
+<p>　　在使用边距值时，我们发现只有<code>mt-6</code>这种模糊的数据，使用的单位也是rem；如果设计稿需要比较精确的还原，我们可以使用大括号来将精确的数值进行呈现：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mt-[123px]&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　对于色值、字体大小等，这种使用方式也是有效的：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> </span><br><span class="hljs-tag">  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-[#f0f0f0] text-[22px] before:content-[&#x27;11&#x27;]&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<p>　　甚至对于CSS变量，也可以直接使用大括号，都不需要<code>var()</code>，只需要提供变量名称：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bg-[--my-color]&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+
+
+
+<h2 id="函数指令"><a href="#函数指令" class="headerlink" title="函数指令"></a>函数指令</h2><h3 id="tailwind指令"><a href="#tailwind指令" class="headerlink" title="tailwind指令"></a>tailwind指令</h3><p>　　在Tailwind CSS中，<code>tailwind指令</code>是用于快速生成基于配置的样式代码的工具。``tailw数生成相应的样式代码，这些参数可以是任何有效的CSS属性和值。它可以根据 Tailwind CSS的配置文件中的设置来生成相应的样式代码。</p>
+<figure class="highlight css"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs css"><span class="hljs-keyword">@tailwind</span> base;<br><span class="hljs-keyword">@tailwind</span> components;<br><span class="hljs-keyword">@tailwind</span> utilities;<br><span class="hljs-keyword">@tailwind</span> variants;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<p>　　这里对应参数的作用如下：</p>
+<ul>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>base：可以生成基础样式代码，包括重置样式、字体样式、间距样式等。</li>
+<li>components：可以生成各种 UI 组件的样式代码，例如按钮、卡片、表单等</li>
+<li>utilities：可以生成高度定制化的、短小精悍的样式代码，用于实现特定的设计效果。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>variants：可以用于创建自定义的样式变体，在需要时灵活地应用它们</li>
+</ul>
+<h3 id="layer指令"><a href="#layer指令" class="headerlink" title="layer指令"></a>layer指令</h3><p>　　<code>@layer</code>指令是Tailwind CSS中一个重要的指令，它用于将 CSS 类分层，从而更好地组织和控制样式。我们可以使用<code>@layer指令</code>来创建不同的层（layers）。层是CSS类的分组，这些组可以用于将 CSS 规则封装为独立的、可重用的模块。通过将样式规则组织到不同的层中，这样就可以更好地控制样式的作用范围和优先级。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight css"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs css"><span class="hljs-keyword">@layer</span> base &#123;<br>  <span class="hljs-selector-tag">h1</span> &#123;<br>    <span class="hljs-keyword">@apply</span> text-<span class="hljs-number">2</span>xl;<br>  &#125;<br>  <span class="hljs-selector-tag">h2</span> &#123;<br>    <span class="hljs-keyword">@apply</span> text-xl;<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">@layer</span> components &#123;<br>  <span class="hljs-selector-class">.btn-blue</span> &#123;<br>    <span class="hljs-keyword">@apply</span> bg-blue-<span class="hljs-number">500</span> <span class="hljs-attribute">hover</span>:bg-blue-<span class="hljs-number">700</span> text-white font-bold py-<span class="hljs-number">2</span> px-<span class="hljs-number">4</span> rounded;<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">@layer</span> utilities &#123;<br>  <span class="hljs-selector-class">.filter-none</span> &#123;<br>    <span class="hljs-attribute">filter</span>: none;<br>  &#125;<br>  <span class="hljs-selector-class">.filter-grayscale</span> &#123;<br>    <span class="hljs-attribute">filter</span>: <span class="hljs-built_in">grayscale</span>(<span class="hljs-number">100%</span>);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　这里的<code>@layer base</code>指令用于创建基础层base。基础层包含了通用的、基础的样式规则，例如颜色、字体、间距等。这些基础样式是整个网站中普遍适用的，通常不需要进行修改或定制。通过将基础样式规则分离到基础层中，可以确保它们在整个网站中保持一致，并且不会受到其他样式规则的影响。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　而<code>@layer components</code>指令用于创建组件层components。组件层包含了与具体组件相关的样式规则。组件可以是任何自定义的HTML元素或页面组件，例如按钮、卡片、表单等。组件层中的样式规则通常与具体的UI组件有关，并且可能需要进行频繁的修改和定制。</p>
+<p>　　<code>@layer utilities</code>指令用于创建实用层。实用层包含了高度定制化的、短小精悍的样式规则。这些规则通常是用来实现某些特定的设计效果。实用层中的样式规则通常是单一用途的，并且可以根据需要进行精确地控制和定制。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h3 id="apply指令"><a href="#apply指令" class="headerlink" title="apply指令"></a>apply指令</h3><p>　　在Tailwind CSS中，我们可以使用<code>@apply指令</code>将现有的CSS类应用于已经定义的样式规则，以实现更灵活的样式控制：</p>
+<figure class="highlight css"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-class">.my-custom-class</span> &#123;  <br>  <span class="hljs-keyword">@apply</span> text-center;  <br>  <span class="hljs-keyword">@apply</span> bg-blue;  <br>  <span class="hljs-keyword">@apply</span> border-<span class="hljs-number">2</span>;  <br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　比如在上面的案例中，我们定义了我们自己的类名<code>my-custom-class</code>，然后使用<code>@apply指令</code>将text-center、bg-blue和border-2应用于我们自定义的样式，这样就可以根据具体的需求，封装一系列我们需要的样式规则。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　本文整理了Tailwind CSS的不同特性和用法，它的核心思想是实用性，使用方式也非常简单，提供了一系列预设的CSS类名，同时可以根据不同的需求，自定义样式组合，应用于不同的场景中；通过Tailwind CSS，我们可以很方便的构建一致性和可维护性的页面，而且也无需编写大量的CSS样式。</p>
+<p>　　总之，Tailwind CSS是一个非常实用的CSS框架，已经被应用于大量的网站和框架中，如果你现在还在为写样式而发愁，那么它是一个非常值得尝试的选择。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Tips/">技巧</a>
+                    
+                      <a class="hover-with-bg" href="/tags/CSS/">CSS</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/09/05/Install-Windows-Cuda.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Win10下CUDA和cuDNN安装教程</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/08/11/Chrome-Plugin-Practise.html">
+                        <span class="hidden-mobile">Chrome插件实战开发</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

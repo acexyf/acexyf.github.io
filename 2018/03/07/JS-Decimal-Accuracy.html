@@ -1,0 +1,610 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　最近在做项目的时候，涉及到商品价格的计算，经常会出现计算出现精度问题。刚开始草草了事，直接用toFixed就解决了问题，并没有好好的思考一下这个问题。后来慢慢的，问题越来越多，连toFixed也出现了（允悲），后来经过搜索网上的各种博客和论坛，整理总结了一下。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>JS中浮点数精度问题 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="JS中浮点数精度问题">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2018-03-07 20:48" pubdate>
+        2018年3月7日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      29
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JS中浮点数精度问题</h1>
+            
+            <div class="markdown-body">
+              <p>　　最近在做项目的时候，涉及到商品价格的计算，经常会出现计算出现精度问题。刚开始草草了事，直接用toFixed就解决了问题，并没有好好的思考一下这个问题。后来慢慢的，问题越来越多，连toFixed也出现了（允悲），后来经过搜索网上的各种博客和论坛，整理总结了一下。</p>
+<span id="more"></span>
+
+<h1 id="问题的发现"><a href="#问题的发现" class="headerlink" title="问题的发现"></a>问题的发现</h1><p>　　总结了一下，一共有以下两种问题</p>
+<h2 id="浮点数运算后的精度问题"><a href="#浮点数运算后的精度问题" class="headerlink" title="浮点数运算后的精度问题"></a>浮点数运算后的精度问题</h2><p>　　在计算商品价格加减乘除时，偶尔会出现精度问题，一些常见的例子如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// 加法 =====================</span><br><span class="hljs-number">0.1</span> + <span class="hljs-number">0.2</span> = <span class="hljs-number">0.30000000000000004</span><br><span class="hljs-number">0.7</span> + <span class="hljs-number">0.1</span> = <span class="hljs-number">0.7999999999999999</span><br><span class="hljs-number">0.2</span> + <span class="hljs-number">0.4</span> = <span class="hljs-number">0.6000000000000001</span><br><br><span class="hljs-comment">// 减法 =====================</span><br><span class="hljs-number">1.5</span> - <span class="hljs-number">1.2</span> = <span class="hljs-number">0.30000000000000004</span><br><span class="hljs-number">0.3</span> - <span class="hljs-number">0.2</span> = <span class="hljs-number">0.09999999999999998</span><br> <br><span class="hljs-comment">// 乘法 =====================</span><br><span class="hljs-number">19.9</span> * <span class="hljs-number">100</span> = <span class="hljs-number">1989.9999999999998</span><br><span class="hljs-number">0.8</span> * <span class="hljs-number">3</span> = <span class="hljs-number">2.4000000000000004</span><br><span class="hljs-number">35.41</span> * <span class="hljs-number">100</span> = <span class="hljs-number">3540.9999999999995</span><br><br><span class="hljs-comment">// 除法 =====================</span><br><span class="hljs-number">0.3</span> / <span class="hljs-number">0.1</span> = <span class="hljs-number">2.9999999999999996</span><br><span class="hljs-number">0.69</span> / <span class="hljs-number">10</span> = <span class="hljs-number">0.06899999999999999</span><br></code></pre></div></td></tr></table></figure>
+
+<h2 id="toFixed奇葩问题"><a href="#toFixed奇葩问题" class="headerlink" title="toFixed奇葩问题"></a>toFixed奇葩问题</h2><p>　　在遇到浮点数运算后出现的精度问题时，刚开始我是使用toFixed(2)来解决的，因为在W3school和菜鸟教程（他们均表示这锅不背）上明确写着定义：toFixed()方法可把Number四舍五入为指定小数位数的数字。</p>
+<p>　　但是在chrome下测试结果不太令人满意：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-number">1.35</span>.<span class="hljs-title function_">toFixed</span>(<span class="hljs-number">1</span>) <span class="hljs-comment">// 1.4 正确</span><br><span class="hljs-number">1.335</span>.<span class="hljs-title function_">toFixed</span>(<span class="hljs-number">2</span>) <span class="hljs-comment">// 1.33  错误</span><br><span class="hljs-number">1.3335</span>.<span class="hljs-title function_">toFixed</span>(<span class="hljs-number">3</span>) <span class="hljs-comment">// 1.333 错误</span><br><span class="hljs-number">1.33335</span>.<span class="hljs-title function_">toFixed</span>(<span class="hljs-number">4</span>) <span class="hljs-comment">// 1.3334 正确</span><br><span class="hljs-number">1.333335</span>.<span class="hljs-title function_">toFixed</span>(<span class="hljs-number">5</span>)  <span class="hljs-comment">// 1.33333 错误</span><br><span class="hljs-number">1.3333335</span>.<span class="hljs-title function_">toFixed</span>(<span class="hljs-number">6</span>) <span class="hljs-comment">// 1.333333 错误</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　使用IETester在IE下面测试的结果却是正确的。</p>
+<h1 id="为什么会产生"><a href="#为什么会产生" class="headerlink" title="为什么会产生"></a>为什么会产生</h1><p>　　让我们来看一下为什么0.1+0.2会等于0.30000000000000004，而不是0.3。首先，想要知道为什么会产生这样的问题，让我们回到大学里学的复（ku）杂（zao）的计算机组成原理。虽然已经全部还给大学老师了，但是没关系，我们还有百度嘛。</p>
+<h2 id="浮点数的存储"><a href="#浮点数的存储" class="headerlink" title="浮点数的存储"></a>浮点数的存储</h2><p>　　和其它语言如Java和Python不同，JavaScript中所有数字包括整数和小数都只有一种类型 — Number。它的实现遵循 IEEE 754 标准，使用64位固定长度来表示，也就是标准的 double 双精度浮点数（相关的还有float 32位单精度）。</p>
+<p>　　这样的存储结构优点是可以归一化处理整数和小数，节省存储空间。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　64位比特又可分为三个部分：</p>
+<ul>
+<li><p>符号位S：第 1 位是正负数符号位（sign），0代表正数，1代表负数</p>
+</li>
+<li><p>指数位E：中间的 11 位存储指数（exponent），用来表示次方数</p>
+</li>
+<li><p>尾数位M：最后的 52 位是尾数（mantissa），超出的部分自动进一舍零</p>
+</li>
+</ul>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/JS-Decimal-Accuracy/storage.png" srcset="/img/loading.gif" lazyload alt="Storage"></p>
+<h2 id="浮点数的运算"><a href="#浮点数的运算" class="headerlink" title="浮点数的运算"></a>浮点数的运算</h2><p>　　那么JavaScript在计算0.1+0.2时到底发生了什么呢？</p>
+<p>　　首先，十进制的0.1和0.2会被转换成二进制的，但是由于浮点数用二进制表示时是无穷的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-number">0.1</span> -&gt; <span class="hljs-number">0.0001</span> <span class="hljs-number">1001</span> <span class="hljs-number">1001</span> <span class="hljs-number">1001.</span>..(<span class="hljs-number">1100</span>循环)<br><span class="hljs-number">0.2</span> -&gt; <span class="hljs-number">0.0011</span> <span class="hljs-number">0011</span> <span class="hljs-number">0011</span> <span class="hljs-number">0011</span>...(<span class="hljs-number">0011</span>循环)<br></code></pre></div></td></tr></table></figure>
+
+<p>　　IEEE 754 标准的 64 位双精度浮点数的小数部分最多支持53位二进制位，所以两者相加之后得到二进制为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-number">0.0100110011001100110011001100110011001100110011001100</span> <br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　因浮点数小数位的限制而截断的二进制数字，再转换为十进制，就成了0.30000000000000004。所以在进行算术计算时会产生误差。</p>
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>　　针对以上两个问题，网上搜了一波解决方法，基本都大同小异的，分别来看一下。</p>
+<h2 id="解决toFixed"><a href="#解决toFixed" class="headerlink" title="解决toFixed"></a>解决toFixed</h2><p>　　针对toFixed的兼容性问题，我们可以把toFix重写一下来解决，代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// toFixed兼容方法</span><br><span class="hljs-title class_">Number</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">toFixed</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">len</span>)&#123;<br>    <span class="hljs-keyword">if</span>(len&gt;<span class="hljs-number">20</span> || len&lt;<span class="hljs-number">0</span>)&#123;<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RangeError</span>(<span class="hljs-string">&#x27;toFixed() digits argument must be between 0 and 20&#x27;</span>);<br>    &#125;<br>    <span class="hljs-comment">// .123转为0.123</span><br>    <span class="hljs-keyword">var</span> number = <span class="hljs-title class_">Number</span>(<span class="hljs-variable language_">this</span>);<br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isNaN</span>(number) || number &gt;= <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">pow</span>(<span class="hljs-number">10</span>, <span class="hljs-number">21</span>)) &#123;<br>        <span class="hljs-keyword">return</span> number.<span class="hljs-title function_">toString</span>();<br>    &#125;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> (len) == <span class="hljs-string">&#x27;undefined&#x27;</span> || len == <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-keyword">return</span> (<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(number)).<span class="hljs-title function_">toString</span>();<br>    &#125;<br>    <span class="hljs-keyword">var</span> result = number.<span class="hljs-title function_">toString</span>(),<br>        numberArr = result.<span class="hljs-title function_">split</span>(<span class="hljs-string">&#x27;.&#x27;</span>);<br><br>    <span class="hljs-keyword">if</span>(numberArr.<span class="hljs-property">length</span>&lt;<span class="hljs-number">2</span>)&#123;<br>        <span class="hljs-comment">//整数的情况</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-title function_">padNum</span>(result);<br>    &#125;<br>    <span class="hljs-keyword">var</span> intNum = numberArr[<span class="hljs-number">0</span>], <span class="hljs-comment">//整数部分</span><br>        deciNum = numberArr[<span class="hljs-number">1</span>],<span class="hljs-comment">//小数部分</span><br>        lastNum = deciNum.<span class="hljs-title function_">substr</span>(len, <span class="hljs-number">1</span>);<span class="hljs-comment">//最后一个数字</span><br>    <br>    <span class="hljs-keyword">if</span>(deciNum.<span class="hljs-property">length</span> == len)&#123;<br>        <span class="hljs-comment">//需要截取的长度等于当前长度</span><br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br>    <span class="hljs-keyword">if</span>(deciNum.<span class="hljs-property">length</span> &lt; len)&#123;<br>        <span class="hljs-comment">//需要截取的长度大于当前长度 1.3.toFixed(2)</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-title function_">padNum</span>(result)<br>    &#125;<br>    <span class="hljs-comment">//需要截取的长度小于当前长度，需要判断最后一位数字</span><br>    result = intNum + <span class="hljs-string">&#x27;.&#x27;</span> + deciNum.<span class="hljs-title function_">substr</span>(<span class="hljs-number">0</span>, len);<br>    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">parseInt</span>(lastNum, <span class="hljs-number">10</span>)&gt;=<span class="hljs-number">5</span>)&#123;<br>        <span class="hljs-comment">//最后一位数字大于5，要进位</span><br>        <span class="hljs-keyword">var</span> times = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">pow</span>(<span class="hljs-number">10</span>, len); <span class="hljs-comment">//需要放大的倍数</span><br>        <span class="hljs-keyword">var</span> changedInt = <span class="hljs-title class_">Number</span>(result.<span class="hljs-title function_">replace</span>(<span class="hljs-string">&#x27;.&#x27;</span>,<span class="hljs-string">&#x27;&#x27;</span>));<span class="hljs-comment">//截取后转为整数</span><br>        changedInt++;<span class="hljs-comment">//整数进位</span><br>        changedInt /= times;<span class="hljs-comment">//整数转为小数，注：有可能还是整数</span><br>        result = <span class="hljs-title function_">padNum</span>(changedInt+<span class="hljs-string">&#x27;&#x27;</span>);<br>    &#125;<br>    <span class="hljs-keyword">return</span> result;<br>    <span class="hljs-comment">//对数字末尾加0</span><br>    <span class="hljs-keyword">function</span> <span class="hljs-title function_">padNum</span>(<span class="hljs-params">num</span>)&#123;<br>        <span class="hljs-keyword">var</span> dotPos = num.<span class="hljs-title function_">indexOf</span>(<span class="hljs-string">&#x27;.&#x27;</span>);<br>        <span class="hljs-keyword">if</span>(dotPos === -<span class="hljs-number">1</span>)&#123;<br>            <span class="hljs-comment">//整数的情况</span><br>            num += <span class="hljs-string">&#x27;.&#x27;</span>;<br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;i&lt;len;i++)&#123;<br>                num += <span class="hljs-string">&#x27;0&#x27;</span>;<br>            &#125;<br>            <span class="hljs-keyword">return</span> num;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-comment">//小数的情况</span><br>            <span class="hljs-keyword">var</span> need = len - (num.<span class="hljs-property">length</span> - dotPos - <span class="hljs-number">1</span>);<br>            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> j = <span class="hljs-number">0</span>;j&lt;need;j++)&#123;<br>                num += <span class="hljs-string">&#x27;0&#x27;</span>;<br>            &#125;<br>            <span class="hljs-keyword">return</span> num;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们通过判断最后一位是否大于等于5来决定需不需要进位，如果需要进位先把小数乘以倍数变为整数，加1之后，再除以倍数变为小数，这样就不用一位一位的进行判断。</p>
+<h2 id="解决浮点数运算精度"><a href="#解决浮点数运算精度" class="headerlink" title="解决浮点数运算精度"></a>解决浮点数运算精度</h2><p>　　既然我们发现了浮点数的这个问题，又不能直接让两个浮点数运算，那怎么处理呢？</p>
+<p>　　我们可以把需要计算的数字升级（乘以10的n次幂）成计算机能够精确识别的整数，等计算完成后再进行降级（除以10的n次幂），这是大部分变成语言处理精度问题常用的方法。例如：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-number">0.1</span> + <span class="hljs-number">0.2</span> == <span class="hljs-number">0.3</span> <span class="hljs-comment">//false</span><br>(<span class="hljs-number">0.1</span>*<span class="hljs-number">10</span> + <span class="hljs-number">0.2</span>*<span class="hljs-number">10</span>)/<span class="hljs-number">10</span> == <span class="hljs-number">0.3</span> <span class="hljs-comment">//true</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　但是这样就能完美解决么？细心的读者可能在上面的例子里已经发现了问题：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-number">35.41</span> * <span class="hljs-number">100</span> = <span class="hljs-number">3540.9999999999995</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　看来进行数字升级也不是完全的可靠啊（允悲）。</p>
+<p>　　但是魔高一尺道高一丈，这样就能难住我们么，我们可以将浮点数toString后indexOf(‘.’)，记录一下小数位的长度，然后将小数点抹掉，完整的代码如下：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"> <span class="hljs-comment">/*** method **</span><br><span class="hljs-comment"> *  add / subtract / multiply /divide</span><br><span class="hljs-comment"> * floatObj.add(0.1, 0.2) &gt;&gt; 0.3</span><br><span class="hljs-comment"> * floatObj.multiply(19.9, 100) &gt;&gt; 1990</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">var</span> floatObj = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br><br>    <span class="hljs-comment">/*</span><br><span class="hljs-comment">     * 判断obj是否为一个整数</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">function</span> <span class="hljs-title function_">isInteger</span>(<span class="hljs-params">obj</span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(obj) === obj<br>    &#125;<br><br>    <span class="hljs-comment">/*</span><br><span class="hljs-comment">     * 将一个浮点数转成整数，返回整数和倍数。如 3.14 &gt;&gt; 314，倍数是 100</span><br><span class="hljs-comment">     * @param floatNum &#123;number&#125; 小数</span><br><span class="hljs-comment">     * @return &#123;object&#125;</span><br><span class="hljs-comment">     *   &#123;times:100, num: 314&#125;</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">function</span> <span class="hljs-title function_">toInteger</span>(<span class="hljs-params">floatNum</span>) &#123;<br>        <span class="hljs-keyword">var</span> ret = &#123;<span class="hljs-attr">times</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">num</span>: <span class="hljs-number">0</span>&#125;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isInteger</span>(floatNum)) &#123;<br>            ret.<span class="hljs-property">num</span> = floatNum<br>            <span class="hljs-keyword">return</span> ret<br>        &#125;<br>        <span class="hljs-keyword">var</span> strfi  = floatNum + <span class="hljs-string">&#x27;&#x27;</span><br>        <span class="hljs-keyword">var</span> dotPos = strfi.<span class="hljs-title function_">indexOf</span>(<span class="hljs-string">&#x27;.&#x27;</span>)<br>        <span class="hljs-keyword">var</span> len    = strfi.<span class="hljs-title function_">substr</span>(dotPos+<span class="hljs-number">1</span>).<span class="hljs-property">length</span><br>        <span class="hljs-keyword">var</span> times  = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">pow</span>(<span class="hljs-number">10</span>, len)<br>        <span class="hljs-keyword">var</span> intNum = <span class="hljs-title class_">Number</span>(floatNum.<span class="hljs-title function_">toString</span>().<span class="hljs-title function_">replace</span>(<span class="hljs-string">&#x27;.&#x27;</span>,<span class="hljs-string">&#x27;&#x27;</span>))<br>        ret.<span class="hljs-property">times</span>  = times<br>        ret.<span class="hljs-property">num</span>    = intNum<br>        <span class="hljs-keyword">return</span> ret<br>    &#125;<br><br>    <span class="hljs-comment">/*</span><br><span class="hljs-comment">     * 核心方法，实现加减乘除运算，确保不丢失精度</span><br><span class="hljs-comment">     * 思路：把小数放大为整数（乘），进行算术运算，再缩小为小数（除）</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * @param a &#123;number&#125; 运算数1</span><br><span class="hljs-comment">     * @param b &#123;number&#125; 运算数2</span><br><span class="hljs-comment">     * @param digits &#123;number&#125; 精度，保留的小数点数，比如 2, 即保留为两位小数</span><br><span class="hljs-comment">     * @param op &#123;string&#125; 运算类型，有加减乘除（add/subtract/multiply/divide）</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">function</span> <span class="hljs-title function_">operation</span>(<span class="hljs-params">a, b, digits, op</span>) &#123;<br>        <span class="hljs-keyword">var</span> o1 = <span class="hljs-title function_">toInteger</span>(a)<br>        <span class="hljs-keyword">var</span> o2 = <span class="hljs-title function_">toInteger</span>(b)<br>        <span class="hljs-keyword">var</span> n1 = o1.<span class="hljs-property">num</span><br>        <span class="hljs-keyword">var</span> n2 = o2.<span class="hljs-property">num</span><br>        <span class="hljs-keyword">var</span> t1 = o1.<span class="hljs-property">times</span><br>        <span class="hljs-keyword">var</span> t2 = o2.<span class="hljs-property">times</span><br>        <span class="hljs-keyword">var</span> max = t1 &gt; t2 ? t1 : t2<br>        <span class="hljs-keyword">var</span> result = <span class="hljs-literal">null</span><br>        <span class="hljs-keyword">switch</span> (op) &#123;<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;add&#x27;</span>:<br>                <span class="hljs-keyword">if</span> (t1 === t2) &#123; <span class="hljs-comment">// 两个小数位数相同</span><br>                    result = n1 + n2<br>                &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (t1 &gt; t2) &#123; <span class="hljs-comment">// o1 小数位 大于 o2</span><br>                    result = n1 + n2 * (t1 / t2)<br>                &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">// o1 小数位 小于 o2</span><br>                    result = n1 * (t2 / t1) + n2<br>                &#125;<br>                <span class="hljs-keyword">return</span> result / max<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;subtract&#x27;</span>:<br>                <span class="hljs-keyword">if</span> (t1 === t2) &#123;<br>                    result = n1 - n2<br>                &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (t1 &gt; t2) &#123;<br>                    result = n1 - n2 * (t1 / t2)<br>                &#125; <span class="hljs-keyword">else</span> &#123;<br>                    result = n1 * (t2 / t1) - n2<br>                &#125;<br>                <span class="hljs-keyword">return</span> result / max<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;multiply&#x27;</span>:<br>                result = (n1 * n2) / (t1 * t2)<br>                <span class="hljs-keyword">return</span> result<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;divide&#x27;</span>:<br>                result = (n1 / n2) * (t2 / t1)<br>                <span class="hljs-keyword">return</span> result<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">// 加减乘除的四个接口</span><br>    <span class="hljs-keyword">function</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">a, b, digits</span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-title function_">operation</span>(a, b, digits, <span class="hljs-string">&#x27;add&#x27;</span>)<br>    &#125;<br>    <span class="hljs-keyword">function</span> <span class="hljs-title function_">subtract</span>(<span class="hljs-params">a, b, digits</span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-title function_">operation</span>(a, b, digits, <span class="hljs-string">&#x27;subtract&#x27;</span>)<br>    &#125;<br>    <span class="hljs-keyword">function</span> <span class="hljs-title function_">multiply</span>(<span class="hljs-params">a, b, digits</span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-title function_">operation</span>(a, b, digits, <span class="hljs-string">&#x27;multiply&#x27;</span>)<br>    &#125;<br>    <span class="hljs-keyword">function</span> <span class="hljs-title function_">divide</span>(<span class="hljs-params">a, b, digits</span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-title function_">operation</span>(a, b, digits, <span class="hljs-string">&#x27;divide&#x27;</span>)<br>    &#125;<br><br>    <span class="hljs-comment">// exports</span><br>    <span class="hljs-keyword">return</span> &#123;<br>        <span class="hljs-attr">add</span>: add,<br>        <span class="hljs-attr">subtract</span>: subtract,<br>        <span class="hljs-attr">multiply</span>: multiply,<br>        <span class="hljs-attr">divide</span>: divide<br>    &#125;<br>&#125;();<br></code></pre></div></td></tr></table></figure>
+
+<p>　　如果觉得floatObj调用麻烦，我们可以在Number.prototype上添加对应的运算方法。</p>
+<p><code>参考链接：</code></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xinggood/p/6639022.html">关于js浮点数计算精度不准确问题的解决办法</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/849b0ae36b36">js中toFixed精度问题的解决办法</a></p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/VhWfR2u02Q/article/details/78237132">JavaScript 浮点数陷阱及解法</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/js/">js</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/08/06/Http-Cache.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">前端也要懂Http缓存机制</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2017/12/06/JS-Moment.html">
+                        <span class="hidden-mobile">JS时间处理插件MomentJS</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

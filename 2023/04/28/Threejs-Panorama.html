@@ -1,0 +1,705 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　我们经常会在一些景区、展厅、酒店民宿的宣传页面上，或者卖房看房网站，都能频繁的看到各种3D全景预览的网页效果，这样就可以如临其境般的看到所在场景的360度范围内的各种事物；那么，这样的效果是如何来实现的呢，本文我们就来探讨一下其中所有的技术实现细节，本文干货满满，记得点赞+收藏。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>一文掌握你所需Threejs3D全景预览 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="一文掌握你所需Threejs3D全景预览">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-04-28 13:14" pubdate>
+        2023年4月28日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      59
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">一文掌握你所需Threejs3D全景预览</h1>
+            
+            <div class="markdown-body">
+              <p>　　我们经常会在一些景区、展厅、酒店民宿的宣传页面上，或者卖房看房网站，都能频繁的看到各种3D全景预览的网页效果，这样就可以如临其境般的看到所在场景的360度范围内的各种事物；那么，这样的效果是如何来实现的呢，本文我们就来探讨一下其中所有的技术实现细节，本文干货满满，记得点赞+收藏。</p>
+<span id="more"></span>
+
+
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><blockquote>
+<p>阅读本文需要一定的Threejs基础。</p>
+</blockquote>
+<h2 id="全景素材"><a href="#全景素材" class="headerlink" title="全景素材"></a>全景素材</h2><p>　　首先什么是全景图呢？全景图是一种实景360°全方位的平面图像，需要用特殊的工具来查看才能达到360°环绕的效果，比如用我们的Threejs。</p>
+<p><img src="/images/Threejs-Panorama/panorama-photo.png" srcset="/img/loading.gif" lazyload alt="全景图"></p>
+<p>　　比如上面的这张照片，就是一张全景照片，将整个房间前后左右上下都拍摄进来，如果用肉眼看的话，整个房间弯弯曲曲的，没有什么特别的地方；那么，这样的照片是如何来拍摄的呢？</p>
+<p>　　打开你的手机相机，点击更多，里面一般会有一个全景相机的选项，然后站起身来，转一圈，你就能得到一张完整的全景图片了。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Threejs-Panorama/camera.jpg" srcset="/img/loading.gif" lazyload alt="手机拍摄全景"></p>
+<p>　　当然开个玩笑，这样拍摄，除非你的手稳定得如同工厂里的机械臂一样，并且能够保持身体的平衡；一般拍摄出来的相片只能粗略的看看即可；专业的拍摄设备需要用到单反+三脚架+云台，拍摄后还需要专业的后期处理和拼接，比较麻烦；当然我们也可以从网上一些资源下载：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://polyhaven.com/hdris">全景图下载</a></p>
+</blockquote>
+<p>　　近些年，随着个人vlog的兴起，各种消费级的拍摄设备和工具也迅速发展，全景相机、运动相机等产品不断更新迭代，已经能够带来很多非常好玩的拍摄体验了；比如这款<a target="_blank" rel="noopener" href="https://union-click.jd.com/jdc?e=618%7Cpc%7C&p=JF8BANcJK1olXwQBV1xeCkoTAF8IGloUXA8KUF9cCUknRzBQRQQlBENHFRxWFlVPRjtUBABAQlRcCEBdCUoWAmYAH1oUXAQdDRsBVXtAUDx3X1tnA2NrCB1dWA1veAoART9DUQoyVW5dCUoUB2cJGF8SbTYCU24LZksWAm4JEl4VXgIyVW5dD0IVBmgAGlsXVQcCZFldAXtHUTtBUwwlbTYBZFldAV8RcS5aD11nbTYCZF1tCEoXC2wNHlISWwEeVFpVD00UH28PElkQWg8KXVtdDEInAW4JH1IlbQ">Insta360 ONE X2</a>在拍摄时就可以选择360°全景照片模式，轻轻一按，就可以得到一张满意的全景图了。</p>
+<h2 id="Threejs封装"><a href="#Threejs封装" class="headerlink" title="Threejs封装"></a>Threejs封装</h2><p>　　要实现全景图，首先我们来对Threejs的场景布局进行一个简单的封装，引入Threejs中所需要用到的组件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123;<br>  <span class="hljs-title class_">Scene</span>,<br>  <span class="hljs-title class_">WebGLRenderer</span>,<br>  <span class="hljs-title class_">PerspectiveCamera</span>,<br>  <span class="hljs-title class_">Vector3</span>,<br>  <span class="hljs-title class_">PCFSoftShadowMap</span>,<br>  <span class="hljs-title class_">Color</span>,<br>  <span class="hljs-title class_">Clock</span>,<br>  <span class="hljs-title class_">AxesHelper</span>,<br>  <span class="hljs-title class_">LinearToneMapping</span>,<br>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;three&quot;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">Stats</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;stats.js&quot;</span>;<br><br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">OrbitControls</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;three/examples/jsm/controls/OrbitControls&quot;</span>;<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　将一些用到的默认配置定义到config中，这里将div的id设置为<code>webgl-output</code>，因此我们只需要在页面添加一个div并将id设置即可。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// 默认的配置</span><br><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">DEFAULT_CONFIG</span> = &#123;<br>  <span class="hljs-attr">domId</span>: <span class="hljs-string">&quot;webgl-output&quot;</span>,<br>  <span class="hljs-attr">initPosition</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Vector3</span>(<span class="hljs-number">20</span>, <span class="hljs-number">10</span>, <span class="hljs-number">10</span>),<br>  <span class="hljs-attr">fov</span>: <span class="hljs-number">60</span>,<br>  <span class="hljs-attr">near</span>: <span class="hljs-number">1</span>,<br>  <span class="hljs-attr">far</span>: <span class="hljs-number">10000</span>,<br>  <span class="hljs-attr">rendererOptions</span>: &#123;&#125;,<br>  <span class="hljs-comment">// 背景颜色</span><br>  <span class="hljs-attr">clearColor</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Color</span>(<span class="hljs-number">0x94959a</span>),<br>  <span class="hljs-comment">// 是否显示Stats</span><br>  <span class="hljs-attr">showStats</span>: <span class="hljs-literal">false</span>,<br>  <span class="hljs-comment">// AxesHelper</span><br>  <span class="hljs-attr">helper</span>: <span class="hljs-number">0</span>,<br>  <span class="hljs-comment">// 曝光值</span><br>  <span class="hljs-attr">exposure</span>: <span class="hljs-number">1</span>,<br>  <span class="hljs-comment">// 启用阻尼（惯性）</span><br>  <span class="hljs-attr">enableDamping</span>: <span class="hljs-literal">true</span>,<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　我们定义一个Stage父类，将业务逻辑定义到子类，继承该类即可：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Stage</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">config</span>) &#123;<br>    <span class="hljs-keyword">const</span> dConfig = <span class="hljs-variable constant_">DEFAULT_CONFIG</span>;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isObject</span>(config)) &#123;<br>      <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">assign</span>(dConfig, config);<br>    &#125;<br>    <span class="hljs-keyword">const</span> &#123; <br>        fov,<br>        near,<br>        far,<br>        initPosition,<br>        clearColor,<br>        domId,<br>        enableDamping,<br>    &#125; = dConfig;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Scene</span>();<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PerspectiveCamera</span>(fov, <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerWidth</span> / <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerHeight</span>, near, far);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>.<span class="hljs-property">position</span>.<span class="hljs-title function_">copy</span>(initPosition);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>.<span class="hljs-title function_">lookAt</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-property">position</span>);<br><br>    <span class="hljs-comment">// 开启抗锯齿</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebGLRenderer</span>(&#123; <span class="hljs-attr">antialias</span>: <span class="hljs-literal">true</span> &#125;);<br><br>    <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(domId)?.<span class="hljs-title function_">append</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-property">domElement</span>);<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">orbitControls</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">OrbitControls</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-property">domElement</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">orbitControls</span>.<span class="hljs-property">enableDamping</span> = enableDamping;<br>  &#125;<br>  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">orbitControls</span>.<span class="hljs-title function_">update</span>();<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">beforeRender</span> &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">beforeRender</span>();<br><br>    <span class="hljs-title function_">requestAnimationFrame</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">render</span>.<span class="hljs-title function_">bind</span>(<span class="hljs-variable language_">this</span>));<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-title function_">render</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里render函数每次都会周期性的执行，一些周期性的渲染都会放到这里进行处理；如果子类也需要渲染，避免命名重复，我们将子类的渲染定义到<code>beforeRender</code>函数中。</p>
+<p>　　渲染器相当于是一个画布，我们对其进行更精细的设置，开启阴影、设置背景颜色等。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// 表示启用阴影贴图，</span><br><span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-property">shadowMap</span>.<span class="hljs-property">enabled</span> = <span class="hljs-literal">true</span>;<br><span class="hljs-comment">// 并将阴影贴图类型设置为THREE.PCFSoftShadowMap</span><br><span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-property">shadowMap</span>.<span class="hljs-property">type</span> = <span class="hljs-title class_">PCFSoftShadowMap</span>;<br><span class="hljs-comment">// 从配置中设置背景颜色</span><br><span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-title function_">setClearColor</span>(clearColor);<br><span class="hljs-comment">// 设置尺寸</span><br><span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-title function_">setSize</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">innerWidth</span>, <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerHeight</span>);<br><br><span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-property">toneMapping</span> = <span class="hljs-title class_">LinearToneMapping</span>;<br><span class="hljs-comment">// 曝光值</span><br><span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-property">toneMappingExposure</span> = exposure;<br><span class="hljs-comment">// 将启用正确的物理灯光。</span><br><span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-property">physicallyCorrectLights</span> = <span class="hljs-literal">true</span>;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<p>　　在使用时Stage时，由于render函数已经被占用了，我们重新设置一个beforeRender函数，在每次render调用时调用。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Stage</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./stage&quot;</span><br><span class="hljs-keyword">import</span> &#123; onMounted &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vue&quot;</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Panorama</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Stage</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">super</span>(&#123;<br>      <span class="hljs-attr">initPosition</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Vector3</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>),<br>      <span class="hljs-attr">clearColor</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Color</span>(<span class="hljs-number">0x000000</span>),<br>    &#125;);<br>    <span class="hljs-comment">// 在render之前可以向场景中添加一些其他的元素</span><br><br>    <span class="hljs-comment">// 子类中必须在constructor构建函数的最后调用</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">render</span>();<br>  &#125;<br>  <span class="hljs-title function_">beforeRender</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 一些周期性渲染的数据放到这里处理</span><br>  &#125;<br>&#125;<br><br><span class="hljs-title function_">onMounted</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-keyword">new</span> <span class="hljs-title class_">Panorama</span>();<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　子类必须放到dom元素渲染完成后实例化。</p>
+<h2 id="场景背景"><a href="#场景背景" class="headerlink" title="场景背景"></a>场景背景</h2><p>　　将环境贴图设置到场景scene的背景也能实现全景图的功能，这种方式实现起来也是最简单的；将相机放在整个场景的中心，当相机移动时，背景图片也随之移动。</p>
+<p>　　构建一个CubeTextureLoader加载器实例，将六个面的贴图通过加载器载入，顺序为[right,left,up,down,front,back]，然后直接设置到背景即可。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> urls = [<br>    <span class="hljs-string">&quot;/images/panorama/px.jpg&quot;</span>,<br>    <span class="hljs-string">&quot;/images/panorama/nx.jpg&quot;</span>,<br>    <span class="hljs-string">&quot;/images/panorama/py.jpg&quot;</span>,<br>    <span class="hljs-string">&quot;/images/panorama/ny.jpg&quot;</span>,<br>    <span class="hljs-string">&quot;/images/panorama/pz.jpg&quot;</span>,<br>    <span class="hljs-string">&quot;/images/panorama/nz.jpg&quot;</span>,<br>];<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Panorama</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Stage</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">super</span>(&#123;<br>      <span class="hljs-attr">initPosition</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Vector3</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>),<br>      <span class="hljs-attr">clearColor</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Color</span>(<span class="hljs-number">0x000000</span>),<br>    &#125;);<br>    <span class="hljs-keyword">const</span> cubeLoader = <span class="hljs-keyword">new</span> <span class="hljs-title class_">CubeTextureLoader</span>();<br>    <span class="hljs-keyword">const</span> map = cubeLoader.<span class="hljs-title function_">load</span>(urls);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-property">background</span> = map;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-property">environment</span> = map;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">render</span>();<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+
+<p><img src="/images/Threejs-Panorama/panorama.gif" srcset="/img/loading.gif" lazyload alt="全景场景"></p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/panorama/scene">查看全景效果</a></p>
+</blockquote>
+<p>　　上面的顺序大家可能记不住，我们仔细查看px，nx的顺序会发现，是按照x、y、z轴的顺序，p表示positive正面，n表示negative反面，因此px也就是右侧了，nx就是左侧。</p>
+<p>　　这种方式相较于下面两种盒子的好处，就是实现起来简单，而且鼠标缩放不会暴露盒子的原型，不会出圈；但是缺点也明显，不能缩放查看背景的细节之处，也不能控制视角的距离，</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="全景球"><a href="#全景球" class="headerlink" title="全景球"></a>全景球</h2><p>　　全景球则是首先创建一个球形，直接将一张全景图直接作为素材贴上。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Panorama</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Stage</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">super</span>(&#123;<br>      <span class="hljs-attr">fov</span>: <span class="hljs-number">75</span>,<br>      <span class="hljs-attr">near</span>: <span class="hljs-number">1</span>,<br>      <span class="hljs-attr">far</span>: <span class="hljs-number">1100</span>,<br>      <span class="hljs-attr">initPosition</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Vector3</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>),<br>      <span class="hljs-attr">clearColor</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Color</span>(<span class="hljs-number">0x000000</span>),<br>    &#125;);<br><br>    <span class="hljs-keyword">const</span> sphereGeometry = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SphereGeometry</span>(<span class="hljs-number">500</span>, <span class="hljs-number">50</span>, <span class="hljs-number">50</span>);<br>    sphereGeometry.<span class="hljs-title function_">scale</span>(-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);<br>    <span class="hljs-keyword">const</span> sphereMaterial = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MeshBasicMaterial</span>(&#123;<br>      <span class="hljs-attr">map</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">TextureLoader</span>().<span class="hljs-title function_">load</span>(<span class="hljs-string">&quot;/images/panorama/panorama.jpg&quot;</span>),<br>    &#125;);<br><br>    <span class="hljs-keyword">const</span> sphere = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Mesh</span>(sphereGeometry, sphereMaterial);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(sphere);<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">render</span>();<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　这里我们将球的半径设置为500，如果太小了，缩放时也会出圈；这里的<code>sphereGeometry.scale(-1, 1, 1)</code>其实相当于<code>sphereGeometry.scale.x = -1</code>，将贴图沿着x轴进行翻转。</p>
+<blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/panorama/sphere">查看全景球效果</a></p>
+</blockquote>
+<p>　　全景球的方式只能用全景图，一般全景图的大小都达到几兆甚至几十兆，因此实际使用时需要对图片进行压缩；或者通过先加载一张模糊图再加载高清图的方式，加载两张图片来避免用户长时间等待，因此这种方式对网络有一定的要求。</p>
+<h2 id="天空盒"><a href="#天空盒" class="headerlink" title="天空盒"></a>天空盒</h2><p>　　天空盒的思路和上面全景球相同，只不过将SphereGeometry球形换成了BoxGeometry正方形；贴图也由一张全景图，变成了盒子六个面的贴图；六个面的贴图相较于一张全景图，可以利用浏览器的并行加载能力，提高加载速度。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> urls = [<br>  <span class="hljs-string">&quot;/images/panorama/cubemap/px.png&quot;</span>,<br>  <span class="hljs-string">&quot;/images/panorama/cubemap/nx.png&quot;</span>,<br>  <span class="hljs-string">&quot;/images/panorama/cubemap/py.png&quot;</span>,<br>  <span class="hljs-string">&quot;/images/panorama/cubemap/ny.png&quot;</span>,<br>  <span class="hljs-string">&quot;/images/panorama/cubemap/pz.png&quot;</span>,<br>  <span class="hljs-string">&quot;/images/panorama/cubemap/nz.png&quot;</span>,<br>];<br><br><span class="hljs-keyword">const</span> materialArr = [];<br><span class="hljs-keyword">const</span> textureLoader = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TextureLoader</span>();<br><br>urls.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> material = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MeshBasicMaterial</span>(&#123;<br>    <span class="hljs-attr">map</span>: textureLoader.<span class="hljs-title function_">load</span>(item),<br>  &#125;);<br>  materialArr.<span class="hljs-title function_">push</span>(material);<br>&#125;);<br><span class="hljs-keyword">var</span> box = <span class="hljs-keyword">new</span> <span class="hljs-title class_">BoxGeometry</span>(<span class="hljs-number">500</span>, <span class="hljs-number">500</span>, <span class="hljs-number">500</span>);<br><span class="hljs-keyword">var</span> mesh = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Mesh</span>(box, materialArr);<br>mesh.<span class="hljs-property">geometry</span>.<span class="hljs-title function_">scale</span>(-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);<br><br><span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(mesh);<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　整体的思路和上面两种方式有些类似，只不过Mesh传参的材质由原来的一个材质变成了材质数组；然后还是将mesh对象沿X轴进行翻转。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/panorama">查看天空盒效果</a></p>
+</blockquote>
+<h1 id="导航标签"><a href="#导航标签" class="headerlink" title="导航标签"></a>导航标签</h1><p>　　环境搭建好之后，我们会看到有一些网站上，物体周围有一些可点击的悬浮标签，或者鼠标悬浮后有一些提示的文案，这种导航标签是如何来实现的呢？这里就需要介绍一下Threejs的精灵对象Sprite，它是一个永远面向相机的平面，我们通常用它来显示一些标签；我们看下他的构造函数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title class_">Sprite</span>(<span class="hljs-attr">material</span>: <span class="hljs-title class_">Material</span>)<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里的material是SpriteMaterial的一个实例，也就是将材质传进来，我们来看下具体的用法</p>
+<h2 id="添加锚点"><a href="#添加锚点" class="headerlink" title="添加锚点"></a>添加锚点</h2><p>　　我们首先定义好锚点的数据，在哪些位置需要标注的，这一步也可以利用<code>dat.gui</code>不断调整XYZ轴的位置：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> posList = [<br>  &#123;<br>    <span class="hljs-attr">x</span>: -<span class="hljs-number">5</span>,<br>    <span class="hljs-attr">y</span>: -<span class="hljs-number">4</span>,<br>    <span class="hljs-attr">z</span>: -<span class="hljs-number">14</span>,<br>    <span class="hljs-attr">content</span>: <span class="hljs-string">&quot;床&quot;</span>,<br>  &#125;,<br>  &#123;<br>    <span class="hljs-attr">x</span>: -<span class="hljs-number">20</span>,<br>    <span class="hljs-attr">y</span>: -<span class="hljs-number">5</span>,<br>    <span class="hljs-attr">z</span>: -<span class="hljs-number">9</span>,<br>    <span class="hljs-attr">content</span>: <span class="hljs-string">&quot;沙发&quot;</span>,<br>  &#125;,<br>  &#123;<br>    <span class="hljs-attr">x</span>: <span class="hljs-number">10</span>,<br>    <span class="hljs-attr">y</span>: -<span class="hljs-number">6</span>,<br>    <span class="hljs-attr">z</span>: <span class="hljs-number">12</span>,<br>    <span class="hljs-attr">content</span>: <span class="hljs-string">&quot;冰箱&quot;</span>,<br>  &#125;,<br>];<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　从上面的构造函数看出Sprite的构建不需要几何图形，如果是没有任何文案的简单锚点，我们可以将一张png图片设置为精灵材质SpriteMaterial的贴图，然后循环构建多个Sprite添加到场景中去。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> spriteMaterial = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SpriteMaterial</span>(&#123; <br>  <span class="hljs-attr">map</span>: textureLoader.<span class="hljs-title function_">load</span>(<span class="hljs-string">&quot;/images/icon/position.png&quot;</span>) <br>&#125;);<br>posList.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> &#123; x, y, z &#125; = item;<br>  <span class="hljs-keyword">const</span> sprite = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Sprite</span>(spriteMaterial);<br>  sprite.<span class="hljs-property">position</span>.<span class="hljs-title function_">set</span>(x, y, z);<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(sprite);<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样就能看到多个锚点固定漂浮在某个位置了。</p>
+<p><img src="/images/Threejs-Panorama/anchor.gif" srcset="/img/loading.gif" lazyload alt="锚点漂浮"></p>
+<h2 id="锚点文字"><a href="#锚点文字" class="headerlink" title="锚点文字"></a>锚点文字</h2><p>　　我们还会看到一些锚点旁边有文案标识，事情就开始变得复杂起来了；由于Threejs中不能添加div，因此我们有两种方式可以来实现这样的效果；首先是使用canvas绘制文字，并作为纹理设置为SpriteMaterial的map属性。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">createSpriteLabel</span> = (<span class="hljs-params">txt, x, y, z</span>) =&gt; &#123;<br>  <span class="hljs-keyword">const</span> canvas = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&quot;canvas&quot;</span>);<br>  canvas.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&quot;width&quot;</span>, <span class="hljs-string">&quot;286px&quot;</span>);<br>  canvas.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&quot;height&quot;</span>, <span class="hljs-string">&quot;112px&quot;</span>);<br>  <span class="hljs-keyword">const</span> ctx = canvas.<span class="hljs-title function_">getContext</span>(<span class="hljs-string">&quot;2d&quot;</span>);<br>  ctx.<span class="hljs-property">fillStyle</span> = <span class="hljs-string">&quot;#FF0000&quot;</span>;<br>  ctx.<span class="hljs-property">lineWidth</span> = <span class="hljs-number">4</span>;<br><br>  <span class="hljs-keyword">const</span> textMetrics = ctx.<span class="hljs-title function_">measureText</span>(txt);<br><br>  ctx.<span class="hljs-title function_">fillText</span>(txt, (canvas.<span class="hljs-property">width</span> - textMetrics.<span class="hljs-property">width</span>) / <span class="hljs-number">2</span>, <span class="hljs-number">55</span>);<br><br>  <span class="hljs-keyword">const</span> texture = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Texture</span>(canvas);<br>  texture.<span class="hljs-property">needsUpdate</span> = <span class="hljs-literal">true</span>;<br><br>  <span class="hljs-keyword">const</span> spriteMaterial = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SpriteMaterial</span>(&#123;<br>    <span class="hljs-attr">map</span>: texture,<br>  &#125;);<br>  <span class="hljs-keyword">const</span> sp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Sprite</span>(spriteMaterial);<br>  sp.<span class="hljs-property">scale</span>.<span class="hljs-title function_">set</span>(<span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>);<br>  sp.<span class="hljs-property">position</span>.<span class="hljs-title function_">set</span>(x, y, z);<br>  <span class="hljs-keyword">return</span> sp;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们创建一个canvas画布，设置画笔的颜色粗细，然后绘制文案，将canvas传入Texture，然后作为map属性构建了SpriteMaterial。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<blockquote>
+<p>canvas的方式一般用来画图形简单、内容格式较为固定的Sprite标签。</p>
+</blockquote>
+<p>　　另一种方式就是使用CSS2DRenderer（CSS 2D渲染器），这个组件听着非常高深，其实来说很简单，就是在页面最外层插入一个div，然后将我们所需要的渲染dom节点插入到这个div中，渲染我们熟悉的HTML元素；当相机旋转时，实时更新每个dom节点的位置即可；同时场景放大缩小时，不会缩放标签的大小，可以触发DOM点击事件；我们如果打开开发者工具查看，可以看到body最下面有一个div，嵌套了多个子标签。</p>
+<p><img src="/images/Threejs-Panorama/source.png" srcset="/img/loading.gif" lazyload alt="CSS2DRenderer渲染"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; <br>  <span class="hljs-title class_">CSS2DRenderer</span>,<br>  <span class="hljs-title class_">CSS2DObject</span><br>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;three/examples/jsm/renderers/CSS2DRenderer&quot;</span>;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　CSS2DRenderer是Threejs提供的扩展库，我们需要额外从渲染器的包中引入CSS2DRenderer和它的模型对象CSS2DObject；由于要新建一个渲染器，我们对封装的Stage类进行改造，</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Stage</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">config</span>) &#123;<br><br>    <span class="hljs-comment">// ...其他代码</span><br>    <span class="hljs-comment">//新建CSS2DRenderer</span><br>    <span class="hljs-keyword">const</span> labelRenderer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">CSS2DRenderer</span>();<br>    labelRenderer.<span class="hljs-title function_">setSize</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">innerWidth</span>, <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerHeight</span>);<br>    labelRenderer.<span class="hljs-property">domElement</span>.<span class="hljs-property">style</span>.<span class="hljs-property">position</span> = <span class="hljs-string">&quot;absolute&quot;</span>;<br>    labelRenderer.<span class="hljs-property">domElement</span>.<span class="hljs-property">style</span>.<span class="hljs-property">top</span> = <span class="hljs-number">0</span>;<br>    labelRenderer.<span class="hljs-property">domElement</span>.<span class="hljs-property">style</span>.<span class="hljs-property">left</span> = <span class="hljs-number">0</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">labelRenderer</span> = labelRenderer;<br><br>    <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">appendChild</span>(labelRenderer.<span class="hljs-property">domElement</span>);<br><br><br>    <span class="hljs-comment">// 将轨道控制器的渲染器从renderer改成labelRenderer</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">orbitControls</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">OrbitControls</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">labelRenderer</span>.<span class="hljs-property">domElement</span>);<br>  &#125;<br>  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-title function_">render</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>);<br>    <span class="hljs-comment">// 这里要添加CSS2DRenderer的渲染</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">labelRenderer</span>.<span class="hljs-title function_">render</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　CSS2DRenderer渲染器和WebGLRenderer有些类似，也都有setSize和render方法，我们需要把实例化的domElement添加到body中来；CSS2DRenderer也需要实时更新，因此我们也需要在render函数中对其进行渲染</p>
+<p>　　我们还是和上面的Sprite锚点一样，循环创建div标签，添加到场景scene中；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">createLableObj</span>(<span class="hljs-params">text, x, y, z</span>) &#123;<br>  <span class="hljs-keyword">let</span> laberDiv = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&quot;div&quot;</span>); <span class="hljs-comment">//创建div容器</span><br>  laberDiv.<span class="hljs-property">className</span> = <span class="hljs-string">&quot;laber_name&quot;</span>;<br>  laberDiv.<span class="hljs-property">innerHTML</span> = text;<br>  laberDiv.<span class="hljs-property">style</span>.<span class="hljs-property">color</span> = <span class="hljs-string">&quot;#F4EA2A&quot;</span>;<br>  laberDiv.<span class="hljs-property">style</span>.<span class="hljs-property">fontSize</span> = <span class="hljs-string">&quot;30px&quot;</span>;<br>  laberDiv.<span class="hljs-property">style</span>.<span class="hljs-property">background</span> = <span class="hljs-string">&quot;url(/images/icon/position.png) no-repeat&quot;</span>;<br>  laberDiv.<span class="hljs-property">style</span>.<span class="hljs-property">cursor</span> = <span class="hljs-string">&quot;pointer&quot;</span>;<br><br>  <span class="hljs-keyword">let</span> pointLabel = <span class="hljs-keyword">new</span> <span class="hljs-title class_">CSS2DObject</span>(laberDiv);<br>  pointLabel.<span class="hljs-property">position</span>.<span class="hljs-title function_">set</span>(x, y, z);<br>  <span class="hljs-keyword">return</span> pointLabel;<br>&#125;<br><br>posList.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> &#123; x, y, z, content &#125; = item;<br>  <span class="hljs-keyword">const</span> label = <span class="hljs-title function_">createLableObj</span>(content, x, y, z);<br><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(label);<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/panorama/2d">查看标签效果</a></p>
+</blockquote>
+<p>　　我们发现，上面创建完div后，通过div标签创建了CSS2DObject的实例对象，然后设置XYZ轴坐标；这个对象的作用就是将Threejs中的坐标与屏幕的坐标进行转换，进行实时的渲染。</p>
+<p><img src="/images/Threejs-Panorama/label.gif" srcset="/img/loading.gif" lazyload alt="标签效果"></p>
+<h2 id="锚点触发事件"><a href="#锚点触发事件" class="headerlink" title="锚点触发事件"></a>锚点触发事件</h2><p>　　锚点加上后，我们需要对其进行触发事件的绑定，如果使用CSS2DRenderer渲染器的方式，由于是dom元素，我们直接给元素绑定原生事件即可：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// 创建div容器</span><br><span class="hljs-keyword">const</span> laberDiv = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&quot;div&quot;</span>);<br><span class="hljs-comment">// 绑定点击事件</span><br>laberDiv.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;click&quot;</span>, <span class="hljs-function">(<span class="hljs-params">ev</span>) =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;ev&quot;</span>, ev);<br>&#125;);<br><span class="hljs-comment">// 绑定悬浮事件</span><br>laberDiv.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;mouseover&quot;</span>, <span class="hljs-function">(<span class="hljs-params">ev</span>) =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;ev&quot;</span>, ev);<br>&#125;);<br><span class="hljs-keyword">const</span> pointLabel = <span class="hljs-keyword">new</span> <span class="hljs-title class_">CSS2DObject</span>(laberDiv);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们可以进行后续的业务逻辑，比如场景切换了，或者弹框展示详细信息等；而使用Sprite，由于所有的物体都在Threejs的场景中，我们不能简单的利用绑定点击事件来触发，Sprite也没有addEventListener事件。</p>
+<p>　　因此用到一个光线投射类：Raycaster，这个类用于进行鼠标拾取，也就是在三维空间中计算出鼠标移动或点击时，划过了什么物体。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　它的原理是从鼠标处发射一条射线，穿过场景中的物体，通过计算，找出与射线相交的物体，因此这种方法也叫<code>射线追踪法</code>；我们来看下它的一个用法，</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Panorama</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Stage</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">raycaster</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Raycaster</span>();<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">mouse</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Vector2</span>();<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">list</span> = [];<br>    posList.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">list</span>.<span class="hljs-title function_">push</span>(sprite);<br>    &#125;)<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　我们实例化Raycaster，新建一个二维的点mouse，这个点下面会用来存储鼠标移动的二维坐标；然后将Sprite放到数组list中，用于Raycaster检测照射到了场景中的哪些物体；当然我们下面也能照射整个场景scene.children下的所有物体，但是有一些物体不是我们想要的，需要额外的判断，因此可以将需要照射物体存到数组中来。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Panorama</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Stage</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">_pointerMove</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">pointerMove</span>.<span class="hljs-title function_">bind</span>(<span class="hljs-variable language_">this</span>);<br><br>    <span class="hljs-comment">// 鼠标移动绑定事件</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-property">domElement</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;mousemove&quot;</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">_pointerMove</span>);<br>  &#125;<br>  <span class="hljs-title function_">pointerMove</span>(<span class="hljs-params">event</span>) &#123;<br>    <span class="hljs-comment">// 将鼠标位置归一化为设备坐标。x 和 y 方向的取值范围是 (-1 to +1)</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">mouse</span>.<span class="hljs-property">x</span> = (event.<span class="hljs-property">clientX</span> / <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerWidth</span>) * <span class="hljs-number">2</span> - <span class="hljs-number">1</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">mouse</span>.<span class="hljs-property">y</span> = -(event.<span class="hljs-property">clientY</span> / <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerHeight</span>) * <span class="hljs-number">2</span> + <span class="hljs-number">1</span>;<br><br><br>    <span class="hljs-comment">// 通过摄像机和鼠标位置更新射线</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">raycaster</span>.<span class="hljs-title function_">setFromCamera</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">mouse</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>);<br><br>    <span class="hljs-keyword">const</span> intersects = <span class="hljs-variable language_">this</span>.<span class="hljs-property">raycaster</span>.<span class="hljs-title function_">intersectObjects</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">list</span>);<br>    <span class="hljs-keyword">if</span> (intersects.<span class="hljs-property">length</span>) &#123;<br>      <span class="hljs-comment">// 后续业务逻辑</span><br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;intersects&quot;</span>, intersects);<br>    &#125;<br>  &#125;<br>  <span class="hljs-title function_">beforeDestroy</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-property">domElement</span>.<span class="hljs-title function_">removeEventListener</span>(<span class="hljs-string">&quot;mousemove&quot;</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">_pointerMove</span>);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们详细看下这里的逻辑，首先通过event来计算mouse的XY轴坐标，由于setFromCamera需要归一化的坐标值，因此我们计算时将其处理为[-1, 1]范围内的值。setFromCamera方法通过摄像机和鼠标位置更新射线，接收mouse和camera对象；更新射线后就可以使用intersectObject函数来拾取对象了，接收的intersects数组就是拾取到的Mesh合集。</p>
+<p>　　我们发现Sprite和CSS2DRenderer两种方式各有利弊，Sprite虽然添加元素方便，但是canvas绘制图形比较麻烦，同时触发事件也繁琐；而CSS2DRenderer添加元素较为复杂，需要用到一系列原生属性，但是触发事件方便，具体使用哪种方式，还需要结合业务场景，选择合适的方式。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h1 id="场景动画"><a href="#场景动画" class="headerlink" title="场景动画"></a>场景动画</h1><p>　　我们有时候会看到这样的俯视效果的场景动画，那么这种效果是如何来实现的呢？</p>
+<p><img src="/images/Threejs-Panorama/animation.gif" srcset="/img/loading.gif" lazyload alt="场景动画"></p>
+<p>　　首先这种效果就需要用到全景球的SphereGeometry球形，然后将摄像机的位置放到球体的最顶部。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Panorama</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Stage</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">super</span>(&#123;<br>      <span class="hljs-comment">// 视角</span><br>      <span class="hljs-attr">fov</span>: <span class="hljs-number">100</span>,<br>      <span class="hljs-attr">near</span>: <span class="hljs-number">1</span>,<br>      <span class="hljs-attr">far</span>: <span class="hljs-number">10000</span>,<br>      <span class="hljs-comment">// 初始位置</span><br>      <span class="hljs-attr">initPosition</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Vector3</span>(<span class="hljs-number">0</span>, <span class="hljs-number">500</span>, <span class="hljs-number">0</span>),<br>      <span class="hljs-attr">clearColor</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Color</span>(<span class="hljs-number">0x000000</span>),<br>    &#125;);<br><br>    <span class="hljs-comment">// 球体半径为500</span><br>    <span class="hljs-keyword">const</span> sphereGeometry = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SphereGeometry</span>(<span class="hljs-number">500</span>, <span class="hljs-number">50</span>, <span class="hljs-number">50</span>);<br>    sphereGeometry.<span class="hljs-property">scale</span>.<span class="hljs-property">x</span> = -<span class="hljs-number">1</span>;<br><br>    <span class="hljs-keyword">const</span> sphereMaterial = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MeshBasicMaterial</span>(&#123;<br>      <span class="hljs-attr">map</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">TextureLoader</span>().<span class="hljs-title function_">load</span>(<span class="hljs-string">&quot;/images/panorama/simons_town_harbour.jpg&quot;</span>),<br>    &#125;);<br><br>    <span class="hljs-keyword">const</span> sphere = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Mesh</span>(sphereGeometry, sphereMaterial);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">sphere</span> = sphere;<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(sphere);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　我们这里将<code>initPosition</code>，也就是摄像机的初始位置，放到了Y轴500的位置，由于球体的半径也是500，因此就位于球体内部的最顶上，接下来我们只需要将摄像机的位置缓慢下移就可以。</p>
+<p>　　这里引入一个补间动画库tween.js，让我们可以用平滑的方式更改对象的属性，只需要告诉它初始值、最终值以及所需要花费的时间，在这段时间里，tween.js会帮我们自动计算出每个时间点，应该设置为什么样的值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Tween</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tweenjs/tween.js&quot;</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Panorama</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Stage</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">animateCamera</span>();<br>    &#125;, <span class="hljs-number">1.5</span> * <span class="hljs-number">1000</span>);<br>  &#125;<br>  <span class="hljs-title function_">animateCamera</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 创建一个初始化位置</span><br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">Tween</span>.<span class="hljs-title class_">Tween</span>(&#123;<br>      <span class="hljs-attr">y</span>: <span class="hljs-number">500</span>,<br>    &#125;)<br>    <span class="hljs-comment">// 移动结束的位置</span><br>    .<span class="hljs-title function_">to</span>(&#123;<br>        <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>,<br>      &#125;, <span class="hljs-number">4000</span>)<br>      .<span class="hljs-title function_">onUpdate</span>(<span class="hljs-function">(<span class="hljs-params">pos</span>) =&gt;</span> &#123;<br>        <span class="hljs-comment">// 每次更新</span><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>.<span class="hljs-property">position</span>.<span class="hljs-property">y</span> = pos.<span class="hljs-property">y</span>;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>.<span class="hljs-title function_">updateProjectionMatrix</span>();<br>      &#125;)<br>      .<span class="hljs-title function_">start</span>();<br>  &#125;<br>  <span class="hljs-title function_">beforeRender</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-title class_">Tween</span>.<span class="hljs-title function_">update</span>();<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　它的用法也很简单，这里通过链式调用，创建一个Tween对象，设置y的结束位置和动画时间4000毫秒；在onUpdate函数中，设置每次更新后的y实时数值，最后调用start函数激活tween。需要注意的是，还要在render函数中调用<code>Tween.update</code>更新。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Tween</span>.<span class="hljs-title class_">Tween</span>(&#123;<br>  <span class="hljs-attr">y</span>: <span class="hljs-number">500</span>,<br>  <span class="hljs-attr">fov</span>: <span class="hljs-number">100</span>,<br>  <span class="hljs-attr">z</span>: <span class="hljs-number">0</span>,<br>  &#125;)<br>  .<span class="hljs-title function_">to</span>(<br>    &#123;<br>      <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>,<br>      <span class="hljs-attr">fov</span>: <span class="hljs-number">70</span>,<br>      <span class="hljs-attr">z</span>: -<span class="hljs-number">200</span>,<br>    &#125;,<br>    <span class="hljs-number">4000</span>,<br>  )<br>  .<span class="hljs-title function_">onUpdate</span>(<span class="hljs-function">(<span class="hljs-params">pos</span>) =&gt;</span> &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>.<span class="hljs-property">position</span>.<span class="hljs-property">y</span> = pos.<span class="hljs-property">y</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>.<span class="hljs-title function_">updateProjectionMatrix</span>();<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>.<span class="hljs-property">fov</span> = pos.<span class="hljs-property">fov</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>.<span class="hljs-title function_">lookAt</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Vector3</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, pos.<span class="hljs-property">z</span>));<br>    <span class="hljs-comment">// 镜头下降时旋转</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">sphere</span>.<span class="hljs-property">rotation</span>.<span class="hljs-property">y</span> += <span class="hljs-number">0.006</span>;<br>  &#125;)<br>  .<span class="hljs-title function_">start</span>();<br></code></pre></div></td></tr></table></figure>
+
+<p>　　当然这样的镜头最后会比较生硬，我们还可以调用摄像头的lookAt，当镜头下降时，逐渐看向远方；初始化也设置一个大的广角fov为100，当镜头下降时，缩小fov的值，这样效果过渡的更加自然。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/panorama/outdoor">查看场景动画效果</a></p>
+</blockquote>
+
+            </div>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+            <hr>
+            <div>
+              
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script><div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Animation/">动画</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Threejs/">Threejs</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Graphical/">图形化</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/08/11/Chrome-Plugin-Practise.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Chrome插件实战开发</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/04/14/GSAP-Practise.html">
+                        <span class="hidden-mobile">GSAP实战仿荣耀官网的页面滚动效果</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

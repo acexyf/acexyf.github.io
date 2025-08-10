@@ -1,0 +1,707 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　最近随着ChatGPT爆火出圈，网络上各种关于ChatGPT的争论声也不断；有些人把它当成一个更高级的聊天机器人，有人兴奋地看到了创业的风口，而另一些人对它取代人类的工作露出了不少担忧；那么它到底是推动社会不断前进的工具，还是妄图颠覆人类社会的T-1000？本文我们来深入的探讨一下ChatGPT的那些事。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>ChatGPT的狂飙之路 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="ChatGPT的狂飙之路">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-03-07 20:00" pubdate>
+        2023年3月7日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      61
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ChatGPT的狂飙之路</h1>
+            
+            <div class="markdown-body">
+              <p>　　最近随着ChatGPT爆火出圈，网络上各种关于ChatGPT的争论声也不断；有些人把它当成一个更高级的聊天机器人，有人兴奋地看到了创业的风口，而另一些人对它取代人类的工作露出了不少担忧；那么它到底是推动社会不断前进的工具，还是妄图颠覆人类社会的T-1000？本文我们来深入的探讨一下ChatGPT的那些事。</p>
+<span id="more"></span>
+
+
+<p>　　当我们在谈论ChatGPT时，讨论的是聊天的欣喜，是失业的担忧，是未来的憧憬。</p>
+<h1 id="发展历程"><a href="#发展历程" class="headerlink" title="发展历程"></a>发展历程</h1><p>　　ChatGPT看似好像是在一夜之间突然火起来，但其实它并不是一个什么新鲜的概念，最早的人工智能可以追溯到1950年，艾伦·图灵(Alan Turing)发表了具有里程碑意义的论文<code>《计算机器与智能》</code>，又名《机器能思考吗？》，在这篇论文里，第一次提出了很有哲学的概念：<code>模仿游戏</code>，也正是我们所熟知的大名鼎鼎的图灵测试，正是这篇文章为图灵赢得了人工智能之父的桂冠。</p>
+<p>　　图灵测试就是将测试人和被测试者（一台机器或者人），在没有面对面的情况下，让测试者通过一些测试装置（例如键盘）像被提问者发问，如果被测试者超过30%的答复，不能使测试人确认出哪个是人、哪个是机器的回答，那么这台机器就通过了测试；这样的机器也被称为图灵机，图灵机也只是一个设想，并不是真正的机器。</p>
+<p><img src="/images/Whatis-Chatgpt/test.jpg" srcset="/img/loading.gif" lazyload alt="图灵测试"></p>
+<p>　　其实我们发现图灵测试并没有对人工智能进行直接的定义，什么样才算是人工智能；而是反其道而行之，并没有拘泥于繁杂的过程，以结果为导向，达到什么样的结果（欺骗到测试人），才算是人工智能；我们有时候在处理棘手问题时也可以换个思路，以结果为起点对问题进行拆解。</p>
+<p>　　在传记电影<code>《模仿游戏》</code>中，也对这位孤独的天才提出的设想进行了描绘，当图灵被警探关到审讯室时，警探提出了一个意味深长的问题：机器能思考吗？图灵就提出了玩一个游戏（正是图灵测试）；最终图灵露出了笑容，他感觉到警探理解了游戏规则。</p>
+<p><img src="/images/Whatis-Chatgpt/imitate.jpg" srcset="/img/loading.gif" lazyload alt="电影模仿游戏"></p>
+<h2 id="模式匹配阶段"><a href="#模式匹配阶段" class="headerlink" title="模式匹配阶段"></a>模式匹配阶段</h2><p>　　在图灵测试被提出后，很多科学家和实验室也向这个测试发起了冲击；在1966年，MIT实验室诞生了一个真正意义上的聊天机器人Eliza，它的定位是一名心理治疗师。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Whatis-Chatgpt/eliza.jpg" srcset="/img/loading.gif" lazyload alt="Eliza"></p>
+<p>　　Eliza主要的策略就是提出问题，并重新表述用户说的话，引导用户多描述问题。比如你告诉它：我今天有点头疼（headache），它就会告诉你头疼就去咨询医生用药；如果你说今天有点很沮丧（depressed），然后它就会说听说你不开心，表示很难过；如果你又说我妈妈（mother）照顾我，它会问你家里还有谁来照顾你。</p>
+<p>　　Eliza通过关键词匹配规则对输入进行分解，而后根据分解规则所对应的重组规则来生成回复；通俗点说就是抓取句子中的关键字，比如发现句子中有<code>妈妈</code>这个关键词，她就会说：跟我说说你的家庭；其实它的背后就是很多的if/else代码。</p>
+<p>　　到了1995年，受到Eliza的启发，理查德·华勒斯开发了一个聊天机器人Alice，并于1998年开源；Alice的技术原理主要是基于自然语言处理，它的目的是模仿人类的自然语言，与用户进行有意义的对话。它可以回答关于天气、新闻、体育等各种话题的问题，还可以与用户进行有趣的聊天。 </p>
+<p><img src="/images/Whatis-Chatgpt/alice.png" srcset="/img/loading.gif" lazyload alt="Alice"></p>
+<p>　　不过目前阶段，无论是Eliza还是Alice，他们的原理都是基于模式匹配（Pattern Matching），通过提取关键词，调用预先设好的文本进行回复。</p>
+<p>　　这些对话机器人虽然能够进行简单的语言交互，但是对语句缺乏深度的理解和推理能力，很难和人类的对话水平相比。</p>
+<p>　　但这种模式也并不是一无是处，可以避免很多重复性的工作，反而在我们身边也很常见。比如常见的购物网站、银行网站或App等，进入聊天界面先给你来一个热情的聊天机器人，巴拉巴拉罗列一堆关键词咨询你想干嘛。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="机器学习模式"><a href="#机器学习模式" class="headerlink" title="机器学习模式"></a>机器学习模式</h2><p>　　上面我们也说到了，模式匹配的方式就算if/else代码写的再多，但是机器还是不能理解句子的真正含义，只是简单的回复，因此出现了一个新的模式，也就是：<a target="_blank" rel="noopener" href="https://union-click.jd.com/jdc?e=618%7Cpc%7C&p=JF8BANIJK1olXwUFU1xdCE4TBl8IGF0SXgEEVm4ZVxNJXF9RXh5UHw0cSgYYXBcIWDoXSQVJQwYBUlleD00VHDZNRwYlK0QHNSAYEg9ycytdE1NvGm4EDgUhaEcbM244G1oUXgIKVV1ZD3snA2g4STXN67Da8e9B3OGY1uefK1olXQEEXVdZAUkUAG8KE2sSXQ8yBAwJQQNAM184GGsSXQ8WUiwcWl8RcV84G2sWbQYDVFZdCU8TA24AB1sUWQUKU0JdD00eCmsBGVsRWgMDZFxcCU8eM18">机器学习</a>。</p>
+<p><img src="/images/Whatis-Chatgpt/machine-learning.jpeg" srcset="/img/loading.gif" lazyload alt="机器学习"></p>
+<p>　　顾名思义，就是不进行人为的规定问题和答案，而是给机器一堆现成的案例，让机器来进行学习，这种方式也更加符合人类学习的认知规律。</p>
+<p>　　这个阶段比较出名的就是SmarterChild（更聪明的小孩），它是ActiveBuddy股份有限公司于2001年开发，该聊天机器人用在了老牌即时通讯AIM，能够进行有趣的对话并快速访问其他服务的数据，比如天气、股票和电影数据；你甚至可以责骂它、刁难它，它似乎总是知道如何来应对。</p>
+<p>　　SmarterChild也是最早集成到即时通讯平台的聊天机器人之一，在当时迅速引起了轰动，有3000多万用户在使用它；后来于2006年被微软收购，也被应用到了MSN Messenger上。</p>
+<p><img src="/images/Whatis-Chatgpt/smarterchild.png" srcset="/img/loading.gif" lazyload alt="SmarterChild"></p>
+<p>　　不过SmarterChild后，聊天机器人被遗弃了好几年，微软也关闭了SmarterChild的高科技部门。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　2010年随着机器学习中的一个领域<a target="_blank" rel="noopener" href="https://union-click.jd.com/jdc?e=618%7Cpc%7C&p=JF8BANIJK1olXwUFU1xdCE4TBl8IGFIRXQUKV24ZVxNJXF9RXh5UHw0cSgYYXBcIWDoXSQVJQwYBXVpdC0MUHDZNRwYlBw90BwAHYUx0Ymh3QFhBPnoEJiIeTkcbM244G1oUXgIKVV1ZD3snA2g4STXN67Da8e9B3OGY1uefK1olXQEEXVdZAU4SAWkAG2sSXQ8yBAwJQQNAM184GGsSXQ8WUiwcWl8RcV84G2sWbQYDVFZeDUwTAWgJB1sVXg4LUUJdD00eCmsBHlgQXQELZFxcCU8eM18">人工神经网络</a>（Artificial Neural Networks简称ANNs）的爆发，人工智能迎来了空前的发展。</p>
+<p>　　它的灵感来源于生物学，初中生物课本中我们学到过，动物的神经网络能够处理大量复杂的信息，就是通过大约1000亿个神经元彼此连接来执行功能；人工神经网络要做的就是模拟大脑中的基本单元：神经元。</p>
+<p><img src="/images/Whatis-Chatgpt/unit.png" srcset="/img/loading.gif" lazyload alt="人工神经网络"></p>
+<p>　　人工神经网络看起来很厉害，其实本质上就是一个不断的<code>提取特征的过程</code>，跟我们小时候学会认知事物很相似，就是找不同事物的特征；人工神经网络在得到一串样本数据后，也是通过学习提取所观察事物各部分的特征，将特征之间进行关联，再经过反复的训练，最后输出得到正确的答案。</p>
+<p>　　通过这个过程，我们也能发现，人工神经网络需要海量的数据训练和强大的计算能力支撑；随着互联网的快速发展，大量的数据集也不再是问题。</p>
+<p>　　Siri成立于2007年，2010年被苹果以2亿美金收购，最初也是以文字聊天为主，随后与全球最大的语音识别厂商Nuance合作，Siri实现了语音识别的功能，并于2011年在iPhone 4S上首次亮相，在当时引发轰动，iPhone 4S也成为了一代神机。</p>
+<p>　　Siri识别你的声音使用的就是深度卷积网络，也是人工神经网络的一种；<a target="_blank" rel="noopener" href="https://union-click.jd.com/jdc?e=618%7Cpc%7C&p=JF8BAM4JK1olXDYCVV9cDUwWBm0JHlIlGVlaCgFtUQ5SQi0DBUVNGFJeSwUIFxlJX3EIGloUWAEDUVxcDUIIWipURmtpPVUGCBxDUCgfQxMNXjl0NEULKlwtBEcnAl8IGloWWQ4DV1paOHsXBF9edVsUXAcDVV9dC00nAl8IHF0cVAEFUVdaDk8XM2gIEmtFD1JLHAltOHsUM2gIEk8TL0dQQFgvOHsXM2w4G1oVVQQDVl1dD0kLA28OHFIXQQYFUldUD0wSBGsBH14lXwcDUFdtOA">iPhone</a>中专门有一个低功耗的处理器来运行这个神经网络，当相似度达到一定的阈值，就会启动Siri。</p>
+<blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>Siri的推出也标志着聊天机器人技术进入了一个新的时代，</p>
+</blockquote>
+<p><img src="/images/Whatis-Chatgpt/siri.jpg" srcset="/img/loading.gif" lazyload alt="Siri在官网宣传"></p>
+<p>　　时间来到了2017年，谷歌在<code>《Attention is all you need》</code>一文中发布了一个新的机器学习模型：<code>Transformer模型</code>，该模型主要用于克服机器翻译中传统网络训练时间过长，难以较好实现并行计算的问题。</p>
+<p>　　传统的自然语言处理（例如语音识别、语言建模、机器翻译）依赖于循环神经网络（Recurrent Neural Network, RNN），利用循环进行顺序操作，也就是一个字一个字的学习，有着训练时间过长、难以并行计算的缺点。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　而Transformer模型抛弃了传统的时序结构，并行处理序列中的所有单词或符号，同时利用自注意力机制将上下文与较远的单词结合起来；这就相当于学渣还在一个字一个字看书时，学霸已经一目十行，几个段落都看完了，这学习效率自然就杠杠的。</p>
+<blockquote>
+<p>微软的GPT模型和谷歌的BERT模型，其中的<code>T</code>都是代表Transformer模型的意思。</p>
+</blockquote>
+<blockquote>
+<p>我们发现一个规律，科学技术的发展进步总是伴随着理论研究的提出和突破。</p>
+</blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　既然模型有了，那肯定就有公司来对其进行商业化了，我们先来说说ChatGPT的母公司OpenAI，它于2015年由一帮硅谷科技大佬成立，包括我们熟知的特斯拉创始人埃隆·马斯克等，成立之初就确认了公司的主要目标：</p>
+<blockquote>
+<p>包括制造“通用”机器人和使用自然语言的聊天机器人。</p>
+</blockquote>
+<p>　　2018年，OpenAI在Transformer的模型基础上，又发布了<code>生成式预训练语言模型</code>（Generative Pre-trained Transformer，即GPT-1）；不过老对手谷歌的BERT很快就出现了，并且性能上全面碾压了GTP。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/Whatis-Chatgpt/openai.png" srcset="/img/loading.gif" lazyload alt="ChatGPT的发展历程"></p>
+<p>　　那被对手超过了OpenAI自然就不甘心了，于是疯狂砸钱，增大了训练数据集，陆续又发布了GPT-2和GPT-3模型，模型的参数量也从GPT-1的1.25亿个<code>迅速“狂飙”</code>到GPT-3的1750亿个；数量更庞大的参数量也就意味着模型具有更强大的表达能力和更小的预测误差，也就是可以生成更长、更自然的文本。</p>
+<p>　　海量的模型参数就让GPT-3在一些比较复杂的问题上也能有很好的表现，比如代替人类写一些论文，甚至编写SQL语句、JavaScript代码等等。</p>
+<p>　　2021年，OpenAI基于GPT-3模型进行修改和改进，调整了模型参数，添加了训练数据，年末发布了GPT-3.5，也就是目前很火的ChatGPT的原始模型。</p>
+<p>　　2022年11月，ChatGPT上线仅仅几天就获得了100万用户，上线两个月，其月活就达到了惊人的1亿，成为历史上用户增长最快的消费应用。</p>
+<p><img src="/images/Whatis-Chatgpt/monthly.jpeg" srcset="/img/loading.gif" lazyload alt="月活1亿每个App需要月数"></p>
+<p>　　大量用户涌入的背后，是需要庞大的算力成本和服务器的投入；根据某研究机构的测算，运行这么复杂的GPT-3.5模型，需要的GPU芯片的数量就高达2万枚，而专业级显卡一般使用A100；根据某购物网站的数据，10万人民币一块A100显卡的价格在国内还是有市无价；因此粗略计算下，单单显卡的投入就至少在20亿以上；还有其他如数据采集、人工标注、模型训练等软性成本更是难以统计。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h1 id="注册攻略"><a href="#注册攻略" class="headerlink" title="注册攻略"></a>注册攻略</h1><p>　　聊了这么多的ChatGPT的发展历程，相信大家对这上百亿投入的“高级聊天机器人”肯定也都迫不及待、跃跃欲试了，那么这里笔者就分享一下注册的攻略；由于众所周知的某些原因，国内用户并不能流畅的直接访问，注册的过程也会有一些曲折，因此我们需要做好以下准备工作：</p>
+<ul>
+<li>能够访问Google的环境（这是前提条件，懂得都懂）</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>一个邮箱，最好是Gmail或者Outlook</li>
+<li>一个国外手机号（没有的话推荐sms-activate.org）</li>
+</ul>
+<p>　　首先我们准备好一个接收短信验证码的手机号，打开<a target="_blank" rel="noopener" href="https://sms-activate.org/">sms-activate.org</a>并注册账号，语言调整为中文，点击右上角<code>充值</code>按钮，支付方式选择支付宝。</p>
+<p><img src="/images/Whatis-Chatgpt/charge.png" srcset="/img/loading.gif" lazyload alt="充值"></p>
+<p>　　账号最低充值金额是1美元，按照当前汇率折算下来也就大概七块多人民币；我们可以先充值1美元。在左侧选择国家，然后搜索<code>OpenAI</code>，租期默认4个小时，点击出租；这里不同国家的价格也不相同，一般东南亚国家如印尼、泰国、印度尼西亚价格会便宜，但是现在用的人比较多，有概率会被OpenAI屏蔽或者没有号码的情况；其他欧美国家相对贵些，1美元有可能下不来，比如笔者选择的西班牙，就砸下去整整2美元。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<blockquote>
+<p>可以对不同的国家号码进行尝试，在四小时内没有收到短信是可以退款的。</p>
+</blockquote>
+<p><img src="/images/Whatis-Chatgpt/buy.png" srcset="/img/loading.gif" lazyload alt="租用号码"></p>
+<p>　　手机号码准备完成后，我们就可以来注册了，打开<a target="_blank" rel="noopener" href="https://platform.openai.com/signup">signup页面</a>，在输入邮箱地址、密码以及验证邮箱后，我们就来到了验证手机号码的页面，我们选择上面租用手机号码的相应国家，然后粘贴号码、点击发送即可。</p>
+<blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>粘贴手机号码时需要把前面的国际区号删掉。</p>
+</blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Whatis-Chatgpt/verify.png" srcset="/img/loading.gif" lazyload alt="验证手机号"></p>
+<p>　　回到sms-activate页面，我们在<code>留言</code>中可以看到收到的OpenAI的code，粘贴即可。</p>
+<p><img src="/images/Whatis-Chatgpt/message.png" srcset="/img/loading.gif" lazyload alt="收到验证码"></p>
+<p>　　注册完成后我们打开<a target="_blank" rel="noopener" href="https://chat.openai.com/chat">chat.openai.com/chat</a>就可以使用了。</p>
+<p><img src="/images/Whatis-Chatgpt/chatgpt.png" srcset="/img/loading.gif" lazyload alt="主界面"></p>
+<p>　　它的使用方式也很简单，在下面输入框中输入你的问题，点击发送按钮，就能喜提一个上知天文下知地理、无所不能的话痨机器人了。</p>
+<h1 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h1><p>　　所以，这么多科技大佬砸了几百亿研发出来的ChatGPT，仅仅是用来给我们聊天的吗？要想了解这个问题，我们不妨先来问问ChatGPT自己吧。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/Whatis-Chatgpt/application.png" srcset="/img/loading.gif" lazyload alt="应用场景"></p>
+<h2 id="聊天机器人"><a href="#聊天机器人" class="headerlink" title="聊天机器人"></a>聊天机器人</h2><p>　　确实，让ChatGPT用作聊天机器人，确实有点杀鸡用牛刀了；但是，我们先来看看这把牛刀，用来杀鸡到底够不够快呢？我们要是想要搞点事情，就需要调用API，而OpenAI刚好在近期提供了API Keys的接入方式，可以将ChatGPT集成到我们的应用程序和服务中。访问<a target="_blank" rel="noopener" href="https://platform.openai.com/account/api-keys">platform.openai.com</a>，点击<code>API Keys =&gt; Create</code>按钮，在出现的弹框复制keys即可。</p>
+<blockquote>
+<p>弹框隐藏后就看不到api key了，需要去重新生成。</p>
+</blockquote>
+<p><img src="/images/Whatis-Chatgpt/keys.png" srcset="/img/loading.gif" lazyload alt="生成API keys"></p>
+<p>　　复制成功后，这里推荐<a target="_blank" rel="noopener" href="https://github.com/qingconglaixueit/wechatbot">wechatbot</a>这个项目为个人微信接入ChatGPT；有多种方式来运行项目，可以基于源码运行，也可以基于docker来运行，不过都需要用到上面复制出来的key，具体运行方式可查看项目说明，这里不再展开了；如果对docker不了解的小伙伴可以查看<a href="https://xieyufei.com/2022/02/22/FrontEnd-Docker.html">这篇文章</a>。</p>
+<p>　　项目运行后，使用微信扫码登录即可，然后我们的微信号就自动接入了ChatGPT的聊天了；使用方式也十分的简单，私聊这个微信号会直接回复，群里需要<code>@</code>这个微信号。</p>
+<blockquote>
+<p><strong>重要提示：</strong>滥用有可能会被微信封禁危险，尽量用小号，本文不承担任何责任。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</blockquote>
+<p><img src="/images/Whatis-Chatgpt/group.png" srcset="/img/loading.gif" lazyload alt="微信聊天机器人"></p>
+<p>　　不过需要注意的是，每个账户的API的调用也是有限制的，目前是5美元，还有过期时间，大家娱乐玩玩就好，有条件的小伙伴可以进行充值。</p>
+<h2 id="工作学习助手"><a href="#工作学习助手" class="headerlink" title="工作学习助手"></a>工作学习助手</h2><p>　　除了用来聊天，在工作和学习中，也深受众多学生和职场人追捧。在国外一所大学哲学教授评分时，十分惊喜的读到了一篇“全班最好的论文”，论文以简洁的段落、恰当的举例和严谨的论据探讨了一个哲学问题；然而在教授的追问下，学生<strong>承认了论文是用ChatGPT写的</strong>。</p>
+<p>　　在工作上，ChatGPT也挽救了不少职场人的发际线，用它生成了包括且不限于：领导讲话稿、媒体通稿、集团简介、颁奖词、祝酒词、宣传册等等，甚至连周报月报、请假理由这些微不足道的小事，它也能给你包圆咯。</p>
+<p><img src="/images/Whatis-Chatgpt/reason.png" srcset="/img/loading.gif" lazyload alt="请假理由"></p>
+<p>　　在文字润色方面，ChatGPT丝毫也不输专业的编辑，在周报月报甚至是年报中，这就相当实用了，懂得都懂。</p>
+<p><img src="/images/Whatis-Chatgpt/weekly.png" srcset="/img/loading.gif" lazyload alt="周报"></p>
+<p>　　对于一些简单的工具函数，我们可以很方便的让ChatGPT直接生成即可；比如我需要一个隐藏手机号码的函数，描述这个函数的功能即可；甚至还能够联系上下文，这是以往的人工智能没有实现的。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/Whatis-Chatgpt/hide.png" srcset="/img/loading.gif" lazyload alt="生成javascript函数"></p>
+<p>　　ChatGPT不仅帮助我们解决了问题，还能有理有据的解释问题背后的逻辑；比如笔者上周在Vue3中使用KeepAlive组件就遇到了问题，在搜索百度后，虽然有很多的回答，但我们还需要在大量的网页中去进行二次筛选，最后可能筛选出来的解决方式都是千篇一律（互相抄袭）；而且用下来也是错误百出，各种报错，用户体验十分不友好，估计花了大半天的时间才解决问题。</p>
+<p><img src="/images/Whatis-Chatgpt/keep-error.png" srcset="/img/loading.gif" lazyload alt="错误的案例"></p>
+<p>　　比如百度找到的这篇文章中，如果使用红色线框中的写法，vue-router就会出现各种奇怪的报错，而且出现的错误信息根本没法去搜索。</p>
+<p>　　但是笔者如果使用ChatGPT提问，我们看到它逻辑清晰，还有具体的案例和注意的提示，我们只需要把组件的名称放到include属性下即可；在它的帮助下，笔者相信在当时能够跳出错误的逻辑，大大缩短解决问题的时间。</p>
+<p><img src="/images/Whatis-Chatgpt/ask-keep.png" srcset="/img/loading.gif" lazyload alt="ChatGPT的回答"></p>
+<p>　　在文案生成方面，ChatGPT也是一把好手；当我们面对空白的文档苦苦思索的时候，不妨打开ChatGPT，描述我们的需求，轻松的生成一段粗略的文案，在此基础上进行再次编辑，节省时间和压力。</p>
+<p>　　在<a href="https://xieyufei.com/2023/01/12/Linux-Office.html">之前办公软件一文</a>中我们就介绍了ONLYOFFICE，在<a target="_blank" rel="noopener" href="https://www.onlyoffice.com/zh/">ONLYOFFICE官网</a>免费下载桌面版或者免费注册在线个人版，在办公软件里面使用ChatGPT，快速的生成文案。</p>
+<p>　　首先需要安装插件，我们在<a target="_blank" rel="noopener" href="https://github.com/ONLYOFFICE/onlyoffice.github.io">github</a>克隆代码后，找到<code>/sdkjs-plugins/content/openai/</code>，选择所有文件添加到ZIP文件，然后把文件格式改成plugin；打开文档界面，找到<code>插件 =&gt; Setting =&gt; Add plugin</code>，选择我们的plugin文件，插件就成功安装了。</p>
+<p><img src="/images/Whatis-Chatgpt/add.png" srcset="/img/loading.gif" lazyload alt="添加插件"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　然后输入上面获取到的API Key，我们的插件就激活完成了；在文本字段中描述我们想要生成的文案内容，点击提交按钮即可；ChatGPT会对请求进行处理，在几秒钟内返回响应，并在文档中以纯文本的形式插入。</p>
+<p><img src="/images/Whatis-Chatgpt/generate.png" srcset="/img/loading.gif" lazyload alt="生成文案"></p>
+<h2 id="可替代性"><a href="#可替代性" class="headerlink" title="可替代性"></a>可替代性</h2><p>　　很多小伙伴看到这里肯定也不得惊叹：这ChatGPT确实太厉害了！笔者的很多程序员小伙伴也都在感叹：我们是不是要失业了，但是目前看来暂时还不会，毕竟它的训练成本确实高昂，应用落地起来不容易。</p>
+<p><img src="/images/Whatis-Chatgpt/replace.jpg" srcset="/img/loading.gif" lazyload alt="取代打工人"></p>
+<p>　　但有一些岗位，比如客服岗位，就比较容易受到冲击了；相信大家应该都接到过类型的机器人客服电话，都是识别特定的关键字，按照固定流程，一句话一句话的回复；随着ChatGPT的出现，相信未来机器人客服能够应对更加复杂的场景，更加精准的理解顾客的需求，从而灵活的应对。</p>
+<blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>ChatGPT会完全替代程序员的工作吗？</p>
+</blockquote>
+<p>　　在编程方面，笔者觉得ChatGPT在目前阶段还不能完全的取代程序员；在生成代码片段虽然能够很好的实现，有点类似之前的Copilot；但是在复杂的项目中，需要去理解不同文件模块的含义，从而进行调用，ChatGPT就无法取代了；在代码bug修复、前后端联调、跨部门协调、出差对接等需要组织协调的工作上更是无法替代人工。</p>
+<p>　　笔者认为ChatGPT带来更多的是编程效率的提升；比如原来我们需要一天做的工作量，有了它的协助，一些重复简单的模块我们直接丢给他就能生成了，最终可能不到半天就能够完成了。</p>
+<blockquote>
+<p>商汤科技董事长：未来软件的代码可能80%都是由AI生成的。</p>
+</blockquote>
+<p>　　虽然目前看来并不能完全的替代，随着硬件成本不断降低、机器学习能力提高；当机器训练的成本低于程序员的工资时，你觉得资本家在需要交五险一金、时不时还要摸鱼的你和三四毛一度电、24小时不停运行的机器之间如何抉择呢？相信未来原本可能需要数十人的研发部门，最终只需要三四个核心工程师维护就能保证业务的正常进行。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<blockquote>
+<p>未来我们如何去选择就业？</p>
+</blockquote>
+<p>　　未来ChatGPT虽然会替代一部分低端的岗位，但是肯定也会不断创造出新的职位；就像计算机的出现淘汰了打字员，但是创造了大量的程序员岗位一样，人工智能创造出很多新兴岗位，比如<code>提示词顾问师</code>（笔者自己臆想），专业负责给ChatGPT提问生成相应文案或者素材；这是社会进步的必然趋势，也是逼着被历史大势裹挟前行的我们，不断的学习进步。</p>
+<p><img src="/images/Whatis-Chatgpt/replace-programmer.png" srcset="/img/loading.gif" lazyload alt="取代程序员"></p>
+<p>　　在前端方面肯定也会淘汰很多初级的程序员，程序员的门槛不断降低；因此我们需要在人工智能取代我们之前不断的学习进步；笔者认为在<a target="_blank" rel="noopener" href="https://union-click.jd.com/jdc?e=618%7Cpc%7C&p=JF8BANIJK1olXwUFU1xdCE4TBl8IG14cXgQEXG4ZVxNJXF9RXh5UHw0cSgYYXBcIWDoXSQVJQwYCUVdeCk0fHDZNRwYlVEZiJkQIYShyQytbHiVpWnFxLlkvaEcbM244G1oUXgIKVV1ZD3snA2g4STXN67Da8e9B3OGY1uefK1olXQEEXVdZAUsRBG0LEmsSXQ8yBAwJQQNAM184GGsSXQ8WUiwcWl8RcV84G2sWbQYDVFZdCUoQA2sBB1sQVA4KUUJdD00eCmsBG1wQVQ8HZFxcCU8eM18">WebGL方面</a>，人工智能对于复杂图形化和对美学的理解还是不能够替代人工，因此前端的小伙伴可以尝试进阶这块领域，同时<a target="_blank" rel="noopener" href="https://union-click.jd.com/jdc?e=618%7Cpc%7C&p=JF8BANIJK1olXwUFU1xdCE4TBl8IGVsdVQELVm4ZVxNJXF9RXh5UHw0cSgYYXBcIWDoXSQVJQwYAVFZVD0IVHDZNRwYlNFwFAUQ7FkN3cC9Rfg1PCl5VDy1UeEcbM244G1oUXgIKVV1ZD3snA2g4STXN67Da8e9B3OGY1uefK1olXQEEXVdZAUgUAWkKHWsSXQ8yBAwJQQNAM184GGsSXQ8WUiwcWl8RcV84G2sWbQYDVFZeCEgSA20NB1sSXgUCXEJdD00eCmsBGFoWWgEDZFxcCU8eM18">高级架构师</a>也是不错的方向。</p>
+<h1 id="总结展望"><a href="#总结展望" class="headerlink" title="总结展望"></a>总结展望</h1><p>　　相信在不久的未来，ChatGPT能够帮助我们极大的提升生产力和学习效率；面对新技术或新文章时，不需要再完整的阅读，让ChatGPT生成文章的大纲和主要内容，帮助我们快速学习；在写文档时，也能够让它快速生成一篇文字优美的内容。</p>
+<p>　　我们正处在一个见证历史的时刻，没人能够在人工智能的历史洪流面前独善其身，保持傲慢不屑的态度只会加速被淘汰，正如小说<a target="_blank" rel="noopener" href="https://union-click.jd.com/jdc?e=618%7Cpc%7C&p=JF8BANIJK1olXwUFU1xdCE4TBl8IG10RWw8AUW4ZVxNJXF9RXh5UHw0cSgYYXBcIWDoXSQVJQwYCUlpbAUkSHDZNRwYlO20YCD8DCh1yCidecFh-LkZ_Eh4JeEcbM244G1oUXgIKVV1ZD3snA2g4STXN67Da8e9B3OGY1uefK1olXQEEXVdZD0MSA2oNH2sSXQ8yBAwJQQNAM184GGsSXQ8WUiwcWl8RcV84G2sWbQYDVFZeDUkWC2YPB1sQWgEAXUJdD00eCmsPE1kQVAILZFxcCU8eM18">《三体》</a>中说的那样：</p>
+<blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>弱小和无知不是生存的障碍，傲慢才是。</p>
+</blockquote>
+<p>　　在电影流浪地球2中，刘培强问Moss，人类能活下来吗？Moss说人类的命运取决于自己的选择；就像我们现在问ChatGPT会不会取代程序员一样，虽然它告诉我们还无法完全取代，但是如何做出选择，是关系着我们每个人的命运；而当历史的车轮缓缓驶过时，我们唯一要做的事，就是尽量跑在它的前面。</p>
+
+            </div>
+            <hr>
+            <div>
+              
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p><div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/life/">代码人生</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Chat/">聊天</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Machine/">机器</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/04/14/GSAP-Practise.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">GSAP实战仿荣耀官网的页面滚动效果</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/02/06/GSAP-Learn.html">
+                        <span class="hidden-mobile">GSAP从入门到精通</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

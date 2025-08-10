@@ -1,0 +1,855 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　我们在网上浏览时，经常能看到很多网站，随着页面滚动条向下滑动时，有非常丰富的页面动画效果；相信很多小伙伴也都很好奇，这样的网站效果是如何做出来的。我们本文就来深入的学习一下GSAP这个库的用法，为后面实现酷炫的动画效果打下基础。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>GSAP从入门到精通 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="GSAP从入门到精通">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-02-06 20:00" pubdate>
+        2023年2月6日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      57
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">GSAP从入门到精通</h1>
+            
+            <div class="markdown-body">
+              <p>　　我们在网上浏览时，经常能看到很多网站，随着页面滚动条向下滑动时，有非常丰富的页面动画效果；相信很多小伙伴也都很好奇，这样的网站效果是如何做出来的。我们本文就来深入的学习一下GSAP这个库的用法，为后面实现酷炫的动画效果打下基础。</p>
+<span id="more"></span>
+
+
+<p>　　首先这样的滚动效果和fullpage.js、Swiper.js全屏翻页滚动轮播的效果是不一样的，页面元素的位置极度的依赖于滚动条的位置，因此是需要监听滚动条事件；笔者在调研了better-scroll.js、scrollReveal.js和iScroll.js等一系列插件后，发现这些插件并不能满足需求。</p>
+<p>　　笔者也曾一度想过不依赖库，自己来实现类似的效果，不就是监听页面滚动么；但是想了想滚动时这么多元素的动画效果导致的性能问题以及页面resize后如何来重新计算也是不小的问题，于是就打消了不切实际的念头。</p>
+<p>　　在扒开很多网站的源代码之后，笔者找到了一个很多网站都在用的动画库：GSAP；但是很奇怪，网站搜索这个库，我们发现它的教程非常的少，这么好用的一个动画库不应该资料这么匮乏；但是看到官网全英文的教程和有时候无法访问demo教程后，以及有点难理解的各种概念后，我好像知道了原因。</p>
+<p>　　由于我们要实现的很多动画效果都依赖于GSAP，因此我们先来看下GSAP的使用教程。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h1 id="GSAP"><a href="#GSAP" class="headerlink" title="GSAP"></a>GSAP</h1><p>　　首先我们要知道这个库能做什么，<code>The GreenSock Animation Platform (GSAP)</code>是一个功能十分强大的动画平台，可以帮助我们实现大部分的动画需求，构建高性能的、适用于所有主要浏览器的高性能动画；GSAP非常的灵活，可以在任何框架上处理页面能够所有通过js改变的元素，不仅可以对div的css属性进行动画，还是SVG、React、Vue、WebGL，甚至和Threejs一起使用。</p>
+<p>　　除了GSAP核心库外，还有很多实用的插件，比如结合ScrollTrigger插件，我们可以实现非常震撼的滚动触发效果；同时也不需要担心响应式的问题，GSAP确保项目响应迅速、高效且流畅。</p>
+<h2 id="动画属性"><a href="#动画属性" class="headerlink" title="动画属性"></a>动画属性</h2><p>　　我们从一个<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo1">简单的例子</a>开始，先把一个<code>.box</code>元素沿着X轴移动200px；</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.<span class="hljs-title function_">to</span>(<span class="hljs-string">&#x27;.box&#x27;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">200</span> &#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="/images/GSAP-Learn/demo1.gif" srcset="/img/loading.gif" lazyload alt="demo1"></p>
+<p>　　如果我们对<code>.box</code>元素进行元素检查，我们会发现GSAP实际上是不停的修改<code>transform</code>属性，直至最终停留在<code>transform: translate(200px, 0px)</code>；我们继续回到上面的代码。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/GSAP-Learn/gsap-to.png" srcset="/img/loading.gif" lazyload alt="gsap.to"></p>
+<p>　　在上段代码中，我们发现这段代码包含有3层含义：函数、目标和变量；首先目标就是我们想要移动的元素，可以是CSS选择器，也可以使dom元素，甚至是一串数组：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// CSS选择器</span><br>gsap.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.box&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">200</span> &#125;);<br>gsap.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;#box1&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">200</span> &#125;);<br><br><span class="hljs-comment">// dom元素</span><br><span class="hljs-keyword">const</span> box = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&quot;.box&quot;</span>);<br>gsap.<span class="hljs-title function_">to</span>(box, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">200</span> &#125;)<br><br><span class="hljs-comment">// 元素数组</span><br><span class="hljs-keyword">let</span> square = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&quot;.square&quot;</span>);<br><span class="hljs-keyword">let</span> circle = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&quot;.circle&quot;</span>);<br>                                      <br>gsap.<span class="hljs-title function_">to</span>([square, circle], &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">200</span> &#125;)<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　然后是函数，有四种类型的动画函数：</p>
+<ol>
+<li>gsap.to：最常用的动画类型，从当前状态开始。</li>
+<li>gsap.from：和.to相反，从一个状态开始到当前状态。</li>
+<li>gsap.fromTo：可以自定义开始和结束状态。</li>
+<li>gsap.set：立即设置属性，没有动画效果。</li>
+</ol>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　我们直接看效果就能明白这几个函数的意义了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.<span class="hljs-title function_">from</span>(<span class="hljs-string">&quot;.box&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">300</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="/images/GSAP-Learn/demo3.gif" srcset="/img/loading.gif" lazyload alt="demo3"></p>
+<blockquote>
+<p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo3">demo3效果</a></p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.<span class="hljs-title function_">fromTo</span>(<br>  <span class="hljs-string">&quot;.box&quot;</span>,<br>  &#123;<br>    <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>,<br>    <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>,<br>  &#125;,<br>  &#123;<br>    <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>,<br>    <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>,<br>  &#125;,<br>);<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p><img src="/images/GSAP-Learn/demo4.gif" srcset="/img/loading.gif" lazyload alt="demo4"></p>
+<blockquote>
+<p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo4">demo4效果</a></p>
+</blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.<span class="hljs-title function_">set</span>(<span class="hljs-string">&quot;.box&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>,<br>  <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="/images/GSAP-Learn/demo5.gif" srcset="/img/loading.gif" lazyload alt="demo5"></p>
+<blockquote>
+<p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo5">demo5效果</a></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</blockquote>
+<p>　　最后是变量对象，这个对象可以包含的信息种类就比较丰富了，可以是想要动画的任意CSS属性，也可以是影响动画表现形式的特殊属性，比如duration持续时间、repeat重复次数。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.<span class="hljs-title function_">to</span>(target, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>,<br>  <span class="hljs-attr">y</span>: <span class="hljs-number">50</span>,<br>  <span class="hljs-attr">rotation</span>: <span class="hljs-number">180</span>,<br>  <span class="hljs-comment">// 特殊属性</span><br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">3</span>,<br>  <span class="hljs-attr">repeat</span>: <span class="hljs-number">2</span><br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="/images/GSAP-Learn/demo6.gif" srcset="/img/loading.gif" lazyload alt="demo6"></p>
+<blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo6">demo6效果</a></p>
+</blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　GSAP可以动画任何属性，没有确定的列表，包括CSS属性、自定义对象属性甚至CSS变量和复杂的字符串，最常见的动画属性是transforms和透明度。transforms属性是动画中性能消耗最小的，可以用它来移动元素、旋转或者放大缩小，因为他们不会影响页面的布局，更不会使页面重排，因此有着较好的性能表现。</p>
+<blockquote>
+<p>尽可能的使用transforms，而不是布局属性，例如top、left或者margin，有更平滑的动画体验。</p>
+</blockquote>
+<p>　　我们可能比较熟悉以下的transforms属性：</p>
+<figure class="highlight css"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs css"><span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">360deg</span>) <span class="hljs-built_in">translateX</span>(<span class="hljs-number">10px</span>) <span class="hljs-built_in">translateY</span>(<span class="hljs-number">50%</span>);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　GSAP提供了下面的缩写形式，上面的transforms属性可以直接缩写成下面的属性（yPercent表示百分比元素的高度）：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">&#123; <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span>, <span class="hljs-attr">x</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">yPercent</span>: <span class="hljs-number">50</span> &#125;<br></code></pre></div></td></tr></table></figure>
+
+<blockquote>
+<p>GSAP支持CSS属性转为小驼峰形式，例如<code>background-color</code>变成<code>backgroundColor</code></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</blockquote>
+<p>　　通过上面的例子我们也发现了，默认情况下GSAP会给transform属性使用px和degrees单位，比如<code>&#123;x: 10, rotation: 360&#125;</code>就表示x轴10px，旋转360度；但是我们有时候想要使用其他的单位，比如vw，radians或者相对单位。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-attr">x</span>: <span class="hljs-number">200</span>, <span class="hljs-comment">// 默认px</span><br><span class="hljs-attr">x</span>: <span class="hljs-string">&quot;+=200&quot;</span> <span class="hljs-comment">// 相对值</span><br><span class="hljs-attr">x</span>: <span class="hljs-string">&#x27;40vw&#x27;</span>, <span class="hljs-comment">// 视窗单位</span><br><span class="hljs-attr">x</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerWidth</span> / <span class="hljs-number">2</span>, <span class="hljs-comment">// 函数计算</span><br>  <br><span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span> <span class="hljs-comment">// 默认角度</span><br><span class="hljs-attr">rotation</span>: <span class="hljs-string">&quot;1.25rad&quot;</span> <span class="hljs-comment">// 使用弧度单位</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<p>　　GSAP的神奇之处在于，不仅能够对dom元素动画，还能够对非dom元素，比如svg、js对象等进行动画操作；对于svg元素，我们添加<code>attr属性</code>额外的处理一些svg的属性，像width、height、fill、stroke、opacity等。</p>
+<p><img src="/images/GSAP-Learn/demo8.gif" srcset="/img/loading.gif" lazyload alt="demo8"></p>
+<blockquote>
+<p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo8">demo8效果</a></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.svgBox&quot;</span>, &#123;<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">2</span>,<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">100</span>,<br>  <span class="hljs-attr">xPercent</span>: -<span class="hljs-number">100</span>,<br>  <span class="hljs-comment">// svg属性</span><br>  <span class="hljs-attr">attr</span>: &#123;<br>    <span class="hljs-attr">fill</span>: <span class="hljs-string">&quot;#8d3dae&quot;</span>,<br>    <span class="hljs-attr">rx</span>: <span class="hljs-number">50</span>,<br>  &#125;,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　甚至，我们对js对象进行动画时，不需要任何dom元素，针对任意js对象的任意属性进行动画，onUpdate函数用于监听动画的更新过程：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> obj = &#123; <span class="hljs-attr">myNum</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">myColor</span>: <span class="hljs-string">&quot;red&quot;</span> &#125;;<br>gsap.<span class="hljs-title function_">to</span>(obj, &#123;<br>  <span class="hljs-attr">myNum</span>: <span class="hljs-number">200</span>,<br>  <span class="hljs-attr">myColor</span>: <span class="hljs-string">&quot;blue&quot;</span>,<br>  <span class="hljs-attr">onUpdate</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(obj.<span class="hljs-property">myNum</span>, obj.<span class="hljs-property">myColor</span>)<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h2 id="特殊属性"><a href="#特殊属性" class="headerlink" title="特殊属性"></a>特殊属性</h2><p>　　特殊属性用来调整动画的表现形式，我们在上面用到了repeat和duration，下面的文档中提供了一些常用的属性：</p>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>描述</th>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</tr>
+</thead>
+<tbody><tr>
+<td>duration</td>
+<td>动画的持续时间（单位：秒）默认0.5秒</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</tr>
+<tr>
+<td>delay</td>
+<td>动画延迟时间</td>
+</tr>
+<tr>
+<td>repeat</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>动画重复的次数</td>
+</tr>
+<tr>
+<td>yoyo</td>
+<td>布尔值，如果为true，每次其他动画就会往相反方向运动（像yoyo球）默认false</td>
+</tr>
+<tr>
+<td>stagger</td>
+<td>每个目标动画开始之间的时间（秒）</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</tr>
+<tr>
+<td>ease</td>
+<td>控制动画期间的变化率，默认”power1.out”</td>
+</tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<tr>
+<td>onComplete</td>
+<td>动画完成时的回调函数</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</tr>
+</tbody></table>
+<p>　　<code>repeat属性</code>就是重复的次数，会让动画执行多次；需要注意的是，如果我们填一个数值2，但实际动画的次数是3，因此我们总结出来公式：<code>真实运动次数 = repeat属性 + 1</code>。</p>
+<blockquote>
+<p>如果我们想让动画一直重复下去，使用<code>repeat: -1</code>。</p>
+</blockquote>
+<p>　　repeat一般会和<code>yoyo属性</code>一起使用，当yoyo为true时，在每次动画结束都会反向运动；需要注意的是，一个运动循环包含一个正向和反正运动，反向运动也计入运动的次数中。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.box&quot;</span>, &#123;<br>  <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span>,<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">300</span>,<br>  <span class="hljs-attr">xPercent</span>: -<span class="hljs-number">100</span>,<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">2</span>,<br>  <span class="hljs-attr">repeat</span>: <span class="hljs-number">2</span>,<br>  <span class="hljs-attr">yoyo</span>: <span class="hljs-literal">true</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　我们这边repeat写的2，实际动画中，正好是3次运动，1.5次循环往复运动。</p>
+<p>　　delay也非常好理解，动画开始延迟时间，如果后面是repeat重复的动画，则不会有延迟了；如果我们想要为后面的任何重复运动添加延迟，可以使用<code>repeatDelay</code>属性。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.green&quot;</span>, &#123;<br>  <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span>,<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span>,<br>  <span class="hljs-attr">delay</span>: <span class="hljs-number">1</span>,<br>  <span class="hljs-attr">repeat</span>: <span class="hljs-number">1</span>,<br>&#125;);<br>gsap.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.purple&quot;</span>, &#123;<br>  <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span>,<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span>,<br>  <span class="hljs-attr">repeat</span>: <span class="hljs-number">1</span>,<br>  <span class="hljs-attr">repeatDelay</span>: <span class="hljs-number">1</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="/images/GSAP-Learn/demo11.gif" srcset="/img/loading.gif" lazyload alt="demo11"></p>
+<blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo11">demo11效果</a></p>
+</blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　我们发现同样是总计2次的重复旋转运动，绿的div动画开始前有停顿，而后面的重复运动就没有停顿了；而紫色的div动画开始前没有停顿，在后面的每次重复运动则会有停顿，就是repeatDelay的作用。</p>
+<p>　　ease速度曲线也是动画效果的一部分，我们可以看到不同的速度曲线旋转效果也是不一样的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.green&quot;</span>, &#123;<br>  <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span>,<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">2</span>,<br>  <span class="hljs-attr">ease</span>: <span class="hljs-string">&quot;none&quot;</span>,<br>&#125;);<br>gsap.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.purple&quot;</span>, &#123;<br>  <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span>,<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">2</span>,<br>  <span class="hljs-attr">ease</span>: <span class="hljs-string">&quot;bounce.out&quot;</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　<code>stagger属性</code>也是比较有趣的属性，我们可以利用它控制多个目标之间动画的延迟差，形成奇妙又好看的交错效果。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.box&quot;</span>, &#123;<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">0.5</span>,<br>  <span class="hljs-attr">opacity</span>: <span class="hljs-number">0</span>,<br>  <span class="hljs-attr">y</span>: -<span class="hljs-number">100</span>,<br>  <span class="hljs-attr">stagger</span>: <span class="hljs-number">0.1</span>,<br>  <span class="hljs-attr">ease</span>: <span class="hljs-string">&quot;back.in&quot;</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="/images/GSAP-Learn/demo13.gif" srcset="/img/loading.gif" lazyload alt="demo13"></p>
+<blockquote>
+<p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo13">demo13效果</a></p>
+</blockquote>
+<p>　　比如这样，让div交错消失的场景；或者交错动画一个阵列，只需要告诉GSAP有多少行列。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.box&quot;</span>, &#123;<br>  <span class="hljs-attr">scale</span>: <span class="hljs-number">0.1</span>,<br>  <span class="hljs-attr">y</span>: <span class="hljs-number">30</span>,<br>  <span class="hljs-attr">yoyo</span>: <span class="hljs-literal">true</span>,<br>  <span class="hljs-attr">repeat</span>: -<span class="hljs-number">1</span>,<br>  <span class="hljs-attr">ease</span>: <span class="hljs-string">&quot;power1.inOut&quot;</span>,<br>  <span class="hljs-attr">delay</span>: <span class="hljs-number">1</span>,<br>  <span class="hljs-attr">stagger</span>: &#123;<br>    <span class="hljs-attr">amount</span>: <span class="hljs-number">1.5</span>,<br>    <span class="hljs-attr">grid</span>: <span class="hljs-string">&quot;auto&quot;</span>,<br>    <span class="hljs-attr">from</span>: <span class="hljs-string">&quot;center&quot;</span>,<br>  &#125;,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+
+<p><img src="/images/GSAP-Learn/demo14.gif" srcset="/img/loading.gif" lazyload alt="demo14"></p>
+<blockquote>
+<p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo14">demo14效果</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</blockquote>
+<h2 id="时间线timeline"><a href="#时间线timeline" class="headerlink" title="时间线timeline"></a>时间线timeline</h2><p>　　我们动画经常会遇到多个对象的情况，虽然我们可以使用上面的delay进行简单的控制，延迟物体的动画开始时间；但是如果中间某个物体的动画执行时间突然延长了，那么其后面所有的动画时间需要进行手动进行延迟，这显得非常不方便；因此我们需要引入时间线timeline的概念。</p>
+<blockquote>
+<p>时间线是GSAP最重要的概念之一</p>
+</blockquote>
+<p>　　我们通过<code>gsap.timeline()</code>创建一个时间线，然后通过时间线控制每一个动画顺序执行；这样即使我们修改中间某个动画的<code>duration</code>，也不会影响后续时间线。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> t1 = gsap.<span class="hljs-title function_">timeline</span>();<br>t1.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.green&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">600</span>,<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">2</span>,<br>&#125;);<br>t1.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.purple&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">600</span>,<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span>,<br>&#125;);<br>t1.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.orange&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">600</span>,<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/GSAP-Learn/demo15.gif" srcset="/img/loading.gif" lazyload alt="demo15"></p>
+<blockquote>
+<p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo15">demo15效果</a></p>
+</blockquote>
+<p>　　但是如果我们想要在一个动画开始的同时，执行另一个动画，除了再额外创建一条时间线，我们可以在to函数后面加一些小参数来进行精确的控制。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> t1 = gsap.<span class="hljs-title function_">timeline</span>();<br>t1.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.red&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>,<span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;);<br><span class="hljs-comment">// 在1秒开始插入动画（绝对值）</span><br>t1.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.green&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;, <span class="hljs-number">1</span>);<br><span class="hljs-comment">// 在上个动画的开始插入动画</span><br>t1.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.purple&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;, <span class="hljs-string">&quot;&lt;&quot;</span>);<br><span class="hljs-comment">// 在最后一个动画结束后一秒插入动画</span><br>t1.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.orange&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;, <span class="hljs-string">&quot;+=1&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/GSAP-Learn/demo16.gif" srcset="/img/loading.gif" lazyload alt="demo16"></p>
+<blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo16">demo16效果</a></p>
+</blockquote>
+<p>　　理解上面代码中的这些小参数可以帮助我们构建很多复杂精妙的动画效果，让我们能够在任意时间点来执行任意的动画效果；上面的例子乍一看可能不是那么好理解，不过没有关系，我们一点点来理解。</p>
+<p>　　虽然我们上面都是以<code>gsap.to</code>来为例，但是其他的函数比如from()、fromTo()、add()等也都适用；需要注意的是这些参数跟在<code>变量对象</code>的后面，因此函数的代码结构如下：</p>
+<blockquote>
+<p>.method( target, vars, position )</p>
+</blockquote>
+<p>　　我们将这些参数简单的分一下类就好理解多了，其实主要有以下几种类型：</p>
+<ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>绝对值：在某个绝对秒数来执行动画。</li>
+<li><code>&lt;符</code>和<code>&gt;符</code>：”&lt;”在上个动画开始，”&gt;”在上个动画结束。</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>相对符：<code>+=</code>在最后一个动画结束后，<code>-=</code>在最后一个动画结束前。</li>
+<li>label值：直接用某个时间点的label名。</li>
+</ul>
+<p>　　绝对值就表示在某个绝对的秒数时执行动画，比如上面demo中的green元素，在1秒时执行动画；<code>&lt;符号</code>表示在上个动画开始，比如demo中的purple元素，就和green元素同时执行动画；我们还可以在后面加个数值，比如：&lt;3和&lt;=3，两种表达方式的含义相同，都表示在上个动画开始后的三秒执行。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> t1 = gsap.<span class="hljs-title function_">timeline</span>();<br>t1.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.green&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;)<br>  .<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.purple&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;, <span class="hljs-string">&quot;&lt;3&quot;</span>)<br>  .<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.orange&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;, <span class="hljs-string">&quot;&gt;1&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="/images/GSAP-Learn/demo17.gif" srcset="/img/loading.gif" lazyload alt="demo17"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<blockquote>
+<p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo17">demo17效果</a></p>
+</blockquote>
+<p>　　在上面的gif效果中，我们看到，purple元素是在green元素开始的3秒后才开始执行，并不是结束的3秒后；<code>&gt;符号</code>则表示上个动画结束时，用法类似，这里就不再赘述了。</p>
+<p>　　相对符则表示动画结束的时间点，<code>+=1</code>表示上个动画结束1秒后，<code>-=2</code>表示上个动画结束前2秒。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　label值则很好理解了，在某个时间点插入一个label，在这个label前面或者后面的时间来执行，我们看下它的用法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> t1 = gsap.<span class="hljs-title function_">timeline</span>();<br>t1.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.green&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;)<br>  .<span class="hljs-title function_">add</span>(<span class="hljs-string">&quot;myLabel&quot;</span>, <span class="hljs-number">2</span>)<br>  .<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.purple&quot;</span>, &#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;, <span class="hljs-string">&quot;myLabel+=1&quot;</span>)<br>  .<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.orange&quot;</span>,&#123; <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> &#125;, <span class="hljs-string">&quot;myLabel-=1&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　通过<code>gsap.add</code>函数，我们在2秒处放置了一个myLabel的标识，在后面使用myLabel+=1和myLabel-=1相对这个标识的时间进行控制。</p>
+<p><img src="/images/GSAP-Learn/demo18.gif" srcset="/img/loading.gif" lazyload alt="demo18"></p>
+<blockquote>
+<p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo18">demo18效果</a></p>
+</blockquote>
+<p>　　不同时间线中的动画可能会有相同的特殊属性，比如repeat和delay等，我们可以在时间线的创建函数中统一设置，避免重复：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> tl = gsap.<span class="hljs-title function_">timeline</span>(&#123; <span class="hljs-attr">repeat</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">repeatDelay</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">yoyo</span>: <span class="hljs-literal">true</span> &#125;);<br>tl.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.green&quot;</span>, &#123; <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span> &#125;)<br>  .<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.purple&quot;</span>, &#123; <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span> &#125;)<br>  .<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.orange&quot;</span>, &#123; <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span> &#125;);<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　如果你发现某个属性你重复使用了很多次，比如x、scale、duration等，我们就可以使用<code>defaults属性</code>，任何加到defaults属性中的参数都会被下面的函数继承。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> tl = gsap.<span class="hljs-title function_">timeline</span>(&#123;<br>  <span class="hljs-attr">defaults</span>: &#123;<br>    <span class="hljs-attr">scale</span>: <span class="hljs-number">1.2</span>,<br>    <span class="hljs-attr">duration</span>: <span class="hljs-number">2</span>,<br>  &#125;,<br>&#125;);<br>tl.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.green&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">200</span>,<br>&#125;)<br>  .<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.purple&quot;</span>, &#123;<br>    <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>,<br>  &#125;)<br>  .<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.orange&quot;</span>, &#123;<br>    <span class="hljs-attr">x</span>: <span class="hljs-number">600</span>,<br>  &#125;);<br></code></pre></div></td></tr></table></figure>
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h2><p>　　在有些情况下，我们需要对动画的开始、过程、结束的某个时间点进行回调操作，gsap提供了以下回调函数：</p>
+<ul>
+<li>onComplete：动画完成时。</li>
+<li>onStart：动画开始时</li>
+<li>onUpdate：动画更新时。</li>
+<li>onRepeat：动画重复时。</li>
+<li>onReverseComplete：当动画在反转到达开始时。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.class&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">100</span>, <br>  <span class="hljs-attr">onComplete</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;the tween is complete&quot;</span>)<br>&#125;<br><br><span class="hljs-comment">// 时间线所有动画结束时调用</span><br>gsap.<span class="hljs-title function_">timeline</span>(&#123;<span class="hljs-attr">onComplete</span>: tlComplete&#125;);<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">tlComplete</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;the tl is complete&quot;</span>);<br>  <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<h2 id="ScrollTrigger"><a href="#ScrollTrigger" class="headerlink" title="ScrollTrigger"></a>ScrollTrigger</h2><p>　　现在我们对gsap的基本用法有了一定的了解，下面我们来看下插件的用法；插件可以帮助我们扩展动画的高级功能，让动画的表现更丰富；我们主要来了解ScrollTrigger的使用。</p>
+<p>　　我们先看下ScrollTrigger的一个简单用法，</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">ScrollTrigger</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;gsap/ScrollTrigger&quot;</span>;<br>gsap.<span class="hljs-title function_">registerPlugin</span>(<span class="hljs-title class_">ScrollTrigger</span>);<br><br>gsap.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.green&quot;</span>, &#123;<br>  <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span>,<br>  <span class="hljs-attr">scale</span>: <span class="hljs-number">1.5</span>,<br>  <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">&quot;red&quot;</span>,<br>  <span class="hljs-attr">scrollTrigger</span>: &#123;<br>    <span class="hljs-attr">trigger</span>: <span class="hljs-string">&quot;.green&quot;</span>,<br>    <span class="hljs-attr">scrub</span>: <span class="hljs-literal">true</span>,<br>  &#125;,<br>&#125;);<br>gsap.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.purple&quot;</span>, &#123;<br>  <span class="hljs-attr">rotation</span>: <span class="hljs-number">360</span>,<br>  <span class="hljs-attr">scale</span>: <span class="hljs-number">1.5</span>,<br>  <span class="hljs-attr">backgroundColor</span>: <span class="hljs-string">&quot;red&quot;</span>,<br>  <span class="hljs-attr">scrollTrigger</span>: &#123;<br>    <span class="hljs-attr">trigger</span>: <span class="hljs-string">&quot;.purple&quot;</span>,<br>    <span class="hljs-attr">scrub</span>: <span class="hljs-number">1</span>,<br>  &#125;,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　使用前当然要对插件进行注册了，使用<code>gsap.registerPlugin</code>将ScrollTrigger注册，否则我们在下面操作时会发现没有任何效果。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　在to函数中我们新增了一个<code>scrollTrigger属性</code>，trigger表示当前动画触发的元素，这个很好理解，我们使用当前元素；markers是否进行标记，scrub表示是否将动画效果链接到滚动条，随着滚动条平滑处理；如果是false（默认），随着元素出现在视窗内，直接触发动画，如果是true，则平滑动画，我们看下效果：</p>
+<blockquote>
+<p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo21">demo21效果</a></p>
+</blockquote>
+<blockquote>
+<p>scrub还可以是某个具体的数值，表示延迟滚动条多少秒动画；比如这里的1，延迟1秒执行动画。</p>
+</blockquote>
+<p>　　我们在滚动浏览器时，可以使用pin属性将某个元素固定在某个位置；pin可以是css选择器字符串、布尔值或者直接dom元素；如果是true，则直接固定当前的动画元素；我们这里使用pin将purple元素固定起始位置：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">gsap.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.green&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>,<br>  <span class="hljs-attr">duration</span>: <span class="hljs-number">2</span>,<br>  <span class="hljs-attr">scrollTrigger</span>: &#123;<br>    <span class="hljs-attr">trigger</span>: <span class="hljs-string">&quot;.green&quot;</span>,<br>    <span class="hljs-attr">pin</span>: <span class="hljs-string">&quot;.purple&quot;</span>,<br>  &#125;,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<blockquote>
+<p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo22">demo22效果</a></p>
+</blockquote>
+<h3 id="start和end"><a href="#start和end" class="headerlink" title="start和end"></a>start和end</h3><p>　　start和end属性用来决定滚动触发元素开始的位置，可以是字符串、数值或者函数，两者的用法类似，我们以start为例；start的值默认是<code>&quot;top bottom&quot;</code>，它的含义是当触发物体（trigger）的顶部（top）碰到浏览器的底部（bottom）时；我们看下当开启标记marker时的触发位置。</p>
+<p><img src="/images/GSAP-Learn/start-end.png" srcset="/img/loading.gif" lazyload alt="start和end默认触发位置"></p>
+<p>　　我们看到<code>scroller-start</code>的线就是浏览器视窗的边界线，当浏览器向下滚动时，这条线滚动到物体的<code>start</code>线时，就触发了动画效果；同样的道理，向上滚动时，当<code>scroll-end</code>的线触碰到<code>end</code>时，动画结束。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　start值看起来很怪异，不好理解，其实我们可以把它拆成两部分来看；第一个top值表示物体的上边界，同样的我们可以设为bottom（物体下边界）、center（物体中间）或者具体数值（100px、80%），即控制的是物体旁边的start线。</p>
+<p>　　第二个值表示浏览器视窗滚动触发的scroller-start线，bottom表示视窗的底部，我们也设为top或者center或者数值，以及百分比（例如80%，表示整个视窗的80%高度），甚至是相对位置，比如<code>bottom-=100px</code>。</p>
+<h3 id="toggleClass"><a href="#toggleClass" class="headerlink" title="toggleClass"></a>toggleClass</h3><p>　　有些情况下，我们不想要gsap的动画，而是想用我们自己自定义的css类名来实现某些动画效果，<code>toggleClass属性</code>可以让我们在触发的元素上添加或者移除这些的类名，从它的名字也能看出来它是处理类名的；它可以是一个字符串，例如<code>toggleClass: &quot;active&quot;</code>，就表示要新增/移除的类名。</p>
+<p>　　toggleClass也可以是对象，可以在其他的元素上来新增/移除类名，比如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-attr">toggleClass</span>: &#123;<span class="hljs-attr">targets</span>: <span class="hljs-string">&quot;.my-selector&quot;</span>, <span class="hljs-attr">className</span>: <span class="hljs-string">&quot;active&quot;</span>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<blockquote>
+<p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo24">demo24效果</a></p>
+</blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　我们可以将ScrollTrigger结合timeline创建动画。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> tl = gsap.<span class="hljs-title function_">timeline</span>(&#123;<br>  <span class="hljs-attr">scrollTrigger</span>: &#123;<br>    <span class="hljs-attr">trigger</span>: <span class="hljs-string">&quot;.wrap&quot;</span>,<br>    <span class="hljs-attr">scrub</span>: <span class="hljs-literal">true</span>,<br>  &#125;,<br>&#125;);<br>tl.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.green&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">200</span>,<br>&#125;);<br>tl.<span class="hljs-title function_">to</span>(<span class="hljs-string">&quot;.purple&quot;</span>, &#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">400</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<blockquote>
+<p>查看<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/gsap/demo#demo25">demo25效果</a></p>
+</blockquote>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　本文GSAP所有的用法教程大致到这里就结束了，本文涉及到了一些动画方面的概念，有些不准确的地方欢迎指正；笔者也参考了官网很多demo和英文案例的翻译理解，工作量较大，望给个一键三连。</p>
+
+            </div>
+            <hr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Animation/">动画</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/03/07/Whatis-Chatgpt.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ChatGPT的狂飙之路</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/01/12/Linux-Office.html">
+                        <span class="hidden-mobile">Linux下好用的神级办公软件</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

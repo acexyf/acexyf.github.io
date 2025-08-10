@@ -1,0 +1,707 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　很多前端小伙伴，包括我自己在开始学习JS时对__proto__和ptototype这两个概念时都是一脸懵逼，面试时遇到原型链的问题总是瑟瑟发抖；不过真正的勇士敢于直面难题，经过对原型链不断的探索，本文对JS中类和原型的概念进行了深入的讲解，同时从原型方面来了解JS中继承是什么。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>一文读懂JS中类、原型和继承 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="一文读懂JS中类、原型和继承">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-04-10 12:12" pubdate>
+        2020年4月10日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      49
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">一文读懂JS中类、原型和继承</h1>
+            
+            <div class="markdown-body">
+              <p>　　很多前端小伙伴，包括我自己在开始学习JS时对__proto__和ptototype这两个概念时都是一脸懵逼，面试时遇到原型链的问题总是瑟瑟发抖；不过真正的勇士敢于直面难题，经过对原型链不断的探索，本文对JS中类和原型的概念进行了深入的讲解，同时从原型方面来了解JS中继承是什么。</p>
+<span id="more"></span>
+
+
+<h1 id="构造函数和对象"><a href="#构造函数和对象" class="headerlink" title="构造函数和对象"></a>构造函数和对象</h1><p>　　首先让我们看一下，在其他语言中是怎么来定义类的。在JAVA中类可以看出是创建对象的模板，我们可以这样定义类：</p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span>&#123;<br>  String breed;<br>  <span class="hljs-type">int</span> age;<br>  String color;<br>  <span class="hljs-keyword">void</span> <span class="hljs-title function_">barking</span><span class="hljs-params">()</span>&#123;<br>  &#125;<br>  <span class="hljs-keyword">void</span> <span class="hljs-title function_">hungry</span><span class="hljs-params">()</span>&#123;<br>  &#125;<br>  <span class="hljs-keyword">void</span> <span class="hljs-title function_">sleeping</span><span class="hljs-params">()</span>&#123;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　但是ES6之前都没有class，那么JS怎么定义类呢？在JS中函数是一等公民，我们可以通过构造函数（即JAVA中的类）来创建对象。所谓构造函数，就是提供了一个生成对象的模板并描述对象的基本结构的函数。一个构造函数，可以生成多个对象，每个对象都有相同的结构。总的来说，构造函数就是对象的模板，对象就是构造函数的实例。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// Person类</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">Person</span>(<span class="hljs-params">name</span>) &#123;<br>  <span class="hljs-comment">// 实例属性</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name<br>  <span class="hljs-comment">// 实例方法</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">sayName</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span><br>  &#125;<br>&#125;<br><span class="hljs-keyword">var</span> person1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&#x27;xyf1&#x27;</span>)<br><span class="hljs-keyword">var</span> person2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&#x27;xyf2&#x27;</span>)<br><span class="hljs-comment">//true</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(person1.<span class="hljs-property">constructor</span> === <span class="hljs-title class_">Person</span>)<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们通过new来构建实例化对象，类函数中的<code>this</code>总是指向实例化的对象，每一个实例对象都有一个不可枚举的属性<code>constructor</code>属性来指向构造函数，即Person。</p>
+<p><img src="/images/Js-Class-Inherit/class1.jpg" srcset="/img/loading.gif" lazyload alt="class1"></p>
+<p>　　我们把<code>person1</code>打印出来看一下到底有什么：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Js-Class-Inherit/person1-result.png" srcset="/img/loading.gif" lazyload alt="person1-result.png"></p>
+<p>　　实例对象中可以看到我们在类中定义的name属性和sayName方法都有了，但是<code>constructor</code>属性并没有，但是却能取到值。</p>
+<h1 id="构造函数缺点"><a href="#构造函数缺点" class="headerlink" title="构造函数缺点"></a>构造函数缺点</h1><p>　　所有的实例对象都会单独创建自己的属性和方法，不同实例对象之间无法共享通用的属性。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//xyf1</span><br>person1.<span class="hljs-title function_">sayName</span>()<br><span class="hljs-comment">//xyf2</span><br>person2.<span class="hljs-title function_">sayName</span>()<br><span class="hljs-comment">//false</span><br>person1.<span class="hljs-property">sayName</span> === person2.<span class="hljs-property">sayName</span><br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　但是有的属性或者方法是共有的，我们希望每个实例对象创建的时候就能有，比如说每个人天生就会哭（cry），不用一出生的时候还要“手把手教”。</p>
+<p><img src="/images/Js-Class-Inherit/cry.jpg" srcset="/img/loading.gif" lazyload alt="cry.jpg"></p>
+<h1 id="原型对象prototype"><a href="#原型对象prototype" class="headerlink" title="原型对象prototype"></a>原型对象prototype</h1><p>　　为了解决实例对象之间共享属性的问题，JS提供了prototype属性。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Person</span>(<span class="hljs-params">name</span>) &#123;<br>  <span class="hljs-comment">// 实例属性</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name<br>  <span class="hljs-comment">// 实例方法</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">sayName</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span><br>  &#125;<br>&#125;<br><span class="hljs-title class_">Person</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">cry</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;cry&#x27;</span>)<br>&#125;<br><span class="hljs-keyword">var</span> person1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&#x27;xyf1&#x27;</span>)<br><span class="hljs-keyword">var</span> person2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&#x27;xyf2&#x27;</span>)<br><span class="hljs-comment">//true</span><br>person1.<span class="hljs-property">cry</span> === person2.<span class="hljs-property">cry</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　prototype是从<code>一个函数指向一个对象</code>，即函数才有<code>prototype</code>属性。它的作用是让该构造函数创建的所有实例对象们都能找到公用的属性和方法。<strong>任何函数在创建实例对象的时候，其实会关联该函数的prototype对象。</strong>因此我们继续把原型图补充完整：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/Js-Class-Inherit/class2.jpg" srcset="/img/loading.gif" lazyload alt="class2.jpg"></p>
+<p>　　需要注意的是，我们可以修改原型对象的引用，但是仍需要把<code>constructor</code>属性指向回构造函数；上面的<code>cry</code>函数绑定我们可以这样改写：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-title class_">Person</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span> = &#123;<br>    <span class="hljs-attr">constructor</span>: <span class="hljs-title class_">Person</span>,<br>    <span class="hljs-attr">cry</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;cry&#x27;</span>)<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h1 id="原型链"><a href="#原型链" class="headerlink" title="原型链"></a>原型链</h1><p>　　有了原型对象，我们知道了，实例对象的属性和方法，有可能是定义在自身，也有可能是定义在他的原型对象上。通过上面的<code>cry</code>函数我们可以看出，实例对象能够直接获取原型对象上的属性和方法，那么它是怎么获取的呢？在上面打印的<code>person1</code>中我们发现有一个特别的属性<code>__proto__</code>展开看一下：</p>
+<p><img src="/images/Js-Class-Inherit/proto.png" srcset="/img/loading.gif" lazyload alt="proto.png"></p>
+<p>　　因此<code>__proto__</code>指向了实例对象的原型对象；当你访问一个对象上没有的属性时，对象就会去<code>__proto__</code>上面找，如果还是找不到，就会继续找原型对象的<code>__proto__</code>，直到原型对象为null；因此<code>__proto__</code>构成了一条原型链。</p>
+<p><img src="/images/Js-Class-Inherit/equal.png" srcset="/img/loading.gif" lazyload alt="equal.png"></p>
+<p>　　同时我们也解答了上面实例对象上没有<code>constructor</code>属性的问题，<code>constructor</code>属性真正存在于原型对象上，所以实例对象才能获取到，我们继续完善原型图（虚线表示该属性或方法并不是真正存在）：</p>
+<p><img src="/images/Js-Class-Inherit/class3.jpg" srcset="/img/loading.gif" lazyload alt="class3.jpg"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　同时，原型对象也是一个对象，既然是对象，那么肯定也有它自己的原型对象，那么它的原型对象是谁呢？我们知道，JS中所有的对象都是<code>Object</code>的实例，并继承<code>Object.prototype</code>的属性和方法；字面量<code>var a = &#123;&#125;</code>实际上也是<code>new Object()</code>的语法糖，因此：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> obj1 = &#123;&#125;<br><span class="hljs-keyword">var</span> obj2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>()<br><span class="hljs-comment">//true</span><br>obj1.<span class="hljs-property">__proto__</span> === <span class="hljs-title class_">Object</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span><br><span class="hljs-comment">//true</span><br>obj2.<span class="hljs-property">__proto__</span> === <span class="hljs-title class_">Object</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span><br><span class="hljs-comment">//true</span><br><span class="hljs-title class_">Person</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">__proto__</span> === <span class="hljs-title class_">Object</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们继续完善原型图：</p>
+<p><img src="/images/Js-Class-Inherit/class4.jpg" srcset="/img/loading.gif" lazyload alt="class4.jpg"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h1 id="constructor-NaN"><a href="#constructor-NaN" class="headerlink" title="constructor"></a>constructor</h1><p>　　我们说过<code>constructor</code>用来指向构造函数；同时，<code>constructor</code>真正存在于原型对象上，因此，我们可以得到下面的等式关系：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//true</span><br><span class="hljs-title class_">Person</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">constructor</span> === <span class="hljs-title class_">Person</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　在学数据类型判断的时候学过，<code>constructor</code>可以用来进行数据类型的判断：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>((<span class="hljs-number">2</span>).<span class="hljs-property">constructor</span> === <span class="hljs-title class_">Number</span>); <span class="hljs-comment">// true </span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>((<span class="hljs-literal">true</span>).<span class="hljs-property">constructor</span> === <span class="hljs-title class_">Boolean</span>);<span class="hljs-comment">// true </span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>((<span class="hljs-string">&#x27;str&#x27;</span>).<span class="hljs-property">constructor</span> === <span class="hljs-title class_">String</span>);<span class="hljs-comment">// true </span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(([]).<span class="hljs-property">constructor</span> === <span class="hljs-title class_">Array</span>);<span class="hljs-comment">// true </span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>((<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;&#125;).<span class="hljs-property">constructor</span> === <span class="hljs-title class_">Function</span>);<span class="hljs-comment">// true </span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>((&#123;&#125;).<span class="hljs-property">constructor</span> === <span class="hljs-title class_">Object</span>);<span class="hljs-comment">// true </span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　这种方式看起来能判断所有类型，但是一旦我们更改了原型对象，这种方式就不可靠了。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Fn</span>(<span class="hljs-params"></span>)&#123;&#125;;<br><span class="hljs-title class_">Fn</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Array</span>();<br> <br><span class="hljs-keyword">var</span> f = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Fn</span>();<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(f.<span class="hljs-property">constructor</span>===<span class="hljs-title class_">Fn</span>);    <span class="hljs-comment">// false</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(f.<span class="hljs-property">constructor</span>===<span class="hljs-title class_">Array</span>); <span class="hljs-comment">// true </span><br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　在JS中，函数本身也可以看成是对象，对这种又是函数，又是对象，有一个特殊的称呼：<code>函数对象</code>；我们调用函数的<code>fn.call</code>和<code>fn.apply</code>其实调用的是继承自其原型对象上的<code>Function.prototype.call</code>和<code>Function.prototype.apply</code>，因此函数都是Function函数的实例对象；既然是实例对象，所以<code>Person</code>函数也拥有<code>__proto__</code>和<code>constructor</code>属性，我们来看一下函数的属性：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//ƒ Function() &#123; [native code] &#125;</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Person</span>.<span class="hljs-property">constructor</span>)<br><span class="hljs-comment">//true</span><br><span class="hljs-title class_">Person</span>.<span class="hljs-property">constructor</span> === <span class="hljs-title class_">Function</span><br><span class="hljs-comment">//false</span><br><span class="hljs-title class_">Person</span>.<span class="hljs-title function_">hasOwnProperty</span>(<span class="hljs-string">&#x27;constructor&#x27;</span>)<br><span class="hljs-comment">//ƒ () &#123; [native code] &#125;</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Person</span>.<span class="hljs-property">__proto__</span>)<br><span class="hljs-comment">//true</span><br><span class="hljs-title class_">Person</span>.<span class="hljs-property">__proto__</span>.<span class="hljs-title function_">hasOwnProperty</span>(<span class="hljs-string">&#x27;constructor&#x27;</span>)<br><span class="hljs-comment">//true</span><br><span class="hljs-title class_">Function</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-title function_">hasOwnProperty</span>(<span class="hljs-string">&#x27;constructor&#x27;</span>)<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　可以看出来，<strong>Person构造函数和JS普通的对象没有任何区别</strong>，有自己的<code>constructor</code>属性，指向<code>Function函数</code>，说明Person函数是<code>Function函数</code>的实例对象；而且<code>constructor</code>属性不在Person本身，而在其原型对象<code>Function.prototype</code>上，因此我们再次完善一下原型图：</p>
+<p><img src="/images/Js-Class-Inherit/class5.jpg" srcset="/img/loading.gif" lazyload alt="class5.jpg"></p>
+<h1 id="鸡生蛋蛋生鸡"><a href="#鸡生蛋蛋生鸡" class="headerlink" title="鸡生蛋蛋生鸡"></a>鸡生蛋蛋生鸡</h1><p>　　到这里，我们发现最终原型图指向了四个基本的东西：<code>Object</code>、<code>Object.prototype</code>、<code>Function</code>和<code>Function.prototype</code>，他们之间的关系是整个原型关系里面最难理解的，为了避免干扰，我们给他们四个单独开个图：</p>
+<p><img src="/images/Js-Class-Inherit/Object-Function1.jpg" srcset="/img/loading.gif" lazyload alt="Object-Function1.jpg"></p>
+<p>　　我们知道<code>Object</code>函数和<code>Person</code>函数一样，都是函数对象，因此都是<code>Function</code>函数的实例对象。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//true</span><br><span class="hljs-title class_">Object</span>.<span class="hljs-property">constructor</span> === <span class="hljs-title class_">Function</span><br><span class="hljs-comment">//true</span><br><span class="hljs-title class_">Object</span> <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Function</span><br><span class="hljs-comment">//true</span><br><span class="hljs-title class_">Object</span> <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Object</span><br><span class="hljs-comment">//false</span><br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">hasOwnProperty</span>(<span class="hljs-string">&#x27;constructor&#x27;</span>)<br><span class="hljs-comment">//true</span><br><span class="hljs-title class_">Object</span>.<span class="hljs-property">__proto__</span> === <span class="hljs-title class_">Function</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span><br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　因此我们完善Object和Function的关系：</p>
+<p><img src="/images/Js-Class-Inherit/Object-Function2.jpg" srcset="/img/loading.gif" lazyload alt="Object-Function2.jpg"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　既然<code>Object</code>是构造函数，我们又想起<code>Function</code>也能通过<code>new Function()</code>来构造匿名函数，同时自己又是自己的<code>constructor</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//true</span><br><span class="hljs-title class_">Function</span>.<span class="hljs-property">constructor</span> === <span class="hljs-title class_">Function</span><br><span class="hljs-comment">//true</span><br><span class="hljs-title class_">Function</span> <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Object</span><br><span class="hljs-comment">//true</span><br><span class="hljs-title class_">Function</span> <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Function</span><br><span class="hljs-comment">//false</span><br><span class="hljs-title class_">Function</span>.<span class="hljs-title function_">hasOwnProperty</span>(<span class="hljs-string">&#x27;constructor&#x27;</span>)<br><span class="hljs-comment">//true</span><br><span class="hljs-title class_">Function</span>.<span class="hljs-property">__proto__</span> === <span class="hljs-title class_">Function</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　同时我们猜测<code>Function.prototype</code>和<code>Person.prototype</code>一样是个对象，因此它的原型对象肯定就是<code>Object.prototype</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//true</span><br><span class="hljs-title class_">Function</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">__proto__</span> === <span class="hljs-title class_">Object</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span><br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　我们继续完善原型图：</p>
+<p><img src="/images/Js-Class-Inherit/Object-Function3.jpg" srcset="/img/loading.gif" lazyload alt="Object-Function3.jpg"></p>
+<p>　　这样，整个原型链最有意思的一幕出现了；<code>Object</code>是构造函数，继承了<code>Function.prototype</code>；<code>Function</code>函数也是对象，继承了<code>Object.prototype</code>，那么到底是先有了<code>Object</code>，还是先有<code>Function</code>？这似乎是一个无解的悖论。</p>
+<p>　　我们发现导致鸡和蛋问题的根本原因在于<code>Function.__proto__</code>指向了<code>Function.prototype</code>，让<code>Function</code>继承了<code>Object.prototype</code>上的方法，因此我们需要对<code>Function.prototype</code>来进一步的了解：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//function</span><br><span class="hljs-keyword">typeof</span> <span class="hljs-title class_">Function</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span><br><span class="hljs-comment">//undefined</span><br><span class="hljs-title class_">Function</span>.<span class="hljs-title function_">prototype</span>()<br><span class="hljs-comment">//true</span><br><span class="hljs-title class_">Function</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span> <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Object</span><br><span class="hljs-comment">//false</span><br><span class="hljs-title class_">Function</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span> <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Function</span><br><span class="hljs-comment">//undefined</span><br><span class="hljs-title class_">Function</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span><br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　我们发现<code>Function.prototype</code>是个特殊的函数对象，但是没有prototype属性；针对上面的代码，我们梳理了以下几点：</p>
+<ul>
+<li><code>Function.prototype</code>像普通函数一样可以调用，但总是返回<code>undefined</code></li>
+<li><code>Function.prototype</code>继承于<code>Object.prototype</code>，并且没有<code>prototype</code>这个属性</li>
+</ul>
+<p>　　因此<code>Function.prototype</code>是个标准的内置对象，它继承于<code>Object.prototype</code>，而我们知道<code>Object.prototype===null</code>，说明原型链到<code>Object.prototype</code>就终止了。</p>
+<blockquote>
+<p>结论：先有 <code>Object.prototype</code>（原型链顶端），<code>Function.prototype</code> 继承 <code>Object.prototype</code> 而产生，最后，<code>Function</code> 和<code>Object</code>和其它构造函数继承<code>Function.prototype</code>而产生。</p>
+</blockquote>
+<h1 id="静态属性和方法"><a href="#静态属性和方法" class="headerlink" title="静态属性和方法"></a>静态属性和方法</h1><p>　　所谓的静态方法，是指不需要声明类的实例就可以使用的方法。在JAVA中我们可以直接在类中加一个static定义静态方法</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span>&#123;<br>    <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> <span class="hljs-variable">num</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">say</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;hello&quot;</span>); <br>    &#125;<br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span>&#123;<br>		Person.say();<br>	&#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　在ES5中，我们直接将它作为类函数的属性即可：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Person</span>(<span class="hljs-params"></span>)&#123;&#125;<br><span class="hljs-title class_">Person</span>.<span class="hljs-property">staticSay</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;static say&#x27;</span>)<br>    <span class="hljs-comment">//ƒ Person()&#123;&#125;</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>)<br>&#125;<br><span class="hljs-title class_">Person</span>.<span class="hljs-property">num</span> = <span class="hljs-number">10</span><br><span class="hljs-title class_">Person</span>.<span class="hljs-title function_">staticSay</span>()<br><span class="hljs-comment">//10</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Person</span>.<span class="hljs-property">num</span>)<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　静态方法和实例方法最主要的区别就是实例方法可以访问到实例对象，可以对实例进行操作，而静态方法一般用于跟实例无关的操作。静态方法最常见的是在jQuery的一些工具函数中，比如$.ajax()、$.trim()，可以看出来这两个函数也是直接定义在jQuery对象（即$对象）上的，因为其不需要获取DOM元素$(‘div’)。</p>
+<h1 id="手写instanceof"><a href="#手写instanceof" class="headerlink" title="手写instanceof"></a>手写instanceof</h1><p>　　除了<code>constructor</code>，我们还有<code>instanceof</code>来进行数据类型的判断；<code>instanceof</code>主要用来判断一个实例是否属于某种类型，让我们先看一下instanceof的简单用法：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//true</span><br>[] <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Array</span><br><span class="hljs-comment">//true</span><br>person1 <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Person</span><br><span class="hljs-comment">//true</span><br>person1 <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Object</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　<code>instanceof</code>第一个变量是一个对象A，第二个变量是一个函数B，沿着A的原型链<code>__proto__</code>一直向上找，如果能找到一个<code>__proto__</code>等于B的prototype，则返回true；如果找到终点还没找到则返回false。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">_instanceOf</span>(<span class="hljs-params">A, B</span>)&#123;<br>    <span class="hljs-keyword">if</span>(!A || !B)&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>    &#125;<br>    <span class="hljs-keyword">var</span> O = B.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span><br>    A = A.<span class="hljs-property">__proto__</span><br>    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;<br>        <span class="hljs-keyword">if</span>(A === <span class="hljs-literal">null</span>)&#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(O === A)&#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-comment">//每次循环继续找__proto__</span><br>            A = A.<span class="hljs-property">__proto__</span><br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h1 id="手写new"><a href="#手写new" class="headerlink" title="手写new"></a>手写new</h1><p>　　通过上面的的原型链，我们知道了new本质上就是调用构造函数生成一个对象，这个对象能够访问构造函数的的原型对象，因为我们来尝试模拟一下new的实现。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">myNew</span>(<span class="hljs-params">Fn</span>)&#123;<br>    <span class="hljs-keyword">var</span> obj = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>()<br>    <span class="hljs-title class_">Fn</span>.<span class="hljs-title function_">call</span>(obj)<br>    obj.<span class="hljs-property">__proto__</span> = <span class="hljs-title class_">Fn</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span><br>    <span class="hljs-keyword">return</span> obj<br>&#125;<br><span class="hljs-keyword">var</span> newObj = <span class="hljs-title function_">myNew</span>(<span class="hljs-title class_">Person</span>)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(newObj)<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　我们首先构建了一个空对象；然后将空对象作为this，调用构造函数绑定参数；最后将该对象的__proto__指向构造函数的原型对象。</p>
+<p><img src="/images/Js-Class-Inherit/new1.png" srcset="/img/loading.gif" lazyload alt="new1.png"></p>
+<p>　　可以看到生成出来的对象该有的属性都有了，原型链也绑定成功了，但是存在的问题就是不能进行传参，因此我们进行一下改进：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">myNew</span>(<span class="hljs-params">Fn, ...param</span>)&#123;<br>    <span class="hljs-keyword">var</span> obj = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>()<br>    <span class="hljs-title class_">Fn</span>.<span class="hljs-title function_">call</span>(obj, ...param)<br>    obj.<span class="hljs-property">__proto__</span> = <span class="hljs-title class_">Fn</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span><br>    <span class="hljs-keyword">return</span> obj<br>&#125;<br><span class="hljs-keyword">var</span> newObj = <span class="hljs-title function_">myNew</span>(<span class="hljs-title class_">Person</span>, <span class="hljs-string">&#x27;new obj&#x27;</span>)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(newObj)<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="/images/Js-Class-Inherit/new2.png" srcset="/img/loading.gif" lazyload alt="new2.png"></p>
+<p>　　可以看到返回的对象已经和原生new生成出来的几乎一模一样了。但是我们对构造函数进行一些修改：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Person</span>(<span class="hljs-params">name</span>) &#123;<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">sayName</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span><br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">2</span><br><span class="hljs-comment">//   return &#x27;hello&#x27;</span><br><span class="hljs-comment">//   return &#123;a:3&#125;</span><br><span class="hljs-comment">//   return []</span><br><span class="hljs-comment">//   return function()&#123;&#125;</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们在构造函数中返回了多种类型，经过测试发现：<strong>如果构造函数返回引用类型，new生成的就是返回的对象；如果返回基本数据类型，new生成新的对象。</strong>因此我们终极版的new函数如下：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">myNew</span>(<span class="hljs-params">Fn, ...param</span>)&#123;<br>    <span class="hljs-keyword">var</span> obj = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>()<br>    <span class="hljs-keyword">var</span> result = <span class="hljs-title class_">Fn</span>.<span class="hljs-title function_">call</span>(obj, ...param)<br>    obj.<span class="hljs-property">__proto__</span> = <span class="hljs-title class_">Fn</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> result === <span class="hljs-string">&#x27;object&#x27;</span> <br>        || <span class="hljs-keyword">typeof</span> result === <span class="hljs-string">&#x27;function&#x27;</span> ? result : obj<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<h1 id="ES5继承"><a href="#ES5继承" class="headerlink" title="ES5继承"></a>ES5继承</h1><p>　　所谓的继承，就是把子类继承父类所有的属性和方法；同时我们也知道父类上的属性和方法不仅在自身构造函数，原型链上也会有属性和方法，因此我们也需要继承过来。</p>
+<p>　　既然继承是继承父类的属性和方法，那么我们上面的<code>myNew</code>函数也相当于是一种继承；让我们再看看看还有哪些继承的方式。</p>
+<h2 id="原型链继承"><a href="#原型链继承" class="headerlink" title="原型链继承"></a>原型链继承</h2><figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Parent</span> () &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = <span class="hljs-string">&#x27;xyf&#x27;</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">sayName</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span><br>    &#125;<br>&#125;<br><span class="hljs-title class_">Parent</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">cry</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;cry&#x27;</span>)<br>&#125;<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">Child</span> () &#123;<br>&#125;<br><span class="hljs-title class_">Child</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Parent</span>();<br><span class="hljs-keyword">var</span> child1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Child</span>();<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(child1.<span class="hljs-title function_">sayName</span>())<br>child1.<span class="hljs-title function_">cry</span>()<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们把父类的实例挂载到子类的原型上，那么所有的子类就能访问到父类的属性和方法了，但是由于所有子类共享原型对象，所以会存在以下问题：</p>
+<ul>
+<li>问题1：父类引用类型的属性被子类共享，一旦改变，所有子类实例引用的都将改变。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Parent</span> () &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = [<span class="hljs-string">&#x27;xyf1&#x27;</span>, <span class="hljs-string">&#x27;xyf2&#x27;</span>];<br>&#125;<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">Child</span> () &#123;<br>&#125;<br><span class="hljs-title class_">Child</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Parent</span>();<br><br><span class="hljs-keyword">var</span> child1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Child</span>();<br>child1.<span class="hljs-property">name</span>.<span class="hljs-title function_">push</span>(<span class="hljs-string">&#x27;xyf3&#x27;</span>)<br><span class="hljs-comment">//[&quot;xyf1&quot;, &quot;xyf2&quot;, &quot;xyf3&quot;]</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(child1.<span class="hljs-property">name</span>);<br><br><span class="hljs-keyword">var</span> child2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Child</span>();<br><span class="hljs-comment">//[&quot;xyf1&quot;, &quot;xyf2&quot;, &quot;xyf3&quot;]</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(child2.<span class="hljs-property">name</span>);<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>问题2：创建子类实例的时候，不能向父类传参数。</li>
+<li>问题3：不能继承静态方法。</li>
+</ul>
+<h2 id="构造函数继承"><a href="#构造函数继承" class="headerlink" title="构造函数继承"></a>构造函数继承</h2><figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Parent</span> (name) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">color</span> = [<span class="hljs-string">&#x27;red&#x27;</span>,<span class="hljs-string">&#x27;yellow&#x27;</span>]<br>&#125;<br><span class="hljs-title class_">Parent</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">cry</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;cry&#x27;</span>)<br>&#125;<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">Child</span> (name) &#123;<br>    <span class="hljs-title class_">Parent</span>.<span class="hljs-title function_">call</span>(<span class="hljs-variable language_">this</span>, name);<br>&#125;<br><br><span class="hljs-keyword">var</span> child1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Child</span>(<span class="hljs-string">&#x27;xyf&#x27;</span>);<br>child1.<span class="hljs-property">color</span>.<span class="hljs-title function_">push</span>(<span class="hljs-string">&#x27;blue&#x27;</span>);<br><span class="hljs-comment">//[&#x27;red&#x27;,&#x27;yellow&#x27;,&#x27;blue&#x27;]</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(child1.<span class="hljs-property">color</span>);<br><span class="hljs-comment">//undefined</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(child1.<span class="hljs-property">cry</span>)<br><br><span class="hljs-keyword">var</span> child2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Child</span>(<span class="hljs-string">&#x27;corner&#x27;</span>);<br><span class="hljs-comment">//[&#x27;red&#x27;,&#x27;yellow&#x27;]</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(child2.<span class="hljs-property">color</span>);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　每次创建子类实例的时候调用父类的构造函数，避免了引用类型的属性被所有实例共享，也可以向父类传参数；但是没有继承父类原型上的属性和方法。</p>
+<h2 id="组合继承"><a href="#组合继承" class="headerlink" title="组合继承"></a>组合继承</h2><figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Parent</span> (name) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">color</span> = [<span class="hljs-string">&#x27;red&#x27;</span>,<span class="hljs-string">&#x27;yellow&#x27;</span>]<br>&#125;<br><span class="hljs-title class_">Parent</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">cry</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;cry&#x27;</span>)<br>&#125;<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">Child</span> (name) &#123;<br>    <span class="hljs-title class_">Parent</span>.<span class="hljs-title function_">call</span>(<span class="hljs-variable language_">this</span>, name);<br>&#125;<br><span class="hljs-title class_">Child</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Parent</span>()<br></code></pre></div></td></tr></table></figure>
+
+<p>　　融合了原型链继承和构造函数继承的优点，是JS中常用的继承方式。</p>
+<h1 id="ES6继承"><a href="#ES6继承" class="headerlink" title="ES6继承"></a>ES6继承</h1><p>　　ES6新增了<code>class</code>关键词，用来定义一个类，和JAVA中的有种似曾相识的感觉；但是本质上其实是ES5构造函数的语法糖，大多部分功能ES5都能实现：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span>&#123;<br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name</span>)&#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name<br>    &#125;<br>    <span class="hljs-title function_">sayName</span>(<span class="hljs-params"></span>)&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span><br>    &#125;<br>    <span class="hljs-keyword">static</span> <span class="hljs-title function_">staticSay</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;static say&#x27;</span>);<br>    &#125;<br>&#125;<br><span class="hljs-title class_">Person</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">cry</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;cry&#x27;</span>)<br>&#125;<br><span class="hljs-comment">//static say</span><br><span class="hljs-title class_">Person</span>.<span class="hljs-title function_">staticSay</span>()<br><br><span class="hljs-keyword">var</span> person1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&#x27;corner&#x27;</span>)<br><span class="hljs-comment">//cry</span><br>person1.<span class="hljs-title function_">cry</span>()<br><span class="hljs-comment">//corner</span><br>person1.<span class="hljs-title function_">sayName</span>()<br><span class="hljs-comment">//true</span><br>person1.<span class="hljs-property">constructor</span> === <span class="hljs-title class_">Person</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　ES6的继承可以通过<code>extends</code>关键词实现，比ES5的修改原型链实现继承要更清晰和方便：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span>&#123;<br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name</span>)&#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name<br>    &#125;<br>    <span class="hljs-title function_">sayName</span>(<span class="hljs-params"></span>)&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span><br>    &#125;<br>    <span class="hljs-keyword">static</span> <span class="hljs-title function_">staticSay</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;static say&#x27;</span>);<br>    &#125;<br>&#125;<br><span class="hljs-title class_">Person</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">cry</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;cry&#x27;</span>)<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Child</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Person</span>&#123;<br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name,color</span>)&#123;<br>        <span class="hljs-variable language_">super</span>(name)<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">color</span> = color<br>    &#125;<br>    <span class="hljs-title function_">sayColor</span>(<span class="hljs-params"></span>)&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;my color is:&#x27;</span>+ <span class="hljs-variable language_">this</span>.<span class="hljs-property">color</span><br>    &#125;<br>&#125;<br><span class="hljs-keyword">var</span> child1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Child</span>(<span class="hljs-string">&#x27;child1&#x27;</span>, <span class="hljs-string">&#x27;black&#x27;</span>)<br><span class="hljs-comment">//child1</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(child1.<span class="hljs-title function_">sayName</span>())<br><span class="hljs-comment">//my color is:black</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(child1.<span class="hljs-title function_">sayColor</span>())<br><span class="hljs-comment">//cry</span><br>child1.<span class="hljs-title function_">cry</span>()<br><span class="hljs-comment">//static say</span><br><span class="hljs-title class_">Child</span>.<span class="hljs-title function_">staticSay</span>()<br></code></pre></div></td></tr></table></figure>
+
+<p>　　可以很清晰的看出来子类继承了父类本身以及原型上的属性和方法。同时，在ES5中所有的继承我们发现都不支持静态函数的继承，但是在ES6中支持。</p>
+<p>参考</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/creeperyang/blog/issues/9">从proto和prototype来深入理解JS对象和原型链</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Interview/">面试</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/23/Vue-nextTick.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Vue中$nextTick源码解析</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/20/Vue-Communicate.html">
+                        <span class="hidden-mobile">Vue中组件通信的方式</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

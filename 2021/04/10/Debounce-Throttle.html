@@ -1,0 +1,605 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　最近是金三银四面试季，相信不少公司面试题都会涉及到防抖节流的问题，有的面试题甚至是手写实现，今天我们就来看下防抖节流的应用场景以及它内部实现的逻辑。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>金三银四面试季，防抖节流要牢记 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="金三银四面试季，防抖节流要牢记">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-04-10 22:00" pubdate>
+        2021年4月10日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      27
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">金三银四面试季，防抖节流要牢记</h1>
+            
+            <div class="markdown-body">
+              <p>　　最近是金三银四面试季，相信不少公司面试题都会涉及到防抖节流的问题，有的面试题甚至是手写实现，今天我们就来看下防抖节流的应用场景以及它内部实现的逻辑。</p>
+<span id="more"></span>
+
+
+<h1 id="什么是防抖节流"><a href="#什么是防抖节流" class="headerlink" title="什么是防抖节流"></a>什么是防抖节流</h1><p>　　用户在页面上进行窗口大小的调整、滚动页面或者在输入框搜索联想词等一系列操作时，都会频繁的触发事件处理函数；如果这时候又需要在事件处理函数里去异步获取数据或者进行DOM的操作等耗性能的操作时，容易导致页面卡顿等影响用户的体验；这时就可以通过防抖（debounce）和节流（throttle）函数来限制事件处理函数的调用频率，提升用户的体验。</p>
+<p><img src="/images/Debounce-Throttle/principle.png" srcset="/img/loading.gif" lazyload alt="principle.png"></p>
+<p>　　最上面正常执行每一条竖线代表了每一次事件处理函数的调用，中间是经过防抖函数处理后实际的调用情况，最下面是经过节流函数处理后的调用情况；发现比最上面密集调用的情况要少了很多。</p>
+<h1 id="实现防抖"><a href="#实现防抖" class="headerlink" title="实现防抖"></a>实现防抖</h1><p>　　防抖，最开始是用在相机上，我们在拍照时（包括用手机拍），经常会发现由于手的抖动，拍摄出来的画面发生重影或者模糊的情况；而现在的相机或手机基本都会加入防抖技术，除非我们抖动特别的厉害，防抖技术的加入可以让我们拍摄更多清晰的照片。</p>
+<p>　　而在我们的JS中，防抖是指<strong>触发事件后<code>n秒</code>后才执行函数，如果在 n 秒内又触发了事件，则会重新计算函数执行时间</strong>；这段话比较绕口，我们以scroll函数为例：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">scrollHandler</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;handle&#x27;</span>)<br>&#125;<br><span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;scroll&#x27;</span>, scrollHandler)<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　我们在页面滚动时会不断触发<code>scrollHandler</code>函数，但是我们不希望每次都触发，因此我们可以通过包装防抖函数来进行限制，当延迟时间超过n秒才真正执行scrollHandler函数。</p>
+<p><img src="/images/Debounce-Throttle/debounce1.png" srcset="/img/loading.gif" lazyload alt="debounce1.png"></p>
+<p>　　而防抖函数实现的方式也很简单，在每次触发事件时，都设置一个定时器，延迟执行，并且取消之前的定时器。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">debounce</span>(<span class="hljs-params">fn, wait</span>) &#123;<br>  <span class="hljs-keyword">var</span> timeout<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">var</span> context = <span class="hljs-variable language_">this</span>,<br>    args = <span class="hljs-variable language_">arguments</span><br>    <span class="hljs-built_in">clearTimeout</span>(timeout)<br>    <br>    timeout = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>      fn.<span class="hljs-title function_">apply</span>(context, args)<br>    &#125;, wait)<br>  &#125;<br>&#125;<br><span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;scroll&#x27;</span>, <span class="hljs-title function_">debounce</span>(scrollHandler, <span class="hljs-number">500</span>))<br></code></pre></div></td></tr></table></figure>
+
+<p>　　<code>debounce</code>主要的目的就是延迟执行传入的<code>fn</code>函数，我们发现它返回了一个函数，是典型的闭包结构；页面滚动将每次触发scrollHandler变成每次都会触发debounce中返回的闭包函数；由于闭包的存在，因此<code>timeout</code>定时器变量会一直存在，触发闭包函数时都会清除上次设置的定时器。</p>
+<p>　　这里调用fn时，很多fn函数都是滚动或者点击的回调函数，会提供Event对象进行处理，因此我们需要将原来的参数传入以及this进行绑定；因此分别赋值了变量<code>context</code>和<code>args</code>，这里<code>arguments</code>是类数组对象，那么什么是类数组对象呢，我们在函数中console.log出来看一下：</p>
+<p><img src="/images/Debounce-Throttle/arguments.png" srcset="/img/loading.gif" lazyload alt="arguments.png"></p>
+<p>　　我们发现它的属性名是按照从0开始的index，第一个参数的属性是’0’，第二个属性名是’1’，并且它还有个length属性；但是它和数组不同的是它<code>__proto__</code>直接指向了Object，而数组的<code>__proto__</code>指向了Array；因此Array原型上的一些map、find等方法arguments也是没有的。</p>
+<p>　　我们回到防抖函数，上面的防抖函数是非立即执行的，也就是触发事件后不会马上执行，但是我们某些场景下需要立即执行；立即执行后当n秒内触发事件才能再次执行。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Debounce-Throttle/debounce2.png" srcset="/img/loading.gif" lazyload alt="debounce2.png"></p>
+<p>　　因此我们来看下立即执行版本的防抖函数时如何来实现的：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">debounce</span>(<span class="hljs-params">fn, wait</span>) &#123;<br>  <span class="hljs-keyword">let</span> timeout, result;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> context = <span class="hljs-variable language_">this</span><br>    <span class="hljs-keyword">const</span> args = <span class="hljs-variable language_">arguments</span><br>    <span class="hljs-built_in">clearTimeout</span>(timeout)<br>    <span class="hljs-keyword">const</span> callNow = !timeout<br>    timeout = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>      timeout = <span class="hljs-literal">null</span><br>    &#125;, wait)<br>    <span class="hljs-keyword">if</span> (callNow) result = fn.<span class="hljs-title function_">apply</span>(context, args)<br>    <span class="hljs-keyword">return</span> result<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　在上面代码中我们还是通过闭包返回了一个匿名函数，但是在里面增加了一个变量callNow的判断，判断上一次的定时器是否已经被清除，如果没有定时器则立即执行fn函数。</p>
+<p>　　在开发过程中我们需要根据不同的场景来切换不同版本的防抖函数，因此将两个防抖函数结合起来，根据参数来进行判断：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * fn：执行函数</span><br><span class="hljs-comment"> * wait：延迟执行时间</span><br><span class="hljs-comment"> * immediate：是否立即执行</span><br><span class="hljs-comment"> **/</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">debounce</span>(<span class="hljs-params">fn, wait, immediate</span>) &#123;<br>  <span class="hljs-keyword">var</span> timeout, result;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">var</span> context = <span class="hljs-variable language_">this</span><br>    <span class="hljs-keyword">var</span> args = <span class="hljs-variable language_">arguments</span><br>    <span class="hljs-built_in">clearTimeout</span>(timeout)<br>    <span class="hljs-keyword">if</span> (immediate) &#123;<br>      <span class="hljs-keyword">var</span> callNow = !timeout<br>      timeout = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>        timeout = <span class="hljs-literal">null</span><br>      &#125;, wait)<br>      <span class="hljs-keyword">if</span> (callNow) result = fn.<span class="hljs-title function_">apply</span>(context, args)<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      timeout = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>        fn.<span class="hljs-title function_">apply</span>(context, args)<br>      &#125;, wait)<br>    &#125;<br>    <span class="hljs-keyword">return</span> result<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　到这里我们的防抖函数已经接近完美了，但是最后如果我们希望能够取消这里的debounce函数，比如我们传入wait是10秒，immediate为true，刚开始是立即执行fn函数的，但是我们需要等待10秒才能重新去触发fn函数，中间做的所有操作都是无效的；我们希望能有一个按钮，点击后能够取消上一次的防抖，然后我们就能够再次触发了。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　这里改动也很简单，我们需要对返回闭包函数进行处理，但是由于是匿名函数，我们给他具名，同时赋值一个<code>cancel</code>函数用来清除闭包外的定时器timeout即可：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">debounce</span>(<span class="hljs-params">fn, wait, immediate</span>) &#123;<br>  <span class="hljs-keyword">var</span> timeout, result;<br>  <span class="hljs-keyword">var</span> debounced = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">var</span> context = <span class="hljs-variable language_">this</span><br>    <span class="hljs-keyword">var</span> args = <span class="hljs-variable language_">arguments</span><br>    <span class="hljs-built_in">clearTimeout</span>(timeout)<br>    <span class="hljs-keyword">if</span> (immediate) &#123;<br>      <span class="hljs-keyword">var</span> callNow = !timeout<br>      timeout = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>        timeout = <span class="hljs-literal">null</span><br>      &#125;, wait)<br>      <span class="hljs-keyword">if</span> (callNow) result = fn.<span class="hljs-title function_">apply</span>(context, args)<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      timeout = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>        fn.<span class="hljs-title function_">apply</span>(context, args)<br>      &#125;, wait)<br>    &#125;<br>    <span class="hljs-keyword">return</span> result<br>  &#125;<br>  debounced.<span class="hljs-property">cancel</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-built_in">clearTimeout</span>(timeout)<br>    timeout = <span class="hljs-literal">null</span><br>  &#125;<br>  <span class="hljs-keyword">return</span> debounced<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　那么如何来调用这个cancel函数呢？我们还是以scroll函数为例，通过给页面上的btn取消按钮增加点击事件进行触发：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> cancelBtn = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;btn&#x27;</span>)<br><span class="hljs-keyword">var</span> setDebounce = <span class="hljs-title function_">debounce</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;handle&#x27;</span>)<br>&#125;, <span class="hljs-number">10000</span>, <span class="hljs-literal">true</span>)<br>cancelBtn.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>  setDebounce.<span class="hljs-title function_">cancel</span>()<br>&#125;)<br><span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;scroll&#x27;</span>, setDebounce)<br></code></pre></div></td></tr></table></figure>
+
+<p>　　到这里我们的防抖函数就很完美了。</p>
+<h1 id="实现节流"><a href="#实现节流" class="headerlink" title="实现节流"></a>实现节流</h1><p>　　节流函数是指当持续触发事件时，保证一定时间段内只调用一次事件处理函数；也就是会稀释处理函数的执行频率。我们通过时间轴来清晰的看下它的执行过程：</p>
+<p><img src="/images/Debounce-Throttle/throttle1.png" srcset="/img/loading.gif" lazyload alt="throttle1.png"></p>
+<p>　　我们可以看出，节流函数不管在一个周期内触发了多少次scroll函数，也不管触发的时间间隔，最后只会执行周期内的最后一次（或者第一次）；节流函数应用场景一般在窗口resize时进行布局的调整或者移动端监听touchmove事件时移动DOM元素等；节流函数同样也有时间戳和定时器两个版本，我们先来看定时器版的节流函数实现方式：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">throttle</span>(<span class="hljs-params">fn, wait</span>) &#123;<br>  <span class="hljs-keyword">let</span> timeout;<br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">let</span> context = <span class="hljs-variable language_">this</span><br>    <span class="hljs-keyword">let</span> args = <span class="hljs-variable language_">arguments</span><br>    <span class="hljs-keyword">if</span> (!timeout) &#123;<br>      timeout = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>        timeout = <span class="hljs-literal">null</span><br>        fn.<span class="hljs-title function_">apply</span>(context, args)<br>      &#125;, wait)<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　和防抖函数每次清除timeout不同，这里对timeout进行非空判断，只有它为空的时候才能设置定时器，这样保证了在一段时间内同时只有一个定时器，在时间到之后会释放定时器并且执行fn函数，重新设置定时器。</p>
+<p>　　我们再来看下时间戳版本的节流函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">throttle</span>(<span class="hljs-params">fn, wait</span>) &#123;<br>  <span class="hljs-keyword">var</span> context, args<br>  <span class="hljs-keyword">var</span> previous = <span class="hljs-number">0</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">var</span> now = +<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>()<br>    context = <span class="hljs-variable language_">this</span><br>    args = <span class="hljs-variable language_">arguments</span><br>    <span class="hljs-keyword">if</span> (now - previous &gt; wait) &#123;<br>      fn.<span class="hljs-title function_">apply</span>(context, args)<br>      previous = now<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　时间戳版本的函数是在闭包函数的外部存储了一个<code>previous</code>变量，是上次执行的一个时间戳；每次触发内部闭包函数时与上次的时间戳进行对比判断，如果间隔时间大于我们设置的等待时间则执行fn函数，同时更新时间戳；同时由于我们初始化<code>previous</code>是0，而<code>now</code>当前的时间戳减去0肯定是会大于wait时间的，因此时间戳版本的节流函数fn一开始就会被触发。</p>
+<p>　　通过上面我们很容易就能发现，两个版本的节流函数最大的不同就是fn函数执行的时间点，定时器版本由于setTimeout延时的特性，在时间段结束的时候触发fn函数，而时间戳版本是在时间段开始的时候触发。</p>
+<p>　　同样的，我们可以将两种节流函数结合到一个函数，我们可以加上cancel取消方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * fn：执行函数</span><br><span class="hljs-comment"> * wait：延迟执行时间</span><br><span class="hljs-comment"> * immediate：是否立即执行</span><br><span class="hljs-comment"> **/</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">throttle</span>(<span class="hljs-params">fn, wait, immediate</span>) &#123;<br>  <span class="hljs-keyword">let</span> timeout<br>  <span class="hljs-keyword">let</span> previous = <span class="hljs-number">0</span><br>  <span class="hljs-keyword">var</span> throttled = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">let</span> context = <span class="hljs-variable language_">this</span><br>    <span class="hljs-keyword">let</span> args = <span class="hljs-variable language_">arguments</span><br>    <span class="hljs-keyword">if</span> (immediate) &#123;<br>      <span class="hljs-keyword">let</span> now = <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>()<br>      <span class="hljs-keyword">if</span> (now - previous &gt; wait) &#123;<br>        fn.<span class="hljs-title function_">apply</span>(context, args)<br>        previous = now<br>      &#125;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-keyword">if</span> (!timeout) &#123;<br>        timeout = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>          timeout = <span class="hljs-literal">null</span><br>          fn.<span class="hljs-title function_">apply</span>(context, args)<br>        &#125;, wait)<br>      &#125;<br>    &#125;<br>  &#125;<br>  throttled.<span class="hljs-property">cancel</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-built_in">clearTimeout</span>(timeout)<br>    previous = <span class="hljs-number">0</span><br>    timeout = <span class="hljs-literal">null</span><br>  &#125;<br>  <span class="hljs-keyword">return</span> throttled<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+            </div>
+            <hr>
+            <div>
+              
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script><div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Interview/">面试</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/04/14/Vue-Unit-Test.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">前端抢饭碗系列之Vue项目中如何做单元测试</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/03/10/DesignPattern-Observer.html">
+                        <span class="hidden-mobile">JS设计模式之观察者模式</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

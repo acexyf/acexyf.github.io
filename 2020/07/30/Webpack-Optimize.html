@@ -1,0 +1,794 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　在上一篇文章Webpack配置全解析介绍了Webpack中loader和plugins的一些基本用法，当loader和plugins使用较多后项目也会越来越耗时，因此这次我们继续学习如何优化webpack的配置来让我们的项目运行的更快耗时更短。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>Webpack配置全解析（优化篇） - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Webpack配置全解析（优化篇）">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-07-30 12:00" pubdate>
+        2020年7月30日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      78
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Webpack配置全解析（优化篇）</h1>
+            
+            <div class="markdown-body">
+              <p>　　在上一篇文章<a href="http://xieyufei.com/2020/06/06/Webpack-Learned.html">Webpack配置全解析</a>介绍了Webpack中loader和plugins的一些基本用法，当loader和plugins使用较多后项目也会越来越耗时，因此这次我们继续学习如何优化webpack的配置来让我们的项目运行的更快耗时更短。</p>
+<span id="more"></span>
+
+<p>　　本文将从缩小文件搜索范围、减少打包文件、缓存和多进程四个方面来了解Webpack的优化配置。</p>
+<h1 id="缩小文件搜索范围"><a href="#缩小文件搜索范围" class="headerlink" title="缩小文件搜索范围"></a>缩小文件搜索范围</h1><p>　　Webpack会从Entry入口出发，解析文件中的导入模块语句，再递归解析；每次遇到导入语法时会做两件事情：</p>
+<ol>
+<li>查找导入模块的位置，比如<code>require(&#39;vue&#39;)</code>就去引入<code>/node_modules/vue/dist/vue.runtime.common.js</code>文件</li>
+<li>通过相应的loader来解析导入的模块，比如引入的js就调用babel-loader来转换代码</li>
+</ol>
+<p>　　当项目只有几个文件时，解析文件流程只有几百毫秒，然而随着项目规模的增大，解析文件会越来越耗时，因此我们通过webpack的配置来缩小我们搜索模块的范围</p>
+<h2 id="优化loader配置"><a href="#优化loader配置" class="headerlink" title="优化loader配置"></a>优化loader配置</h2><p>　　在上一篇中，我们介绍了使用<code>include/exclude</code>将node_modules中的文件进行包括/排除。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">&#123;<br>    <span class="hljs-attr">rules</span>: [&#123;<br>        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.js$/</span>,<br>        <span class="hljs-attr">use</span>: &#123;<br>            <span class="hljs-attr">loader</span>: <span class="hljs-string">&#x27;babel-loader&#x27;</span><br>        &#125;,<br>        <span class="hljs-comment">// exclude: /node_modules/,</span><br>        <span class="hljs-attr">include</span>: [path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&#x27;src&#x27;</span>)]<br>    &#125;]<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　<code>include</code>表示哪些目录中的文件需要进行babel-loader，<code>exclude</code>表示哪些目录中的文件不要进行babel-loader。这是因为在引入第三方模块的时候，很多模块已经是打包后的，不需要再被处理，比如vue、jQuery等；如果不设置<code>include/exclude</code>就会被loader处理，增加打包时间。</p>
+<h2 id="优化module-noParse配置"><a href="#优化module-noParse配置" class="headerlink" title="优化module.noParse配置"></a>优化module.noParse配置</h2><p>　　如果一些第三方模块没有使用AMD/CommonJs规范，可以使用<code>noParse</code>来标记这个模块，这样Webpack在导入模块时，就不进行解析和转换，提升Webpack的构建速度；noParse可以接受一个正则表达式或者一个函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">&#123;<br>    <span class="hljs-attr">module</span>: &#123;<br>        <span class="hljs-comment">//noParse: /jquery|lodash|chartjs/,</span><br>        <span class="hljs-attr">noParse</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">content</span>)&#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-regexp">/jquery|lodash|chartjs/</span>.<span class="hljs-title function_">test</span>(content)<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　对于jQuery、lodash、chartjs等一些库，庞大且没有采用模块化标准，因此我们可以选择不解析他们。</p>
+<blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>注：被不解析的模块文件中不应该包含<code>require</code>、<code>import</code>等模块语句</p>
+</blockquote>
+<p><img src="/images/Webpack-Optimize/noParse.png" srcset="/img/loading.gif" lazyload alt="noParse.png"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　经过多次打包尝试，打包性能大概能提升10%~20%；本实例完整代码<a target="_blank" rel="noopener" href="https://github.com/acexyf/WebpackDemo/tree/master/demo13">demo</a>，</p>
+<h2 id="优化resolve-modules配置"><a href="#优化resolve-modules配置" class="headerlink" title="优化resolve.modules配置"></a>优化resolve.modules配置</h2><p>　　modules用于告诉webpack去哪些目录下查找引用的模块，默认值是<code>[&quot;node_modules&quot;]</code>，意思是在<code>./node_modules</code>查找模块，找不到再去<code>../node_modules</code>，以此类推。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　我们代码中也会有大量的模块被其他模块依赖和引入，由于这些模块位置分布不固定，路径有时候会很长，比如<code>import &#39;../../src/components/button&#39;</code>、<code>import &#39;../../src/utils&#39;</code>；这时我们可以利用modules进行优化</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">&#123;<br>  <span class="hljs-attr">resolve</span>: &#123;<br>    <span class="hljs-attr">modules</span>: [<br>      path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;src&quot;</span>),<br>      path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;node_modules&quot;</span>),<br>      <span class="hljs-string">&quot;node_modules&quot;</span>,<br>    ],<br>  &#125;,<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样我们可以简单的通过<code>import &#39;components/button&#39;</code>、<code>import &#39;utils&#39;</code>进行导入，webpack会会优先从<code>src</code>目录下进行查找</p>
+<h2 id="优化resolve-alias配置"><a href="#优化resolve-alias配置" class="headerlink" title="优化resolve.alias配置"></a>优化resolve.alias配置</h2><p>　　alias通过创建import或者require的别名，把原来导入模块的路径映射成一个新的导入路径；它和<code>resolve.modules</code>不同的的是，它的作用是用别名代替前面的路径，不是省略；这样的好处就是webpack直接会去对应别名的目录查找模块，减少了搜索时间。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">&#123;<br>  <span class="hljs-attr">resolve</span>: &#123;<br>    <span class="hljs-attr">alias</span>: &#123;<br>      <span class="hljs-string">&#x27;@&#x27;</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&#x27;src&#x27;</span>),<br>    &#125;,<br>  &#125;,<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样我们就能通过<code>import Buttom from &#39;@/Button&#39;</code>来引入组件了；我们不光可以给自己写的模块设置别名，还可以给第三方模块设置别名：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">&#123;<br>  <span class="hljs-attr">resolve</span>: &#123;<br>    <span class="hljs-attr">alias</span>: &#123;<br>      <span class="hljs-string">&#x27;vue$&#x27;</span>: isDev ? <span class="hljs-string">&#x27;vue/dist/vue.runtime.js&#x27;</span> : <span class="hljs-string">&#x27;vue/dist/vue.runtime.min.js&#x27;</span>,<br>    &#125;,<br>  &#125;,<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们在<code>import Vue from &#39;vue&#39;</code>时，webpack就会帮我们去vue依赖包的dist文件下面引入对应的文件，减少了搜索package.json的时间。</p>
+<h2 id="优化resolve-mainFields配置"><a href="#优化resolve-mainFields配置" class="headerlink" title="优化resolve.mainFields配置"></a>优化resolve.mainFields配置</h2><p>　　mainFields用来告诉webpack使用第三方模块中的哪个字段来导入模块；第三方模块中都会有一个<code>package.json</code>文件用来描述这个模块的一些属性，比如模块名(name)、版本号(version)、作者(auth)等等；其中最重要的就是有多个特殊的字段用来告诉webpack导入文件的位置，有多个字段的原因是因为有些模块可以同时用于多个环境，而每个环境可以使用不同的文件。</p>
+<p>　　mainFields的默认值和当前webpack配置的<code>target</code>属性有关：</p>
+<ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>如果target为<code>webworker</code>或<code>web</code>（默认），mainFields默认值为<code>[&quot;browser&quot;, &quot;module&quot;, &quot;main&quot;]</code></li>
+<li>如果target为其他（包括node），mainFields默认值为<code>[&quot;module&quot;, &quot;main&quot;]</code></li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</ul>
+<p>　　这就是说当我们<code>require(&#39;vue&#39;)</code>的时候，webpack先去vue下面搜索browser字段，没有找到再去搜索module字段，最后搜索main字段。</p>
+<p>　　为了减少搜索的步骤，在明确第三方模块入口文件描述字段时，我们可以将这个字段设置尽量少；一般第三方模块都采用<code>main</code>字段，因此我们可以这样配置：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">&#123;<br>    <span class="hljs-attr">resolve</span>: &#123;<br>        <span class="hljs-attr">mainFields</span>: [<span class="hljs-string">&quot;main&quot;</span>],<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<h2 id="优化resolve-extensions配置"><a href="#优化resolve-extensions配置" class="headerlink" title="优化resolve.extensions配置"></a>优化resolve.extensions配置</h2><p>　　extensions字段用来在导入模块时，自动带入后缀尝试去匹配对应的文件，它的默认值是：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">&#123;<br>    <span class="hljs-attr">resolve</span>: &#123;<br>        <span class="hljs-attr">extensions</span>: [<span class="hljs-string">&#x27;.js&#x27;</span>, <span class="hljs-string">&#x27;.json&#x27;</span>]<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　也就是说我们在<code>require(&#39;./utils&#39;)</code>时，Webpack先匹配<code>utils.js</code>，匹配不到再去匹配<code>utils.json</code>，如果还找不到就报错。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　因此<code>extensions</code>数组越长，或者正确后缀的文件越靠后，匹配的次数越多也就越耗时，因此我们可以从以下几点来优化：</p>
+<ol>
+<li>extensions数组尽量少，项目中不存在的文件后缀不要列进去</li>
+<li>出现频率比较高的文件后缀优先放到最前面</li>
+<li>在代码中导入文件的时候，要尽量把后缀名带上，避免查找</li>
+</ol>
+<p>　　以上实例完整代码<a target="_blank" rel="noopener" href="https://github.com/acexyf/WebpackDemo/tree/master/demo9">demo</a>。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h1 id="减少打包文件"><a href="#减少打包文件" class="headerlink" title="减少打包文件"></a>减少打包文件</h1><p>　　在我们项目中不可避免会引入第三方模块，webpack打包时也会将第三方模块作为依赖打包进bundle中，这样就会增加打包文件尺寸和增加耗时，如果能合理得处理这些模块就能提升不少webpack的性能。</p>
+<h2 id="提取公共代码"><a href="#提取公共代码" class="headerlink" title="提取公共代码"></a>提取公共代码</h2><p>　　我们的项目通常有多个页面或者多个页面模块（单页面），多个页面之间通常都有公用的函数或者第三方模块，在每个页面中都打包这些模块会造成以下问题：</p>
+<ul>
+<li>资源重复加载，浪费用户流量</li>
+<li>每个页面加载资源多，首屏展示慢</li>
+</ul>
+<p>　　在Webpack4之前，都是通过CommonsChunkPlugin插件来提取公共代码，然而存在着以下问题</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<ul>
+<li>产出的chunk在引入的时候，会包含重复的代码</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>无法优化异步chunk</li>
+</ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　Webpack4引入了<code>SplitChunksPlugin</code>插件进行公共模块的抽取；由于webpack4开箱即用的特性，它不用单独安装，通过<code>optimization.splitChunks</code>进行配置即可，官方给的默认配置参数如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">optimization</span>: &#123;<br>    <span class="hljs-attr">splitChunks</span>: &#123;<br>      <span class="hljs-comment">// 代码分割时默认对异步代码生效，all：所有代码有效，inital：同步代码有效</span><br>      <span class="hljs-attr">chunks</span>: <span class="hljs-string">&#x27;async&#x27;</span>,<br>      <span class="hljs-comment">// 代码分割最小的模块大小，引入的模块大于 20000B 才做代码分割</span><br>      <span class="hljs-attr">minSize</span>: <span class="hljs-number">20000</span>,<br>      <span class="hljs-comment">// 代码分割最大的模块大小，大于这个值要进行代码分割，一般使用默认值</span><br>      <span class="hljs-attr">maxSize</span>: <span class="hljs-number">0</span>, <br>      <span class="hljs-comment">// 引入的次数大于等于1时才进行代码分割</span><br>      <span class="hljs-attr">minChunks</span>: <span class="hljs-number">1</span>,<br>      <span class="hljs-comment">// 最大的异步请求数量,也就是同时加载的模块最大模块数量</span><br>      <span class="hljs-attr">maxAsyncRequests</span>: <span class="hljs-number">30</span>,<br>      <span class="hljs-comment">// 入口文件做代码分割最多分成 30 个 js 文件</span><br>      <span class="hljs-attr">maxInitialRequests</span>: <span class="hljs-number">30</span>, <br>      <span class="hljs-comment">// 文件生成时的连接符</span><br>      <span class="hljs-attr">automaticNameDelimiter</span>: <span class="hljs-string">&#x27;~&#x27;</span>, <br>      <span class="hljs-attr">enforceSizeThreshold</span>: <span class="hljs-number">5000</span>,<br>      <span class="hljs-attr">cacheGroups</span>: &#123;<br>        <span class="hljs-attr">vendors</span>: &#123;<br>          <span class="hljs-comment">// 位于node_modules中的模块做代码分割</span><br>          <span class="hljs-attr">test</span>: <span class="hljs-regexp">/[\\/]node_modules[\\/]/</span>, <br>          <span class="hljs-comment">// 根据优先级决定打包到哪个组里，例如一个 node_modules 中的模块进行代码</span><br>          <span class="hljs-attr">priority</span>: -<span class="hljs-number">10</span> <br>        &#125;, <br>        <span class="hljs-comment">// 既满足 vendors，又满足 default，那么根据优先级会打包到 vendors 组中。</span><br>        <span class="hljs-attr">default</span>: &#123; <br>          <span class="hljs-comment">// 没有 test 表明所有的模块都能进入 default 组，但是注意它的优先级较低。</span><br>          <span class="hljs-comment">//  根据优先级决定打包到哪个组里,打包到优先级高的组里。</span><br>          <span class="hljs-attr">priority</span>: -<span class="hljs-number">20</span>, <br>           <span class="hljs-comment">//如果一个模块已经被打包过了,那么再打包时就忽略这个上模块</span><br>          <span class="hljs-attr">reuseExistingChunk</span>: <span class="hljs-literal">true</span> <br>        &#125;<br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　我们在home、list、detail三个页面分别引入了vue.js、axios.js和公用的工具函数模块utils.js；我们首先将使用到的第三方模块提取到一个单独的文件，这个文件包含了项目的基础运行环境，一般称为<code>vendors.js</code>；在抽离第三方模块后我们将每个页面都依赖的公共代码提取出来，放到<code>common.js</code>中。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">optimization</span>: &#123;<br>    <span class="hljs-attr">splitChunks</span>: &#123;<br>      <span class="hljs-attr">chunks</span>: <span class="hljs-string">&#x27;initial&#x27;</span>,<br>      <span class="hljs-attr">cacheGroups</span>: &#123;<br>        <span class="hljs-attr">vendors</span>: &#123;<br>          <span class="hljs-attr">test</span>: <span class="hljs-regexp">/[\\/]node_modules[\\/]/</span>,<br>          <span class="hljs-attr">priority</span>: <span class="hljs-number">10</span>,<br>          <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;vendors&#x27;</span><br>        &#125;,<br>        <span class="hljs-attr">common</span>: &#123;<br>          <span class="hljs-attr">test</span>: <span class="hljs-regexp">/[\\/]src[\\/]/</span>,<br>          <span class="hljs-attr">priority</span>: <span class="hljs-number">5</span>,<br>          <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;common&#x27;</span><br>        &#125;<br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　有时候项目依赖模块比较多，<code>vendors.js</code>文件会特别大，我们还可以对它进一步拆分，按照模块划分：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><br>&#123;<br>  <span class="hljs-comment">//省略其他配置</span><br>  <span class="hljs-attr">cacheGroups</span>: &#123;<br>    <span class="hljs-comment">//涉及vue的模块</span><br>    <span class="hljs-attr">vue</span>: &#123;<br>      <span class="hljs-attr">test</span>: <span class="hljs-regexp">/[\\/]node_modules[\\/](vue|vuex|vue-router)/</span>,<br>      <span class="hljs-attr">priority</span>: <span class="hljs-number">10</span>,<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;vue&#x27;</span><br>    &#125;,<br>    <span class="hljs-comment">//其他模块</span><br>    <span class="hljs-attr">vendors</span>: &#123;<br>      <span class="hljs-attr">test</span>: <span class="hljs-regexp">/[\\/]node_modules[\\/]/</span>,<br>      <span class="hljs-attr">priority</span>: <span class="hljs-number">9</span>,<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;vendors&#x27;</span><br>    &#125;,<br>    <span class="hljs-attr">common</span>: &#123;<br>      <span class="hljs-attr">test</span>: <span class="hljs-regexp">/[\\/]src[\\/]/</span>,<br>      <span class="hljs-attr">priority</span>: <span class="hljs-number">5</span>,<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;common&#x27;</span><br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<h2 id="动态链接DllPlugin"><a href="#动态链接DllPlugin" class="headerlink" title="动态链接DllPlugin"></a>动态链接DllPlugin</h2><p>　　DLL即动态链接库（Dynamic-Link Library）的缩写，熟悉Windows系统的童鞋在电脑中也经常能看到后缀是dll的文件，偶尔电脑弹框警告也是因为电脑中缺失了某些dll文件；DLL最初用于节约应用程序所需的磁盘和内存空间，当多个程序使用同一个函数库时，DLL可以减少在磁盘和内存中加载代码的重复量，有助于代码的复用。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　在Webpack中也引入了DLL的思想，把我们用到的模块抽离出来，打包到单独的动态链接库中去，一个动态链接库中可以有多个模块；当我们在多个页面中用到某一个模块时，不再重复打包，而是直接去引入动态链接库中的模块。</p>
+<p>　　Webpack中集成了对动态链接库的支持，主要用到的两个插件：</p>
+<ul>
+<li>DllPlugin：创建动态链接库文件</li>
+<li>DllReferencePlugin：在主配置中引入打包好的动态链接库文件</li>
+</ul>
+<p>　　我们首先使用DllPlugin来创建动态链接库文件，在项目下新建<code>webpack.dll.js</code>文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>);<br><span class="hljs-keyword">const</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;webpack&quot;</span>);<br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">mode</span>: <span class="hljs-string">&quot;production&quot;</span>,<br>  <span class="hljs-attr">entry</span>: &#123;<br>    <span class="hljs-attr">vue</span>: [<span class="hljs-string">&quot;vue&quot;</span>, <span class="hljs-string">&quot;vuex&quot;</span>, <span class="hljs-string">&quot;vue-router&quot;</span>],<br>    <span class="hljs-attr">vendor</span>: [<span class="hljs-string">&quot;dayjs&quot;</span>, <span class="hljs-string">&quot;axios&quot;</span>, <span class="hljs-string">&quot;mint-ui&quot;</span>],<br>  &#125;,<br>  <span class="hljs-attr">output</span>: &#123;<br>    <span class="hljs-attr">path</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;public/vendor&quot;</span>),<br>    <span class="hljs-comment">// 指定文件名</span><br>    <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;[name].dll.js&quot;</span>,<br>    <span class="hljs-comment">//暴露全局变量的名称</span><br>    <span class="hljs-attr">library</span>: <span class="hljs-string">&quot;[name]_dll_lib&quot;</span>,<br>  &#125;,<br>  <span class="hljs-attr">plugins</span>: [<br>    <span class="hljs-keyword">new</span> webpack.<span class="hljs-title class_">DllPlugin</span>(&#123;<br>      <span class="hljs-attr">path</span>: path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">&quot;public&quot;</span>, <span class="hljs-string">&quot;vendor&quot;</span>, <span class="hljs-string">&quot;[name].manifest.json&quot;</span>),<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;[name]_dll_lib&quot;</span>,<br>    &#125;),<br>  ],<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　这里<code>entry</code>设置了多个入口，每个入口也有多个模块文件；然后在<code>package.json</code>添加打包命令</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;build:dll&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;webpack --config=webpack.dll.js&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　执行<code>npm run build:dll</code>后，我们在<code>/public/vendor</code>目录下得到了我们打包后的动态链接库的文件：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs stylus">├── vendor<span class="hljs-selector-class">.dll</span><span class="hljs-selector-class">.js</span><br>├── vendor<span class="hljs-selector-class">.manifest</span><span class="hljs-selector-class">.json</span><br>├── vue<span class="hljs-selector-class">.dll</span><span class="hljs-selector-class">.js</span><br>└── vue<span class="hljs-selector-class">.manifest</span>.json<br></code></pre></div></td></tr></table></figure>
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　生成出来的打包文件正好是以两个入口名来命名的，以vue为例，看一下<code>vue.dll.js</code>的内容：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> vue_dll_lib =<br><span class="hljs-comment">/******/</span> (<span class="hljs-keyword">function</span>(<span class="hljs-params">modules</span>) &#123; <br>    <span class="hljs-comment">// 省略webpackBootstrap代码</span><br><span class="hljs-comment">/******/</span> &#125;)<br><span class="hljs-comment">/******/</span> (&#123;<br><br><span class="hljs-comment">/***/</span> <span class="hljs-string">&quot;./node_modules/vue-router/dist/vue-router.esm.js&quot;</span>:<br><span class="hljs-comment">/***/</span> (<span class="hljs-keyword">function</span>(<span class="hljs-params"><span class="hljs-variable language_">module</span>, <span class="hljs-built_in">exports</span>, __webpack_require__</span>) &#123;<br>    <span class="hljs-comment">//省略vue-router模块代码</span><br><span class="hljs-comment">/***/</span> &#125;),<br><br><span class="hljs-comment">/***/</span> <span class="hljs-string">&quot;./node_modules/vue/dist/vue.runtime.esm.js&quot;</span>:<br><span class="hljs-comment">/***/</span> (<span class="hljs-keyword">function</span>(<span class="hljs-params"><span class="hljs-variable language_">module</span>, <span class="hljs-built_in">exports</span>, __webpack_require__</span>) &#123;<br>    <span class="hljs-comment">//省略vue模块代码</span><br><span class="hljs-comment">/***/</span> &#125;),<br><br><span class="hljs-comment">/***/</span> <span class="hljs-string">&quot;./node_modules/vuex/dist/vuex.esm.js&quot;</span>:<br><span class="hljs-comment">/***/</span> (<span class="hljs-keyword">function</span>(<span class="hljs-params"><span class="hljs-variable language_">module</span>, <span class="hljs-built_in">exports</span>, __webpack_require__</span>) &#123;<br>    <span class="hljs-comment">//省略vuex模块代码</span><br><span class="hljs-comment">/***/</span> &#125;),<br><br><span class="hljs-comment">/******/</span> &#125;);<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　可以看出，动态链接库中包含了引入模块的所有代码，这些代码存在一个对象中，通过模块路径作为键名来进行引用；并且通过vue_dll_lib暴露到全局；vue.manifest.json则是用来描述动态链接库文件中包含了哪些模块：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vue_dll_lib&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;./node_modules/vue-router/dist/vue-router.esm.js&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./node_modules/vue-router/dist/vue-router.esm.js&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;buildMeta&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;./node_modules/vue/dist/vue.runtime.esm.js&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./node_modules/vue/dist/vue.runtime.esm.js&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;buildMeta&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;./node_modules/vuex/dist/vuex.esm.js&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./node_modules/vuex/dist/vuex.esm.js&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;buildMeta&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　manifest.json描述了对应js文件包含哪些模块，以及对应模块的键名（id），这样我们在模板页面中就可以将动态链接库作为外链引入，当Webpack解析到对应模块时就通过全局变量来获取模块：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- public/index.html --&gt;</span><br><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Document<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;app&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- 引入动态链接库 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./vendor/vendor.dll.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./vendor/vue.dll.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　最后我们在打包时，通过<code>DllReferencePlugin</code>将动态链接库引入到主配置中：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//webpack.config.js</span><br>&#123;<br>    <span class="hljs-attr">plugins</span>: [<br>        <span class="hljs-keyword">new</span> webpack.<span class="hljs-title class_">DllReferencePlugin</span>(&#123;<br>            <span class="hljs-attr">context</span>: path.<span class="hljs-title function_">join</span>(__dirname),<br>            <span class="hljs-attr">manifest</span>: <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./public/vendor/vendor.manifest.json&#x27;</span>)<br>        &#125;),<br>        <span class="hljs-keyword">new</span> webpack.<span class="hljs-title class_">DllReferencePlugin</span>(&#123;<br>            <span class="hljs-attr">context</span>: path.<span class="hljs-title function_">join</span>(__dirname),<br>            <span class="hljs-attr">manifest</span>: <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./public/vendor/vue.manifest.json&#x27;</span>)<br>        &#125;),<br>    ]<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>注：动态链接库打包到<code>/public/vendor</code>目录下，还需要通过<code>CopyWebpackPlugin</code>插件将它拷贝到生成后的目录中，否则会出现引用失败的报错；打包动态链接库文件只需要执行一次，除非以后模块升级或者引入新的模块。</p>
+</blockquote>
+<p>　　引入动态链接库可以将项目中一些不经常更新的模块放到外部文件中，我们再次打包页面逻辑代码时会发现构建速度有了比较大的提升，大概30%~40%，相关代码在<a target="_blank" rel="noopener" href="https://github.com/acexyf/WebpackDemo/tree/master/demo10">demo10</a>。</p>
+<h2 id="externals"><a href="#externals" class="headerlink" title="externals"></a>externals</h2><p>　　我们在项目打包时，有一些第三方的库会从CDN引入（比如jQuery等），如果在bundle中再次打包项目就过于臃肿，我们就可以通过配置<code>externals</code>将这些库在打包的时候排除在外。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">&#123;<br>  <span class="hljs-attr">externals</span>: &#123;<br>    <span class="hljs-string">&#x27;jquery&#x27;</span>: <span class="hljs-string">&quot;jQuery&quot;</span>,<br>    <span class="hljs-string">&#x27;react&#x27;</span>: <span class="hljs-string">&#x27;React&#x27;</span>,<br>    <span class="hljs-string">&#x27;react-dom&#x27;</span>: <span class="hljs-string">&#x27;ReactDOM&#x27;</span>,<br>    <span class="hljs-string">&#x27;vue&#x27;</span>: <span class="hljs-string">&#x27;Vue&#x27;</span><br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样就表示当我们遇到<code>require(&#39;jquery&#39;)</code>时，从全局变量去引用<code>jQuery</code>，其他几个包也同理；这样打包时就把jquery、react、vue和react-dom从bundle中剔除了，本实例完整代码<a target="_blank" rel="noopener" href="https://github.com/acexyf/WebpackDemo/tree/master/demo15">demo</a>。</p>
+<h2 id="Tree-Shaking"><a href="#Tree-Shaking" class="headerlink" title="Tree Shaking"></a>Tree Shaking</h2><p>　　Tree Shaking最早由rollup实现，后来webpack2页实现了这项功能；Tree Shaking的字面意思是摇树，一棵树上有一些树叶虽然还挂着，但是它可能已经死掉了，通过摇树方式把这些死掉的树叶去除。</p>
+<p><img src="/images/Webpack-Optimize/tree_shake.gif" srcset="/img/loading.gif" lazyload alt="tree_shake.gif"></p>
+<p>　　我们项目中也是同样的，我们并没有用到文件的所有模块，但是webpack仍会将整个文件打包进来，文件中一直用不到的代码就是“死代码”；这种情况就用用到<code>Tree Shaking</code>帮我们剔除这些用不到的代码模块。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　比如我们定义了一个<code>utils.js</code>文件导出了很多工具模块，然后在<code>index.js</code>中只引用了某些模块：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//utils.js</span><br><span class="hljs-keyword">var</span> toString = <span class="hljs-title class_">Object</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">toString</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">isArray</span>(<span class="hljs-params">val</span>) &#123;<br>  <span class="hljs-keyword">return</span> toString.<span class="hljs-title function_">call</span>(val) === <span class="hljs-string">&#x27;[object Array]&#x27;</span>;<br>&#125;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">isFunction</span>(<span class="hljs-params">val</span>) &#123;<br>  <span class="hljs-keyword">return</span> toString.<span class="hljs-title function_">call</span>(val) === <span class="hljs-string">&#x27;[object Function]&#x27;</span>;<br>&#125;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">isDate</span>(<span class="hljs-params">val</span>) &#123;<br>  <span class="hljs-keyword">return</span> toString.<span class="hljs-title function_">call</span>(val) === <span class="hljs-string">&#x27;[object Date]&#x27;</span>;<br>&#125;<br><span class="hljs-comment">//index.js</span><br><span class="hljs-keyword">import</span> &#123; isArray &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./utils&#x27;</span><br><span class="hljs-title function_">isArray</span>()<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们希望在代码中只打包<code>isArray</code>函数到bundle中；需要注意的是，为了让Tree Shaking生效，我们需要使用ES6模块化的语法，因为ES6模块语法是静态化加载模块，它有以下特点：</p>
+<ol>
+<li>静态加载模块，效率比CommonJS 模块的加载方式高</li>
+<li>ES6 模块是编译时加载，使得静态分析成为可能进一步拓宽JS的语法</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</ol>
+<p>　　如果是<code>require</code>，在运行时确定模块，那么将无法去分析模块是否可用，只有在编译时分析，才不会影响运行时的状态。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　使用ES6模块后还有一个问题，因为我们的代码一般都采用babel进行编译，而babel的preset默认会将任何模块类型编译成Commonjs，因此我们还需要修改<code>.babelrc</code>配置文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">&#123;<br>  <span class="hljs-string">&quot;presets&quot;</span>: [<br>    [<br>      <span class="hljs-string">&quot;@babel/preset-env&quot;</span>,<br>      &#123;<br>        <span class="hljs-comment">//添加modules：false</span><br>        <span class="hljs-string">&quot;modules&quot;</span>: <span class="hljs-literal">false</span><br>      &#125;<br>    ]<br>  ]<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　配置好babel后我们需要让webpack先将“死代码”标识出来：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">&#123;<br>  <span class="hljs-comment">//其他配置</span><br>  <span class="hljs-attr">optimization</span>: &#123;<br>    <span class="hljs-attr">usedExports</span>: <span class="hljs-literal">true</span>,<br>    <span class="hljs-attr">sideEffects</span>: <span class="hljs-literal">true</span>,<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　运行打包命令后，当我们打开输出的bundle文件时，我们发现虽然一些“死代码”还存在里面，但是加上了一个<code>unused harmony export</code>的标识</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">/* unused harmony export isFunction */</span><br><span class="hljs-comment">/* unused harmony export isDate */</span><br><span class="hljs-keyword">var</span> toString = <span class="hljs-title class_">Object</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">toString</span>;<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">isFunction</span>(<span class="hljs-params">val</span>) &#123;<br>  <span class="hljs-keyword">return</span> toString.<span class="hljs-title function_">call</span>(val) === <span class="hljs-string">&#x27;[object Function]&#x27;</span>;<br>&#125;<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">isDate</span>(<span class="hljs-params">val</span>) &#123;<br>  <span class="hljs-keyword">return</span> toString.<span class="hljs-title function_">call</span>(val) === <span class="hljs-string">&#x27;[object Date]&#x27;</span>;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　虽然webpack给我们指出了哪些函数用不上，但是还需要我们通过插件来剔除；由于<code>uglifyjs-webpack-plugin</code>不支持ES6语法，这里我们使用<code>terser-webpack-plugin</code>的插件来代替它：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title class_">TerserJSPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;terser-webpack-plugin&quot;</span>);<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">optimization</span>: &#123;<br>    <span class="hljs-attr">usedExports</span>: <span class="hljs-literal">true</span>,<br>    <span class="hljs-attr">sideEffects</span>: <span class="hljs-literal">true</span>,<br>    <span class="hljs-attr">minimize</span>: <span class="hljs-literal">true</span>,<br>    <span class="hljs-attr">minimizer</span>: [<br>      <span class="hljs-keyword">new</span> <span class="hljs-title class_">TerserJSPlugin</span>(&#123;<br>        <span class="hljs-attr">cache</span>: <span class="hljs-literal">true</span>,<br>        <span class="hljs-attr">parallel</span>: <span class="hljs-literal">true</span>, <br>        <span class="hljs-attr">sourceMap</span>: <span class="hljs-literal">false</span>,<br>      &#125;),<br>    ],<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样我们发现打包出来的文件就没有多余的代码了。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<blockquote>
+<p>注： Tree Shaking在生产环境（production）是默认开启的</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</blockquote>
+<p>　　对于我们常用的一些第三方模块，我们也可以实现Tree Shaking；以<code>lodash</code>为例，它整个包有非常多的函数，但并不是所有的函数都是我们所用到的，因此我们也需要对它没有用到的代码进行剔除。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//index.js</span><br><span class="hljs-keyword">import</span> &#123; chunk &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;lodash&#x27;</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">chunk</span>([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>], <span class="hljs-number">2</span>))<br></code></pre></div></td></tr></table></figure>
+
+<p>　　打包出来发现包的大小还是能达到70+kb，如果只引用了chunk不应该有这么大；我们打开<code>/node_modules/lodash/index.js</code>发现他还是使用了require的模式导入导出模块，因此导致Tree Shaking失败；我们先安装使用ES6模块版本的lodash：<code>npm i -S lodash-es</code>，然后修改引入包：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//index.js</span><br><span class="hljs-keyword">import</span> &#123; chunk &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;lodash-es&#x27;</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">chunk</span>([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>], <span class="hljs-number">2</span>))<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样我们生成的bundle包就小很多；本实例完整代码<a target="_blank" rel="noopener" href="https://github.com/acexyf/WebpackDemo/tree/master/demo12">demo</a>。</p>
+<h1 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h1><p>　　我们知道webpack会对不同的文件调用不同的loader进行解析处理，解析的过程也是最耗性能的过程；我们每次改代码也只是修改项目中的少数文件，项目中的大部分文件改动的次数不是那么频繁；那么如果我们将解析文件的结果缓存下来，下次发现同样的文件只需要读取缓存就能极大的提升解析的性能。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="cache-loader"><a href="#cache-loader" class="headerlink" title="cache-loader"></a>cache-loader</h2><p>　　cache-loader可以将一些对性能消耗比较大的loader生产的结果缓存在磁盘中，等下次再次打包时如果是相同的代码就可以直接读取缓存，减少性能消耗。</p>
+<blockquote>
+<p>注：保存和读取缓存也会产生额外的性能开销，因此cache-loader适合用于对性能消耗较大的loader，否则反而会增加性能消耗</p>
+</blockquote>
+<p>　　cache-loader的使用也非常简单，安装后在所需要缓存的loader前面添加即可（因为loader加载的顺序是反向的），比如我们需要给<code>babel-loader</code>添加缓存：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">&#123;<br>  <span class="hljs-comment">//省略其他代码</span><br>  <span class="hljs-attr">rules</span>: [<br>    &#123;<br>      <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.js/</span>,<br>      <span class="hljs-attr">use</span>: [<br>        &#123;<br>          <span class="hljs-attr">loader</span>: <span class="hljs-string">&#x27;cache-loader&#x27;</span><br>        &#125;,<br>        &#123;<br>          <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;babel-loader&quot;</span>,<br>        &#125;,<br>      ],<br>    &#125;,<br>  ],<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　然而我们发现第一次打包的速度并没有发生明显变化，甚至可能还比原来打包的更慢了；同时还多了<code>/node_modules/.cache/cache-loader/</code>这个目录，看名字就是一个缓存文件；我们继续打包，下面图表记录了我几次打包的耗时：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Webpack-Optimize/cache-loader-time.png" srcset="/img/loading.gif" lazyload alt="cache-loader-time.png"></p>
+<p>　　我们发现第一次打包时间都差不多，但是第二次开始缓存文件就开始发挥了重要的作用了，直接减少了75%的耗时。</p>
+<p>　　除了使用cache-loader，babel-loader也提供缓存功能，通过<code>cacheDirectory</code>进行配置：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">&#123;<br>  <span class="hljs-attr">rules</span>: [<br>    &#123;<br>      <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.js/</span>,<br>      <span class="hljs-attr">use</span>: [<br>        &#123;<br>          <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;babel-loader&quot;</span>,<br>          <span class="hljs-attr">options</span>: &#123;<br>            <span class="hljs-attr">cacheDirectory</span>: <span class="hljs-literal">true</span><br>          &#125;<br>        &#125;,<br>      ],<br>    &#125;,<br>  ],<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　在<code>/node_modules/.cache/babel-loader</code>也多了缓存文件。经过两个使用结果的对比，cache-loader的性能提升更加出色一些；本实例完整代码<a target="_blank" rel="noopener" href="https://github.com/acexyf/WebpackDemo/tree/master/demo16">demo</a>。</p>
+<h2 id="HardSourceWebpackPlugin"><a href="#HardSourceWebpackPlugin" class="headerlink" title="HardSourceWebpackPlugin"></a>HardSourceWebpackPlugin</h2><p>　　HardSourceWebpackPlugin也可以为模块提供缓存功能，同意也是将文件缓存在磁盘中</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　首先通过<code>npm i -D hard-source-webpack-plugin</code>来安装插件，并且在配置中添加插件：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> <span class="hljs-title class_">HardSourceWebpackPlugin</span> = <br>    <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;hard-source-webpack-plugin&#x27;</span>);<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">plugins</span>: [<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">HardSourceWebpackPlugin</span>()<br>  ]<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　一般HardSourceWebpackPlugin默认缓存是在<code>/node_modules/.cache/hard-source/[hash]</code>目录下，我们可以设置它的缓存目录和何时创建新的缓存哈希值。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">plugins</span>: [<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">HardSourceWebpackPlugin</span>(&#123;<br>      <span class="hljs-comment">//设置缓存目录的路径</span><br>      <span class="hljs-comment">//相对路径或者绝对路径</span><br>      <span class="hljs-attr">cacheDirectory</span>: <span class="hljs-string">&#x27;node_modules/.cache/hard-source/[confighash]&#x27;</span>,<br>      <span class="hljs-comment">//构建不同的缓存目录名称</span><br>      <span class="hljs-comment">//也就是cacheDirectory中的[confighash]值</span><br>      <span class="hljs-attr">configHash</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">webpackConfig</span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;node-object-hash&#x27;</span>)(&#123;<span class="hljs-attr">sort</span>: <span class="hljs-literal">false</span>&#125;).<span class="hljs-title function_">hash</span>(webpackConfig);<br>      &#125;,<br>      <span class="hljs-comment">//环境hash</span><br>      <span class="hljs-comment">//当loader、plugin或者其他npm依赖改变时进行替换缓存</span><br>      <span class="hljs-attr">environmentHash</span>: &#123;<br>        <span class="hljs-attr">root</span>: process.<span class="hljs-title function_">cwd</span>(),<br>        <span class="hljs-attr">directories</span>: [],<br>        <span class="hljs-attr">files</span>: [<span class="hljs-string">&#x27;package-lock.json&#x27;</span>, <span class="hljs-string">&#x27;yarn.lock&#x27;</span>],<br>      &#125;,<br>      <span class="hljs-comment">//自动清除缓存</span><br>      <span class="hljs-attr">cachePrune</span>: &#123;<br>        <span class="hljs-comment">//缓存最长时间（默认2天）</span><br>        <span class="hljs-attr">maxAge</span>: <span class="hljs-number">2</span> * <span class="hljs-number">24</span> * <span class="hljs-number">60</span> * <span class="hljs-number">60</span> * <span class="hljs-number">1000</span>,<br>        <span class="hljs-comment">//所有的缓存大小超过size值将会被清除</span><br>        <span class="hljs-comment">//默认50MB</span><br>        <span class="hljs-attr">sizeThreshold</span>: <span class="hljs-number">50</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span><br>      &#125;,<br>    &#125;)<br>  ]<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/Webpack-Optimize/hard-source.png" srcset="/img/loading.gif" lazyload alt="hard-source.png"></p>
+<p>　　通过尝试多次打包，发现能节省大概90%的时间；本实例完整代码<a target="_blank" rel="noopener" href="https://github.com/acexyf/WebpackDemo/tree/master/demo17">demo</a>。</p>
+<h1 id="多进程"><a href="#多进程" class="headerlink" title="多进程"></a>多进程</h1><p>　　我们在<a href="http://xieyufei.com/2019/12/30/Quiz-Eventloop.html">事件循环中</a>讲到过，js是一门单线程的语言，在同一事件线上只有一个线程在处理任务；因此在webpack解析到JS、CSS、图片或者字体文件时，它需要一个个的去解析编译，不能同时处理多个任务；我们可以通过插件来将任务分给多个子进程去并发执行，子进程处理完成后再将结果发送给主进程。</p>
+<h2 id="happypack"><a href="#happypack" class="headerlink" title="happypack"></a>happypack</h2><p>　　happypack会自动帮我们分解任务和管理进程，通过名字我们也能看出来，这是一款能够带来快乐的插件。</p>
+<p><img src="/images/Webpack-Optimize/enough.gif" srcset="/img/loading.gif" lazyload alt="enough.gif"></p>
+<p>　　我们通过<code>npm i -D happypack</code>后就能在webpack中进行配置了：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> happypack = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;happypack&quot;</span>);<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">module</span>: &#123;<br>    <span class="hljs-attr">rules</span>: [<br>      &#123;<br>        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.js/</span>,<br>        <span class="hljs-attr">exclude</span>: <span class="hljs-regexp">/node_modules/</span>,<br>        <span class="hljs-comment">//将js文件处理给id为js的happypack实例</span><br>        <span class="hljs-attr">use</span>: <span class="hljs-string">&quot;happypack/loader?id=js&quot;</span>,<br>      &#125;<br>    ],<br>  &#125;,<br>  <span class="hljs-attr">plugins</span>: [<br>    <span class="hljs-comment">//通过id标识当前happypack是处理什么文件的</span><br>    <span class="hljs-keyword">new</span> <span class="hljs-title function_">happypack</span>(&#123;<br>      <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;js&quot;</span>,<br>      <span class="hljs-comment">//调用处理文件的loader，用法和rules中一致</span><br>      <span class="hljs-attr">loaders</span>: [&#123;<br>          <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;babel-loader&quot;</span>,<br>        &#125;,<br>        &#123;<br>          <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;eslint-loader&quot;</span>,<br>        &#125;,<br>      ],<br>    &#125;),<br>  ],<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们将<code>rules/loader</code>的处理全部交给了happypack进行处理，并且通过id来调用具体的实例，然后在实例中配置具体的loader进行处理；在happypack的实例中除了id和loaders我们还可以配置进程数量：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//共享进程池，进程池中包含5个子进程</span><br><span class="hljs-keyword">var</span> happyThreadPool = happypack.<span class="hljs-title class_">ThreadPool</span>(&#123;<br>  <span class="hljs-attr">size</span>: <span class="hljs-number">5</span><br>&#125;);<br>&#123;<br>  <span class="hljs-attr">plugins</span>: [<br>    <span class="hljs-keyword">new</span> <span class="hljs-title function_">happypack</span>(&#123;<br>      <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;js&quot;</span>,<br>      <span class="hljs-comment">//开启几个子进程，默认3个</span><br>      <span class="hljs-attr">threads</span>: <span class="hljs-number">3</span>,<br>      <span class="hljs-comment">//共享进程池</span><br>      <span class="hljs-attr">threadPool</span>: happyThreadPool,<br>      <span class="hljs-comment">//是否允许 HappyPack 输出日志</span><br>      <span class="hljs-attr">verbose</span>: <span class="hljs-literal">true</span>,<br>      <span class="hljs-attr">loaders</span>: [&#123;<br>          <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;babel-loader&quot;</span>,<br>        &#125;,<br>        &#123;<br>          <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;eslint-loader&quot;</span>,<br>        &#125;,<br>      ],<br>    &#125;),<br>  ],<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<blockquote>
+<p>注：threads和threadPool字段只需要配置一个即可。</p>
+</blockquote>
+<p>　　我们通过<code>happypack.ThreadPool</code>创建了一个包含5个子进程的共享进程池，每个happypack实例可以通过共享进程池来处理文件；相对于给每个happypack实例分配进程，这样可以防止占用过多无用的进程；我们打包看一下所耗时间：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/Webpack-Optimize/happypack.png" srcset="/img/loading.gif" lazyload alt="happypack.png"></p>
+<p>　　我们发现有了happypack耗时居然还增加了20%~30%，说好的多进程带来快乐呢。</p>
+<p><img src="/images/Webpack-Optimize/catch_up.png" srcset="/img/loading.gif" lazyload alt="catch_up.png"></p>
+<p>　　由于我们的项目不够庞大，而加载多进程也需要耗费时间和性能，因此我们才会出现使用了happypack反而增加耗时的情况；所以一般happypack适用于比较大的项目中；本实例完整代码<a target="_blank" rel="noopener" href="https://github.com/acexyf/WebpackDemo/tree/master/demo11">demo</a>。</p>
+<h2 id="thread-loader"><a href="#thread-loader" class="headerlink" title="thread-loader"></a>thread-loader</h2><p>　　把thread-loader放置在其他loader之前，在它之后的loader就会在一个单独的进程池中运行，但是在进程池中运行的loader有以下限制：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<ul>
+<li>这些 loader 不能产生新的文件。</li>
+<li>这些 loader 不能使用定制的 loader API（也就是说，通过插件）。</li>
+<li>这些 loader 无法获取 webpack 的选项设置。</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</ul>
+<p>　　因此，也就是说像<code>MiniCssExtractPlugin.loader</code>等一些提取css的loader是不能使用thread-loader的；跟happypack一样，它也只适合用于文件较多的大项目：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">module</span>: &#123;<br>    <span class="hljs-attr">rules</span>: [<br>      &#123;<br>        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.js$/</span>,<br>        <span class="hljs-attr">use</span>: [<br>          <span class="hljs-string">&quot;thread-loader&quot;</span>,<br>          <span class="hljs-string">&quot;babel-loader&quot;</span><br>        ]<br>      &#125;<br>    ]<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　本实例完整代码<a target="_blank" rel="noopener" href="https://github.com/acexyf/WebpackDemo/tree/master/demo18">demo</a>。</p>
+
+            </div>
+            <hr>
+            <div>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/PackTool/">打包工具</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Webpack/">Webpack</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/09/12/Tab-Communicate.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">四种实现浏览器标签页数据通信方式</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/07/18/Axios-One.html">
+                        <span class="hidden-mobile">深入学习Axios源码（构建配置）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

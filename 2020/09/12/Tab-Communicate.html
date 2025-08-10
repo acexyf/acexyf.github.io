@@ -1,0 +1,615 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　浏览器可以打开多个不同的标签页，有时候需要在这多个标签页共享同一份数据，那如何在多个标签页中进行数据的通信呢？让我们来看一下四种在标签页中通信的方式。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>四种实现浏览器标签页数据通信方式 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="四种实现浏览器标签页数据通信方式">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-09-12 12:47" pubdate>
+        2020年9月12日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      36
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">四种实现浏览器标签页数据通信方式</h1>
+            
+            <div class="markdown-body">
+              <p>　　浏览器可以打开多个不同的标签页，有时候需要在这多个标签页共享同一份数据，那如何在多个标签页中进行数据的通信呢？让我们来看一下四种在标签页中通信的方式。</p>
+<span id="more"></span>
+
+<p>　　我们在网易云听歌时，可以打开多个标签页进行播放；但是我们发现在一个标签页播放的同时，其他标签如果正在播放，都会自动的停止。</p>
+<p><img src="/images/Tab-Communicate/wangyi.gif" srcset="/img/loading.gif" lazyload alt="wangyi.gif"></p>
+<p>　　想想这样也是合理的，因为毕竟如果多个标签页都同时播放声音就会干扰，同一时间只能存在一个音乐播放；因此我们也来尝试实现这样一个需求，在不同浏览器中进行数据通信：</p>
+<p><img src="/images/Tab-Communicate/my.gif" srcset="/img/loading.gif" lazyload alt="my.gif"></p>
+<p>　　我们首先来准备一些数据，和网易云一样，准备一个专辑列表，每个专辑列表中有不同的歌曲，可以通过URL参数传递id来获取不同的专辑页面：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;app&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;item header&quot;</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;index&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;name&quot;</span>&gt;</span>歌曲标题<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;time&quot;</span>&gt;</span>时长<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;singer&quot;</span>&gt;</span>歌手<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;album&quot;</span>&gt;</span>专辑<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">&quot;(item, index) in list&quot;</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">:class</span>=<span class="hljs-string">&quot;[&#x27;item&#x27;,&#x27;music&#x27;,activeIndex == index ? &#x27;active&#x27;:&#x27;&#x27;]&quot;</span> </span><br><span class="hljs-tag">      @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;clickMusic(item, index)&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">:key</span>=<span class="hljs-string">&quot;index&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;index&quot;</span>&gt;</span>&#123;&#123;index+1&#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;name&quot;</span>&gt;</span>&#123;&#123;item.name&#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;time&quot;</span>&gt;</span>&#123;&#123;item.time&#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;singer&quot;</span>&gt;</span>&#123;&#123;item.singer&#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;album&quot;</span>&gt;</span>&#123;&#123;item.album&#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Vue</span>(&#123;<br>    <span class="hljs-attr">el</span>: <span class="hljs-string">&#x27;#app&#x27;</span>,<br>    <span class="hljs-title function_">data</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">return</span> &#123;<br>          <span class="hljs-attr">list</span>: [],<br>          <span class="hljs-attr">activeIndex</span>: -<span class="hljs-number">1</span>,<br>        &#125;<br>    &#125;,<br>    <span class="hljs-title function_">mounted</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">const</span> &#123;<br>            id = <span class="hljs-string">&#x27;1&#x27;</span><br>        &#125; = <span class="hljs-title class_">Qs</span>.<span class="hljs-title function_">parse</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">location</span>.<span class="hljs-property">search</span>, &#123; <span class="hljs-attr">ignoreQueryPrefix</span>: <span class="hljs-literal">true</span> &#125;)<br>        <span class="hljs-title function_">axios</span>(&#123;<br>            <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;/api/list&#x27;</span>,<br>            <span class="hljs-attr">params</span>: &#123;<br>                id,<br>            &#125;<br>        &#125;).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;<br>            <span class="hljs-keyword">return</span> res.<span class="hljs-property">data</span><br>        &#125;).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;<br>            <span class="hljs-keyword">const</span> &#123;<br>                list<br>            &#125; = res<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">list</span> = list<br>        &#125;)<br>    &#125;,<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+
+<h1 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h1><p>　　要想在所有的标签页中实现通信，我们必须将数据存放到一个公共的存储空间，所有的标签页都能获取并且还能进行修改；我们知道，cookie在用户所有浏览器标签页中都是共享的，因此，我们可以尝试把选中的数据存放到cookie中去：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Vue</span>(&#123;<br>    <span class="hljs-title function_">mounted</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>            <span class="hljs-keyword">let</span> newValue = <span class="hljs-title class_">Cookies</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;music&#x27;</span>)<br>            <span class="hljs-keyword">if</span> (newValue) &#123;<br>                <span class="hljs-keyword">let</span> parse = &#123;&#125;<br>                <span class="hljs-keyword">try</span> &#123;<br>                    parse = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(newValue)<br>                &#125; <span class="hljs-keyword">catch</span> (error) &#123;&#125;<br>                <span class="hljs-keyword">let</span> &#123;<br>                    list,<br>                &#125; = <span class="hljs-variable language_">this</span><br>                <span class="hljs-keyword">let</span> activeIndex = -<span class="hljs-number">1</span><br>                list.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">item, index</span>) =&gt;</span> &#123;<br>                    <span class="hljs-keyword">if</span> (item.<span class="hljs-property">name</span> == parse.<span class="hljs-property">name</span>) &#123;<br>                        activeIndex = index<br>                    &#125;<br>                &#125;)<br>                <span class="hljs-variable language_">this</span>.<span class="hljs-property">activeIndex</span> = activeIndex<br>            &#125;<br>        &#125;, <span class="hljs-number">1000</span>)<br>    &#125;,<br>    <span class="hljs-attr">methods</span>: &#123;<br>        <span class="hljs-title function_">clickMusic</span>(<span class="hljs-params">item, index</span>) &#123;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">activeIndex</span> = index<br>            <span class="hljs-title class_">Cookies</span>.<span class="hljs-title function_">set</span>(<span class="hljs-string">&#x27;music&#x27;</span>, <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(item))<br>        &#125;<br>    &#125;<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　由于更新cookie并不能触发任何事件，因此我们需要通过定时器<code>setInterval</code>来主动监听cookie中的值是否改变；代码看起来没有问题，让我们看一下运行的效果：</p>
+<p><img src="/images/Tab-Communicate/cookie.gif" srcset="/img/loading.gif" lazyload alt="cookie.gif"></p>
+<p>　　存在下面两个问题：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<ol>
+<li>定时器存在时间差，点击后有一定的延迟，cookie本身的弊端</li>
+<li>在同一个专辑id页面下，由于选中的数据没有区分页面，相同音乐item也会被选中</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</ol>
+<p>　　因此我们需要给每一个页面区分一个页面id；这个页面id可以从后台接口中获取，这里为了简单展示，我们使用时间戳作为页面id：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//省略其他代码</span><br><span class="hljs-keyword">new</span> <span class="hljs-title class_">Vue</span>(&#123;<br>    <span class="hljs-title function_">data</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">return</span> &#123;<br>            <span class="hljs-attr">page_id</span>: <span class="hljs-string">&#x27;0&#x27;</span>,<br>        &#125;<br>    &#125;,<br>    <span class="hljs-title function_">mounted</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">let</span> timestamp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>().<span class="hljs-title function_">getTime</span>()<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">page_id</span> = timestamp + <span class="hljs-string">&#x27;&#x27;</span><br>        <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>          <span class="hljs-keyword">let</span> newValue = <span class="hljs-title class_">Cookies</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;music&#x27;</span>)<br>          <span class="hljs-keyword">if</span> (newValue) &#123;<br>            <span class="hljs-keyword">let</span> parse = &#123;&#125;<br>            <span class="hljs-keyword">try</span> &#123;<br>                parse = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(newValue)<br>            &#125; <span class="hljs-keyword">catch</span> (error) &#123;&#125;<br>            <span class="hljs-keyword">let</span> &#123;<br>                list,<br>            &#125; = <span class="hljs-variable language_">this</span><br>            <span class="hljs-keyword">let</span> activeIndex = -<span class="hljs-number">1</span><br>            list.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">item, index</span>) =&gt;</span> &#123;<br>                <span class="hljs-comment">//是当前页面的id是才选中数据</span><br>                <span class="hljs-keyword">if</span> (item.<span class="hljs-property">name</span> == parse.<span class="hljs-property">name</span> <br>                    &amp;&amp; parse.<span class="hljs-property">page_id</span> == page_id) &#123;<br>                        activeIndex = index<br>                &#125;<br>            &#125;)<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">activeIndex</span> = activeIndex<br>          &#125;<br>        &#125;, <span class="hljs-number">1000</span>)<br>    &#125;,<br>    <span class="hljs-attr">methods</span>: &#123;<br>        <span class="hljs-title function_">clickMusic</span>(<span class="hljs-params">item, index</span>) &#123;<br>          <span class="hljs-variable language_">this</span>.<span class="hljs-property">activeIndex</span> = index<br>          <span class="hljs-keyword">let</span> &#123;<br>              page_id<br>          &#125; = <span class="hljs-variable language_">this</span><br>          <span class="hljs-comment">//存放到cookie时将页面id带入</span><br>          item = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">assign</span>(&#123;<br>              page_id,<br>          &#125;, item)<br>          <span class="hljs-title class_">Cookies</span>.<span class="hljs-title function_">set</span>(<span class="hljs-string">&#x27;music&#x27;</span>, <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(item))<br>        &#125;<br>    &#125;<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　我们虽然能通过给每个页面分配id来解决问题2，但是由于定时器的弊端，<code>cookie+setInterval</code>的方案会存在延时的情况。</p>
+<h1 id="localStorage"><a href="#localStorage" class="headerlink" title="localStorage"></a>localStorage</h1><p>　　localStorage也是浏览器多个页面共用的存储空间；而且localStorage在一个页面中添加、修改或者删除时，都会在<strong>非当前页面中</strong>被动触发一个<code>storage</code>事件，我们通过在其他页面中监听<code>storage</code>事件，即可拿到<code>storage</code>更新前后的值：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//省略其他代码</span><br><span class="hljs-keyword">new</span> <span class="hljs-title class_">Vue</span>(&#123;<br>    <span class="hljs-title function_">mounted</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">let</span> timestamp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>().<span class="hljs-title function_">getTime</span>()<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">page_id</span> = timestamp + <span class="hljs-string">&#x27;&#x27;</span><br>        <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;storage&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">ev</span>) =&gt;</span> &#123;<br>            <span class="hljs-keyword">const</span> &#123;<br>                key,<br>                newValue,<br>            &#125; = ev<br>            <span class="hljs-keyword">if</span> (key === <span class="hljs-string">&#x27;music&#x27;</span> &amp;&amp; newValue) &#123;<br>                <span class="hljs-keyword">let</span> parse = &#123;&#125;<br>                <span class="hljs-keyword">try</span> &#123;<br>                    parse = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(newValue)<br>                &#125; <span class="hljs-keyword">catch</span> (error) &#123;&#125;<br>                <span class="hljs-keyword">let</span> &#123;<br>                    list,<br>                    page_id<br>                &#125; = <span class="hljs-variable language_">this</span><br>                <span class="hljs-keyword">let</span> activeIndex = -<span class="hljs-number">1</span><br>                list.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">item, index</span>) =&gt;</span> &#123;<br>                    <span class="hljs-keyword">if</span> (item.<span class="hljs-property">name</span> == parse.<span class="hljs-property">name</span> &amp;&amp; parse.<span class="hljs-property">page_id</span> == page_id) &#123;<br>                        activeIndex = index<br>                    &#125;<br>                &#125;)<br>                <span class="hljs-variable language_">this</span>.<span class="hljs-property">activeIndex</span> = activeIndex<br>            &#125;<br>        &#125;)<br>    &#125;,<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+
+<p>　　相较于cookie的主动监听，localStorage的被动触发不仅在代码显得更加友好，而且还极大的避免了定时器带来的性能损耗。</p>
+<h1 id="webworker"><a href="#webworker" class="headerlink" title="webworker"></a>webworker</h1><p>　　我们在《<a href="http://xieyufei.com/2019/12/30/Quiz-Eventloop.html">从一道面试题来理解JS事件循环</a>》提到，webworker只能用来做一些消耗CPU的逻辑运算等；webworker也分为Worker和SharedWorker，普通的worker可以直接使用<code>new Worker()</code>创建，只在当前页面中使用；而SharedWorker通过名字我们也能看出，是可以在多个标签页面中数据是共享的；</p>
+<p>　　SharedWorker和Worker不同之处在于它第二个参数可以做直接指定<code>name</code>，或者使用对象参数，因此下面三种构造方式是相同的：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">new</span> <span class="hljs-title class_">SharedWorker</span>(<span class="hljs-string">&#x27;/public/shared.js&#x27;</span>, <span class="hljs-string">&#x27;musicWorker&#x27;</span>);<br><span class="hljs-keyword">new</span> <span class="hljs-title class_">SharedWorker</span>(<span class="hljs-string">&#x27;/public/shared.js&#x27;</span>, &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;musicWorker&#x27;</span> &#125;);<br><span class="hljs-keyword">new</span> <span class="hljs-title class_">SharedWorker</span>(<span class="hljs-string">&#x27;/public/shared.js&#x27;</span>, <span class="hljs-string">&#x27;musicWorker&#x27;</span>, &#123; <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;classic&#x27;</span> &#125;);<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　构造了SharedWorker实例对象后，我们需要通过其<code>port</code>属性进行通信，主要的API如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> sw = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SharedWorker</span>(<span class="hljs-string">&#x27;/public/shared.js&#x27;</span>);<br><span class="hljs-comment">//发送数据</span><br>sw.<span class="hljs-property">port</span>.<span class="hljs-title function_">postMessage</span>(<span class="hljs-string">&#x27;...&#x27;</span>)<br><span class="hljs-comment">//监听数据</span><br>sw.<span class="hljs-property">port</span>.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>) &#123;  <span class="hljs-comment">// ...  &#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　由于构造的多个SharedWorker实例形成了一个共享的连接，因此在连接成功时，我们给每个实例分配一个唯一id：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//main.js</span><br><span class="hljs-keyword">new</span> <span class="hljs-title class_">Vue</span>(&#123;<br>  <span class="hljs-title function_">data</span>(<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">return</span> &#123;<br>          <span class="hljs-attr">workder_id</span>: <span class="hljs-number">0</span>,<br>          <span class="hljs-attr">sw</span>: &#123;&#125;,<br>      &#125;<br>  &#125;,<br>  <span class="hljs-title function_">mounted</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">sw</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SharedWorker</span>(<span class="hljs-string">&#x27;/public/shared.js&#x27;</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">sw</span>.<span class="hljs-property">port</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;message&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">ev</span>) =&gt;</span> &#123;<br>      <span class="hljs-keyword">let</span> &#123;<br>          type,<br>          data<br>      &#125; = ev.<span class="hljs-property">data</span><br>      <span class="hljs-comment">//初始化连接时返回一个id</span><br>      <span class="hljs-keyword">if</span> (type == <span class="hljs-string">&#x27;id&#x27;</span>) &#123;<br>          <span class="hljs-variable language_">this</span>.<span class="hljs-property">workder_id</span> = data<br>      &#125;<br>    &#125;)<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">sw</span>.<span class="hljs-property">port</span>.<span class="hljs-title function_">start</span>()<br>  &#125;,<br>  <span class="hljs-attr">methods</span>: &#123;<br>    <span class="hljs-title function_">clickMusic</span>(<span class="hljs-params">item, index</span>) &#123;<br>      <span class="hljs-comment">//省略部分代码</span><br>      <span class="hljs-comment">//每次通信时将id带上</span><br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">sw</span>.<span class="hljs-property">port</span>.<span class="hljs-title function_">postMessage</span>(&#123;<br>          <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;set&#x27;</span>,<br>          <span class="hljs-attr">id</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">workder_id</span>,<br>          <span class="hljs-attr">data</span>: item<br>      &#125;)<br>    &#125;<br>  &#125;<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们在ShareWorker内部监听<code>connect</code>事件，并且处理内部的<code>port</code>事件：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//shared.js</span><br><span class="hljs-keyword">const</span> connectedClients = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>()<br><span class="hljs-keyword">let</span> id = <span class="hljs-number">1</span><br><span class="hljs-comment">//给其他连接端发送消息</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">sendMessageToClients</span>(<span class="hljs-params">payload, currentClientId = <span class="hljs-literal">null</span></span>) &#123;<br>  connectedClients.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">&#123; id, client &#125;</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (currentClientId &amp;&amp; currentClientId == id) <span class="hljs-keyword">return</span>;<br>    client.<span class="hljs-title function_">postMessage</span>(payload);<br>  &#125;);<br>&#125;<br><span class="hljs-comment">//当前连接绑定消息监听</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">setupClient</span>(<span class="hljs-params">clientPort</span>) &#123;<br>  clientPort.<span class="hljs-property">onmessage</span> = <span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> &#123; type, data, id &#125; = event.<span class="hljs-property">data</span>;<br>    <span class="hljs-keyword">if</span>(type==<span class="hljs-string">&#x27;set&#x27;</span>)&#123;<br>      <span class="hljs-title function_">sendMessageToClients</span>(&#123;<br>        <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;get&#x27;</span>,<br>        <span class="hljs-attr">data</span>: data,<br>      &#125;, id)<br>    &#125;<br>  &#125;;<br>&#125;<br>self.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;connect&quot;</span>, <span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> newClient = event.<span class="hljs-property">source</span>;<br>  <span class="hljs-comment">//每次连接后给client唯一id标识</span><br>  <span class="hljs-comment">//将每次连接存在数组中</span><br>  connectedClients.<span class="hljs-title function_">add</span>(&#123;<br>    <span class="hljs-attr">client</span>: newClient,<br>    <span class="hljs-attr">id</span>: id,<br>  &#125;);<br>  <span class="hljs-title function_">setupClient</span>(newClient);<br>  newClient.<span class="hljs-title function_">postMessage</span>(&#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;id&#x27;</span>,<br>    <span class="hljs-attr">data</span>: id<br>  &#125;)<br>  id++<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　当写shared.js，我们经常会遇到问题，那么怎么来调试sharedworker呢？直接<code>console.log</code>并不会在标签页面中有输出；我们打开新的标签页<code>chrome://inspect</code>，选择<code>Shared workers</code>然后再选择对应脚本，就能愉快的调试了。</p>
+<p><img src="/images/Tab-Communicate/inspect.png" srcset="/img/loading.gif" lazyload alt="inspect.png"></p>
+<h1 id="websocket"><a href="#websocket" class="headerlink" title="websocket"></a>websocket</h1><p>　　websocket作为全双工通信，自然可以实现多个标签页之间的通信；WebSocket是HTML5新增的协议，它的目的是在浏览器和服务器之间建立一个不受限的双向通信的通道。</p>
+<p>　　这里我们使用express的一个框架<code>express-ws</code>来模拟websocket服务器；由于服务器会储存很多标签页的连接对象信息，因此我们需要给每个用户进行唯一标识进行区分；我们从服务器获取<code>user_id</code>并保存。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//省略其他代码</span><br><span class="hljs-keyword">new</span> <span class="hljs-title class_">Vue</span>(&#123;<br>    <span class="hljs-attr">el</span>: <span class="hljs-string">&#x27;#app&#x27;</span>,<br>    <span class="hljs-title function_">data</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">return</span> &#123;<br>            <span class="hljs-attr">list</span>: [],<br>            <span class="hljs-attr">activeIndex</span>: -<span class="hljs-number">1</span>,<br>            <span class="hljs-attr">page_id</span>: <span class="hljs-string">&#x27;0&#x27;</span>,<br>            <span class="hljs-attr">ws</span>: <span class="hljs-literal">null</span><br>        &#125;<br>    &#125;,<br>    <span class="hljs-title function_">mounted</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">let</span> timestamp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>().<span class="hljs-title function_">getTime</span>()<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">page_id</span> = timestamp + <span class="hljs-string">&#x27;&#x27;</span><br>        <span class="hljs-keyword">let</span> store_user_id = <span class="hljs-title class_">Cookies</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;user_id&#x27;</span>)<br>        <span class="hljs-keyword">if</span> (!!store_user_id) &#123;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">connectWs</span>(store_user_id)<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-title function_">axios</span>(&#123;<br>                <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;/api/get_user_id&#x27;</span><br>            &#125;)<br>            .<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;<br>                <span class="hljs-keyword">return</span> res.<span class="hljs-property">data</span><br>            &#125;)<br>            .<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;<br>                <span class="hljs-keyword">let</span> &#123;<br>                    user_id<br>                &#125; = res<br>                <span class="hljs-title class_">Cookies</span>.<span class="hljs-title function_">set</span>(<span class="hljs-string">&#x27;user_id&#x27;</span>, user_id)<br>                <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">connectWs</span>(user_id)<br>            &#125;)<br>        &#125;<br>    &#125;,<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+
+<p>　　通过<code>user_id</code>我们就可以向websocket服务器连接并发起请求了。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//省略其他代码</span><br><span class="hljs-keyword">new</span> <span class="hljs-title class_">Vue</span>(&#123;<br>  <span class="hljs-attr">methods</span>: &#123;<br>    <span class="hljs-title function_">clickMusic</span>(<span class="hljs-params">item, index</span>) &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">activeIndex</span> = index<br>      <span class="hljs-keyword">let</span> &#123;<br>        page_id<br>      &#125; = <span class="hljs-variable language_">this</span><br>      item = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">assign</span>(&#123;<br>        page_id,<br>      &#125;, item)<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">ws</span>.<span class="hljs-title function_">send</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(item))<br>    &#125;,<br>    <span class="hljs-title function_">connectWs</span>(<span class="hljs-params">user_id</span>) &#123;<br>      <span class="hljs-keyword">var</span> ws = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocket</span>(<span class="hljs-string">`ws://localhost:9010/ws/<span class="hljs-subst">$&#123;user_id&#125;</span>`</span>)<br>      ws.<span class="hljs-property">onmessage</span> = <span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> &#123;<br>        <span class="hljs-keyword">let</span> parse = &#123;&#125;<br>        <span class="hljs-keyword">try</span> &#123;<br>          parse = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(e.<span class="hljs-property">data</span>)<br>        &#125; <span class="hljs-keyword">catch</span> (error) &#123;&#125;<br>        <span class="hljs-keyword">let</span> &#123;<br>          list,<br>          page_id<br>        &#125; = <span class="hljs-variable language_">this</span><br>        <span class="hljs-keyword">let</span> activeIndex = -<span class="hljs-number">1</span><br>        list.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">item, index</span>) =&gt;</span> &#123;<br>          <span class="hljs-keyword">if</span> (item.<span class="hljs-property">name</span> == parse.<span class="hljs-property">name</span> &amp;&amp; parse.<span class="hljs-property">page_id</span> == page_id) &#123;<br>            activeIndex = index<br>          &#125;<br>        &#125;)<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">activeIndex</span> = activeIndex<br>      &#125;;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">ws</span> = ws<br>    &#125;<br>  &#125;<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　在标签页每次和websocket建立连接后，将连接对象存放到数组中。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//省略其他代码</span><br><span class="hljs-keyword">const</span> expressWs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;express-ws&quot;</span>)(app);<br><span class="hljs-keyword">let</span> clients = [];<br><span class="hljs-keyword">let</span> musicNum = <span class="hljs-literal">null</span>;<br><br>app.<span class="hljs-title function_">ws</span>(<span class="hljs-string">&quot;/ws/:user_id&quot;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params">ws, req</span>) &#123;<br>  <span class="hljs-keyword">let</span> &#123; user_id &#125; = req.<span class="hljs-property">params</span>;<br>  clients.<span class="hljs-title function_">push</span>(&#123;<br>    user_id,<br>    ws,<br>  &#125;);<br>  ws.<span class="hljs-title function_">send</span>(<span class="hljs-string">&quot;连接成功&quot;</span>);<br><br>  ws.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;message&quot;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params">msg</span>) &#123;<br>    <span class="hljs-keyword">let</span> parsed = &#123;&#125;;<br>    <span class="hljs-keyword">try</span> &#123;<br>      parsed = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(msg);<br>    &#125; <span class="hljs-keyword">catch</span> (error) &#123;&#125;<br>    musicNum = parsed;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; clients.<span class="hljs-property">length</span>; i++) &#123;<br>      <span class="hljs-keyword">let</span> item = clients[i];<br>      <span class="hljs-keyword">if</span> (item.<span class="hljs-property">user_id</span> === user_id &amp;&amp; item !== <span class="hljs-variable language_">this</span>) &#123;<br>        item.<span class="hljs-property">ws</span>.<span class="hljs-title function_">send</span>(msg);<br>      &#125;<br>    &#125;<br>  &#125;);<br>  ws.<span class="hljs-title function_">on</span>(<span class="hljs-string">&quot;close&quot;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; clients.<span class="hljs-property">length</span>; i++) &#123;<br>      <span class="hljs-keyword">if</span> (clients[i].<span class="hljs-property">ws</span> === <span class="hljs-variable language_">this</span>) &#123;<br>        clients.<span class="hljs-title function_">splice</span>(i, <span class="hljs-number">1</span>);<br>      &#125;<br>    &#125;<br>  &#125;);<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　本文所有代码都在<a target="_blank" rel="noopener" href="https://github.com/acexyf/tab-communicate">git仓库</a></p>
+
+            </div>
+            <hr>
+            <div>
+              
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script><div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/10/12/Webpack-Handwrite.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Webpack手写loader和plugin</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/07/30/Webpack-Optimize.html">
+                        <span class="hidden-mobile">Webpack配置全解析（优化篇）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

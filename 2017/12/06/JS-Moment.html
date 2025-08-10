@@ -1,0 +1,1072 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　笔者在做项目的时候，需要对日期和时间进行一些处理和操作，但是每次都用JS自带的Date对象很不方便，还要写一堆繁琐的代码，后续维护起来也很痛苦。在网上找了一下JS处理日期和时间的插件，发现了MomentJS很好用，学习了一下它的语法，发现十分的简洁易懂，而且可扩展性很强，调用方法灵活。很多的方法调用形式多样，支持多种传参数方式。下面简单的整理了一下使用方式">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>JS时间处理插件MomentJS - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="JS时间处理插件MomentJS">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2017-12-06 20:48" pubdate>
+        2017年12月6日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      51
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JS时间处理插件MomentJS</h1>
+            
+            <div class="markdown-body">
+              <p>　　笔者在做项目的时候，需要对日期和时间进行一些处理和操作，但是每次都用JS自带的Date对象很不方便，还要写一堆繁琐的代码，后续维护起来也很痛苦。在网上找了一下JS处理日期和时间的插件，发现了MomentJS很好用，学习了一下它的语法，发现十分的简洁易懂，而且可扩展性很强，调用方法灵活。很多的方法调用形式多样，支持多种传参数方式。下面简单的整理了一下使用方式</p>
+<span id="more"></span>
+
+<h1 id="构造Moment对象"><a href="#构造Moment对象" class="headerlink" title="构造Moment对象"></a>构造Moment对象</h1><p>　　MomentJS将时间封装成一个对象，moment对象，这个对象很多种构造方式，可以支持传入字符串、数组和对象的形式来构造。</p>
+<h2 id="当前系统时间"><a href="#当前系统时间" class="headerlink" title="当前系统时间"></a>当前系统时间</h2><p>　　如果什么都不传，就获取当前的系统时间。</p>
+<figure class="highlight arcade"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs arcade"><span class="hljs-keyword">var</span> <span class="hljs-built_in">now</span> = moment()<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="字符串构造"><a href="#字符串构造" class="headerlink" title="字符串构造"></a>字符串构造</h2><p>　　可以传入字符串，首先会检查字符串的格式是否符合<code>ISO 8601</code>的格式，如果不符合，就调用<code>new Date(string)</code>来构造。</p>
+<h3 id="已知格式字符串"><a href="#已知格式字符串" class="headerlink" title="已知格式字符串"></a>已知格式字符串</h3><figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">moment</span>(&#x27;<span class="hljs-number">2017</span>-<span class="hljs-number">01</span>-<span class="hljs-number">02</span>&#x27;);               //年月日<br><span class="hljs-attribute">moment</span>(&#x27;<span class="hljs-number">2017</span>-<span class="hljs-number">01</span>-<span class="hljs-number">02</span> <span class="hljs-number">13</span>&#x27;);            //年月日 小时<br><span class="hljs-attribute">moment</span>(&#x27;<span class="hljs-number">2017</span>-<span class="hljs-number">01</span>-<span class="hljs-number">02</span> <span class="hljs-number">13</span>:<span class="hljs-number">12</span>&#x27;);         //年月日 小时分钟<br><span class="hljs-attribute">moment</span>(&#x27;<span class="hljs-number">2017</span>-<span class="hljs-number">01</span>-<span class="hljs-number">02</span> <span class="hljs-number">13</span>:<span class="hljs-number">12</span>:<span class="hljs-number">52</span>&#x27;);      //年月日 小时分钟秒<br><span class="hljs-attribute">moment</span>(&#x27;<span class="hljs-number">2017</span>-<span class="hljs-number">01</span>-<span class="hljs-number">02</span> <span class="hljs-number">13</span>:<span class="hljs-number">12</span>:<span class="hljs-number">52</span>.<span class="hljs-number">123</span>&#x27;);  //年月日 小时分钟秒 毫秒<br></code></pre></div></td></tr></table></figure>
+<h3 id="字符串-格式"><a href="#字符串-格式" class="headerlink" title="字符串+格式"></a>字符串+格式</h3><p>　　假如日期的格式不符合<code>ISO 8601</code>的格式，但是你知道输入的字符串的格式，也可以通过这种方式解析，解析的语法有以下四种格式：</p>
+<figure class="highlight mathematica"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mathematica"><span class="hljs-variable">moment</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">String</span><span class="hljs-operator">,</span> <span class="hljs-built_in">String</span><span class="hljs-punctuation">)</span><span class="hljs-operator">;</span><br><span class="hljs-variable">moment</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">String</span><span class="hljs-operator">,</span> <span class="hljs-built_in">String</span><span class="hljs-operator">,</span> <span class="hljs-built_in">String</span><span class="hljs-punctuation">)</span><span class="hljs-operator">;</span><br><span class="hljs-variable">moment</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">String</span><span class="hljs-operator">,</span> <span class="hljs-built_in">String</span><span class="hljs-operator">,</span> <span class="hljs-variable">Boolean</span><span class="hljs-punctuation">)</span><span class="hljs-operator">;</span><br><span class="hljs-variable">moment</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">String</span><span class="hljs-operator">,</span> <span class="hljs-built_in">String</span><span class="hljs-operator">,</span> <span class="hljs-built_in">String</span><span class="hljs-operator">,</span> <span class="hljs-variable">Boolean</span><span class="hljs-punctuation">)</span><span class="hljs-operator">;</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　第一种已知某个时间的格式，将格式作为第二个参数传入</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">moment</span>(&#x27;<span class="hljs-number">12</span>-<span class="hljs-number">25</span>-<span class="hljs-number">1995</span> <span class="hljs-number">12</span>/<span class="hljs-number">43</span>/<span class="hljs-number">53</span>&#x27;, &#x27;MM-DD-YYYY HH/mm/ss&#x27;)<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　格式字母代表的含义如下表</p>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Example</th>
+<th>Description</th>
+</tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</thead>
+<tbody><tr>
+<td>YYYY</td>
+<td>2014</td>
+<td>4位数年份</td>
+</tr>
+<tr>
+<td>YY</td>
+<td>14</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>2位数年份</td>
+</tr>
+<tr>
+<td>Q</td>
+<td>1..4</td>
+<td>季度，将月份设置成季度的第一个月</td>
+</tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<tr>
+<td>M MM</td>
+<td>1..12</td>
+<td>月份</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</tr>
+<tr>
+<td>MMM MMMM</td>
+<td>Jan..December</td>
+<td>月份名称</td>
+</tr>
+<tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<td>D DD</td>
+<td>1..31</td>
+<td>一个月的第几天</td>
+</tr>
+<tr>
+<td>DDD DDDD</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>1..365</td>
+<td>一年的第几天</td>
+</tr>
+<tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<td>H HH</td>
+<td>0..23</td>
+<td>24小时制</td>
+</tr>
+<tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>h hh</td>
+<td>1..12</td>
+<td>12小时制</td>
+</tr>
+<tr>
+<td>m mm</td>
+<td>0..59</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<td>分钟</td>
+</tr>
+<tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>s ss</td>
+<td>0..59</td>
+<td>秒</td>
+</tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</tbody></table>
+<p>　　第二种，可以将当地区域的关键符作为第三个参数传入。</p>
+<figure class="highlight 1c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs 1c">moment(&#x27;<span class="hljs-number">2012</span> juillet&#x27;, &#x27;YYYY MMM&#x27;, &#x27;fr&#x27;);<br>moment(&#x27;<span class="hljs-number">2012</span> July&#x27;,    &#x27;YYYY MMM&#x27;, &#x27;en&#x27;);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　MomentJS的匹配模式是十分宽松的，并且可能会导致一些我们不想要的行为。从<code>2.3.0</code>版本开始，我们可以在最后传入一个布尔值来让Moment使用严格模式匹配。严格模式要求输入的字符串和格式要完全相同。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight ruby"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ruby">moment(<span class="hljs-string">&#x27;It is 2012-05-25&#x27;</span>, <span class="hljs-string">&#x27;YYYY-MM-DD&#x27;</span>).isValid();       <span class="hljs-regexp">//</span> <span class="hljs-literal">true</span><br>moment(<span class="hljs-string">&#x27;It is 2012-05-25&#x27;</span>, <span class="hljs-string">&#x27;YYYY-MM-DD&#x27;</span>, <span class="hljs-literal">true</span>).isValid(); <span class="hljs-regexp">//</span> <span class="hljs-literal">false</span><br>moment(<span class="hljs-string">&#x27;2012-05-25&#x27;</span>,       <span class="hljs-string">&#x27;YYYY-MM-DD&#x27;</span>, <span class="hljs-literal">true</span>).isValid(); <span class="hljs-regexp">//</span> <span class="hljs-literal">true</span><br></code></pre></div></td></tr></table></figure>
+<h3 id="字符串-多格式"><a href="#字符串-多格式" class="headerlink" title="字符串+多格式"></a>字符串+多格式</h3><p>　　假如你不知道输入的字符串确切是用的哪种格式，但是知道是某些格式中的一种，可以将多种格式用数组的形式传入，将会以最先匹配到的格式为输出结果。</p>
+<figure class="highlight lisp"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs lisp">moment(<span class="hljs-string">&quot;12-25-1995&quot;</span>, [<span class="hljs-string">&quot;MM-DD-YYYY&quot;</span>, <span class="hljs-string">&quot;YYYY-MM-DD&quot;</span>])<span class="hljs-comment">;</span><br></code></pre></div></td></tr></table></figure>
+<h2 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h2><p>　　我们也可以通过传入一个对象的形式来创建moment对象，传入的对象中包括一些时间单位的属性。</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">moment</span>(&#123; y    :<span class="hljs-number">2010</span>, M     :<span class="hljs-number">3</span>, d   :<span class="hljs-number">5</span>, h    :<span class="hljs-number">15</span>, m      :<span class="hljs-number">10</span>, s      :<span class="hljs-number">3</span>, ms          :<span class="hljs-number">123</span>&#125;);<br><span class="hljs-attribute">moment</span>(&#123; year :<span class="hljs-number">2010</span>, month :<span class="hljs-number">3</span>, day :<span class="hljs-number">5</span>, hour :<span class="hljs-number">15</span>, minute :<span class="hljs-number">10</span>, second :<span class="hljs-number">3</span>, millisecond :<span class="hljs-number">123</span>&#125;);<br><span class="hljs-attribute">moment</span>(&#123; years:<span class="hljs-number">2010</span>, months:<span class="hljs-number">3</span>, days:<span class="hljs-number">5</span>, hours:<span class="hljs-number">15</span>, minutes:<span class="hljs-number">10</span>, seconds:<span class="hljs-number">3</span>, milliseconds:<span class="hljs-number">123</span>&#125;);<br><span class="hljs-attribute">moment</span>(&#123; years:<span class="hljs-number">2010</span>, months:<span class="hljs-number">3</span>, date:<span class="hljs-number">5</span>, hours:<span class="hljs-number">15</span>, minutes:<span class="hljs-number">10</span>, seconds:<span class="hljs-number">3</span>, milliseconds:<span class="hljs-number">123</span>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　上面代码中的day和date都表示当前月的第几天。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h3 id="Date-对象"><a href="#Date-对象" class="headerlink" title="Date 对象"></a>Date 对象</h3><p>　　我们也可以传入JS原生的Date对象来创建moment对象。</p>
+<figure class="highlight arcade"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs arcade"><span class="hljs-keyword">var</span> <span class="hljs-built_in">day</span> = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-number">2011</span>, <span class="hljs-number">9</span>, <span class="hljs-number">16</span>);<br><span class="hljs-keyword">var</span> dayWrapper = moment(<span class="hljs-built_in">day</span>);<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>　　我们可以传入一个数字的数组来创建moment对象，数组中每个每个数字代表的含义如下：</p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-comment">// [年, 月, 日, 时, 分, 秒, 毫秒]</span><br><span class="hljs-built_in">moment</span>([<span class="hljs-number">2010</span>, <span class="hljs-number">1</span>, <span class="hljs-number">14</span>, <span class="hljs-number">15</span>, <span class="hljs-number">25</span>, <span class="hljs-number">50</span>, <span class="hljs-number">125</span>]);<br><span class="hljs-comment">//2010年2月14日15时25分50秒125毫秒</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　需要注意的是：数组中的月、时、分、秒、毫秒都是从0开始的，而年和日都是从1开始的。</p>
+<h1 id="取值and赋值"><a href="#取值and赋值" class="headerlink" title="取值and赋值"></a>取值and赋值</h1><p>　　MomentJS使用可以重载的get和set方法，跟我们以前在jQuery中的形式很相似。我们可以调用这些方法不传参数作来获取，传入参数作来设置。</p>
+<h2 id="自带函数"><a href="#自带函数" class="headerlink" title="自带函数"></a>自带函数</h2><p>获取或者设置毫秒，设置的范围0到999</p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.millisecond</span>(Number);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.millisecond</span>(); <span class="hljs-comment">// Number</span><br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.milliseconds</span>(Number);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.milliseconds</span>(); <span class="hljs-comment">// Number</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>获取或者设置秒，设置的范围0到59</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.second</span>(Number);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.second</span>(); <span class="hljs-comment">// Number</span><br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.seconds</span>(Number);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.seconds</span>(); <span class="hljs-comment">// Number</span><br></code></pre></div></td></tr></table></figure>
+
+<p>获取或者设置分钟，设置的范围0到59</p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.minute</span>(Number);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.minute</span>(); <span class="hljs-comment">// Number</span><br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.minutes</span>(Number);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.minutes</span>(); <span class="hljs-comment">// Number</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>获取或者设置小时，设置的范围0到23</p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.hour</span>(Number);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.hour</span>(); <span class="hljs-comment">// Number</span><br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.hours</span>(Number);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.hours</span>(); <span class="hljs-comment">// Number</span><br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>获取或者设置日期，设置的范围1到31</p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.date</span>(Number);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.date</span>(); <span class="hljs-comment">// Number</span><br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.dates</span>(Number);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.dates</span>(); <span class="hljs-comment">// Number</span><br></code></pre></div></td></tr></table></figure>
+
+<p>获取或者设置星期，设置的范围0（周日）到6（周六）</p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.day</span>(Number|String);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.day</span>(); <span class="hljs-comment">// Number</span><br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.days</span>(Number|String);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.days</span>(); <span class="hljs-comment">// Number</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p>获取或者设置一年中的天数，设置的范围1到366</p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.dayOfYear</span>(Number);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.dayOfYear</span>(); <span class="hljs-comment">// Number</span><br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>获取或者设置一年中的周</p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.week</span>(Number);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.week</span>(); <span class="hljs-comment">// Number</span><br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.weeks</span>(Number);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.weeks</span>(); <span class="hljs-comment">// Number</span><br></code></pre></div></td></tr></table></figure>
+
+<p>获取或者设置一年中的月份，设置的范围0到11</p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.month</span>(Number|String);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.month</span>(); <span class="hljs-comment">// Number</span><br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.months</span>(Number|String);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.months</span>(); <span class="hljs-comment">// Number</span><br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>获取或者设置季度，设置的范围1到4</p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.quarter</span>(); <span class="hljs-comment">// Number</span><br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.quarter</span>(Number);<br></code></pre></div></td></tr></table></figure>
+
+<p>获取或者设置年，设置的范围-270000到270000</p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.year</span>(Number);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.year</span>(); <span class="hljs-comment">// Number</span><br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.years</span>(Number);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.years</span>(); <span class="hljs-comment">// Number</span><br></code></pre></div></td></tr></table></figure>
+<h2 id="取值and赋值函数"><a href="#取值and赋值函数" class="headerlink" title="取值and赋值函数"></a>取值and赋值函数</h2><p>　　除了上面的这么多函数外，MomentJS还有一个用来统一取值和赋值的函数，get和set。</p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.get</span>(&#x27;year&#x27;);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.get</span>(&#x27;month&#x27;);  <span class="hljs-comment">// 0 to 11</span><br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.get</span>(&#x27;date&#x27;);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.get</span>(&#x27;hour&#x27;);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.get</span>(&#x27;minute&#x27;);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.get</span>(&#x27;second&#x27;);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.get</span>(&#x27;millisecond&#x27;);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　set函数接收单位作为第一个参数，单位的值作为第二个参数。如果要设置多个值的话，也可以通过传入一个对象。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.set</span>(&#x27;year&#x27;, <span class="hljs-number">2013</span>);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.set</span>(&#x27;month&#x27;, <span class="hljs-number">3</span>); <span class="hljs-comment">//四月</span><br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.set</span>(&#x27;date&#x27;, <span class="hljs-number">1</span>);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.set</span>(&#x27;hour&#x27;, <span class="hljs-number">13</span>);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.set</span>(&#x27;minute&#x27;, <span class="hljs-number">20</span>);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.set</span>(&#x27;second&#x27;, <span class="hljs-number">30</span>);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.set</span>(&#x27;millisecond&#x27;, <span class="hljs-number">123</span>);<br><br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.set</span>(&#123;&#x27;year&#x27;: <span class="hljs-number">2013</span>, &#x27;month&#x27;: <span class="hljs-number">3</span>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h2 id="max-min函数"><a href="#max-min函数" class="headerlink" title="max/min函数"></a>max/min函数</h2><p>　　max函数可以返回给定的moment对象中最大的实例，也就是最靠近未来的实例。</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">var</span> a = moment(&#x27;<span class="hljs-number">2017</span>-<span class="hljs-number">12</span>-<span class="hljs-number">01</span>&#x27;);<br><span class="hljs-attribute">var</span> b = moment(&#x27;<span class="hljs-number">2017</span>-<span class="hljs-number">12</span>-<span class="hljs-number">06</span>&#x27;);<br><span class="hljs-attribute">moment</span>.max(a, b);  // b<br></code></pre></div></td></tr></table></figure>
+
+<p>　　min函数可以返回给定的moment对象中最小的实例，也就是最靠近过去的实例。</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">var</span> a = moment(&#x27;<span class="hljs-number">2017</span>-<span class="hljs-number">12</span>-<span class="hljs-number">01</span>&#x27;);<br><span class="hljs-attribute">var</span> b = moment(&#x27;<span class="hljs-number">2017</span>-<span class="hljs-number">12</span>-<span class="hljs-number">06</span>&#x27;);<br><span class="hljs-attribute">moment</span>.min(a, b);  // a<br></code></pre></div></td></tr></table></figure>
+<h1 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h1><p>　　有时候，我们需要对时间进行一系列的操作，最常见的就是加减计算。MomentJS提供了很多方法给我们来进行调用。<br>　　MomentJS使用的模式跟jQuery相似，都是使用的函数的链式调用，可以让我们将操作链式执行下去，代码如下所示：</p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<br>  <span class="hljs-selector-class">.add</span>(<span class="hljs-number">7</span>, &#x27;days&#x27;)<br>  <span class="hljs-selector-class">.subtract</span>(<span class="hljs-number">1</span>, &#x27;months&#x27;)<br>  <span class="hljs-selector-class">.year</span>(<span class="hljs-number">2009</span>)<br>  <span class="hljs-selector-class">.hours</span>(<span class="hljs-number">0</span>)<br>  <span class="hljs-selector-class">.minutes</span>(<span class="hljs-number">0</span>)<br>  <span class="hljs-selector-class">.seconds</span>(<span class="hljs-number">0</span>);<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="add加法"><a href="#add加法" class="headerlink" title="add加法"></a>add加法</h2><p>　　add函数让我们把Moment对象的时间往后退，它的语法如下：</p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.add</span>(Number, String);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.add</span>(Duration);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.add</span>(Object);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们可以传入想要的增加的时间数量和时间单位，比如要往后推迟7天：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs routeros">moment().<span class="hljs-built_in">add</span>(7, <span class="hljs-string">&#x27;days&#x27;</span>);<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　当然，add函数也允许我们提供时间单位的缩写：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs routeros">moment().<span class="hljs-built_in">add</span>(7, <span class="hljs-string">&#x27;d&#x27;</span>);<br></code></pre></div></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>时间单位</th>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<th>缩写</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>years</td>
+<td>y</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</tr>
+<tr>
+<td>quarters</td>
+<td>Q</td>
+</tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<tr>
+<td>months</td>
+<td>M</td>
+</tr>
+<tr>
+<td>weeks</td>
+<td>W</td>
+</tr>
+<tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<td>days</td>
+<td>d</td>
+</tr>
+<tr>
+<td>hours</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>h</td>
+</tr>
+<tr>
+<td>minutes</td>
+<td>m</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</tr>
+<tr>
+<td>seconds</td>
+<td>s</td>
+</tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<tr>
+<td>milliseconds</td>
+<td>ms</td>
+</tr>
+</tbody></table>
+<p>　　如果想要同时增加不同时间单位，可以以对象的形式传入：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight routeros"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs routeros">moment().<span class="hljs-built_in">add</span>(7, <span class="hljs-string">&#x27;days&#x27;</span>).<span class="hljs-built_in">add</span>(1, <span class="hljs-string">&#x27;months&#x27;</span>);<br>moment().<span class="hljs-built_in">add</span>(&#123;days:7,months:1&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　需要注意的是，如果原始日期的天数比新增后的日期的月份的总天数还要多，就变为该月的最后一天：</p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-comment">// 01-31</span><br><span class="hljs-built_in">moment</span>([<span class="hljs-number">2010</span>, <span class="hljs-number">0</span>, <span class="hljs-number">31</span>]);                  <br><br><span class="hljs-comment">// 02-28 </span><br><span class="hljs-built_in">moment</span>([<span class="hljs-number">2010</span>, <span class="hljs-number">0</span>, <span class="hljs-number">31</span>])<span class="hljs-selector-class">.add</span>(<span class="hljs-number">1</span>, &#x27;months&#x27;); <br><span class="hljs-comment">//2月份没有31号，自动变为最后一天，即28号</span><br></code></pre></div></td></tr></table></figure>
+
+<h2 id="subtract减法"><a href="#subtract减法" class="headerlink" title="subtract减法"></a>subtract减法</h2><p>　　subtract函数的用法和add相似，不同的是把时间往前推。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.subtract</span>(Number, String);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.subtract</span>(Duration);<br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.subtract</span>(Object);<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="startOf开始时间"><a href="#startOf开始时间" class="headerlink" title="startOf开始时间"></a>startOf开始时间</h2><p>　　startOf函数将Moment对象的时间设置为传入单位的开始时间。</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">moment</span>()                    //当前时间<span class="hljs-number">2017</span>-<span class="hljs-number">12</span>-<span class="hljs-number">09</span><br><span class="hljs-attribute">moment</span>().startOf(&#x27;year&#x27;);   //今年年初<span class="hljs-number">2017</span>-<span class="hljs-number">01</span>-<span class="hljs-number">01</span><br><span class="hljs-attribute">moment</span>().startOf(&#x27;month&#x27;);  //这个月开始<span class="hljs-number">2017</span>-<span class="hljs-number">12</span>-<span class="hljs-number">01</span><br><span class="hljs-attribute">moment</span>().startOf(&#x27;quarter&#x27;);//这个季度开始<span class="hljs-number">2017</span>-<span class="hljs-number">10</span>-<span class="hljs-number">01</span><br><span class="hljs-attribute">moment</span>().startOf(&#x27;week&#x27;);   //这周开始<span class="hljs-number">2017</span>-<span class="hljs-number">12</span>-<span class="hljs-number">03</span>（周日为开始）<br><span class="hljs-attribute">moment</span>().startOf(&#x27;isoWeek&#x27;);//这周开始<span class="hljs-number">2017</span>-<span class="hljs-number">12</span>-<span class="hljs-number">04</span>（根据ISO <span class="hljs-number">8601</span>，周一为开始）<br><span class="hljs-attribute">moment</span>().startOf(&#x27;day&#x27;);    //今天的开始时间<span class="hljs-number">2017</span>-<span class="hljs-number">12</span>-<span class="hljs-number">09</span> <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">000</span><br><span class="hljs-attribute">moment</span>().startOf(&#x27;hour&#x27;);   //今天当前小时开始<span class="hljs-number">2017</span>-<span class="hljs-number">12</span>-<span class="hljs-number">09</span> <span class="hljs-number">13</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">000</span><br><span class="hljs-attribute">moment</span>().startOf(&#x27;minute&#x27;); //今天当前分钟开始<span class="hljs-number">2017</span>-<span class="hljs-number">12</span>-<span class="hljs-number">09</span> <span class="hljs-number">13</span>:<span class="hljs-number">14</span>:<span class="hljs-number">00</span>:<span class="hljs-number">000</span><br><span class="hljs-attribute">moment</span>().startOf(&#x27;second&#x27;); //今天当前秒钟开始<span class="hljs-number">2017</span>-<span class="hljs-number">12</span>-<span class="hljs-number">09</span> <span class="hljs-number">13</span>:<span class="hljs-number">14</span>:<span class="hljs-number">15</span>:<span class="hljs-number">000</span><br></code></pre></div></td></tr></table></figure>
+
+<h2 id="endOf结束时间"><a href="#endOf结束时间" class="headerlink" title="endOf结束时间"></a>endOf结束时间</h2><p>　　endOf函数将Moment对象的时间设置为传入单位的结束时间。使用方式和startOf相似。</p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.endOf</span>(String);<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h1 id="显示"><a href="#显示" class="headerlink" title="显示"></a>显示</h1><p>　　当我们解析和操作完Moment对象后，我们就需要对最后的结果进行展示。</p>
+<h2 id="format格式化"><a href="#format格式化" class="headerlink" title="format格式化"></a>format格式化</h2><p>　　format函数接收token字符串，并且将token替换成对应的值。</p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.format</span>();                                <span class="hljs-comment">// &quot;2014-09-08T08:02:17-05:00&quot; (ISO 8601)</span><br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.format</span>(&quot;dddd, MMMM Do YYYY, h:mm:ss a&quot;); <span class="hljs-comment">// &quot;Sunday, February 14th 2010, 3:25:50 pm&quot;</span><br><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.format</span>(&quot;ddd, hA&quot;);                       <span class="hljs-comment">// &quot;Sun, 3PM&quot;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　对应的关系如下表：</p>
+<table>
+<thead>
+<tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<th>-</th>
+<th>Token</th>
+<th>输入</th>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</tr>
+</thead>
+<tbody><tr>
+<td>月</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>M</td>
+<td>1 2 .. 11 12</td>
+</tr>
+<tr>
+<td></td>
+<td>Mo</td>
+<td>1st 2nd … 11th 12th</td>
+</tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<tr>
+<td></td>
+<td>MM</td>
+<td>01 02 … 11 12</td>
+</tr>
+<tr>
+<td></td>
+<td>MMM</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>Jan Feb … Nov Dec</td>
+</tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<tr>
+<td></td>
+<td>MMMM</td>
+<td>January February … November December</td>
+</tr>
+<tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>季度</td>
+<td>Q</td>
+<td>1 2 3 4</td>
+</tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<tr>
+<td>月份中的天</td>
+<td>D</td>
+<td>1 2 … 30 31</td>
+</tr>
+<tr>
+<td></td>
+<td>Do</td>
+<td>1st 2nd … 30th 31st</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</tr>
+<tr>
+<td></td>
+<td>DD</td>
+<td>01 02 … 30 31</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</tr>
+<tr>
+<td>年份中的天</td>
+<td>DDD</td>
+<td>1 2 … 365 366</td>
+</tr>
+<tr>
+<td></td>
+<td>DDDo</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>st 2nd … 365th 366th</td>
+</tr>
+<tr>
+<td></td>
+<td>DDDD</td>
+<td>001 002 … 365 366</td>
+</tr>
+<tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<td>星期中的天</td>
+<td>d</td>
+<td>0 1 … 5 6</td>
+</tr>
+<tr>
+<td></td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>do</td>
+<td>0th 1st … 5th 6th</td>
+</tr>
+<tr>
+<td></td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<td>dd</td>
+<td>Su Mo … Fr Sa</td>
+</tr>
+<tr>
+<td></td>
+<td>ddd</td>
+<td>Sun Mon … Fri Sat</td>
+</tr>
+<tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td></td>
+<td>dddd</td>
+<td>Sunday Monday … Friday Saturday</td>
+</tr>
+<tr>
+<td>年中的星期</td>
+<td>w</td>
+<td>1 2 … 52 53</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</tr>
+<tr>
+<td></td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>wo</td>
+<td>1st 2nd … 52nd 53rd</td>
+</tr>
+<tr>
+<td></td>
+<td>ww</td>
+<td>01 02 … 52 53</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</tr>
+<tr>
+<td>年</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>YY</td>
+<td>70 71 … 29 30</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</tr>
+<tr>
+<td></td>
+<td>YYYY</td>
+<td>1970 1971 … 2029 2030</td>
+</tr>
+<tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>AM/PM</td>
+<td>A</td>
+<td>AM PM</td>
+</tr>
+<tr>
+<td></td>
+<td>a</td>
+<td>am pm</td>
+</tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<tr>
+<td>小时</td>
+<td>H</td>
+<td>0 1 … 22 23</td>
+</tr>
+<tr>
+<td></td>
+<td>HH</td>
+<td>00 01 … 22 23</td>
+</tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<tr>
+<td></td>
+<td>h</td>
+<td>1 2 … 11 12</td>
+</tr>
+<tr>
+<td></td>
+<td>hh</td>
+<td>01 02 … 11 12</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</tr>
+<tr>
+<td>分钟</td>
+<td>m</td>
+<td>0 1 … 58 59</td>
+</tr>
+<tr>
+<td></td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>mm</td>
+<td>00 01 … 58 59</td>
+</tr>
+<tr>
+<td>秒</td>
+<td>s</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<td>0 1 … 58 59</td>
+</tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<tr>
+<td></td>
+<td>ss</td>
+<td>00 01 … 58 59</td>
+</tr>
+<tr>
+<td>毫秒</td>
+<td>ms</td>
+<td>000 001 … 998 999</td>
+</tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</tbody></table>
+<h2 id="diff时差"><a href="#diff时差" class="headerlink" title="diff时差"></a>diff时差</h2><p>　　语法</p>
+<figure class="highlight mathematica"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mathematica"><span class="hljs-variable">moment</span><span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><span class="hljs-operator">.</span><span class="hljs-variable">diff</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">Moment</span><span class="hljs-operator">|</span><span class="hljs-built_in">String</span><span class="hljs-operator">|</span><span class="hljs-built_in">Number</span><span class="hljs-operator">|</span><span class="hljs-built_in">Date</span><span class="hljs-operator">|</span><span class="hljs-built_in">Array</span><span class="hljs-punctuation">)</span><span class="hljs-operator">;</span><br><span class="hljs-variable">moment</span><span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><span class="hljs-operator">.</span><span class="hljs-variable">diff</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">Moment</span><span class="hljs-operator">|</span><span class="hljs-built_in">String</span><span class="hljs-operator">|</span><span class="hljs-built_in">Number</span><span class="hljs-operator">|</span><span class="hljs-built_in">Date</span><span class="hljs-operator">|</span><span class="hljs-built_in">Array</span><span class="hljs-operator">,</span> <span class="hljs-built_in">String</span><span class="hljs-punctuation">)</span><span class="hljs-operator">;</span><br><span class="hljs-variable">moment</span><span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><span class="hljs-operator">.</span><span class="hljs-variable">diff</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">Moment</span><span class="hljs-operator">|</span><span class="hljs-built_in">String</span><span class="hljs-operator">|</span><span class="hljs-built_in">Number</span><span class="hljs-operator">|</span><span class="hljs-built_in">Date</span><span class="hljs-operator">|</span><span class="hljs-built_in">Array</span><span class="hljs-operator">,</span> <span class="hljs-built_in">String</span><span class="hljs-operator">,</span> <span class="hljs-variable">Boolean</span><span class="hljs-punctuation">)</span><span class="hljs-operator">;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　diff函数可以帮我们获取到两个Moment对象的时间差，默认的单位是毫秒。</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">var</span> a = moment([<span class="hljs-number">2017</span>, <span class="hljs-number">12</span>, <span class="hljs-number">29</span>]);<br><span class="hljs-attribute">var</span> b = moment([<span class="hljs-number">2017</span>, <span class="hljs-number">12</span>, <span class="hljs-number">28</span>]);<br><span class="hljs-attribute">a</span>.diff(b) // <span class="hljs-number">86400000</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　除了得到毫秒为单位，diff函数还支持获取其他的时间单位，将其作为第二个参数传入：</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">var</span> a = moment([<span class="hljs-number">2007</span>, <span class="hljs-number">0</span>, <span class="hljs-number">29</span>]);<br><span class="hljs-attribute">var</span> b = moment([<span class="hljs-number">2007</span>, <span class="hljs-number">0</span>, <span class="hljs-number">28</span>]);<br><span class="hljs-attribute">a</span>.diff(b, &#x27;days&#x27;) // <span class="hljs-number">1</span><br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　支持的测量单位有years、months、weeks、days、hours、minutes、seconds和milliseconds。默认返回的数值会向下取舍，去掉小数。假如想要精确一点，得到小数类型的数值，第三个参数传入一个true。</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs actionscript"><span class="hljs-keyword">var</span> a = moment([<span class="hljs-number">2008</span>, <span class="hljs-number">6</span>]);<br><span class="hljs-keyword">var</span> b = moment([<span class="hljs-number">2007</span>, <span class="hljs-number">0</span>]);<br>a.diff(b, <span class="hljs-string">&#x27;years&#x27;</span>);       <span class="hljs-comment">// 1</span><br>a.diff(b, <span class="hljs-string">&#x27;years&#x27;</span>, <span class="hljs-literal">true</span>); <span class="hljs-comment">// 1.5</span><br></code></pre></div></td></tr></table></figure>
+
+<h2 id="daysInMonth获取当前月份的天数"><a href="#daysInMonth获取当前月份的天数" class="headerlink" title="daysInMonth获取当前月份的天数"></a>daysInMonth获取当前月份的天数</h2><p>　　daysInMonth获取当前月的总天数</p>
+<figure class="highlight stylus"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">moment</span><span class="hljs-params">(<span class="hljs-string">&quot;2012-02&quot;</span>, <span class="hljs-string">&quot;YYYY-MM&quot;</span>)</span></span><span class="hljs-selector-class">.daysInMonth</span>() <span class="hljs-comment">// 29</span><br><span class="hljs-function"><span class="hljs-title">moment</span><span class="hljs-params">(<span class="hljs-string">&quot;2012-01&quot;</span>, <span class="hljs-string">&quot;YYYY-MM&quot;</span>)</span></span><span class="hljs-selector-class">.daysInMonth</span>() <span class="hljs-comment">// 31</span><br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h2 id="toDate转为Date对象"><a href="#toDate转为Date对象" class="headerlink" title="toDate转为Date对象"></a>toDate转为Date对象</h2><p>　　将Moment对象转为js原生的Date对象</p>
+<h2 id="toArray转为数组"><a href="#toArray转为数组" class="headerlink" title="toArray转为数组"></a>toArray转为数组</h2><p>　　返回时间数组，和构造Moment对象时传入的数组代表的含义相同。</p>
+<figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss"><span class="hljs-built_in">moment</span>()<span class="hljs-selector-class">.toArray</span>(); <span class="hljs-comment">// [2017, 12, 9, 13, 40, 16, 154];</span><br></code></pre></div></td></tr></table></figure>
+<h2 id="toObject"><a href="#toObject" class="headerlink" title="toObject"></a>toObject</h2><p>　　将Moment对象转为包含年月日时分秒毫秒的对象。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">moment</span><span class="hljs-params">()</span></span><span class="hljs-selector-class">.toObject</span>()  <span class="hljs-comment">// &#123;</span><br>                     <span class="hljs-comment">//     years: 2017</span><br>                     <span class="hljs-comment">//     months: 12</span><br>                     <span class="hljs-comment">//     date: 9,</span><br>                     <span class="hljs-comment">//     hours: 13,</span><br>                     <span class="hljs-comment">//     minutes: 40,</span><br>                     <span class="hljs-comment">//     seconds: 18,</span><br>                     <span class="hljs-comment">//     milliseconds: 600</span><br>                     <span class="hljs-comment">// &#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<h1 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h1><p>　　查询操作主要用来判断Moment是否满足某些条件。</p>
+<h2 id="isBefore是否之前"><a href="#isBefore是否之前" class="headerlink" title="isBefore是否之前"></a>isBefore是否之前</h2><figure class="highlight mathematica"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mathematica"><span class="hljs-variable">moment</span><span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><span class="hljs-operator">.</span><span class="hljs-variable">isBefore</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">Moment</span><span class="hljs-operator">|</span><span class="hljs-built_in">String</span><span class="hljs-operator">|</span><span class="hljs-built_in">Number</span><span class="hljs-operator">|</span><span class="hljs-built_in">Date</span><span class="hljs-operator">|</span><span class="hljs-built_in">Array</span><span class="hljs-punctuation">)</span><span class="hljs-operator">;</span><br><span class="hljs-variable">moment</span><span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><span class="hljs-operator">.</span><span class="hljs-variable">isBefore</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">Moment</span><span class="hljs-operator">|</span><span class="hljs-built_in">String</span><span class="hljs-operator">|</span><span class="hljs-built_in">Number</span><span class="hljs-operator">|</span><span class="hljs-built_in">Date</span><span class="hljs-operator">|</span><span class="hljs-built_in">Array</span><span class="hljs-operator">,</span> <span class="hljs-built_in">String</span><span class="hljs-punctuation">)</span><span class="hljs-operator">;</span><br></code></pre></div></td></tr></table></figure>
+<p>　　isBefore判断一个moment对象是否在某个时间点之前。</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">moment</span>(&#x27;<span class="hljs-number">2010</span>-<span class="hljs-number">10</span>-<span class="hljs-number">20</span>&#x27;).isBefore(&#x27;<span class="hljs-number">2010</span>-<span class="hljs-number">10</span>-<span class="hljs-number">21</span>&#x27;); // true<br></code></pre></div></td></tr></table></figure>
+
+<p>　　默认的比较单位是毫秒，但是假如我们想要限制到其他的时间单位，我们可以将其作为第二个参数传入。接受的单位和startOf支持的单位一样。</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">console</span>.log(moment(&#x27;<span class="hljs-number">2017</span>-<span class="hljs-number">11</span>-<span class="hljs-number">03</span>&#x27;).isBefore(&#x27;<span class="hljs-number">2017</span>-<span class="hljs-number">11</span>-<span class="hljs-number">06</span>&#x27;))<br><span class="hljs-attribute">console</span>.log(moment(&#x27;<span class="hljs-number">2017</span>-<span class="hljs-number">11</span>-<span class="hljs-number">03</span>&#x27;).isBefore(&#x27;<span class="hljs-number">2017</span>-<span class="hljs-number">11</span>-<span class="hljs-number">06</span>&#x27;, &#x27;year&#x27;))<br><span class="hljs-attribute">console</span>.log(moment(&#x27;<span class="hljs-number">2017</span>-<span class="hljs-number">11</span>-<span class="hljs-number">03</span>&#x27;).isBefore(&#x27;<span class="hljs-number">2018</span>-<span class="hljs-number">11</span>-<span class="hljs-number">06</span>&#x27;, &#x27;year&#x27;))<br></code></pre></div></td></tr></table></figure>
+<h2 id="isSame是否相同"><a href="#isSame是否相同" class="headerlink" title="isSame是否相同"></a>isSame是否相同</h2><figure class="highlight mathematica"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mathematica"><span class="hljs-variable">moment</span><span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><span class="hljs-operator">.</span><span class="hljs-variable">isSame</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">Moment</span><span class="hljs-operator">|</span><span class="hljs-built_in">String</span><span class="hljs-operator">|</span><span class="hljs-built_in">Number</span><span class="hljs-operator">|</span><span class="hljs-built_in">Date</span><span class="hljs-operator">|</span><span class="hljs-built_in">Array</span><span class="hljs-punctuation">)</span><span class="hljs-operator">;</span><br><span class="hljs-variable">moment</span><span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span><span class="hljs-operator">.</span><span class="hljs-variable">isSame</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">Moment</span><span class="hljs-operator">|</span><span class="hljs-built_in">String</span><span class="hljs-operator">|</span><span class="hljs-built_in">Number</span><span class="hljs-operator">|</span><span class="hljs-built_in">Date</span><span class="hljs-operator">|</span><span class="hljs-built_in">Array</span><span class="hljs-operator">,</span> <span class="hljs-built_in">String</span><span class="hljs-punctuation">)</span><span class="hljs-operator">;</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　isSame判断一个moment对象是否和另一个moment对象相同。</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">moment</span>(&#x27;<span class="hljs-number">2010</span>-<span class="hljs-number">10</span>-<span class="hljs-number">20</span>&#x27;).isSame(&#x27;<span class="hljs-number">2010</span>-<span class="hljs-number">10</span>-<span class="hljs-number">20</span>&#x27;); // true<br><span class="hljs-attribute">moment</span>(&#x27;<span class="hljs-number">2010</span>-<span class="hljs-number">10</span>-<span class="hljs-number">20</span>&#x27;).isSame(&#x27;<span class="hljs-number">2010</span>-<span class="hljs-number">10</span>-<span class="hljs-number">21</span>&#x27;); // false<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　同样的，我们如果要将比较的单位改为其他的，也可以作为第二个参数传入。接受的单位和startOf支持的单位一样。</p>
+<figure class="highlight 1c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs 1c">moment(&#x27;<span class="hljs-number">2010-10-20</span>&#x27;).isSame(&#x27;<span class="hljs-number">2009-12-31</span>&#x27;, &#x27;year&#x27;);  <span class="hljs-comment">// false</span><br>moment(&#x27;<span class="hljs-number">2010-10-20</span>&#x27;).isSame(&#x27;<span class="hljs-number">2010-01-01</span>&#x27;, &#x27;year&#x27;);  <span class="hljs-comment">// true</span><br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　当传入第二个参数时，它会匹配所有相同或者更大的单位。比如传入了月份，将会比较年和月，传入了日期，将会比较年月日</p>
+<figure class="highlight 1c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs 1c"><span class="hljs-comment">// false, 不同的年</span><br>moment(&#x27;<span class="hljs-number">2010-01-01</span>&#x27;).isSame(&#x27;<span class="hljs-number">2011-01-01</span>&#x27;, &#x27;month&#x27;);<br><br><span class="hljs-comment">// false, 不同的月</span><br>moment(&#x27;<span class="hljs-number">2010-01-01</span>&#x27;).isSame(&#x27;<span class="hljs-number">2010-02-01</span>&#x27;, &#x27;day&#x27;);<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="isAfter是否之后"><a href="#isAfter是否之后" class="headerlink" title="isAfter是否之后"></a>isAfter是否之后</h2><p>　　isBefore判断一个moment对象是否在某个时间点之后。接受的单位和startOf支持的单位一样。</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">moment</span>(&#x27;<span class="hljs-number">2010</span>-<span class="hljs-number">10</span>-<span class="hljs-number">20</span>&#x27;).isAfter(&#x27;<span class="hljs-number">2010</span>-<span class="hljs-number">10</span>-<span class="hljs-number">19</span>&#x27;); // true<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="isBetween是否之间"><a href="#isBetween是否之间" class="headerlink" title="isBetween是否之间"></a>isBetween是否之间</h2><figure class="highlight sas"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sas">moment().isBetwee<span class="hljs-meta">n</span>(moment-<span class="hljs-keyword">like</span>, moment-<span class="hljs-keyword">like</span>);<br>moment().isBetwee<span class="hljs-meta">n</span>(moment-<span class="hljs-keyword">like</span>, moment-<span class="hljs-keyword">like</span>, String);<br>//moment-<span class="hljs-keyword">like</span> 表示 Moment|String|Number|Date|<span class="hljs-keyword">Array</span><br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　判断一个moment对象是否在两个其他时间点之间。</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">moment</span>(&#x27;<span class="hljs-number">2017</span>-<span class="hljs-number">10</span>-<span class="hljs-number">20</span>&#x27;).isBetween(&#x27;<span class="hljs-number">2017</span>-<span class="hljs-number">10</span>-<span class="hljs-number">19</span>&#x27;, &#x27;<span class="hljs-number">2017</span>-<span class="hljs-number">10</span>-<span class="hljs-number">25</span>&#x27;); // true<br></code></pre></div></td></tr></table></figure>
+<p>　　传入第二个参数作为限制的单位。接受的单位和startOf支持的单位一样。</p>
+<figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">moment</span>(&#x27;<span class="hljs-number">2010</span>-<span class="hljs-number">10</span>-<span class="hljs-number">20</span>&#x27;).isBetween(&#x27;<span class="hljs-number">2010</span>-<span class="hljs-number">01</span>-<span class="hljs-number">01</span>&#x27;, &#x27;<span class="hljs-number">2012</span>-<span class="hljs-number">01</span>-<span class="hljs-number">01</span>&#x27;, &#x27;year&#x27;); // false<br><span class="hljs-attribute">moment</span>(&#x27;<span class="hljs-number">2010</span>-<span class="hljs-number">10</span>-<span class="hljs-number">20</span>&#x27;).isBetween(&#x27;<span class="hljs-number">2009</span>-<span class="hljs-number">12</span>-<span class="hljs-number">31</span>&#x27;, &#x27;<span class="hljs-number">2012</span>-<span class="hljs-number">01</span>-<span class="hljs-number">01</span>&#x27;, &#x27;year&#x27;); // true<br></code></pre></div></td></tr></table></figure>
+<h2 id="isLeapYear是否闰年"><a href="#isLeapYear是否闰年" class="headerlink" title="isLeapYear是否闰年"></a>isLeapYear是否闰年</h2><p>　　是闰年就返回true，不是就返回false。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight stylus"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">moment</span><span class="hljs-params">([<span class="hljs-number">2000</span>])</span></span><span class="hljs-selector-class">.isLeapYear</span>() <span class="hljs-comment">// true</span><br><span class="hljs-function"><span class="hljs-title">moment</span><span class="hljs-params">([<span class="hljs-number">2001</span>])</span></span><span class="hljs-selector-class">.isLeapYear</span>() <span class="hljs-comment">// false</span><br><span class="hljs-function"><span class="hljs-title">moment</span><span class="hljs-params">([<span class="hljs-number">2100</span>])</span></span><span class="hljs-selector-class">.isLeapYear</span>() <span class="hljs-comment">// false</span><br></code></pre></div></td></tr></table></figure>
+
+
+<h2 id="isMoment-是否Moment对象"><a href="#isMoment-是否Moment对象" class="headerlink" title="isMoment 是否Moment对象"></a>isMoment 是否Moment对象</h2><p>　　判断是否Moment对象</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight stylus"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs stylus">moment<span class="hljs-selector-class">.isMoment</span>() <span class="hljs-comment">// false</span><br>moment<span class="hljs-selector-class">.isMoment</span>(new <span class="hljs-built_in">Date</span>()) <span class="hljs-comment">// false</span><br>moment<span class="hljs-selector-class">.isMoment</span>(<span class="hljs-built_in">moment</span>()) <span class="hljs-comment">// true</span><br></code></pre></div></td></tr></table></figure>
+
+<h2 id="isDate是否Date对象"><a href="#isDate是否Date对象" class="headerlink" title="isDate是否Date对象"></a>isDate是否Date对象</h2><p>　　判断是否Date对象</p>
+<figure class="highlight ruby"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ruby">moment.isDate(); <span class="hljs-regexp">//</span> <span class="hljs-literal">false</span><br>moment.isDate(new <span class="hljs-title class_">Date</span>()); <span class="hljs-regexp">//</span> <span class="hljs-literal">true</span><br>moment.isDate(moment()); <span class="hljs-regexp">//</span> <span class="hljs-literal">false</span><br></code></pre></div></td></tr></table></figure>
+            </div>
+            <hr>
+            <div>
+              
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script><div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/js/">js</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/03/07/JS-Decimal-Accuracy.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JS中浮点数精度问题</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2017/09/25/Nodejs-File-Upload.html">
+                        <span class="hidden-mobile">Nodejs文件上传</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

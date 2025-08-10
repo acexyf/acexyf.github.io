@@ -1,0 +1,728 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　在上一篇文章中，我们介绍了Chrome插件的页面如何写，以及各个组件之间是如何来通信的，得到了不少朋友的积极反馈，大家对Chrome插件的相关内容也都比较感兴趣，也存在着相当大的应用市场；本文就结合项目开发中遇到的的一些实际问题，分享一些开发经验。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>Chrome插件实战开发 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Chrome插件实战开发">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-08-11 16:12" pubdate>
+        2023年8月11日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      47
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Chrome插件实战开发</h1>
+            
+            <div class="markdown-body">
+              <p>　　在上一篇文章中，我们介绍了Chrome插件的页面如何写，以及各个组件之间是如何来通信的，得到了不少朋友的积极反馈，大家对Chrome插件的相关内容也都比较感兴趣，也存在着相当大的应用市场；本文就结合项目开发中遇到的的一些实际问题，分享一些开发经验。</p>
+<span id="more"></span>
+
+
+
+<h1 id="从V2升级到V3"><a href="#从V2升级到V3" class="headerlink" title="从V2升级到V3"></a>从V2升级到V3</h1><p>　　上一篇文章写的时间比较早，使用的还是V2版本的插件，而现在Chrome最新的插件版本也来到的V3，而且V2插件也不能继续在Chrome商店里面发布上架了；因此很多朋友吐槽得比较多的就是，上一篇文章中介绍的插件版本太老了；因此本文我们先来看下如何从V2升级到V3，以及两个版本存在着哪些区别。</p>
+<p>　　首先Chrome浏览器是从88版本开始支持V3，因此开发之前，首先确定一下自己的浏览器版本是否高于这个版本；第一步，就是修改<code>manifest.json</code>文件，将我们的插件版本号从2改到3。</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-comment">// &quot;manifest_version&quot;: 2,</span><br>    <span class="hljs-attr">&quot;manifest_version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">3</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-comment">// ...</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<blockquote>
+<p>注意：这里改的是<code>manifest_version</code>，而不是<code>version</code>字段。</p>
+</blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="权限配置升级"><a href="#权限配置升级" class="headerlink" title="权限配置升级"></a>权限配置升级</h2><p>　　在V2版本中，host权限和其他的权限配置一般都统一的放在<code>permissions</code>字段中，而其他一些可选权限则在<code>optional_permissions</code>：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-comment">// V2</span><br><span class="hljs-punctuation">&#123;</span><br>  ...<br>  <span class="hljs-attr">&quot;permissions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;tabs&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-string">&quot;bookmarks&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-string">&quot;https://www.xieyufei.com/&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;optional_permissions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;unlimitedStorage&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-string">&quot;*://*/*&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-punctuation">]</span><br>  <span class="hljs-comment">// ...</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　<code>permissions</code>列出的权限是<code>插件被安装前</code>所需要的；而<code>optional_permissions</code>列出的一些权限，是插件在安装时不需要的，在<code>安装之后</code>可能会要求的权限。</p>
+<p>　　在V3版本中，权限配置更加精细化，我们需要把主机权限独立到单独的<code>host_permissions</code>和<code>optional_host_permissions</code>字段中：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-comment">// V3</span><br><span class="hljs-punctuation">&#123;</span><br>  ...<br>  <span class="hljs-attr">&quot;permissions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;tabs&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-string">&quot;bookmarks&quot;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;optional_permissions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;unlimitedStorage&quot;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;host_permissions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;https://www.xieyufei.com/&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;optional_host_permissions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;*://*/*&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-punctuation">]</span><br>  <span class="hljs-comment">// ...</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+
+
+<h2 id="web-accessible-resources"><a href="#web-accessible-resources" class="headerlink" title="web_accessible_resources"></a>web_accessible_resources</h2><p>　　<code>web_accessible_resources</code>字段用来控制外部访问插件中的资源，比如content-script脚本或者popup页面中需要展示展示图片资源；在V2版本中，直接定义一个资源列表，那么所有网站都能访问这些资源了：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-comment">// V2</span><br><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-comment">// ...</span><br>  <span class="hljs-attr">&quot;web_accessible_resources&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;images/*&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-string">&quot;style/extension.css&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-string">&quot;script/extension.js&quot;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-comment">// ...</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　而来到V3版本，我们需要配置一个对象数组，对象中通过resources和matches更加精细化的配置了哪些外部网站可以访问哪些资源文件。</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-comment">// V3</span><br><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-comment">// ...</span><br>    <span class="hljs-attr">&quot;web_accessible_resources&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;resources&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>        <span class="hljs-string">&quot;style/extension.css&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-string">&quot;script/extension.js&quot;</span><br>      <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;matches&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>        <span class="hljs-string">&quot;https://*.xieyufei.com/*&quot;</span><br>      <span class="hljs-punctuation">]</span><br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-comment">// ...</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+
+
+<p>　　假设我们有一张图片资源在以下插件目录下：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs livecodeserver"><span class="hljs-built_in">extension</span>-<span class="hljs-built_in">files</span>/<br>    manifest.json<br>    content-script.js<br>    images/<br>        banner.png<br></code></pre></div></td></tr></table></figure>
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　我们想让content-script.js来在页面呈现图片的地址，需要在manifest.json声明可以被访问到：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;web_accessible_resources&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;resources&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span> <span class="hljs-string">&quot;images/banner.png&quot;</span> <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;matches&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span> <span class="hljs-string">&quot;*&quot;</span> <span class="hljs-punctuation">]</span><br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　然后在content-script.js中调用Chrome插件的<code>chrome.runtime.getURL函数</code>来获取图片的地址，图片的地址看起来可能是这样的：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs pgsql">chrome-<span class="hljs-keyword">extension</span>://&lt;<span class="hljs-keyword">extension</span>-<span class="hljs-type">UUID</span>&gt;/images/banner.png<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<blockquote>
+<p>这里的<code>extension-UUID</code>并不是插件的ID，而是一个随机生成的唯一id。</p>
+</blockquote>
+<p>　　我们在匹配资源文件的路径时，面对多个文件匹配，也可以使用通配符：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;web_accessible_resources&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;resources&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span> <span class="hljs-string">&quot;images/*.png&quot;</span> <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;matches&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span> <span class="hljs-string">&quot;*&quot;</span> <span class="hljs-punctuation">]</span><br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<h2 id="background后台"><a href="#background后台" class="headerlink" title="background后台"></a>background后台</h2><p>　　background后台的升级也是Chrome插件更新的重要特性之一，使用了Service Worker替代了原来的Background page。在V2版本中，我们使用background.scripts可以配置多个js，或者使用background.page配置一个后台页面：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-comment">// V2</span><br><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;background&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;js/script1.js&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;js/script2.js&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-comment">// or  &quot;page&quot;: &quot;background.html&quot;</span><br>    <span class="hljs-attr">&quot;persistent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　<code>persistent: true</code>指定了脚本一直在后台运行，直到插件被禁用或者卸载，这样就导致占用了大量的内存；因此V3废弃了scripts和page；如果我们还是指定这两者，Chrome就会报下面错误，直接就不让我们运行插件了，</p>
+<figure class="highlight vbnet"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vbnet">错误<br>The <span class="hljs-string">&quot;background.scripts&quot;</span> <span class="hljs-keyword">key</span> cannot be used <span class="hljs-keyword">with</span> manifest_version <span class="hljs-number">3</span>. Use the <span class="hljs-string">&quot;background.service_worker&quot;</span> <span class="hljs-keyword">key</span> instead. 无法载入清单。<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　V3版本升级改用了<code>service_worker</code>字段代替原来scripts和page，确保插件不会一直占用浏览器的资源，仅在需要时才运行，从而节省资源：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-comment">//V3</span><br><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;background&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;service_worker&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;js/background.js&quot;</span><br>    <span class="hljs-comment">// 移除了 &quot;persistent&quot;: true</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<blockquote>
+<p><code>service_worker</code>字段不是一个数组，只支持字符串格式。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</blockquote>
+<p>　　同时V3版本升级也让background.js支持了模块化开发，我们可以在里面直接import本地的方法，让我们能够不用依赖打包的方式进行模块化开发，使用方式也很简单，在background添加<code>type</code>属性即可：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-comment">// manifest.json</span><br><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;background&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;service_worker&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;js/background.js&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;module&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们在background.js中就可以使用import导入本地模块：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// background.js</span><br><span class="hljs-keyword">import</span> &#123; add &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./utils.js&quot;</span>;<br>chrome.<span class="hljs-property">runtime</span>.<span class="hljs-property">onInstalled</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;测试插件已经安装&quot;</span>, <span class="hljs-title function_">add</span>(<span class="hljs-number">2</span>, <span class="hljs-number">4</span>));<br>&#125;);<br><br><span class="hljs-comment">// utils.js</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">a, b</span>) &#123;<br>  <span class="hljs-keyword">return</span> a + b;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<p>　　同时，由于background不再支持page页面配置background.html，因此也无法调用window对象上的<code>XMLHttpRequest</code>来构建ajax请求；也就是说我们不能像V2版本一样，在background.html中使用jQuery的$.ajax来发送请求了，而是需要使用<code>fetch函数</code>来获取接口数据。</p>
+<p>　　由于service workers是短暂的，在不使用时会终止，这意味着它们在整个浏览器插件运行期间会不断的启动、运行和终止，也就是不稳定的；因此我们可能需要对V2中background.js的代码逻辑进行一些改造，以往我们会习惯将一些数据直接存储到全局变量，比如像下面这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// V2 background.js</span><br><span class="hljs-keyword">let</span> saveUserName = <span class="hljs-string">&quot;&quot;</span>;<br><br><span class="hljs-comment">// 其他页面，比如content-script或者popup中存储数据</span><br>chrome.<span class="hljs-property">runtime</span>.<span class="hljs-property">onMessage</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-function">(<span class="hljs-params">&#123; type, name &#125;</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">if</span> (type === <span class="hljs-string">&quot;set-name&quot;</span>) &#123;<br>    saveUserName = name;<br>  &#125;<br>&#125;);<br><br><span class="hljs-comment">// 点击popup时展示数据</span><br>chrome.<span class="hljs-property">action</span>.<span class="hljs-property">onClicked</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-function">(<span class="hljs-params">tab</span>) =&gt;</span> &#123;<br>  <span class="hljs-comment">// 这里saveUserName可能为空字符串</span><br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(saveUserName, <span class="hljs-string">&quot;saveUserName&quot;</span>);<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　当我们运行项目时发现，全局变量saveUserName在某些情况下获取到的数据变成空字符串，存储的数据直接消失了；笔者在项目调试中刚开始经常会遇到这种神奇的问题，调试的值跟实际的值不一样，随之消失的还有笔者的信心。</p>
+<p><img src="/images/Chrome-Plugin-Practise/disappear.jpg" srcset="/img/loading.gif" lazyload alt="消失了"></p>
+<p>　　因此在V3中，需要对这种全局存储的变量数据进行改造，改造的方式也很简单，就是将数据持久化保存到storage中，需要用到的地方随用随取：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// V3 service worker</span><br>chrome.<span class="hljs-property">runtime</span>.<span class="hljs-property">onMessage</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-function">(<span class="hljs-params">&#123; type, name &#125;</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">if</span> (type === <span class="hljs-string">&quot;set-name&quot;</span>) &#123;<br>    chrome.<span class="hljs-property">storage</span>.<span class="hljs-property">local</span>.<span class="hljs-title function_">set</span>(&#123; name &#125;);<br>  &#125;<br>&#125;);<br><br>chrome.<span class="hljs-property">action</span>.<span class="hljs-property">onClicked</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-keyword">async</span> (tab) =&gt; &#123;<br>  <span class="hljs-keyword">const</span> &#123; name &#125; = <span class="hljs-keyword">await</span> chrome.<span class="hljs-property">storage</span>.<span class="hljs-property">local</span>.<span class="hljs-title function_">get</span>([<span class="hljs-string">&quot;name&quot;</span>]);<br>  chrome.<span class="hljs-property">tabs</span>.<span class="hljs-title function_">sendMessage</span>(tab.<span class="hljs-property">id</span>, &#123; name &#125;);<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="actions升级"><a href="#actions升级" class="headerlink" title="actions升级"></a>actions升级</h2><p>　　有小伙伴也许发现了，我们上面使用了<code>chrome.action.onClicked</code>来注册点击事件，而不是原来的<code>chrome.browserAction.onClicked</code>。</p>
+<p>　　由于历史原因，之前将插件的图标分为<code>pageAction</code>和<code>browserAction</code>，两者的区别在于browserAction始终都显示，更像我们现在的插件图标逻辑；而pageAction则比较特殊，只有当某些特定的页面打开时才会显示图标。</p>
+<p><img src="/images/Chrome-Plugin-Practise/page-action.png" srcset="/img/loading.gif" lazyload alt="pageAction"></p>
+<p>　　而V2版本两者的区分界限已经较为模糊了，区别不是很大；但是在manifest.json中配置还是有区分，常用的就是browser_action：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-comment">// V2</span><br><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;page_action&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span> ... <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;browser_action&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;default_popup&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;popup.html&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　升级到V3版本，直接统一为同一个action，不需要再区分：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-comment">// V3</span><br><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;action&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;default_title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;插件标题&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;default_popup&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;popup.html&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;default_icon&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;16&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/images/get_started16.png&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;32&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/images/get_started32.png&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;icons&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;16&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/images/get_started16.png&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;32&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/images/get_started32.png&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<blockquote>
+<p>需要注意的是：如果注册了popup.html的页面，则<code>chrome.action.onClicked</code>点击事件注册后并不会被执行。</p>
+</blockquote>
+<p>　　我们在绑定<code>chrome.action</code>事件的地方也需要进行统一：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// V2 </span><br>chrome.<span class="hljs-property">browserAction</span>.<span class="hljs-property">onClicked</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-function"><span class="hljs-params">tab</span> =&gt;</span> &#123; ... &#125;);<br>chrome.<span class="hljs-property">pageAction</span>.<span class="hljs-property">onClicked</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-function"><span class="hljs-params">tab</span> =&gt;</span> &#123; ... &#125;);<br><br><span class="hljs-comment">// V3</span><br>chrome.<span class="hljs-property">action</span>.<span class="hljs-property">onClicked</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-function"><span class="hljs-params">tab</span> =&gt;</span> &#123; ... &#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<h2 id="CSP"><a href="#CSP" class="headerlink" title="CSP"></a>CSP</h2><p>　　内容安全策略（Content Security Policy，简称CSP），是在manifest.json中配置的，用于限制扩展可以从哪些源加载代码，比如script标签可以从哪些域名地址加载CDN，或者禁止<code>eval()</code>等可能不安全的函数；在V2版本中，默认是一个字符串配置：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-comment">// V2</span><br><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;content_security_policy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;default-src &#x27;self&#x27;&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　升级到V3版本，<code>content_security_policy</code>字段依然被保留，支持另外两个属性：extension_pages和sandbox：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-comment">// V3</span><br><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;content_security_policy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;extension_pages&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;default-src &#x27;self&#x27;&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;sandbox&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;...&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　<code>default-src &#39;self&#39;</code>表示默认所有类型的引用文件（js文件、html文件）都是应该在插件包内的；如果我们想要支持从某个域名地址引入js文件，在V2中我们会看到下面的写法：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-comment">// V2</span><br><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;content_security_policy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;script-src &#x27;self&#x27; https://xieyufei.com; object-src &#x27;self&#x27;&quot;</span><br><span class="hljs-punctuation">&#125;</span><br><span class="hljs-comment">// 或者支持子域名</span><br><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;content_security_policy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;script-src &#x27;self&#x27; https://*.xieyufei.com; object-src &#x27;self&#x27;&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　但V3中不支持这样的写法，不允许从某个域名地址引入文件。</p>
+<h2 id="API调用升级"><a href="#API调用升级" class="headerlink" title="API调用升级"></a>API调用升级</h2><p>　　我们在调用chrome API的地方，也有一些需要进行升级改造的，比如上面的chrome.action：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// V2 </span><br>chrome.<span class="hljs-property">browserAction</span>.<span class="hljs-property">onClicked</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-function"><span class="hljs-params">tab</span> =&gt;</span> &#123; ... &#125;);<br>chrome.<span class="hljs-property">pageAction</span>.<span class="hljs-property">onClicked</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-function"><span class="hljs-params">tab</span> =&gt;</span> &#123; ... &#125;);<br><br><span class="hljs-comment">// V3</span><br>chrome.<span class="hljs-property">action</span>.<span class="hljs-property">onClicked</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-function"><span class="hljs-params">tab</span> =&gt;</span> &#123; ... &#125;);<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　在获取资源地址的时候，也需要将<code>chrome.extension.getURL</code>替换成<code>chrome.runtime.getURL</code>：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// V2</span><br>chrome.<span class="hljs-property">extension</span>.<span class="hljs-title function_">getURL</span>(<span class="hljs-string">&quot;images/img.png&quot;</span>);<br><br><span class="hljs-comment">// V3</span><br>chrome.<span class="hljs-property">runtime</span>.<span class="hljs-title function_">getURL</span>(<span class="hljs-string">&quot;images/img.png&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　V3中，执行script-content的api函数executeScript也从<code>tabs</code>，升级到了<code>scripting</code>；因此我们还需要在manifest.json中添加<code>scripting</code>权限才能调用；同时，执行的脚本也从原来的单个文件，变成可以接收多个文件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// V2</span><br>chrome.<span class="hljs-property">tabs</span>.<span class="hljs-title function_">executeScript</span>(<br>  tab.<span class="hljs-property">id</span>,<br>  &#123;<br>    <span class="hljs-attr">file</span>: <span class="hljs-string">&#x27;content-script.js&#x27;</span><br>  &#125;<br>);<br><br><span class="hljs-comment">// V3</span><br>chrome.<span class="hljs-property">scripting</span>.<span class="hljs-title function_">executeScript</span>(&#123;<br>  <span class="hljs-attr">target</span>: &#123;<span class="hljs-attr">tabId</span>: tab.<span class="hljs-property">id</span>&#125;,<br>  <span class="hljs-attr">files</span>: [<span class="hljs-string">&#x27;content-script.js&#x27;</span>]<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　<code>insertCSS()</code>和<code>removeCSS()</code>也从<code>tabs</code>升级到了<code>scripting</code>。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// V2</span><br>chrome.<span class="hljs-property">tabs</span>.<span class="hljs-title function_">insertCSS</span>(tab.<span class="hljs-property">id</span>, injectDetails, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-comment">// callback code</span><br>&#125;);<br><br><span class="hljs-comment">// V3</span><br><span class="hljs-keyword">const</span> insertPromise = <span class="hljs-keyword">await</span> chrome.<span class="hljs-property">scripting</span>.<span class="hljs-title function_">insertCSS</span>(&#123;<br>  <span class="hljs-attr">files</span>: [<span class="hljs-string">&quot;style.css&quot;</span>],<br>  <span class="hljs-attr">target</span>: &#123; <span class="hljs-attr">tabId</span>: tab.<span class="hljs-property">id</span> &#125;<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h1 id="service-worker异步返回数据"><a href="#service-worker异步返回数据" class="headerlink" title="service worker异步返回数据"></a>service worker异步返回数据</h1><p>　　我们在实际项目中，有时候会需要service worker异步返回一些数据，比如请求接口后返回一些接口数据等：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// content-script.js</span><br>chrome.<span class="hljs-property">runtime</span><br>  .<span class="hljs-title function_">sendMessage</span>(&#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;get-status&#x27;</span>,<br>  &#125;)<br>  .<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">// 对res处理</span><br>  &#125;)<br><br><span class="hljs-comment">// background.js</span><br>chrome.<span class="hljs-property">runtime</span>.<span class="hljs-property">onMessage</span><br>  .<span class="hljs-title function_">addListener</span>(<span class="hljs-keyword">async</span> (&#123; type &#125;, sender, sendResponse) =&gt; &#123;<br>    <span class="hljs-keyword">if</span> (type === <span class="hljs-string">&#x27;get-status&#x27;</span>) &#123;<br>      <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&#x27;XXX/list.json&#x27;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">res</span>=&gt;</span>&#123;<br>        <span class="hljs-title function_">sendResponse</span>(res)<br>      &#125;);<br>    &#125;<br>  &#125;)<br></code></pre></div></td></tr></table></figure>
+
+
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　上面的代码中在content-script.js发送消息到background中，虽然这里我们虽然是在then中返回了res，或者使用async/await；但是很遗憾，在content-script.js接收到的res还是undefined，我们需要对background代码进行改造</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// background.js</span><br>chrome.<span class="hljs-property">runtime</span>.<span class="hljs-property">onMessage</span><br>  .<span class="hljs-title function_">addListener</span>(<span class="hljs-keyword">async</span> (&#123; type &#125;, sender, sendResponse) =&gt; &#123;<br>    <span class="hljs-keyword">if</span> (type === <span class="hljs-string">&#x27;get-status&#x27;</span>) &#123;<br>      <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&#x27;XXX/list.json&#x27;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">res</span>=&gt;</span>&#123;<br>        <span class="hljs-title function_">sendResponse</span>(res)<br>      &#125;);<br>      <span class="hljs-comment">// 这里添加了返回true</span><br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>  &#125;)<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　在onMessage回调函数里返回true，告诉Chrome我们想要异步发送响应。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h1 id="插件和原生页面通信问题"><a href="#插件和原生页面通信问题" class="headerlink" title="插件和原生页面通信问题"></a>插件和原生页面通信问题</h1><p>　　我们有时候会遇到需要插件去和原生Web页面进行通信情况，这里的原生Web页面页面指的并不是content-script.js或者popup.html页面，一般也是我们开发的网站页面；比如在原生Web页面页面中，需要判断是否安装了插件，没有安装插件的话显示下载插件的跳转链接；或者点击原生页面上的某一个按钮，将数据保存到插件中来等等，就需要涉及插件和原生Web页面页面的通信问题。</p>
+<p>　　这里有几种实现通信的方式，第一种最简单的方式就是通过隐藏的dom节点，比如安装插件后，通过content-script.js在页面上放置一个隐藏的dom，将插件信息放到放到dom节点上，这样的缺点也很明显，只能传输一些简单的数据，且不能进行双向通信。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　第二种方式，通过插件的id，从原生Web页面想插件发送消息，首先需要配置在manifest.json中配置<code>externally_connectable</code>字段，来声明哪些Web页面可以通过这种方式，和插件建立链接：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-comment">// manifest.json</span><br><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;externally_connectable&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;matches&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;https://*.fill-you-web-url.com/*&quot;</span><span class="hljs-punctuation">]</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　externally_connectable还可以指定<code>ids</code>字段，用来指定需要通信的其他Chrome插件；配置完成然后就可以在我们的Web页面里添加发送消息的代码了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// 插件ID</span><br><span class="hljs-keyword">const</span> extensionId = <span class="hljs-string">&quot;iodjapnffldobobfdaoobinimjofgejm&quot;</span>;<br><br><span class="hljs-comment">// 向Chrome扩展发送请求</span><br>chrome?.<span class="hljs-property">runtime</span>?.<span class="hljs-title function_">sendMessage</span>(<br>  extensionId,<br>  &#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;pageMsg&quot;</span>,<br>    <span class="hljs-attr">msg</span>: <span class="hljs-string">&quot;hello i am from origin&quot;</span>,<br>  &#125;,<br>  <span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;res data&quot;</span>, response);<br>  &#125;<br>);<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<p>　　这里如果我们没有配置上面的externally_connectable字段，浏览器是不会在我们的页面上注入<code>chrome.runtime.sendMessage</code>方法的，因此我们需要对这个函数进行异常判断，否则页面就会报错。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// background.js 接收原生Web页面消息</span><br>chrome.<span class="hljs-property">runtime</span>.<span class="hljs-property">onMessageExternal</span>.<span class="hljs-title function_">addListener</span>(<br>  <span class="hljs-function">(<span class="hljs-params">request, sender, sendResponse</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (request.<span class="hljs-property">type</span> === <span class="hljs-string">&quot;pageMsg&quot;</span>) &#123;<br>      <span class="hljs-title function_">sendResponse</span>(<span class="hljs-string">&#x27;res msg&#x27;</span>);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-title function_">sendResponse</span>(<span class="hljs-string">&quot;received&quot;</span>);<br>    &#125;<br>  &#125;<br>);<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　第三种方式，我们可以通过<code>window.postMessage</code>进行通信，<code>window.postMessage</code>一般用在多个页面之间通信，当然，我们的content-script.js和原生Web界面是同源的，更能直接通信了；两者的发送方式和接收方式在代码上都是一样的，这里也不再进行区分：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// 页面初始化话进行监听</span><br><span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;message&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">ev</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">if</span> (ev.<span class="hljs-property">source</span> != <span class="hljs-variable language_">window</span>) &#123;<br>    <span class="hljs-keyword">return</span>;<br>  &#125;<br>  <span class="hljs-keyword">if</span> (ev.<span class="hljs-property">data</span>) &#123;<br>    <span class="hljs-keyword">const</span> &#123; type, saveData &#125; = ev.<span class="hljs-property">data</span>;<br>  &#125;<br>&#125;)<br><br><span class="hljs-comment">// 点击发送消息</span><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">clickSend</span> = (<span class="hljs-params"></span>)=&gt;&#123;<br>  <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">postMessage</span>(<br>    &#123;<br>      <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;myTestPostMsg&#x27;</span>,<br>      <span class="hljs-attr">saveData</span>: &#123;<br>        <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;XXX&#x27;</span>,<br>        <span class="hljs-attr">version</span>: <span class="hljs-string">&#x27;QQQ&#x27;</span><br>      &#125;,<br>    &#125;,<br>    <span class="hljs-string">&#x27;*&#x27;</span><br>  );<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样我们不需要获取插件的ID也能通信了，不过我们在监听message消息时会看到各种各样插件或者页面之间传递的消息，因此我们对传输数据的命名方式上差异化，可以定义一些独特的前缀，避免和其他页面产生不必要的冲突。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Browser/">浏览器</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Plugin/">插件</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/08/20/Tailwindcss.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">大量重复写样式怎么办？当然是用TailwindCSS咯！</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/04/28/Threejs-Panorama.html">
+                        <span class="hidden-mobile">一文掌握你所需Threejs3D全景预览</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

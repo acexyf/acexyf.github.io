@@ -1,0 +1,599 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　前不久听了一趟分享课，分享课的主题是JS游戏的制作，但是如果是自己写游戏比较的繁琐，如果能应用一个游戏引擎，就能大大的简化游戏的开发速度和开发效率，于是我在网上参考了几个游戏引擎，找到了CraftyJs这个游戏引擎还是挺不错的，但是苦于网上的教程不是很全面，所以今天就开个坑，写个入门级的教程，仅供参考。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>CraftyJs初探 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="CraftyJs初探">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2016-07-08 22:00" pubdate>
+        2016年7月8日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      18
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">CraftyJs初探</h1>
+            
+            <div class="markdown-body">
+              <p>　　前不久听了一趟分享课，分享课的主题是JS游戏的制作，但是如果是自己写游戏比较的繁琐，如果能应用一个游戏引擎，就能大大的简化游戏的开发速度和开发效率，于是我在网上参考了几个游戏引擎，找到了CraftyJs这个游戏引擎还是挺不错的，但是苦于网上的教程不是很全面，所以今天就开个坑，写个入门级的教程，仅供参考。</p>
+<span id="more"></span>
+
+<h1 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h1><p>　　首先从<a target="_blank" rel="noopener" href="http://craftyjs.com/">官网</a>上下载CraftyJs的脚本引用到项目中来。然后就可以开始写我们自己的程序了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title class_">CraftyJs</span>.<span class="hljs-title function_">init</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">width</span>,<span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">height</span>);<br></code></pre></div></td></tr></table></figure>
+<p>　　这段代码用于初始化整个stage，用官方的话来说就是舞台，所有的元素将在这整个舞台里活动。这个舞台的宽度是this.config.width(px)，高度是this.config.height(px)。如果有元素超出了舞台的范围，这个元素将被遮住，因为整个舞台设置了样式overflow:hidden将超出的元素隐藏掉。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title class_">Crafty</span>.<span class="hljs-title function_">background</span>(<span class="hljs-string">&quot;#f0f0f0&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+<p>　　你还可以通过background()方法给整个舞台设置背景颜色</p>
+<h1 id="放置场景"><a href="#放置场景" class="headerlink" title="放置场景"></a>放置场景</h1><p>　　当整个舞台初始化后就可以玩游戏了吧？不！你去剧院看戏一入座演员就给你演戏么，当然不是，还需要一些场景的带入和切换。这些场景比如加载动画、菜单选项等一系列。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title class_">Crafty</span>.<span class="hljs-title function_">defineScene</span>(<span class="hljs-string">&quot;loading&quot;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>	<span class="hljs-title class_">Crafty</span>.<span class="hljs-title function_">background</span>(<span class="hljs-string">&quot;#000&quot;</span>);<br>	<span class="hljs-title class_">Crafty</span>.<span class="hljs-title function_">e</span>(<span class="hljs-string">&quot;2D, DOM, Text&quot;</span>).<span class="hljs-title function_">attr</span>(&#123;<br>		<span class="hljs-attr">w</span>: <span class="hljs-number">100</span>,<br>		<span class="hljs-attr">h</span>: <span class="hljs-number">20</span>,<br>		<span class="hljs-attr">x</span>: <span class="hljs-number">150</span>,<br>		<span class="hljs-attr">y</span>: <span class="hljs-number">120</span><br>	&#125;).<span class="hljs-title function_">text</span>(<span class="hljs-string">&quot;Loading&quot;</span>).<span class="hljs-title function_">css</span>(&#123;<br>		<span class="hljs-string">&quot;text-align&quot;</span>: <span class="hljs-string">&quot;center&quot;</span><br>	&#125;).<span class="hljs-title function_">textColor</span>(<span class="hljs-string">&quot;#FFFFFF&quot;</span>);<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<p>　　我们可以使用Crafty.defineScene()方法来定义一个场景。在这里我们定义了一个叫loading的场景，里面只有一个元素就是一行”Loading”的字。但是定义好了场景并没有显示在舞台上，因为这个场景并没有被调用到。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title class_">Crafty</span>.<span class="hljs-title function_">enterScene</span>(<span class="hljs-string">&quot;loading&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+<p>　　通过enterScene()这个方法来展示刚才我们定义好场景，你会在舞台上看到这个场景。这个展示舞台的方法可以在任何地方被调用。但是需要注意的是这个方法会清除舞台上所有的元素，除了那些有”Persist”组件的元素（组件这一名词下面会解释到）。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h1 id="实体-组件系统"><a href="#实体-组件系统" class="headerlink" title="实体/组件系统"></a>实体/组件系统</h1><p>　　现在到了CraftyJS最重要的部分来了，就是CraftyJS独特的实体/组件系统。这个系统有点面向对象编程的意思。整个系统分为两个部分。</p>
+<h2 id="组件系统"><a href="#组件系统" class="headerlink" title="组件系统"></a>组件系统</h2><p>　　所谓的组件，有点类似JAVA中的对象（不是现实里的对象），看不见摸不着，是对实体的抽象。每个组件里封装了对应的方法，可以在实体中直接调用。CraftyJS中有很多已经被预先定义好的组件可以直接拿来使用，而且组件可以被重复地继承。</p>
+<h2 id="实体系统"><a href="#实体系统" class="headerlink" title="实体系统"></a>实体系统</h2><p>　　实体是真正看得见的元素，是对组件的“实例化”。一个单一的实体能够继承多个实体。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> square = <span class="hljs-title class_">Crafty</span>.<span class="hljs-title function_">e</span>(<span class="hljs-string">&#x27;2D, DOM, Color&#x27;</span>);<br></code></pre></div></td></tr></table></figure>
+<p>　　这样就通过e()方法定义了几个叫”square”的实体。这个实体继承了三个组件”2D”、”DOM”和”Color”，这三个组件预先在CraftyJS中就已经被定义好了。如果你觉得单单使用这三个组件还不够，你可以后续往”square”这个实体中再添加组件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">square.<span class="hljs-title function_">addComponent</span>(<span class="hljs-string">&quot;Text&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+<p>　　通过addComponent()方法向实体中加入”Text”组件，这个方法支持一次添加多个组件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">square.<span class="hljs-title function_">addComponent</span>(<span class="hljs-string">&quot;Text,Mouse&quot;</span>);<span class="hljs-comment">//这是可以的</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　你还可以通过has()方法判断某个实体中是否含有某个组件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">square.<span class="hljs-title function_">has</span>(<span class="hljs-string">&quot;Mouse&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+<p>　　这个方法返回一个boolean类型的值。但是需要注意的是这个方法一次性只能判断一个组件存在，并不支持同时判定多个组件比如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">square.<span class="hljs-title function_">has</span>(<span class="hljs-string">&quot;2D,DOM&quot;</span>);<span class="hljs-comment">//这是错误的</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　如果你对某个组件不满意，你还可以把它删掉，这个方法也不支持传入两个以上的组件名称</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">square.<span class="hljs-title function_">removeComponent</span>(<span class="hljs-string">&quot;2D&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+<h1 id="常用的组件、属性和方法"><a href="#常用的组件、属性和方法" class="headerlink" title="常用的组件、属性和方法"></a>常用的组件、属性和方法</h1><p>　　一些常用的组件是CratyJs帮我们定义好了，我们直接使用就可以了。</p>
+<h2 id="“2D”组件"><a href="#“2D”组件" class="headerlink" title="“2D”组件"></a>“2D”组件</h2><p>　　2D组件是CraftyJS预先给我们定义好的一个组件，是最常用的组件之一。他提供了一个attr()的方法让我们来设置实体的属性值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">square.<span class="hljs-title function_">attr</span>(&#123;<br>  <span class="hljs-attr">x</span>: <span class="hljs-number">150</span>,<br>  <span class="hljs-attr">y</span>: <span class="hljs-number">150</span>,<br>  <span class="hljs-attr">w</span>: <span class="hljs-number">100</span>,<br>  <span class="hljs-attr">h</span>: <span class="hljs-number">100</span>,<br>  <span class="hljs-attr">alpha</span>: <span class="hljs-number">0.5</span>,<br>  <span class="hljs-attr">rotation</span>: <span class="hljs-number">45</span>,<br>  <span class="hljs-attr">visible</span>:<span class="hljs-literal">true</span><br>  &#125;);<br></code></pre></div></td></tr></table></figure>
+<p>　　这里的x和y是实体相对于舞台左上角的位置，单位都为像素(px)。w和h是实体的宽度和高度，单位也是像素(px)。alpha是实体的透明度，取值范围是0到1。visible代表实体是否可见，只能接受boolean类型的参数。x、y、w、h如果不设置值，默认为0。</p>
+<h2 id="“Text”组件"><a href="#“Text”组件" class="headerlink" title="“Text”组件"></a>“Text”组件</h2><p>　　Text组件有四个方法可以使用，分别是text()、textColor()、textFont()和unselectable()。text()方法用于设置组件里面的内容。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title class_">Crafty</span>.<span class="hljs-title function_">e</span>(<span class="hljs-string">&quot;2D,DOM,Text&quot;</span>).<span class="hljs-title function_">text</span>(<span class="hljs-string">&quot;hello world!&quot;</span>);<br></code></pre></div></td></tr></table></figure>
+<p>　　text()方法支持传入一个方法，但是这个方法必须要返回一个字符串类型的参数，否则这个组件的内容将会显示undefined(未定义)。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title class_">Crafty</span>.<span class="hljs-title function_">e</span>(<span class="hljs-string">&quot;2D, Canvas, Text&quot;</span>).<span class="hljs-title function_">text</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123; <br>	<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello world!&quot;</span>;<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<p>　　textColor()方法用来设置组件文字的颜色，你可以使用HEX、rgb或者rgba的方式来定义颜色。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title class_">Crafty</span>.<span class="hljs-title function_">e</span>(<span class="hljs-string">&quot;2D, DOM, Text&quot;</span>).<span class="hljs-title function_">textColor</span>(<span class="hljs-string">&#x27;#FF0000&#x27;</span>)<br>		.<span class="hljs-title function_">textColor</span>(<span class="hljs-string">&#x27;rgba(0, 255, 0, 0.5)&#x27;</span>)<br>		.<span class="hljs-title function_">textColor</span>(<span class="hljs-string">&#x27;white&#x27;</span>);<br></code></pre></div></td></tr></table></figure>
+<p>　　textFont()方法用来设置文字的字体。如果有多个字体的属性，传入一个对象的方式进行设置，Crafty支持设置的属性有以下几个：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title class_">Crafty</span>.<span class="hljs-title function_">e</span>(<span class="hljs-string">&quot;2D, DOM, Text&quot;</span>).<span class="hljs-title function_">textFont</span>(&#123; <span class="hljs-string">&#x27;type&#x27;</span>: <span class="hljs-string">&#x27;italic&#x27;</span>, <span class="hljs-string">&#x27;family&#x27;</span>: <span class="hljs-string">&#x27;Arial&#x27;</span> , <span class="hljs-string">&#x27;size&#x27;</span>:<span class="hljs-string">&#x27;20px&#x27;</span>, <span class="hljs-string">&#x27;weight&#x27;</span>:<span class="hljs-string">&#x27;bold&#x27;</span>, <span class="hljs-string">&#x27;lineHeight&#x27;</span>:<span class="hljs-string">&#x27;30px&#x27;</span>&#125;);<br></code></pre></div></td></tr></table></figure>
+<p>　　unselectable()方法设置Text组件中的内容不能被高亮选中。Canvas的Text是不能被高亮选中的，所以这个方法只对DOM的Text组件有效。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title class_">Crafty</span>.<span class="hljs-title function_">e</span>(<span class="hljs-string">&quot;2D, DOM, Text&quot;</span>).<span class="hljs-title function_">text</span>(<span class="hljs-string">&#x27;This text cannot be highlighted!&#x27;</span>).<span class="hljs-title function_">unselectable</span>();<br></code></pre></div></td></tr></table></figure>
+
+
+            </div>
+            <hr>
+            <div>
+              
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p><div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/">游戏引擎</a>
+                    
+                      <a class="hover-with-bg" href="/tags/CraftyJs/">CraftyJs</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2016/09/11/Git-Command-Start.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Git命令学习（上）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2016/05/28/Java-Ajax.html">
+                        <span class="hidden-mobile">JAVA处理跨域问题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

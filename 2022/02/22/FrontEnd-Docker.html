@@ -1,0 +1,906 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　随着容器化技术盛行，Docker在前端领域也有着越来越广泛的应用；传统的前端部署方式需要我们将项目打包生成一系列的静态文件，然后上传到服务器，配置nginx文件；如果我们使用容器化部署，将部署操作都命令化，集中成一个脚本就可以完成原来复杂的部署过程。本文从Docker基础开始，来认识Docker的各种命令操作。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>前端抢饭碗系列之初识Docker容器化部署 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="前端抢饭碗系列之初识Docker容器化部署">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-02-22 22:22" pubdate>
+        2022年2月22日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      64
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">前端抢饭碗系列之初识Docker容器化部署</h1>
+            
+            <div class="markdown-body">
+              <p>　　随着容器化技术盛行，Docker在前端领域也有着越来越广泛的应用；传统的前端部署方式需要我们将项目打包生成一系列的静态文件，然后上传到服务器，配置nginx文件；如果我们使用容器化部署，将部署操作都命令化，集中成一个脚本就可以完成原来复杂的部署过程。本文从Docker基础开始，来认识Docker的各种命令操作。</p>
+<span id="more"></span>
+
+<h1 id="docker简介"><a href="#docker简介" class="headerlink" title="docker简介"></a>docker简介</h1><p>　　<code>Docker</code>是一个开源的引擎，可以轻松的为任何应用创建一个轻量级的、可移植的、自给自足的容器。</p>
+<p><img src="/images/FrontEnd-Docker/logo-compare.gif" srcset="/img/loading.gif" lazyload alt="Docker Logo"></p>
+<p>　　Docker的英文翻译是码头工人，码头工人一般搬运的都是集装箱（Container），集装箱最大的成功在于其产品的标准化以及由此建立的一整套运输体系。在一艘几十万吨的巨轮上，装满了各种各样满载的集装箱，彼此之间不会相互影响；因此其本身就有<code>标准化</code>、<code>集约化</code>的特性。</p>
+<p>　　从Docker的logo我们也能看出，Docker的思想来自于集装箱；各个应用程序相当于不同的<code>集装箱</code>，每个应用程序有着不同的应用环境，比如python开发的应用需要服务器部署一套python的开发环境，nodejs开发的应用需要服务器部署nodejs的环境，不同环境之间有可能还会彼此冲突，Docker可以帮助我们隔离不同的环境。</p>
+<p>　　有些同学于是就想到了，这不是虚拟机干的活么。是的，虚拟机可以很好的帮我们隔离各个环境，我们可以在windows上运行macos、ubuntu等虚拟机，也可以在macos上安装windows的虚拟机；不过传统的虚拟机技术是虚拟一整套硬件后，在其上运行完整的操作系统，在该系统上再运行所需应用进程，这样导致一台电脑只能运行数量较少的虚拟机。</p>
+<p>　　但是Docker使用的容器技术比虚拟机更加的轻便和快捷。容器内的应用进程直接运行于宿主的内核，容器内没有自己的内核，而且也没有进行硬件虚拟。因此容器要比传统虚拟机更为轻便，下图比较了两者的区别：</p>
+<p><img src="/images/FrontEnd-Docker/virtual-compare.png" srcset="/img/loading.gif" lazyload alt="Docker和虚拟机的区别"></p>
+<p>　　对比总结：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<table>
+<thead>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<tr>
+<th>特性</th>
+<th>容器</th>
+<th>虚拟机</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>启动</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<td>秒级</td>
+<td>分钟级</td>
+</tr>
+<tr>
+<td>硬盘使用</td>
+<td>一般为 MB</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>一般为 GB</td>
+</tr>
+<tr>
+<td>系统资源</td>
+<td><code>0~5%</code></td>
+<td><code>5~15%</code></td>
+</tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<tr>
+<td>性能</td>
+<td>接近原生</td>
+<td>弱于原生</td>
+</tr>
+<tr>
+<td>系统支持量</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>单机支持上千个容器</td>
+<td>一般几十个</td>
+</tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</tbody></table>
+<h2 id="Docker优势"><a href="#Docker优势" class="headerlink" title="Docker优势"></a>Docker优势</h2><p>　　docker有以下优势：</p>
+<ul>
+<li>更高效的利用系统资源</li>
+<li>更快速的启动时间</li>
+<li>一致的运行环境</li>
+<li>持续交付和部署</li>
+<li>更轻松的迁移</li>
+<li>更轻松的维护和扩展</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</ul>
+<p>　　docker通常用于如下场景：</p>
+<ul>
+<li>web应用的自动化打包和发布；</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>自动化测试和持续集成、发布；</li>
+<li>在服务型环境中部署和调整数据库或其他的后台应用；</li>
+<li>从头编译或者扩展现有的OpenShift或Cloud Foundry平台来搭建自己的PaaS环境。</li>
+</ul>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>　　在Docker中有三个基本概念：</p>
+<ul>
+<li>镜像（Image）</li>
+<li>容器（Container）</li>
+<li>仓库（Repository）</li>
+</ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　理解了Docker的基本概念，我们就理解了Docker的整个生命周期。</p>
+<p>　　首先我们来弄懂<code>镜像</code>的概念，Docker镜像是一个特殊的文件系统，除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。镜像不包含任何动态数据，其内容在构建之后也不会被改变。</p>
+<p>　　如果有装系统经验的童鞋，可以把Docker镜像理解为一个操作系统的镜像（ISO文件），它是一个固定的文件，从一个镜像中，我们可以装到很多电脑上，变成一个个的操作系统（相当于容器），每个系统都是相同的，不过可以选择定制化安装。</p>
+<p>　　和系统镜像不同的是，Docker镜像并不是像ISO文件那样整体打包成一个文件的，而是设计成了<code>分层存储</code>的架构，它并不是由一个文件组成，而是由多层文件联合组成。</p>
+<p>　　构建镜像时，会一层层的构建，前面一层是后面一层的基础。每一层构建完就不会再发生改变，后一层上的任何改变只发生在自己这一层。</p>
+<p>　　其次是<code>容器</code>的概念，从编程的角度看，镜像和容器的关系更像是类和实例的关系；从一个镜像可以启动一个或者多个容器；镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。</p>
+<p><img src="/images/FrontEnd-Docker/images.png" srcset="/img/loading.gif" lazyload alt="容器和镜像的关系"></p>
+<p>　　前面讲过镜像使用的是分层存储，容器也是如此。每一个容器运行时，是以镜像为基础层，在其上创建一个当前容器的存储层，我们可以称这个为容器运行时读写而准备的存储层为<code>容器存储层</code>。</p>
+<p>　　容器存储层的生存周期和容器一样，容器消亡时，容器存储层也随之消亡。因此，任何保存于容器存储层的信息都会随容器删除而丢失。</p>
+<p><img src="/images/FrontEnd-Docker/layer.png" srcset="/img/loading.gif" lazyload alt="容器存储层"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　因此容器不应该向其存储层内写入任何数据，容器存储层要保持无状态化。所有的文件写入操作，都应该使用数据卷（Volume）、或者绑定宿主目录，在这些位置的读写会跳过容器存储层。</p>
+<p>　　最后是<code>仓库（Repository）</code>的概念，我们构建一个镜像后，可以在本地运行，但是如果我们想要给网络上的其他用户使用，就要一个集中存储和分发镜像的服务器，仓库就是这样一个工具，有点类似Github。</p>
+<p>　　镜像仓库Repository是同一类镜像的集合，包含了不同tag（标签）的Docker镜像，比如<code>ubuntu</code>是仓库的名称，它里面有不同的tag，比如<code>16.04</code>、<code>18.04</code>，我们从镜像仓库中来获取镜像时可以通过<code>&lt;仓库名&gt;:&lt;标签&gt;</code>的格式来指定具体版本的镜像，比如<code>ubuntu18.04</code>；如果忽略标签，用<code>latest</code>作为默认标签。</p>
+<h1 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h1><p>　　我们上面介绍过，镜像是Docker的三个基本组件之一；运行容器需要本地有相应的镜像，如果没有会从远程仓库下载；那么我们来看下如何操作镜像。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="查找镜像"><a href="#查找镜像" class="headerlink" title="查找镜像"></a>查找镜像</h2><p>　　我们可以从<code>Docker Hub</code>来搜索镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">docker search ubuntu<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　查找结果：</p>
+<p><img src="/images/FrontEnd-Docker/search.png" srcset="/img/loading.gif" lazyload alt="Docker查找镜像"></p>
+<p>　　查找的列表中包含了以下几个字段：</p>
+<ul>
+<li>NAME: 镜像仓库源的名称</li>
+<li>DESCRIPTION: 镜像的描述</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>STARS: 类似Github里面的 star。</li>
+<li>OFFICIAL: 是否docker官方发布</li>
+<li>AUTOMATED: 自动构建。</li>
+</ul>
+<h2 id="获取镜像"><a href="#获取镜像" class="headerlink" title="获取镜像"></a>获取镜像</h2><p>　　我们要获取镜像，可以通过<code>docker pull</code>命令，它的格式如下：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">docker pull &lt;repository&gt;:&lt;tag&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　还是以ubuntu为例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker pull ubuntu:16.04<br><br>16.04: Pulling from library/ubuntu<br>58690f9b18fc: Pull complete<br>b51569e7c507: Pull complete<br>da8ef40b9eca: Pull complete<br>fb15d46c38dc: Pull complete<br>Digest: sha256:0f71fa8d4d2d4292c3c617fda2b36f6dabe5c8b6e34c3dc5b0d17d4e704bd39c<br>Status: Downloaded newer image <span class="hljs-keyword">for</span> ubuntu:16.04<br>docker.io/library/ubuntu:16.04<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　我们看到最后一行<code>docker.io</code>显示这是从官方仓库拉取的。</p>
+<p>　　从下载过程我们可以看出我们上面说的分层存储的概念，即镜像是由多层存储构成；下载也是一层层的去下载，而不是单独一个文件；因此如果下载中有某个层已经被其他镜像下载过，则会显示<code>Already exists</code>。下载过程中给出了每一层的ID的前12位，下载结束后给出镜像完整的<code>sha256</code>摘要。</p>
+<p>　　Docker的镜像仓库分为官方仓库和非官方，官方的镜像就是从<code>Docker Hub</code>拉取的；如果想要从第三方的镜像仓库获取，可以在仓库名称前加上仓库的服务地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">docker pull &lt;Docker Registry地址:端口号&gt;&lt;repository&gt;:&lt;tag&gt;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<h2 id="列出镜像"><a href="#列出镜像" class="headerlink" title="列出镜像"></a>列出镜像</h2><p>　　通过下面的命令，我们可以列出本地已经下载的镜像：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker image <span class="hljs-built_in">ls</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　运行命令出现以下列表：</p>
+<p><img src="/images/FrontEnd-Docker/image-ls.png" srcset="/img/loading.gif" lazyload alt="列出镜像"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　列表包含了<code>仓库名</code>、<code>标签</code>、<code>镜像ID</code>、<code>创建时间</code>和<code>所占用空间</code>；我们看到有两个<code>mongo</code>的镜像，不过两个镜像有不同的标签。</p>
+<p>　　<code>ls命令</code>默认会列出所有的镜像，但是当本地镜像比较多的时候不方便查看，有时候我们希望列出部分的镜像，除了可以通过linux的grep命令，还可以在<code>ls命令</code>后面跟上参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker image <span class="hljs-built_in">ls</span> mongo<br><br>REPOSITORY    TAG           IMAGE ID       CREATED         SIZE<br>mongo         latest        dfda7a2cf273   2 months ago    693MB<br>mongo         4.0           e305b5d51c0a   2 months ago    430MB<br></code></pre></div></td></tr></table></figure>
+
+
+<h2 id="删除镜像"><a href="#删除镜像" class="headerlink" title="删除镜像"></a>删除镜像</h2><p>　　我们可以通过<code>rm命令</code>删除本地镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker image <span class="hljs-built_in">rm</span> [选项] &lt;镜像1&gt; [&lt;镜像2&gt; ...]<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　或者简写为<code>rmi</code>命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker rmi [选项] &lt;镜像1&gt; [&lt;镜像2&gt; ...]<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里的<code>&lt;镜像&gt;</code>，可以是<code>镜像短ID</code>、<code>镜像长ID</code>、<code>镜像名</code>或者<code>镜像摘要</code>；<code>docker image ls</code>列出来的已经是短ID了，我们还可以取前三个字符进行删除；比如我们想要删除上面的<code>mongo:4.0</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker rmi e30<br></code></pre></div></td></tr></table></figure>
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h2 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h2><p>　　除了使用官方的镜像，我们可以构建自己的镜像；一般都在其他的镜像基础上进行构建，比如node、nginx等；构建镜像需要用到<code>Dockerfile</code>，它是一个文本文件，文本内容包含了一条条构建镜像所需的指令和说明。</p>
+<p>　　我们在一个空白目录新建一个<code>Dockerfile</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> mynginx<br><span class="hljs-built_in">cd</span> mynginx/<br><span class="hljs-built_in">touch</span> Dockerfile<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　我们向<code>Dockerfile</code>写入以下内容：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> nginx<br><span class="hljs-keyword">RUN</span><span class="language-bash"> <span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;&lt;h1&gt;Hello, This is My Nginx&lt;/h1&gt;&#x27;</span> &gt; /usr/share/nginx/html/index.html</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　这里的Dockerfile很简单，就两个命令：FROM和RUN，我们后面会对Dockerfile的命令进行详细介绍；我们使用<code>build</code>命令构建镜像，它的格式为：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">docker build [选项] &lt;上下文路径/URL/-&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　因此，我们在Dockerfile所在的目录执行命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker build -t mynginx:v3 .<br></code></pre></div></td></tr></table></figure>
+
+<p>　　运行命令，我们看到镜像也是按照Dockerfile里面的步骤，分层进行构建的：</p>
+<p><img src="/images/FrontEnd-Docker/build.png" srcset="/img/loading.gif" lazyload alt="构建镜像"></p>
+<p>　　构建成功后，我们列出所有的镜像就能看到刚刚构建的mynginx了。在上面的命令中，我们发现最后有一个<code>.</code>，它表示了当前目录，如果不写这个目录会报错提示；如果对应上面的格式，它其实就是<code>上下文路径</code>，那这个上下文路径是做什么用的呢？要理解这个路径的作用，我们首先要来理解Docker的架构。</p>
+<p>　　Docker是一个典型的C/S架构的应用，它可以分为<code>Docker客户端</code>（平时敲的Docker命令）和<code>Docker服务端</code>（Docker守护进程）。Docker客户端通过REST API和服务端进行交互，docker客户端每发送一条指令，底层都会转化成REST API调用的形式发送给服务端，服务端处理客户端发送的请求并给出响应。</p>
+<p>　　因此表面上看我们好像在本机上执行各种Docker的功能，实际上都是都是在Docker服务端完成的，包括Docker镜像的构建、容器创建、容器运行等工作都是Docker服务端来完成的，Docker客户端只是承担发送指令的角色。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/FrontEnd-Docker/architecture.png" srcset="/img/loading.gif" lazyload alt="Docker架构"></p>
+<p>　　理解了Docker的架构就很容器理解Docker构建镜像的工作原理了，它的流程大致如下：</p>
+<ol>
+<li>执行build命令</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>Docker客户端会将构建命令后面指定的上下文路径下的所有文件打包成一个tar包，发送给Docker服务端;</li>
+<li>Docker服务端收到客户端发送的tar包，然后解压，根据Dockerfile里面的指令进行镜像的分层构建；</li>
+</ol>
+<p>　　因此上下文路径本质上就是指定服务端上Dockerfile中指令工作的目录；比如我们在Dockerfile中经常需要拷贝代码到镜像中去，因此会这么写：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs dockerfile"><span class="hljs-keyword">COPY</span><span class="language-bash"> ./package.json /app/</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　这里要复制的package.json文件，并不一定在docker build命令执行的目录下，也不一定是在Dockerfile文件同级目录下，而是docker build命令指定的<code>上下文路径</code>目录下的package.json。</p>
+<h1 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h1><p>　　介绍了镜像，我们到了Docker第三个核心概念了：容器。容器是镜像的运行时的实例，我们可以从一个镜像上启动一个或多个容器。</p>
+<p>　　对容器的管理包括创建、启动、停止、进入、导入导出和删除等，我们分别来看下每个操作的具体命令以及效果。</p>
+<h2 id="创建启动容器"><a href="#创建启动容器" class="headerlink" title="创建启动容器"></a>创建启动容器</h2><p>　　新建并启动一个容器用的命令是<code>docker run</code>，它后面有时候会带上有很长很长的选项，不过其基本的语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run [选项] 镜像名称 [命令] [参数...]<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　它可以带上一些常见的选项：</p>
+<ul>
+<li>-d：容器在后台运行</li>
+<li>-t：为容器重新分配一个伪输入终端，通常与-i同时使用</li>
+<li>-i：以交互模式运行容器，通常与-t同时使用</li>
+<li>-P：随机端口映射</li>
+<li>-p：指定端口映射</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>–name：为容器指定一个名称</li>
+<li>-e：设置环境变量</li>
+<li>–dns：指定容器使用的DNS服务器</li>
+<li>-m：设置容器使用内存最大值</li>
+<li>–net=”bridge”: 指定容器的网络连接类型，支持 bridge/host/none/container: 四种类型；</li>
+<li>–link：链接另一个容器</li>
+<li>-v：绑定卷</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>–rm：退出容器后删除该容器</li>
+</ul>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　我们创建一个hello world容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run hello-world<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="/images/FrontEnd-Docker/run-hello.png" srcset="/img/loading.gif" lazyload alt="运行hello world"></p>
+<p>　　但是这样创建的容器只能看到一堆的打印说明，我们不能对容器进行任何操作，我们可以加上<code>-it</code>选项（-i和-t的简写），来让Docker分配一个终端给这个容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -it ubuntu:18.04 /bin/bash<br>root@fdb133227c9a:/<span class="hljs-comment"># pwd</span><br>root@fdb133227c9a:/<span class="hljs-comment"># ls</span><br>root@fdb133227c9a:/<span class="hljs-comment"># exit</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们可以在容器内部进行操作了，退出终端可以使用<code>exit</code>命令或者<code>ctrl+d</code>；我们退出容器后如果查看运行中的容器，发现并没有任何容器信息。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　一般我们都是需要让容器在后台运行，因此我们加上<code>-d</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -itd ubuntu:18.04 /bin/bash<br>ad4d11b6d3b6a2a37fc702345a09fa0a5671f5b3943def7963994535e8600f7b<br></code></pre></div></td></tr></table></figure>
+
+<p>　　容器不再以命令行的方式呈现了，而是直接丢出一长串的数字字母组合，这是容器的唯一id；再用<code>ps</code>命令查看运行状态的容器，看到我们的容器已经在后台默默运行了：</p>
+<p><img src="/images/FrontEnd-Docker/background.png" srcset="/img/loading.gif" lazyload alt="容器后台运行"></p>
+<p>　　当使用<code>run</code>命令创建容器时，Docker在后台进行了如下的操作：</p>
+<ul>
+<li>检查本地是否存在指定的镜像，不存在就从 registry 下载</li>
+<li>利用镜像创建并启动一个容器</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>分配一个文件系统，并在只读的镜像层外面挂载一层可读写层</li>
+<li>从宿主主机配置的网桥接口中桥接一个虚拟接口到容器中去</li>
+<li>从地址池配置一个 ip 地址给容器</li>
+<li>执行用户指定的应用程序</li>
+<li>执行完毕后容器被终止</li>
+</ul>
+<h2 id="终止容器"><a href="#终止容器" class="headerlink" title="终止容器"></a>终止容器</h2><p>　　我们可以使用stop命令来终止容器的运行；如果容器中的应用终结或者报错时，容器也会自动终止；我们可以使用<code>ps</code>命令查看到的容器短id来终止对应的容器：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker stop ad4d11b6d3b6<br></code></pre></div></td></tr></table></figure>
+
+<p>　　对于终止状态的容器，<code>ps</code>命令已经不能看到它了，我们可以加上<code>-a</code>选项（表示所有）来查看，它的STATUS已经变成了<code>Exited</code>：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs powershell"><span class="hljs-variable">$</span> docker <span class="hljs-built_in">ps</span> <span class="hljs-literal">-a</span><br>CONTAINER ID   IMAGE         COMMAND       CREATED        STATUS                PORTS  <br>ad4d11b6d3b6   ubuntu:<span class="hljs-number">16.04</span>  <span class="hljs-string">&quot;/bin/bash&quot;</span>   <span class="hljs-number">2</span> hours ago    Exited (<span class="hljs-number">0</span>) <span class="hljs-number">2</span> minutes ago<br></code></pre></div></td></tr></table></figure>
+
+<p>　　终止状态的容器我们可以使用<code>docker start [容器id]</code>来让它重新进入启动状态，运行中的容器我们也可以使用<code>docker restart [容器id]</code>让它重新启动。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h2 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h2><p>　　有时候我们会需要进入容器进行一些操作，比如进入nginx容器进行平滑重启，我们可以使用<code>docker attach</code>或者<code>docker exec</code>进入，不过推荐使用<code>exec</code>命令。</p>
+<p>　　我们首先看下如果使用<code>attach</code>命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker attach ad4d11b6d3b6<br>root@ad4d11b6d3b6:/<span class="hljs-comment"># exit</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　当我们从终端exit后，整个容器会停止；而使用<code>exec</code>命令不会导致容器停止。</p>
+<p>　　如果只使用<code>-i</code>参数，由于没有分配伪终端，界面没有我们熟悉的Linux命令提示符，但是执行命令仍然可以看到运行结果；当使用<code>-i</code>和<code>-t</code>参数时，才能看到我们常见的Linux命令提示符。</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker <span class="hljs-built_in">exec</span> -i ad4d11b6d3b6 bash<br><span class="hljs-built_in">ls</span><br>bin<br>boot<br>dev<br>etc<br>home<br>lib<br><span class="hljs-built_in">pwd</span><br>/<br><br>$ docker <span class="hljs-built_in">exec</span> -it ad4d11b6d3b6 bash<br>root@ad4d11b6d3b6:/<span class="hljs-comment"># exit</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<p>　　需要注意的是，我们进入的容器需要是运行状态，如果不是运行状态，则会报错：</p>
+<figure class="highlight subunit"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs subunit"><span class="hljs-keyword">Error </span>response from daemon: Container ad4d11b6d3b6 is not running<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<h2 id="查看容器日志"><a href="#查看容器日志" class="headerlink" title="查看容器日志"></a>查看容器日志</h2><p>　　我们经常需要对容器运行过程进行一些监测，查看它的运行过程记录的日志情况，以及是否报错等等；使用<code>logs</code>命令获取容器的日志。</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker logs ad4d11b6d3b6<br></code></pre></div></td></tr></table></figure>
+
+<p>　　它还支持以下几个参数：</p>
+<ul>
+<li>-f : 跟踪日志输出</li>
+<li>–since :显示某个开始时间的所有日志</li>
+<li>-t : 显示时间戳</li>
+<li>–tail :仅列出最新N条容器日志</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</ul>
+<p>　　<code>logs</code>命令会展示从容器启动以来的所有日志，如果容器运行时间久，会列出非常多的日志，我们可以加<code>tail</code>参数仅展示最新的日志记录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 列出最新的10条日志</span><br>$ docker logs --<span class="hljs-built_in">tail</span>=10 ad4d11b6d3b6<br></code></pre></div></td></tr></table></figure>
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h2 id="分析容器"><a href="#分析容器" class="headerlink" title="分析容器"></a>分析容器</h2><p>　　对于已经创建的容器，我们可以使用<code>inspect</code>来查看容器的底层基础信息，包括容器的id、创建时间、运行状态、启动参数、目录挂载、网路配置等等；另外，该命令也能查看docker镜像的信息，它的格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">docker inspect [选项] &lt;镜像1&gt; [&lt;镜像2&gt; ...]<br></code></pre></div></td></tr></table></figure>
+
+<p>　　inspect支持以下选项：</p>
+<ul>
+<li>-f :指定返回值的模板文件。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>-s :显示总的文件大小。</li>
+<li>–type :为指定类型返回JSON。</li>
+</ul>
+<p>　　运行后，会通过JSON格式显示容器的基本信息：</p>
+<p><img src="/images/FrontEnd-Docker/background.png" srcset="/img/loading.gif" lazyload alt="容器后台运行"></p>
+<p>　　但是这么大段的文字，我们想要获取对我们有用的信息十分的麻烦；除了用grep进行过滤外（万物皆可grep），我们还可以通过<code>-f</code>参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 获取容器名</span><br>docker inspect -f &#123;&#123;.Name&#125;&#125; &lt;容器ID&gt;<br><span class="hljs-comment"># 获取容器目录挂载信息</span><br>docker inspect -f &#123;&#123;.NetworkSettings.Mounts&#125;&#125; &lt;容器ID&gt;<br><span class="hljs-comment"># 获取容器网络设置的相关信息</span><br>docker inspect -f &#123;&#123;.NetworkSettings&#125;&#125; &lt;容器ID&gt;<br><span class="hljs-comment"># 获取容器的 IP 的相关信息</span><br>docker inspect -f &#123;&#123;.NetworkSettings.IPAddress&#125;&#125; &lt;容器ID&gt;<br></code></pre></div></td></tr></table></figure>
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h2 id="删除容器"><a href="#删除容器" class="headerlink" title="删除容器"></a>删除容器</h2><p>　　如果一个容器我们不想再使用了，可以使用<code>rm</code>命令来删除：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker <span class="hljs-built_in">rm</span> ad4d11b6d3b6<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　如果要删除一个运行中的容器，可以添加<code>-f</code>参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker <span class="hljs-built_in">rm</span> -f ad4d11b6d3b6<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<h1 id="数据管理"><a href="#数据管理" class="headerlink" title="数据管理"></a>数据管理</h1><p>　　我们上面介绍到容器是保持无状态化的，就是<code>随用随删</code>，并不会保留数据记录；在使用docker的时候，经常会用到一些需要保留数据的容器，比如mysql、mongodb，往往需要对容器中的数据进行持久化；或者在多个容器之间进行数据共享，这就涉及到了容器的数据管理，主要有两种方式：</p>
+<ul>
+<li>数据卷（Data Volumes）</li>
+<li>挂载主机目录 (Bind mounts)</li>
+</ul>
+<h2 id="数据卷"><a href="#数据卷" class="headerlink" title="数据卷"></a>数据卷</h2><p>　　<code>数据卷</code>是一个可供一个或多个容器使用的特殊目录，它绕过 UFS，可以提供很多有用的特性：</p>
+<ul>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>数据卷可以在容器之间共享和重用</li>
+<li>对数据卷的修改会立马生效</li>
+<li>对数据卷的更新，不会影响镜像</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>数据卷默认会一直存在，即使容器被删除</li>
+</ul>
+<p>　　首先我们创建一个数据卷：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker volume create my-vol<br>my-vol<br></code></pre></div></td></tr></table></figure>
+
+<p>　　通过<code>ls</code>可以列出我们本地所有的数据卷：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker volume <span class="hljs-built_in">ls</span><br>DRIVER    VOLUME NAME<br><span class="hljs-built_in">local</span>     my-vol<br></code></pre></div></td></tr></table></figure>
+
+<p>　　<code>inspect</code>命令也可以查看我们数据卷的具体信息：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker volume inspect my-vol<br>[<br>    &#123;<br>        <span class="hljs-string">&quot;CreatedAt&quot;</span>: <span class="hljs-string">&quot;&quot;</span>,<br>        <span class="hljs-string">&quot;Driver&quot;</span>: <span class="hljs-string">&quot;local&quot;</span>,<br>        <span class="hljs-string">&quot;Labels&quot;</span>: &#123;&#125;,<br>        <span class="hljs-string">&quot;Mountpoint&quot;</span>: <span class="hljs-string">&quot;/data/programs/docker/volumes/my-vol/_data&quot;</span>,<br>        <span class="hljs-string">&quot;Name&quot;</span>: <span class="hljs-string">&quot;my-vol&quot;</span>,<br>        <span class="hljs-string">&quot;Options&quot;</span>: &#123;&#125;,<br>        <span class="hljs-string">&quot;Scope&quot;</span>: <span class="hljs-string">&quot;local&quot;</span><br>    &#125;<br>]<br></code></pre></div></td></tr></table></figure>
+
+<p>　　在启动容器时，使用<code>--mount</code>将数据卷挂载在容器的目录里（可以有多个挂载点）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -d -P --name web --mount <span class="hljs-built_in">source</span>=my-vol,target=/usr/share/nginx/html nginx<br><span class="hljs-comment"># 通过-v简写形式</span><br>$ docker run -d -P --name web -v my-vol:/usr/share/nginx/html nginx<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们借助上面的inspect命令查看容器的挂载信息：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker inspect -f <span class="hljs-string">&quot;&#123;&#123;.Mounts&#125;&#125;&quot;</span> web<br>[&#123;volume my-vol /data/programs/docker/volumes/my-vol/_data /usr/share/nginx/html <span class="hljs-built_in">local</span> z <span class="hljs-literal">true</span> &#125;]<br></code></pre></div></td></tr></table></figure>
+
+<p>　　<code>数据卷</code>是被设计用来持久化数据的，它的生命周期独立于容器；因此即使我们将容器删除了，数据卷的数据依然还是存在的，并且也不存在垃圾回收这样的机制来处理没有任何容器引用的<code>数据卷</code>，我们可以在删除容器的时候使用<code>docker rm -v</code>命令同时删除数据卷，或者手动来删除：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker volume <span class="hljs-built_in">rm</span> my-vol<br></code></pre></div></td></tr></table></figure>
+
+<p>　　无主的数据卷可能会占据很多空间，要清理请使用以下命令（谨慎使用！）：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker volume prune<br></code></pre></div></td></tr></table></figure>
+
+
+<h2 id="挂载目录"><a href="#挂载目录" class="headerlink" title="挂载目录"></a>挂载目录</h2><p>　　我们发现上面<code>数据卷</code>挂载的目录都是在docker的安装路径下，不利于我们进行维护，我们可以直接挂载自定义的目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -d -P --name web --mount <span class="hljs-built_in">source</span>=/home/nginx,target=/usr/share/nginx/html nginx<br><span class="hljs-comment"># 通过-v简写形式</span><br>$ docker run -d -P --name web -v /home/nginx:/usr/share/nginx/html nginx<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<blockquote>
+<p>挂载的本地目录的路径必须是<code>绝对路径</code>，不能是相对路径。</p>
+</blockquote>
+<blockquote>
+<p>本地路径如果不存在，会自动生成。</p>
+</blockquote>
+<p>　　默认挂载的主机目录的默认权限是<code>读写</code>，可以通过增加<code>readonly</code>指定为<code>只读</code>。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -d -P --name web -v /home/nginx:/usr/share/nginx/html:ro nginx<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　加readonly后，如果我们在容器内的<code>/usr/share/nginx/html</code>目录下修改文件或者新建文件就会报错。</p>
+<p>　　需要注意的是，如果我们挂载本地目录，需要保证挂载的目录下面有程序运行所需要的文件，比如这里nginx容器需要在我们在本地目录/home/nginx下有index.html文件，如果没有的话会报403错误。</p>
+<p>　　本章完结。</p>
+
+            </div>
+            <hr>
+            <div>
+              
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script><div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Server/">服务器</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Nodejs/">Nodejs</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/03/22/FrontEnd-Docker-Advance.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">前端抢饭碗系列之Docker进阶部署</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/28/Npm-Package.html">
+                        <span class="hidden-mobile">从零开始发布自己的NPM包</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

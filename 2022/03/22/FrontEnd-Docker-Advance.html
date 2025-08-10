@@ -1,0 +1,850 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　在上一篇文章中我们对容器、镜像等概念做了详细的介绍，本文介绍一些容器的网络连接，以及我们如何通过Dockerfile来构建镜像使用，同时我们如何在前端项目中使用docker来进行容器部署。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>前端抢饭碗系列之Docker进阶部署 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="前端抢饭碗系列之Docker进阶部署">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-03-22 22:22" pubdate>
+        2022年3月22日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      79
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">前端抢饭碗系列之Docker进阶部署</h1>
+            
+            <div class="markdown-body">
+              <p>　　在上一篇文章中我们对容器、镜像等概念做了详细的介绍，本文介绍一些容器的网络连接，以及我们如何通过Dockerfile来构建镜像使用，同时我们如何在前端项目中使用docker来进行容器部署。</p>
+<span id="more"></span>
+
+
+<h1 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h1><p>　　我们部署的容器中很多应用都是需要让外部通过网络端口来进行访问的，比如比如mysql的3306端口，mongodb的27017端口和redis的6379端口等等；不仅是外部访问，不同的容器之间可能还需要进行通信，比如我们的web应用容器需要来连接mysql或者mongodb容器，都涉及到了网络通信。</p>
+<h2 id="端口映射"><a href="#端口映射" class="headerlink" title="端口映射"></a>端口映射</h2><p>　　容器要想让外部访问应用，可以通过<code>-P</code>或者<code>-p</code>参数来指定需要对外暴露的端口：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -d -P nginx<br>9226326c42067d282f80dbc18a8a36bf54335b61a84b191a29a5f59d25c9fbc3<br></code></pre></div></td></tr></table></figure>
+
+<p>　　使用<code>-P</code>会在主机绑定一个<code>随机端口</code>，映射到容器内部的端口；我们查看刚刚创建的容器，可以看到随机端口49154映射到了容器内部的80端口：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker ps -l<br>CONTAINER ID   IMAGE    CREATED              STATUS              PORTS                                    <br>9226326c4206   nginx    About a minute ago   Up About a minute   0.0.0.0:49154-&gt;80/tcp, :::49154-&gt;80/tcp   <br></code></pre></div></td></tr></table></figure>
+
+<p>　　使用<code>logs</code>命令我们可以看到nginx的访问日志：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker logs 9226326c4206<br>10.197.92.41 - - [16/Mar/2022:01:40:32 +0000] <span class="hljs-string">&quot;GET / HTTP/1.1&quot;</span> 304 0 <span class="hljs-string">&quot;-&quot;</span> <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36&quot;</span> <span class="hljs-string">&quot;-&quot;</span><br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　<code>docker port</code>可以快捷地让我们查看容器端口的绑定情况：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker port 9226326c4206<br>80/tcp -&gt; 0.0.0.0:49154<br></code></pre></div></td></tr></table></figure>
+
+<p>　　使用<code>-p</code>参数可以指定一个端口进行映射：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -d -p 3000:80 nginx<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　也可以使用<code>ip:hostPort:containerPort</code>格式指定映射一个特定的ip：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -d -p 127.0.0.1:3000:80 nginx<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　省略hostPort参数本地主机会自动分配一个端口，类似<code>-P</code>参数的作用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -d -p 127.0.0.1::80 nginx<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<p>　　还可以使用<code>udp</code>来指定映射到udp端口：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -d -p 3000:80/udp nginx<br></code></pre></div></td></tr></table></figure>
+
+<p>　　有时候我们想要映射容器的多个端口，可以使用多个-p参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -d <br>            -p 8000:8000 \<br>            -p 8010:8010\<br>            nginx<br></code></pre></div></td></tr></table></figure>
+
+<p>　　或者映射某个范围内的端口列表：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -d -p 8080-8090:8080-8090 nginx<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h2 id="docker网络模式"><a href="#docker网络模式" class="headerlink" title="docker网络模式"></a>docker网络模式</h2><p>　　我们想要将多个容器进行互联互通，为了避免不同容器之间互相干扰，可以给多个容器建立不同的局域网，让局域网络内的网络彼此联通。</p>
+<p>　　要理解docker的网络模式，我们首先来看下docker有哪些网络；我们安装docker后，它会自动创建三个网络none、host和brdge，我们使用<code>network ls</code>命令查看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker network <span class="hljs-built_in">ls</span><br>NETWORK ID     NAME      DRIVER    SCOPE<br>c64d7d519c22   bridge    bridge    <span class="hljs-built_in">local</span><br>6306a0b1d150   host      host      <span class="hljs-built_in">local</span><br>d058571d4197   none      null      <span class="hljs-built_in">local</span><br></code></pre></div></td></tr></table></figure>
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　我们分别来看下这几个网络的用途；首先是<code>none</code>，none顾名思义，就是什么都没有，该网络关闭了容器的网络功能，我们使用<code>--network=none</code>指定使用none网络：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -itd --name=busybox-none --network=none busybox<br>49f88dd75ae774bea817b27c647506eda5ad581403bfbad0877e8333376ae3b0<br><br>docker <span class="hljs-built_in">exec</span> 49f88dd75ae7  ip a<br>1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue qlen 1000<br>    <span class="hljs-built_in">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00<br>    inet 127.0.0.1/8 scope host lo<br>       valid_lft forever preferred_lft forever<br>2: tunl0@NONE: &lt;NOARP&gt; mtu 1480 qdisc noop qlen 1000<br>    <span class="hljs-built_in">link</span>/ipip 0.0.0.0 brd 0.0.0.0<br>3: ip6tnl0@NONE: &lt;NOARP&gt; mtu 1452 qdisc noop qlen 1000<br>    <span class="hljs-built_in">link</span>/tunnel6 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00 brd 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们这里使用了busybox镜像，可能有的童鞋对它不了解，这是一个集成压缩了三百多个常用linux命令和工具的软件，它被称为Linux工具里的<code>瑞士军刀</code>，我们这里主要用它的ip命令查看容器的网络详细情况。</p>
+<p>　　我们看到这个容器除了lo本地环回网卡，没有其他的网卡信息；不仅不能接收信息，也不能对外发送信息，我们用ping命令测试网络情况：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker <span class="hljs-built_in">exec</span> 49f88dd75ae7 ping xieyufei.com<br>ping: bad address <span class="hljs-string">&#x27;xieyufei.com&#x27;</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　这个网络相当于一个封闭的孤岛，那我们不禁会想，这样“自闭”的网络有什么用呢？</p>
+<p><img src="/images/FrontEnd-Docker-Advance/zibi.gif" srcset="/img/loading.gif" lazyload alt="自闭了"></p>
+<p>　　封闭意味着隔离，一些对安全性要求高并且不需要联网的应用可以使用none网络。比如某个容器的唯一用途是生成随机密码，就可以放到none网络中避免密码被窃取。</p>
+<p>　　其次是<code>bridge网络模式</code>，docker安装时会在宿主机上虚拟一个名为<code>docker0</code>的网桥，如果不指定–network，创建的容器默认都会挂载到<code>docker0</code>上，我们通过命令查看宿主机下所有的网桥：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ brctl show<br>bridge name     bridge <span class="hljs-built_in">id</span>               STP enabled     interfaces<br>docker0         8000.02426b8674a4       no         <br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　这里的网桥我们可以把它理解为一个路由器，它把两个相似的网络连接起来，并对网络中的数据进行管理，同时也隔离外界对网桥内部的访问；同一个网桥下的容器之间可以相互通信；我们还是通过busybox查看容器的网络情况</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -itd --name=busybox-bridge --network=bridge busybox<br>f45e26e5bb6f94f50061f22937abb132fb9de968fdd59fe7ad524bd81eb2f1b0<br><br>$ docker <span class="hljs-built_in">exec</span> f45e26e5bb6f ip a<br>181: eth0@if182: &lt;BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN&gt; mtu 1500 qdisc noqueue <br>    <span class="hljs-built_in">link</span>/ether 02:42:ac:11:00:06 brd ff:ff:ff:ff:ff:ff<br>    inet 172.17.0.6/16 brd 172.17.255.255 scope global eth0<br>       valid_lft forever preferred_lft forever<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们看到这里容器多了一个eth0的网卡，它的ip是<code>172.17.0.6</code>。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　最后是<code>host网络模式</code>，这种模式禁用了Docker的网络隔离，容器共享了宿主机的网络，我们还是通过<code>busybox</code>来查看容器的网络情况：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -itd --name=busybox-host --network=host busybox<br>2d1f6d7a01f1afe1e725cf53423de1d79d261a3b775f6f97f9e2a62de8f6bb74<br><br>$ docker <span class="hljs-built_in">exec</span> 2d1f6d7a01f1 ip a<br>2: enp4s0f2: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast qlen 1000<br>    <span class="hljs-built_in">link</span>/ether 74:d0:2b:ec:96:8a brd ff:ff:ff:ff:ff:ff<br>    inet 192.168.0.100/24 brd 192.168.0.255 scope global dynamic noprefixroute enp4s0f2<br>       valid_lft 37533sec preferred_lft 37533sec<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们发现这里容器的ip地址是192.168.0.100，和我宿主机的ip地址是一样的；host模式其实类似于Vmware的<code>桥接模式</code>，容器没有独立的ip、端口，而是使用宿主机的ip、端口。</p>
+<p>　　需要注意的是host模式下，不需要添加-p参数，因为它使用的就是主机的IP和端口，添加-p参数后，反而会出现以下警告：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs asciidoc"><span class="hljs-symbol">WARNING: </span>Published ports are discarded when using host network mode<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　host模式由于和宿主机共享网络，因此它的网络模型是最简单最低延迟的模式，容器进程直接与主机网络接口通信，与物理机性能一致。不过host模式也不利于网络自定义配置和管理，所有容器使用相同的ip，不利于主机资源的利用，一些对网络性能要求比较高的容器，可以使用该模式。</p>
+<h2 id="容器互联"><a href="#容器互联" class="headerlink" title="容器互联"></a>容器互联</h2><p>　　我们通过容器互联来测试两个容器在同一个网桥下面是如何进行连接互通的；首先我们自定义一个网桥：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker network create -d bridge my-net<br></code></pre></div></td></tr></table></figure>
+
+<p>　　如果对网桥不满意，可以通过<code>rm</code>命令删除它：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker network <span class="hljs-built_in">rm</span> my-net<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　我们新建两个容器，并且把它们连接到<code>my-net</code>的网络中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -itd --name busybox1 --network my-net busybox<br>$ docker run -itd --name busybox2 --network my-net busybox<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们让两个容器之间互相ping，发现他们之间能够ping通：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker <span class="hljs-built_in">exec</span>  busybox1 ping busybox2<br>PING busybox2 (172.23.0.3): 56 data bytes<br>64 bytes from 172.23.0.3: <span class="hljs-built_in">seq</span>=0 ttl=64 time=0.139 ms<br>64 bytes from 172.23.0.3: <span class="hljs-built_in">seq</span>=1 ttl=64 time=0.215 ms<br><br>$ docker <span class="hljs-built_in">exec</span>  busybox2 ping busybox1<br>PING busybox1 (172.23.0.2): 56 data bytes<br>64 bytes from 172.23.0.2: <span class="hljs-built_in">seq</span>=0 ttl=64 time=0.090 ms<br>64 bytes from 172.23.0.2: <span class="hljs-built_in">seq</span>=1 ttl=64 time=0.224 ms<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h1 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h1><p>　　我们在前一篇文章中简单提到了Dockerfile的两个命令FROM和RUN，其实它还提供了其他功能强大的命令，我们对它的命令深入讲解；首先我们知道Dockerfile是一个用来构建镜像的文本文件，文本内容包含了一条条构建镜像所需的指令和说明；在docker build命令中我们使用<code>-f</code>参数来指向文件中任意位置的Dockerfile：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker build -f /path/to/Dockerfile<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<h2 id="FROM指令"><a href="#FROM指令" class="headerlink" title="FROM指令"></a>FROM指令</h2><p>　　<code>FROM指令</code>用来指定一个基础镜像，它决定了Dockerfile构建出的镜像为何物以及怎样的环境；大多数的Dockerfile，都是以FROM指令开始；它的语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">FROM &lt;image&gt; [AS &lt;name&gt;]<br>FROM &lt;image&gt;:&lt;tag&gt; [AS &lt;name&gt;]<br></code></pre></div></td></tr></table></figure>
+
+<p>　　Dockerfile必须以FROM指令开始，不过它支持在FROM之前由ARG指令定义一个变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">ARG NG_VERSION=1.19.3<br>FROM nginx:<span class="hljs-variable">$&#123;NG_VERSION&#125;</span><br>CMD /bin/bash<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="多阶段构建"><a href="#多阶段构建" class="headerlink" title="多阶段构建"></a>多阶段构建</h3><p>　　我们在构建镜像时通常会有多个阶段的镜像需要来进行构建，比如vue项目构建镜像时，我们需要在<code>编译阶段</code>打包出dist文件，还需要在<code>生产运行阶段</code>使用dist文件作为静态资源；如果不使用多阶段构建，我们通常需要两个Dockerfile文件，构建出两个镜像，这样有一个镜像肯定是浪费的。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　Docker从17.05开始，支持多阶段构建，就是我们在Dockerfile中可以使用多个<code>FROM指令</code>，每个FROM指令都可以使用不同的基础镜像，并且每条指令都会开始新阶段的构建；在多阶段构建中，我们可以将资源从一个阶段复制到另一个阶段，在最终镜像中只保留我们所需要的内容。</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">FROM node<br><br><span class="hljs-comment"># ...一些操作</span><br><br>FROM nginx<br><br><span class="hljs-comment"># ...一些操作</span><br><br>COPY --from=0 . .<br></code></pre></div></td></tr></table></figure>
+
+<p>　　第二个FROM指令开始一个新的构建阶段，<code>COPY --from=0</code>代表从上一个阶段（即第一阶段）拷贝文件；默认情况下，构建阶段没有命名，可以使用从0开始的整数编号引用它；我们可以给FROM指令加上一个<code>as &lt;Name&gt;</code>作为构建阶段的命名。</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">FROM node as compile<br><br>FROM nginx as serve<br><br>COPY --from=compile . .<br></code></pre></div></td></tr></table></figure>
+
+<p>　　在后面的例子中，我们会来演示如何使用多阶段构建优化我们的构建过程。</p>
+<h3 id="基础镜像选择"><a href="#基础镜像选择" class="headerlink" title="基础镜像选择"></a>基础镜像选择</h3><p>　　由于基础镜像决定着构建出镜像产物的大小，因此选择一个合适的基础镜像显得十分重要了。如果我们去hub.docker.com查看node的标签，我们会发现除了版本号之外，后面还会带着一些看不懂的单词，什么alpine，什么slime了，这些版本号都代表着什么含义呢？我们简单的了解一下。</p>
+<blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>docker镜像之间的区别在于底层的操作系统</p>
+</blockquote>
+<p>　　首先如果什么都不带，默认latest，那就是完整的镜像版本，如果你还是一个小白，对其他版本没有什么了解的话，那么选它是肯定不会出错的。</p>
+<p>　　其次是<code>slim版本</code>，slim表示最小安装包，仅包含需要运行指定容器的特定工具集。通过省去较少使用的工具，镜像会更小。如果我们服务器有空间限制且不需要完整版本，就可以使用此镜像。不过使用这个版本时，要进行彻底的测试。</p>
+<p>　　然后是我们经常会看到的<code>alpine版本</code>，alipine镜像基于<code>alpine linux</code>项目，这是一个社区开发的面向安全应用的轻量级Linux发行版。它的优点就是基于的linux操作系统非常轻量，因此构建出来的镜像也非常的轻量；它的缺点也十分的明显，就是不包含一些有可能会用到的包，并且使用的glibc包等都是阉割版；因此如果我们使用这个版本，也需要进行彻底的测试。</p>
+<p>　　我们ls看下这三个版本，也能发现它们的大小存在着差异：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker image <span class="hljs-built_in">ls</span> node<br>REPOSITORY   TAG       IMAGE ID       CREATED        SIZE<br>node         slim      ffedf4f28439   5 days ago     241MB<br>node         alpine    d2b383edbff9   3 months ago   170MB<br>node         latest    a283f62cb84b   3 months ago   993MB<br></code></pre></div></td></tr></table></figure>
+
+<p>　　其次是一些Debian的发行版，Debian是一个自由的，稳定得无与伦比操作系统；带有下面一些标签的镜像对应Debian发行版本号。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<ul>
+<li>bullseye：Debian 11</li>
+<li>buster：Debian 10</li>
+<li>stretch：Debian 9</li>
+<li>jessie：Debian 8</li>
+</ul>
+<p><img src="/images/FrontEnd-Docker-Advance/stable.jpg" srcset="/img/loading.gif" lazyload alt="稳定"></p>
+<h2 id="RUN指令"><a href="#RUN指令" class="headerlink" title="RUN指令"></a>RUN指令</h2><p>　　<code>RUN指令</code>用于在镜像容器中执行命令，其有以下两种执行方式：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># shell 执行</span><br>RUN &lt;<span class="hljs-built_in">command</span>&gt;<br><span class="hljs-comment"># exec 格式</span><br>RUN [<span class="hljs-string">&quot;可执行文件&quot;</span>, <span class="hljs-string">&quot;参数1&quot;</span>, <span class="hljs-string">&quot;参数2&quot;</span>]<br></code></pre></div></td></tr></table></figure>
+
+<p>　　RUN指令常见的用法就是安装包用<code>apt-get</code>，假设我们需要在镜像安装curl：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">FROM ubuntu:18.04<br><br>RUN apt-get update<br><br>RUN apt-get install -y curl<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　我们知道Dockerfile的指令是分层构建的，每一层都有缓存，假设我们下次添加了一个包wget：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">FROM ubuntu:18.04<br><br>RUN apt-get update<br><br>RUN apt-get install -y curl wget<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　如果我们下次再次构建时，<code>apt-get update</code>指令也不会执行，使用之前缓存的镜像；而install由于update指令没有执行，可能安装过时的curl和wget版本。</p>
+<p>　　因此我们通常会把update和install写在一条指令，确保我们的Dockerfiles每次安装的都是包的最新的版本；同时也可以减少镜像层数，减少包的体积：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">RUN apt-get update &amp;&amp; apt-get install -y curl wget<br></code></pre></div></td></tr></table></figure>
+
+
+<h2 id="WORKDIR工作目录"><a href="#WORKDIR工作目录" class="headerlink" title="WORKDIR工作目录"></a>WORKDIR工作目录</h2><p>　　<code>WORKDIR指令</code>可以用来指定工作目录，以后各层的当前目录就被改为指定的工作目录；如果该目录不存在，WORKDIR会自动创建目录。</p>
+<p>　　很多童鞋把<code>Dockerfile</code>当成Shell脚本来写，因此可能会导致下面的错误：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">FROM node:10.15.3-alpine<br><br>RUN <span class="hljs-built_in">mkdir</span> /app &amp;&amp; <span class="hljs-built_in">cd</span> /app<br><br>RUN <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;hello&quot;</span> &gt; world.txt<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里echo的作用是将字符串hell重定向写入到world.txt中；如果我们把这个Dockerfile构建镜像运行后，会发现找不到<code>/app/world.txt</code>；由于在Shell脚本中两次连续运行的命令是同一个进程执行环境，前一行命令运行影响后一个命令；而由于Dockerfile分层构建的原因，两个RUN命令执行的环境是两个完全不同的容器。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　因此如果我们需要改变以后每层的工作目录的位置，可以使用<code>WORKDIR</code>指令，建议在WORKDIR指令中使用绝对路径：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">FROM node:10.15.3-alpine<br><br>WORKDIR /app<br><br>RUN <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;hello&quot;</span> &gt; world.txt<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　这样生成的world.txt就在/app目录下面了。</p>
+<h2 id="COPY复制"><a href="#COPY复制" class="headerlink" title="COPY复制"></a>COPY复制</h2><p>　　<code>COPY指令</code>用于从构建上下文目录中复制文件到镜像内的目标路径中，类似linux的cp命令，它的语法格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">COPY [--<span class="hljs-built_in">chown</span>=&lt;user&gt;:&lt;group&gt;] &lt;源路径&gt;... &lt;目标路径&gt;<br>COPY [--<span class="hljs-built_in">chown</span>=&lt;user&gt;:&lt;group&gt;] [<span class="hljs-string">&quot;&lt;源路径1&gt;&quot;</span>,... <span class="hljs-string">&quot;&lt;目标路径&gt;&quot;</span>]<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　复制的文件可以是一个文件、多个文件或者通配符匹配的文件：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">COPY package.json /app<br><br>COPY package.json app.js /app<br><br>COPY src/*.js /app<br></code></pre></div></td></tr></table></figure>
+
+<p>　　但需要注意的是，COPY指令只能复制文件夹下的文件，而不能复制文件夹本身，和linux的cp命令有区别；比如下面复制src文件夹：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">COPY src /app<br></code></pre></div></td></tr></table></figure>
+
+<p>　　运行后我们发现src文件夹下面的文件都拷贝到/app目录下了，没有拷贝src文件夹本身，因此我们需要这样来写：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">COPY src /app/src<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<h2 id="CMD指令"><a href="#CMD指令" class="headerlink" title="CMD指令"></a>CMD指令</h2><p>　　<code>CMD指令</code>用于执行目标镜像中包含的软件，可以指定参数，它也有两种语法格式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">CMD &lt;命令&gt;<br>CMD [<span class="hljs-string">&quot;可执行文件&quot;</span>, <span class="hljs-string">&quot;参数1&quot;</span>, <span class="hljs-string">&quot;参数2&quot;</span>...]<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　我们发现CMD和RUN都可以用来执行命令的，很相似，那他们两者有什么区别么？首先我们发现RUN是用来执行docker build构建镜像过程中要执行的命令，比如创建文件夹mkdir、安装程序apt-get等等。</p>
+<p>　　而CMD指令在docker run时运行而非docker build，也就是启动容器的时候，它的首要目的在于为启动的容器指定默认要运行的程序，程序运行结束，容器也就结束。</p>
+<p>　　而容器在run的时候只能创建一次，因此一个Dockerf中也只能有一个CMD指令；比如我们的容器运行node程序，最后需要启动程序：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">CMD [<span class="hljs-string">&quot;node&quot;</span>, <span class="hljs-string">&quot;app.js&quot;</span>]<br><span class="hljs-comment"># 或者</span><br>CMD npm run start<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<h2 id="ENTRYPOINT入口点"><a href="#ENTRYPOINT入口点" class="headerlink" title="ENTRYPOINT入口点"></a>ENTRYPOINT入口点</h2><p>　　<code>ENTRYPOINT指令</code>的作用和CMD一样，也是在指定容器启动程序和参数；一个Dockerfile同样也只能有一个ENTRYPOINT指令；当指定了ENTRYPOINT后，CMD指令的含义发生了改变，不再是直接的运行其命令，而是将 CMD 的内容作为参数传给ENTRYPOINT指令，相当于：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">&lt;ENTRYPOINT&gt; <span class="hljs-string">&quot;&lt;CMD&gt;&quot;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　那么这样的好处是啥呢？我们看一个使用的例子，我们在Docker中使用curl命令来获取公网的IP地址：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">FROM ubuntu:18.04<br><br><span class="hljs-comment"># 切换ubuntu源</span><br>RUN  sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list<br>RUN  apt-get clean<br><br>RUN apt-get update \<br>    &amp;&amp; apt-get install -y curl \<br>    &amp;&amp; <span class="hljs-built_in">rm</span> -rf /var/lib/apt/lists/*<br>    <br>CMD [ <span class="hljs-string">&quot;curl&quot;</span>, <span class="hljs-string">&quot;-s&quot;</span>, <span class="hljs-string">&quot;http://myip.ipip.net&quot;</span> ]<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　然后使用<code>docker build -t myip .</code>来构建myip的镜像；当我们想要查询ip的时候，只需要执行如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run --<span class="hljs-built_in">rm</span> myip<br>当前 IP：218.4.251.37  来自于：中国 江苏 苏州  电信<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样我们就实现了把镜像当成命令使用，不过如果我们想要同时显示HTTP头信息，就需要加上<code>-i</code>参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run --<span class="hljs-built_in">rm</span> myip -i<br>docker: Error response from daemon: failed to create shim: OCI runtime create failed: container_linux.go:380: starting container process caused: <span class="hljs-built_in">exec</span>: <span class="hljs-string">&quot;-i&quot;</span>: executable file not found <span class="hljs-keyword">in</span> <span class="hljs-variable">$PATH</span>: unknown.<br></code></pre></div></td></tr></table></figure>
+
+<p>　　但是这个<code>-i</code>参数加上后并不会传给<code>CMD指令</code>，而是传给了docker run，但是docker run并没有-t参数，因此报错；如果我们想要加入-i，就需要重新完整的输入这个命令；而使用ENTRYPOINT指令就可以解决这个问题：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">FROM ubuntu:18.04<br><br>RUN  sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list<br>RUN  apt-get clean<br><br>RUN apt-get update \<br>    &amp;&amp; apt-get install -y curl \<br>    &amp;&amp; <span class="hljs-built_in">rm</span> -rf /var/lib/apt/lists/*<br>    <br>ENTRYPOINT  [ <span class="hljs-string">&quot;curl&quot;</span>, <span class="hljs-string">&quot;-s&quot;</span>, <span class="hljs-string">&quot;http://myip.ipip.net&quot;</span> ]<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　我们重新尝试加入<code>-i</code>参数：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run --<span class="hljs-built_in">rm</span> myip -i<br>HTTP/1.1 200 OK<br>Date: Fri, 01 Apr 2022 07:24:21 GMT<br>Content-Type: text/plain; charset=utf-8<br>Content-Length: 67<br>Connection: keep-alive<br>X-Via-JSL: fdc330b,-<br>Set-Cookie: __jsluid_h=9f0775bbcb4cc97b161093b4c66dd766; max-age=31536000; path=/; HttpOnly<br>X-Cache: bypass<br><br>当前 IP：218.4.251.37  来自于：中国 江苏 苏州  电信<br></code></pre></div></td></tr></table></figure>
+
+<p>　　就可以发现http的头部信息也展示出来了。</p>
+<h2 id="VOLUME数据卷"><a href="#VOLUME数据卷" class="headerlink" title="VOLUME数据卷"></a>VOLUME数据卷</h2><p>　　<code>VOLUME指令</code>用于暴露任何数据库存储文件，配置文件，或容器创建的文件和目录；其语法格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">VOLUME [<span class="hljs-string">&quot;&lt;路径1&gt;&quot;</span>, <span class="hljs-string">&quot;&lt;路径2&gt;&quot;</span>...]<br>VOLUME &lt;路径&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们可以事先指定某些目录挂载为匿名卷，这样在运行时如果用户不指定挂载，其应用也可以正常运行，不会向容器存储层写入大量数据，比如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">VOLUME /data<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里的/data目录就会在容器运行时自动挂载为匿名卷，任何向/data中写入的信息都不会记录进容器存储层，从而保证了容器存储层的无状态化。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -d -v mydata:/data xxxx<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们运行容器时可以本地目录覆盖挂载的匿名卷；<strong>需要注意</strong>的是，在Windows下挂载目录和Linux环境（以及Macos）挂载目录有一些区别，在Linux环境下由于是树状目录结构，我们挂载时直接找到目录即可，如果目录不存在，docker还会自动帮你创建：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -d -v /home/root/docker-data:/data xxxx<br></code></pre></div></td></tr></table></figure>
+
+<p>　　windows环境下则需要对应盘符下的目录：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -d -v d:/docker-data:/data xxxx<br></code></pre></div></td></tr></table></figure>
+
+
+<h2 id="EXPOSE端口"><a href="#EXPOSE端口" class="headerlink" title="EXPOSE端口"></a>EXPOSE端口</h2><p>　　<code>EXPOSE指令</code>是声明容器运行时提供服务的端口，这只是一个声明，在容器运行时并不会因为这个声明应用就会开启这个端口的服务；其语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">EXPOSE &lt;端口1&gt; [&lt;端口2&gt;...]<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　在Dockerfile中写入这样的声明有两个好处，一个是帮助镜像使用者理解这个镜像服务的守护端口，以方便配置映射；另一个好处则是在运行时使用随机端口映射时，也就是 docker run -P 时，会自动随机映射 EXPOSE 的端口。</p>
+<h2 id="ENV指令"><a href="#ENV指令" class="headerlink" title="ENV指令"></a>ENV指令</h2><p>　　<code>ENV指令</code>用于设置环境变量，其语法有两种，支持多种变量的设置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">ENV &lt;key&gt; &lt;value&gt;<br>ENV &lt;key1&gt;=&lt;value1&gt; &lt;key2&gt;=&lt;value2&gt;...<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　这里的环境变量无论是后面的指令，如<code>RUN</code>指令，还是<code>运行时</code>的应用，都可以直接使用环境变量：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">ENV NODE_VERSION 7.2.0<br><br>RUN curl -SLO <span class="hljs-string">&quot;https://nodejs.org/dist/v<span class="hljs-variable">$NODE_VERSION</span>/node-v<span class="hljs-variable">$NODE_VERSION</span>-linux-x64.tar.xz&quot;</span> \<br>  &amp;&amp; curl -SLO <span class="hljs-string">&quot;https://nodejs.org/dist/v<span class="hljs-variable">$NODE_VERSION</span>/SHASUMS256.txt.asc&quot;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里定义了环境变量<code>NODE_VERSION</code>，后面的RUN指令中可以多次使用变量进行操作；因此如果我们后续想要升级node版本，只需要更新<code>7.2.0</code>即可</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h2 id="ARG指令"><a href="#ARG指令" class="headerlink" title="ARG指令"></a>ARG指令</h2><p>　　<code>ARG指令</code>和ENV一样，也是设置环境变量的，所不同的是，ARG设置的是构建环境的环境变量，在以后容器运行时是不会存在的。</p>
+<p><img src="/images/FrontEnd-Docker-Advance/dockerfile.png" srcset="/img/loading.gif" lazyload alt="通俗解释指令的意义"></p>
+<h1 id="部署前端项目"><a href="#部署前端项目" class="headerlink" title="部署前端项目"></a>部署前端项目</h1><h2 id="vue项目"><a href="#vue项目" class="headerlink" title="vue项目"></a>vue项目</h2><p>　　当我们在本地开发完一个前端项目后，肯定要部署在服务器上让别人来进行访问页面的，一般都是让运维在服务器上配置nginx来将我们的项目打包后作为静态资源；在<a href="https://xieyufei.com/2021/06/22/Front-Nginx.html">深入Nginx</a>一文中，我们介绍了使用nginx如何来做静态服务器，这里我们自己配置nginx文件，结合docker来部署我们的项目。</p>
+<p>　　首先在我们项目目录创建nginx的配置文件<code>default.conf</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs file">server &#123;<br>    listen 80;<br>    server_name _;<br>    location / &#123;<br>        root /usr/share/nginx/html;<br>        index index.html inde.htm;<br>        try_files $uri $uri/ /index.html =404;<br>    &#125;<br>    error_page 500 502 503 504 /50x.html;<br>    location = /50x.html &#123;<br>        root /usr/share/nginx/html;<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　该配置文件定义了我们打包后静态资源的目录为<code>/usr/share/nginx/html</code>，因此我们需要将dist文件夹拷贝到该目录；同时使用了<code>try_files</code>来匹配vue的history路由模式。</p>
+<p>　　在项目目录再创建一个Dockerfile文件，写入以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">FROM nginx:latest<br><br>COPY default.conf /etc/nginx/conf.d/<br><br>COPY dist/ /usr/share/nginx/html/<br><br>EXPOSE 80<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们在项目打包生成dist文件后就可以构建镜像了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker build -t vue-proj .<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p><img src="/images/FrontEnd-Docker-Advance/build.png" srcset="/img/loading.gif" lazyload alt="构建镜像"></p>
+<p>　　接下来基于该镜像启动我们的服务器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -itd -p 8080:80 vue-proj<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　这样我们的程序就起来了，访问<code>http://localhost:8080</code>端口就可以看到我们部署的网站了。</p>
+<h2 id="express项目"><a href="#express项目" class="headerlink" title="express项目"></a>express项目</h2><p>　　我们还有一些node项目，比如expree、eggjs或者nuxt，也可以使用docker进行部署，不过我们需要把所有的项目文件都拷贝到镜像中去。</p>
+<p>　　首先我们模拟一个简单的express的入口文件app.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;express&quot;</span>);<br><br><span class="hljs-keyword">const</span> app = <span class="hljs-title function_">express</span>();<br><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">PORT</span> = <span class="hljs-number">8080</span>;<br><br>app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;/&quot;</span>, <span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> &#123;<br>  res.<span class="hljs-title function_">send</span>(<span class="hljs-string">&quot;hello express&quot;</span>);<br>&#125;);<br><br>app.<span class="hljs-title function_">listen</span>(<span class="hljs-variable constant_">PORT</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`listen on port:<span class="hljs-subst">$&#123;PORT&#125;</span>`</span>);<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　由于下面需要拷贝整个项目的文件，因此我们可以通过<code>.dockerignore</code>文件来忽略某些文件：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs asciidoc"><span class="hljs-title">.git</span><br>node_modules<br></code></pre></div></td></tr></table></figure>
+
+<p>　　然后编写我们的<code>Dockerfile</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">FROM node:10.15.3-alpine<br><br>WORKDIR /app<br><br>COPY package*.json ./<br><br>RUN npm install --registry https://registry.npm.taobao.org<br><br>COPY . .<br><br>EXPOSE 8080<br><br>CMD npm run start<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们看到上面的流程是先拷贝package*.json文件，安装依赖后再拷贝整个项目，那么为什么这么做呢？聪明的童鞋大概已经猜到了，大概率又双叒叕是跟docker的分层构建和缓存有关。</p>
+<p><img src="/images/FrontEnd-Docker-Advance/you.jpg" srcset="/img/loading.gif" lazyload alt="斗图"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　不错，如果我们把package*.json和代码程序一起拷贝，如果我们只更改了代码而没有新增依赖，但docker仍然会安装依赖；但是我们如果把它单独拿出来的话，就能够提高缓存的命中率。后面的构建镜像和启动容器也就不再赘述了。</p>
+<h2 id="vue项目多阶段构建"><a href="#vue项目多阶段构建" class="headerlink" title="vue项目多阶段构建"></a>vue项目多阶段构建</h2><p>　　上面我们在vue项目中<code>手动打包</code>生成了dist文件，然后再通过docker进行部署；在FROM指令中我们也提到了多阶段构建，那么来看下如果使用多阶段构建如何来进行优化。</p>
+<p>　　我们还是在项目中准备好nginx的配置文件<code>default.conf</code>，但是这次我们不再手动生成dist文件，而是将构建的过程放到Dockerfile中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">FROM node:12 as compile<br><br>WORKDIR /app<br><br>COPY package.json ./<br><br>RUN npm i --registry=https://registry.npm.taobao.org<br><br>COPY . .<br><br>RUN npm run build<br><br>FROM nginx:latest as serve<br><br>COPY default.conf /etc/nginx/conf.d/<br><br>COPY --from=compile /app/dist /usr/share/nginx/html/<br><br>EXPOSE 80<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　我们看到在上面第一个<code>compile</code>阶段，我们通过npm run build命令生成了dist文件；而第二个阶段中再把dist文件拷贝到nginx的文件夹中即可；最后构建的产物依然是最后FROM指令的nginx服务器。</p>
+<p>　　多阶段构建用到的命令比较多，很多童鞋会想最后的镜像会不会很大；我们通过<code>ls命令</code>查看构建后的镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker images<br>REPOSITORY            TAG                  IMAGE ID       CREATED          SIZE<br>multi-compile         latest               a37e4d71562b   11 seconds ago   157MB<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　可以看到它的大小和单独用nginx构建差不多。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Server/">服务器</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Nodejs/">Nodejs</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/04/28/React-Native-Component.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">深入学习React Native之组件入门</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/22/FrontEnd-Docker.html">
+                        <span class="hidden-mobile">前端抢饭碗系列之初识Docker容器化部署</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

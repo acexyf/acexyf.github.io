@@ -1,0 +1,721 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　在上一篇文章全景预览中，我们通过Threejs使用多种方式实现了全景预览的效果，以及俯瞰效果的场景动画，但是这都是在单个场景中实现的；也有读者评论说讲一下多场景下的场景过渡效果是如何实现的，那么本文我们就来学习一下多场景的过渡效果。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>Threejs多场景切换的过渡效果 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Threejs多场景切换的过渡效果">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-04-17 20:12" pubdate>
+        2024年4月17日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      56
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Threejs多场景切换的过渡效果</h1>
+            
+            <div class="markdown-body">
+              <p>　　在上一篇文章<a href="https://xieyufei.com/2023/04/28/Threejs-Panorama.html">全景预览</a>中，我们通过Threejs使用多种方式实现了全景预览的效果，以及俯瞰效果的场景动画，但是这都是在单个场景中实现的；也有读者评论说讲一下多场景下的场景过渡效果是如何实现的，那么本文我们就来学习一下多场景的过渡效果。</p>
+<span id="more"></span>
+
+
+<p>　　在实现多场景前，我们先来了解three.js中一个重要的概念：<code>离屏渲染</code>；只有理解了这个概念，我们才能够在后续实现多场景的过渡效果。</p>
+<blockquote>
+<p>本文的全景过渡效果可以<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/panorama/multi">点击链接查看</a></p>
+</blockquote>
+<h1 id="离屏渲染"><a href="#离屏渲染" class="headerlink" title="离屏渲染"></a>离屏渲染</h1><p>　　离屏渲染指的是将渲染结果暂时存在GPU内部的帧缓存中，而不是直接显示在画布上，这样做的好处是可以对渲染结果进行后期处理，如添加滤镜、反射折射、当成纹理应用在几何体等等。</p>
+<p>　　在three.js中，一共有3种离屏渲染的类：</p>
+<ul>
+<li>WebGLMultisampleRenderTarget</li>
+<li>WebGLCubeRenderTarget</li>
+<li>WebGLRenderTarget</li>
+</ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　在普通的渲染中，我们把scene场景保存到canvas画布的默认帧缓冲区，也就是直接渲染到Canvas画布上，它是没有具体的渲染目标的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">renderer.<span class="hljs-title function_">render</span>(scene, camera);<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　而离屏渲染则不会直接渲染到画布上去，它设置了具体的渲染目标（也就是Target单词的含义）；将渲染结果存储到目标对象（比如WebGLRenderTarget），通过目标对象的纹理属性<code>.texture</code>，可以拿到渲染结果的像素。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> target = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebGLRenderTarget</span>(<span class="hljs-number">512</span>, <span class="hljs-number">512</span>);<br><br>renderer.<span class="hljs-title function_">setRenderTarget</span>(target);<br>renderer.<span class="hljs-title function_">render</span>(scene, camera);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　WebGLCubeRenderTarget的用法也差不多，不过它主要用于创建立方体贴图渲染目标；两者的区别主要在于创建的渲染目标的类型和用途，WebGLCubeRenderTarget专门用于创建立方体贴图渲染目标，也就是三维的目标；而WebGLRenderTarget则用于创建普通的二维渲染目标，适用于各种需要渲染到纹理的场景；下面我们看下两者的具体用法。</p>
+<h2 id="WebGLCubeRenderTarget"><a href="#WebGLCubeRenderTarget" class="headerlink" title="WebGLCubeRenderTarget"></a>WebGLCubeRenderTarget</h2><p>　　我们先来看下WebGLCubeRenderTarget的用法，它一般结合CubeCamera使用；我们知道在three.js中透视相机PerspectiveCamera是模拟了现实中人眼的视角，其可视体是一个锥体。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Threejs-Scene-Transition/perspective-camera.png" srcset="/img/loading.gif" lazyload alt="透视相机PerspectiveCamera"></p>
+<p>　　而CubeCamera立方体相机主要用于<code>渲染物体周围</code>的环境贴图；它以<code>相机的位置为中心</code>，从六个方向（前、后、左、右、上、下）拍摄场景，实现反射和折射效果；相当于在6个方向上创建了透视相机，然后并将拍摄的场景渲染到一个WebGLCubeRenderTarget上。</p>
+<p><img src="/images/Threejs-Scene-Transition/cube-camera.png" srcset="/img/loading.gif" lazyload alt="CubeCamera立方体相机"></p>
+<p>　　CubeCamera立方体相机的这种特性使得在实现负责的光照和反射效果时非常有用；它的用法也很简单，为了反射效果，我们给场景一个hdr贴图。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">new</span> <span class="hljs-title class_">RGBELoader</span>().<span class="hljs-title function_">load</span>(<br>    <span class="hljs-string">&quot;/textures/equirectangular/quarry_01_1k.hdr&quot;</span>,<br>    <span class="hljs-function">(<span class="hljs-params">texture</span>) =&gt;</span> &#123;<br>    texture.<span class="hljs-property">mapping</span> = <span class="hljs-title class_">EquirectangularReflectionMapping</span>;<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-property">background</span> = texture;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-property">environment</span> = texture;<br>    &#125;<br>);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　然后我们构建<code>WebGLCubeRenderTarget</code>实例，它接收一个size和纹理参数的对象；size越大，纹理也就越清晰，不过也更加耗费性能；一般我们选择一个适中的数值，256或者512即可：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> cubeRenderTarget = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebGLCubeRenderTarget</span>(<span class="hljs-number">256</span>, &#123;<br>    <span class="hljs-attr">format</span>: <span class="hljs-title class_">RGBAFormat</span>,<br>    <span class="hljs-comment">// 是否为纹理生成mipmap</span><br>    <span class="hljs-attr">generateMipmaps</span>: <span class="hljs-literal">true</span>,<br>    <span class="hljs-comment">// 当一个纹素覆盖小于一个像素时，贴图将如何采样。</span><br>    <span class="hljs-attr">minFilter</span>: <span class="hljs-title class_">LinearMipmapLinearFilter</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　接着就是创建我们的立方体相机了，将上面创建好的cubeRenderTarget传入，</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> cubeCamera = <span class="hljs-keyword">new</span> <span class="hljs-title class_">CubeCamera</span>(<span class="hljs-number">1</span>, <span class="hljs-number">1000</span>, cubeRenderTarget);<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　最后添加需要反射的球体，将cubeRenderTarget的纹理贴到球体上：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> material = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MeshStandardMaterial</span>(&#123;<br>    <span class="hljs-attr">envMap</span>: cubeRenderTarget.<span class="hljs-property">texture</span>,<br>    <span class="hljs-attr">roughness</span>: <span class="hljs-number">0.05</span>,<br>    <span class="hljs-attr">metalness</span>: <span class="hljs-number">1</span>,<br>&#125;);<br><br><span class="hljs-keyword">const</span> sphere = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Mesh</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">SphereGeometry</span>(<span class="hljs-number">10</span>), material);<br>sphere.<span class="hljs-property">position</span>.<span class="hljs-title function_">set</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);<br><span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(sphere);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　在渲染时，我们不仅需要渲染透视相机，还要不断的更新立方体相机：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">render</span> = (<span class="hljs-params"></span>)=&gt;&#123;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">cubeCamera</span>.<span class="hljs-title function_">update</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-title function_">render</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>);<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　我们在反射球周围添加一个旋转的球体，就能看到镜面反射的效果了：</p>
+<p><img src="/images/Threejs-Scene-Transition/res.gif" srcset="/img/loading.gif" lazyload alt="立方体相机效果"></p>
+<h2 id="WebGLRenderTarget"><a href="#WebGLRenderTarget" class="headerlink" title="WebGLRenderTarget"></a>WebGLRenderTarget</h2><p>　　理解了立方体相机的原理和用法，立方体相机的案例是离屏渲染的一个简单应用；然后就是我们离屏渲染的重要类：WebGLRenderTarget，我们来看下它的用法。</p>
+<p>　　假设我们现在有这样一个场景，一个子场景中有3个立方体，不停的旋转；另外有一个父场景，有一个平面，呈现了子场景中的场景，有种嵌套画中画的感觉。</p>
+<p>　　首先我们构建一个子场景类，同时将三个立方体放到boxs数组中去：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// 子场景</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SubScene</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Scene</span>();<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-property">background</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Color</span>(<span class="hljs-number">0x00ffff</span>);<br>    <span class="hljs-comment">// 相机aspect为1</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PerspectiveCamera</span>(<span class="hljs-number">55</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">20000</span>)<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">boxs</span> = [];<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) &#123;<br>      <span class="hljs-keyword">const</span> col = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Color</span>().<span class="hljs-title function_">setHex</span>(<span class="hljs-number">0xffffff</span> * <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>());<br>      <span class="hljs-keyword">const</span> box = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Mesh</span>(<br>        <span class="hljs-keyword">new</span> <span class="hljs-title class_">BoxGeometry</span>(<span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>),<br>        <span class="hljs-keyword">new</span> <span class="hljs-title class_">MeshBasicMaterial</span>(&#123;<br>          <span class="hljs-attr">color</span>: col,<br>        &#125;)<br>      );<br>      box.<span class="hljs-property">position</span>.<span class="hljs-title function_">set</span>(<span class="hljs-number">10</span> * i, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);<br><br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">boxs</span>.<span class="hljs-title function_">push</span>(box);<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(box);<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<blockquote>
+<p>需要注意的是，这里子场景中相机的aspect设置为1，因此我们在父场景中渲染物体的宽高比例也为1，否则会出现锯齿。</p>
+</blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　然后就是最重要的主场景逻辑，我们先把子场景和父场景的scene进行初始化，</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">subScene</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SubScene</span>();<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Scene</span>();<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PerspectiveCamera</span>(<span class="hljs-number">55</span>, <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerWidth</span> / <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerHeight</span>, <span class="hljs-number">1</span>, <span class="hljs-number">20000</span>);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<blockquote>
+<p>父场景的相机比例还是为页面的宽高比例：window.innerWidth / window.innerHeight</p>
+</blockquote>
+<p>　　然后我们构建一个<code>WebGLRenderTarget</code>实例，用来存储子场景的渲染结果：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// ..</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">rendererTarget</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebGLRenderTarget</span>(<br>      <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerWidth</span>,<br>      <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerHeight</span><br>    );<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　再是用于渲染子场景的平面物体，将其map设置为rendererTarget对象，它的大小比例和子场景的相机比例保持一致：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> material = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MeshPhongMaterial</span>(&#123;<br>  <span class="hljs-attr">map</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">rendererTarget</span>.<span class="hljs-property">texture</span>,<br>  <span class="hljs-attr">side</span>: <span class="hljs-title class_">DoubleSide</span>,<br>&#125;);<br><span class="hljs-keyword">const</span> mesh = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Mesh</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">PlaneGeometry</span>(<span class="hljs-number">100</span>, <span class="hljs-number">100</span>), material);<br><br><span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(mesh);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　最后我们在渲染函数中，让子场景的中的立方体旋转起来：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">render</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">subScene</span>.<span class="hljs-property">boxs</span>.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> &#123;<br>    item.<span class="hljs-property">rotation</span>.<span class="hljs-property">x</span> += <span class="hljs-number">0.01</span>;<br>    item.<span class="hljs-property">rotation</span>.<span class="hljs-property">y</span> += <span class="hljs-number">0.01</span>;<br>  &#125;);<br><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-title function_">setRenderTarget</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">rendererTarget</span>);<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-title function_">render</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">subScene</span>.<span class="hljs-property">scene</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">subScene</span>.<span class="hljs-property">camera</span>);<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-title function_">setRenderTarget</span>(<span class="hljs-literal">null</span>);<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-title function_">render</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>);<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　渲染时，先将渲染对象setRenderTarget设置成子场景，渲染结果保存到目标对象this.rendererTarget中；最后将渲染目标切回到主场景来进行渲染；最后我们看到的效果就是一个平面物体中渲染另一个场景：</p>
+<p><img src="/images/Threejs-Scene-Transition/target.gif" srcset="/img/loading.gif" lazyload alt="WebGLRenderTarget效果"></p>
+<h1 id="多场景切换"><a href="#多场景切换" class="headerlink" title="多场景切换"></a>多场景切换</h1><p>　　理解了离屏渲染的概念，我们来看下具体的多场景是如何来切换的，我们先对整体的架构有一定了解，其实很好理解；假设现在我们需要从场景1过渡到场景2，开始时渲染场景1，在中间过渡时渲染一个过渡的场景，这个过渡场景将场景1和2离屏对象的纹理进行模糊化展示，最后过渡结束渲染场景2。</p>
+<p><img src="/images/Threejs-Scene-Transition/scene-transition.png" srcset="/img/loading.gif" lazyload alt="场景过渡逻辑"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　我们先将基础的渲染器、相机、轨道控制器等创建好，并且定义在全局，方便在其他类中使用：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> renderer, camera, controls;<br><br><span class="hljs-comment">// 主类</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    renderer = <span class="hljs-title function_">initRenderer</span>(&#123;<br>      <span class="hljs-attr">physicallyCorrectLights</span>: <span class="hljs-literal">false</span>,<br>    &#125;);<br>    camera = <span class="hljs-title function_">initCamera</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Vector3</span>(<span class="hljs-number">0</span>, <span class="hljs-number">500</span>, <span class="hljs-number">2</span>), <span class="hljs-number">100</span>, <span class="hljs-number">1</span>, <span class="hljs-number">20000</span>);<br><br>    controls = <span class="hljs-keyword">new</span> <span class="hljs-title class_">OrbitControls</span>(camera, renderer.<span class="hljs-property">domElement</span>);<br>    controls.<span class="hljs-property">minDistance</span> = <span class="hljs-number">5</span>;<br>    controls.<span class="hljs-property">maxDistance</span> = <span class="hljs-number">20</span>;<br>    <span class="hljs-comment">// 其他逻辑</span><br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　既然是多场景，要体现出多的特性，我们要构建两个及以上的场景及对应的离屏对象，因此我们单独构建一个场景类，用来批量生产场景：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SingleScene</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">options</span>) &#123;<br>    <span class="hljs-keyword">const</span> &#123; url &#125; = options;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span> = <span class="hljs-title function_">initScene</span>();<br><br>    <span class="hljs-keyword">const</span> renderTargetParameters = &#123;<br>      <span class="hljs-attr">minFilter</span>: <span class="hljs-title class_">LinearFilter</span>,<br>      <span class="hljs-attr">magFilter</span>: <span class="hljs-title class_">LinearFilter</span>,<br>      <span class="hljs-attr">stencilBuffer</span>: <span class="hljs-literal">false</span>,<br>    &#125;;<br><br>    <span class="hljs-keyword">const</span> sphereGeometry = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SphereGeometry</span>(<span class="hljs-number">500</span>, <span class="hljs-number">50</span>, <span class="hljs-number">50</span>);<br>    sphereGeometry.<span class="hljs-title function_">scale</span>(-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);<br>    <span class="hljs-keyword">const</span> sphereMaterial = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MeshBasicMaterial</span>(&#123;<br>      <span class="hljs-attr">map</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">TextureLoader</span>().<span class="hljs-title function_">load</span>(url),<br>    &#125;);<br><br>    <span class="hljs-keyword">const</span> sphere = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Mesh</span>(sphereGeometry, sphereMaterial);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(sphere);<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">fbo</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebGLRenderTarget</span>(offsetWidth, offsetHeight, renderTargetParameters);<br>  &#125;<br><br>  <span class="hljs-title function_">render</span>(<span class="hljs-params">rtt = <span class="hljs-literal">false</span></span>) &#123;&#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里我们构建了一个场景类SingleScene，用来构建单个场景，我们的场景比较简单，只有一个大小为500单位的球体，球体贴图为传入的url；同时实例化一个WebGLRenderTarget离屏对象，用来存储渲染结果。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　在渲染SingleScene场景时，由于我们需要根据不同时间点切换将<code>this.scene</code>渲染到离屏对象还是直接到Canvas画布，因此我们需要传入一个参数rtt，如果rtt为true，则将this.scene渲染到离屏对象，否则将离屏对象渲染到renderer。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SingleScene</span> &#123;<br>  <span class="hljs-title function_">render</span>(<span class="hljs-params">rtt = <span class="hljs-literal">false</span></span>) &#123;<br>    <span class="hljs-keyword">if</span> (rtt) &#123;<br>      renderer.<span class="hljs-title function_">setRenderTarget</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">fbo</span>);<br>      renderer.<span class="hljs-title function_">clear</span>();<br>      renderer.<span class="hljs-title function_">render</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>, camera);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      renderer.<span class="hljs-title function_">setRenderTarget</span>(<span class="hljs-literal">null</span>);<br>      renderer.<span class="hljs-title function_">render</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>, camera);<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　SingleScene场景类基本就完成了，我们可以在主类中创建多个场景：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene1</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SingleScene</span>(&#123; <span class="hljs-attr">url</span>: <span class="hljs-string">&quot;XXX-1.jpg&quot;</span> &#125;);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene2</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SingleScene</span>(&#123; <span class="hljs-attr">url</span>: <span class="hljs-string">&quot;XXX-2.jpg&quot;</span> &#125;);<br>    <span class="hljs-comment">// 创建其他场景</span><br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h2 id="场景渲染器"><a href="#场景渲染器" class="headerlink" title="场景渲染器"></a>场景渲染器</h2><p>　　下面就是最核心的场景渲染器的功能，用于在两个场景中进行切换，我们将所有场景以及过渡场景的渲染都放到这个渲染器中执行；首先初始化时有一个起始的场景，我们将需要的参数定义好：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">TransitionScene</span>(<span class="hljs-params">sceneStart</span>) &#123;<br>  <span class="hljs-comment">// 过渡的参数</span><br>  <span class="hljs-keyword">const</span> transitionParams = &#123;<br>    <span class="hljs-comment">// 过渡进程，从0-1</span><br>    <span class="hljs-attr">transition</span>: <span class="hljs-number">0</span>,<br>    <span class="hljs-comment">// 过渡纹理</span><br>    <span class="hljs-attr">texture</span>: <span class="hljs-literal">undefined</span>,<br>    <span class="hljs-comment">// 是否使用纹理</span><br>    <span class="hljs-attr">useTexture</span>: <span class="hljs-literal">false</span>,<br>    <span class="hljs-comment">// 过渡速度</span><br>    <span class="hljs-attr">transitionSpeed</span>: <span class="hljs-number">0.05</span>,<br>    <span class="hljs-comment">// 是否开始动画</span><br>    <span class="hljs-attr">animate</span>: <span class="hljs-literal">false</span>,<br>  &#125;;<br><br>  <span class="hljs-comment">// 过渡开始前的场景</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">sceneFrom</span> = sceneStart;<br>  <span class="hljs-comment">// 过渡结束后的场景</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">sceneTo</span> = <span class="hljs-literal">undefined</span>;<br><br>  <span class="hljs-comment">// 切换下一个场景</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">update</span> = <span class="hljs-function">(<span class="hljs-params">sceneTo, params</span>) =&gt;</span> &#123;&#125;<br>  <span class="hljs-comment">// 所有的场景渲染</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">render</span> = <span class="hljs-function">() =&gt;</span> &#123;&#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+
+<p>　　这个<code>TransitionScene</code>的作用就是初始化的时候保存了一个开始的场景sceneFrom，当切换场景时调用<code>update函数</code>过渡到下一个场景sceneTo；在TransitionScene中，我们再创建一个过渡场景，这个过渡场景使用了正交相机<code>OrthographicCamera</code>以及铺满整个相机视角的平面PlaneGeometry：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">TransitionScene</span>(<span class="hljs-params">sceneStart</span>) &#123;<br>  <span class="hljs-comment">// 过渡的场景</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Scene</span>();<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-property">background</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Color</span>(<span class="hljs-number">0x000000</span>);<br><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">OrthographicCamera</span>(offsetWidth / -<span class="hljs-number">2</span>, offsetWidth / <span class="hljs-number">2</span>, offsetHeight / <span class="hljs-number">2</span>, offsetHeight / -<span class="hljs-number">2</span>, -<span class="hljs-number">10</span>, <span class="hljs-number">10</span>);<br><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">material</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ShaderMaterial</span>(&#123;<br>    <span class="hljs-attr">uniforms</span>: &#123;<br>      <span class="hljs-attr">tDiffuse1</span>: &#123;<br>        <span class="hljs-attr">value</span>: <span class="hljs-literal">null</span>,<br>      &#125;,<br>      <span class="hljs-attr">tDiffuse2</span>: &#123;<br>        <span class="hljs-attr">value</span>: <span class="hljs-literal">null</span>,<br>      &#125;,<br>      <span class="hljs-attr">mixRatio</span>: &#123;<br>        <span class="hljs-attr">value</span>: <span class="hljs-number">0.0</span>,<br>      &#125;,<br>      <span class="hljs-attr">threshold</span>: &#123;<br>        <span class="hljs-attr">value</span>: <span class="hljs-number">0.1</span>,<br>      &#125;,<br>      <span class="hljs-attr">useTexture</span>: &#123;<br>        <span class="hljs-attr">value</span>: <span class="hljs-literal">false</span>,<br>      &#125;,<br>      <span class="hljs-attr">tMixTexture</span>: &#123;<br>        <span class="hljs-attr">value</span>: transitionParams.<span class="hljs-property">texture</span>,<br>      &#125;,<br>    &#125;,<br>    <span class="hljs-attr">vertexShader</span>: <span class="hljs-string">`</span><br><span class="hljs-string">    varying vec2 vUv;</span><br><span class="hljs-string">			void main() &#123;</span><br><span class="hljs-string">				vUv = vec2( uv.x, uv.y );</span><br><span class="hljs-string">				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );</span><br><span class="hljs-string">			&#125;</span><br><span class="hljs-string">    `</span>,<br>    <span class="hljs-attr">fragmentShader</span>: <span class="hljs-string">`</span><br><span class="hljs-string">      uniform float mixRatio;</span><br><span class="hljs-string">			uniform sampler2D tDiffuse1;</span><br><span class="hljs-string">			uniform sampler2D tDiffuse2;</span><br><span class="hljs-string">			uniform sampler2D tMixTexture;</span><br><span class="hljs-string">			uniform bool useTexture;</span><br><span class="hljs-string">			uniform float threshold;</span><br><span class="hljs-string">			varying vec2 vUv;</span><br><span class="hljs-string">			void main() &#123;</span><br><span class="hljs-string">				vec4 texel1 = texture2D( tDiffuse1, vUv );</span><br><span class="hljs-string">				vec4 texel2 = texture2D( tDiffuse2, vUv );</span><br><span class="hljs-string">				if (useTexture==true) &#123;</span><br><span class="hljs-string">					vec4 transitionTexel = texture2D( tMixTexture, vUv );</span><br><span class="hljs-string">					float r = mixRatio * (1.0 + threshold * 2.0) - threshold;</span><br><span class="hljs-string">					float mixf=clamp((transitionTexel.r - r)*(1.0/threshold), 0.0, 1.0);</span><br><span class="hljs-string">					gl_FragColor = mix( texel1, texel2, mixf );</span><br><span class="hljs-string">				&#125; else &#123;</span><br><span class="hljs-string">					gl_FragColor = mix( texel2, texel1, mixRatio );</span><br><span class="hljs-string">				&#125;</span><br><span class="hljs-string">			&#125;</span><br><span class="hljs-string">    `</span>,<br>  &#125;);<br>  <span class="hljs-keyword">const</span> geometry = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PlaneGeometry</span>(offsetWidth, offsetHeight);<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">quad</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Mesh</span>(geometry, <span class="hljs-variable language_">this</span>.<span class="hljs-property">material</span>);<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">quad</span>);<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这个的着色器主要使用三个参数tDiffuse1/tDiffuse2和mixRatio，从名字我们也能猜出来，tDiffuse1/tDiffuse2是两个场景，mixRatio是两个场景的混合程度，我们只需要在过渡时改变这个mixRatio的数值就能呈现出一个渐变的效果。</p>
+<p>　　因此我们继续完善update函数，切换时将新的场景保存到sceneTo，同时将mixRatio设为0：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">TransitionScene</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">update</span> = <span class="hljs-function">(<span class="hljs-params">sceneTo, params</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">// 动画正在执行中</span><br>    <span class="hljs-keyword">if</span> (transitionParams.<span class="hljs-property">animate</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br><br>    <span class="hljs-keyword">const</span> &#123; transitionSpeed = <span class="hljs-number">0.05</span> &#125; = params;<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">sceneTo</span> = sceneTo;<br><br>    transitionParams.<span class="hljs-property">transition</span> = <span class="hljs-number">0</span>;<br>    transitionParams.<span class="hljs-property">transitionSpeed</span> = transitionSpeed;<br>    transitionParams.<span class="hljs-property">animate</span> = <span class="hljs-literal">true</span>;<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>.<span class="hljs-property">tDiffuse1</span>.<span class="hljs-property">value</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">sceneTo</span>.<span class="hljs-property">fbo</span>.<span class="hljs-property">texture</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>.<span class="hljs-property">tDiffuse2</span>.<span class="hljs-property">value</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">sceneFrom</span>.<span class="hljs-property">fbo</span>.<span class="hljs-property">texture</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>.<span class="hljs-property">threshold</span>.<span class="hljs-property">value</span> = <span class="hljs-number">0.1</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>.<span class="hljs-property">mixRatio</span>.<span class="hljs-property">value</span> = <span class="hljs-number">0.0</span>;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>  &#125;;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　这里我们用到了fbo离屏对象的texture纹理，将其赋值到tDiffuse1和tDiffuse2，在着色器中就可以通过mixRatio数值将两个场景进行混合了。</p>
+<p>　　在TransitionScene渲染时，我们根据<code>transitionParams.transition</code>参数判断渲染时段，0渲染开始场景sceneFrom，1渲染结束场景sceneTo，中间则是渲染过渡场景this.scene：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">TransitionScene</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">render</span> = <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (transitionParams.<span class="hljs-property">transition</span> === <span class="hljs-number">0</span>) &#123;<br>      <span class="hljs-title function_">isDef</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">sceneFrom</span>) &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">sceneFrom</span>.<span class="hljs-title function_">render</span>();<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (transitionParams.<span class="hljs-property">transition</span> &gt;= <span class="hljs-number">1</span>) &#123;<br>      <span class="hljs-title function_">isDef</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">sceneTo</span>) &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">sceneTo</span>.<span class="hljs-title function_">render</span>();<br>      transitionParams.<span class="hljs-property">animate</span> = <span class="hljs-literal">false</span>;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-title function_">isDef</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">sceneFrom</span>) &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">sceneFrom</span>.<span class="hljs-title function_">render</span>(<span class="hljs-literal">true</span>);<br>      <span class="hljs-title function_">isDef</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">sceneTo</span>) &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">sceneTo</span>.<span class="hljs-title function_">render</span>(<span class="hljs-literal">true</span>);<br>      renderer.<span class="hljs-title function_">setRenderTarget</span>(<span class="hljs-literal">null</span>);<br>      renderer.<span class="hljs-title function_">clear</span>();<br>      renderer.<span class="hljs-title function_">render</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>);<br>    &#125;<br>    <span class="hljs-keyword">if</span> (transitionParams.<span class="hljs-property">animate</span> &amp;&amp; transitionParams.<span class="hljs-property">transition</span> &lt;= <span class="hljs-number">1</span>) &#123;<br>      <span class="hljs-comment">// 动画还在执行过程中</span><br>      transitionParams.<span class="hljs-property">transition</span> = transitionParams.<span class="hljs-property">transition</span> + transitionParams.<span class="hljs-property">transitionSpeed</span>;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>.<span class="hljs-property">mixRatio</span>.<span class="hljs-property">value</span> = transitionParams.<span class="hljs-property">transition</span>;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　在过渡执行时，我们将transitionSpeed不断加到transition上，也就是控制混合度mixRatio；同时调用sceneFrom.render和sceneTo.render；这两个render可不是直接渲染，而将离屏渲染到两个fbo中；最后再渲染过渡场景this.scene，此时this.scene中的着色器就可以拿到两个fbo的纹理进行混合。</p>
+<p>　　最后，我们在场景切换完成后，需要把切换后的sceneTo场景，赋值给切换前的sceneFrom场景，为下一次的场景切换做准备：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">TransitionScene</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">// ...</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">render</span> = <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-keyword">if</span> (transitionParams.<span class="hljs-property">transition</span> &gt;= <span class="hljs-number">1</span>) &#123;<br>      <span class="hljs-comment">// 切换完成</span><br>      <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">sceneFrom</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">sceneTo</span>;<br>        transitionParams.<span class="hljs-property">transition</span> = <span class="hljs-number">0</span>;<br>      &#125;, <span class="hljs-number">10</span>);<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　这样我们的过渡切换函数基本就完成了，我们在主类中进行调用，开始传入第一个场景scene1：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">transition</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TransitionScene</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">scene1</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">render</span>();<br>  &#125;<br>  <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">transition</span>.<span class="hljs-title function_">render</span>();<br>    <span class="hljs-title function_">requestAnimationFrame</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">render</span>.<span class="hljs-title function_">bind</span>(<span class="hljs-variable language_">this</span>));<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　我们来看一下切换的效果：</p>
+<p><img src="/images/Threejs-Scene-Transition/change.gif" srcset="/img/loading.gif" lazyload alt="场景过渡效果"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="过渡纹理图案"><a href="#过渡纹理图案" class="headerlink" title="过渡纹理图案"></a>过渡纹理图案</h2><p>　　在上面的着色器代码中我们发现有useTexture和tMixTexture两个参数，可以在切换时呈现过渡的纹理图案效果；我们首先在主类中加载六张纹理的png图片（所有图片笔者已经整理好，在文末领取）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">textures</span> = [];<br>    <span class="hljs-keyword">const</span> loader = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TextureLoader</span>();<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">6</span>; i++) &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">textures</span>.<span class="hljs-title function_">push</span>(loader.<span class="hljs-title function_">load</span>(<span class="hljs-string">`/images/textures/transition/transition<span class="hljs-subst">$&#123;i + <span class="hljs-number">1</span>&#125;</span>.png`</span>));<br>    &#125;<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">transitionParams</span> = &#123;<br>      <span class="hljs-attr">useTexture</span>: <span class="hljs-literal">false</span>, <span class="hljs-comment">//为 false 默认采用渐变式</span><br>      <span class="hljs-attr">transition</span>: <span class="hljs-number">0</span>,<br>      <span class="hljs-attr">transitionSpeed</span>: <span class="hljs-number">0.05</span>,<br>      <span class="hljs-attr">texture</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">textures</span>[<span class="hljs-number">0</span>],<br>      <span class="hljs-attr">animate</span>: <span class="hljs-literal">false</span>,<br>    &#125;;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　在主类中点击切换场景时，随机选择textures中的一个纹理图片，通过transitionParams参数传入update函数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-comment">// 点击切换场景</span><br>  <span class="hljs-title function_">changeScene</span>(<span class="hljs-params">index</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">transitionParams</span>.<span class="hljs-property">texture</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">textures</span>[<span class="hljs-built_in">parseInt</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() * <span class="hljs-number">6</span>)];<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">transition</span>.<span class="hljs-title function_">update</span>(toScene, <span class="hljs-variable language_">this</span>.<span class="hljs-property">transitionParams</span>);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<p>　　我们改造update函数，解构接收参数params中的纹理，传入着色器的uniforms.tMixTexture：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">TransitionScene</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">update</span> = <span class="hljs-function">(<span class="hljs-params">sceneTo, params</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> &#123; texture, useTexture = <span class="hljs-literal">false</span>, &#125; = params;<br><br>    transitionParams.<span class="hljs-property">texture</span> = texture;<br>    transitionParams.<span class="hljs-property">useTexture</span> = useTexture;<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>.<span class="hljs-property">tDiffuse1</span>.<span class="hljs-property">value</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">sceneTo</span>.<span class="hljs-property">fbo</span>.<span class="hljs-property">texture</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>.<span class="hljs-property">tDiffuse2</span>.<span class="hljs-property">value</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">sceneFrom</span>.<span class="hljs-property">fbo</span>.<span class="hljs-property">texture</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>.<span class="hljs-property">tMixTexture</span>.<span class="hljs-property">value</span> = texture;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">material</span>.<span class="hljs-property">uniforms</span>.<span class="hljs-property">useTexture</span>.<span class="hljs-property">value</span> = useTexture;<br>    <span class="hljs-comment">// ...</span><br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样，在动画执行时，我们就可以看到不止渐变的效果，还有纹理图案的渐变。</p>
+<h2 id="场景列表选择"><a href="#场景列表选择" class="headerlink" title="场景列表选择"></a>场景列表选择</h2><p>　　我们在上一篇文章<a href="/2024/04/08/Vue-Click-Outside.html">深入理解自定义指令ClickOutside</a>中说到，点击时需要额外过滤其他的节点的情况；我们先来简单看下页面结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vue">&lt;template&gt;<br>  &lt;div&gt;<br>    &lt;div :class=&quot;[&#x27;select-scene&#x27;]&quot; @click=&quot;clickToggleSelectScene&quot;&gt;<br>      &lt;div&gt;选择场景&lt;/div&gt;<br>    &lt;/div&gt;<br><br>    &lt;div :class=&quot;[&#x27;scene-list_box&#x27;, isShowSceneList ? &#x27;show&#x27; : &#x27;&#x27;]&quot;&gt;<br>      &lt;div class=&quot;scene-item&quot; v-for=&quot;(item, index) in sceneList&quot;&gt;<br>        &lt;img :src=&quot;item.image&quot; alt=&quot;&quot; /&gt;<br>        &lt;div class=&quot;scene-item_desc&quot;&gt;&#123;&#123; item.name &#125;&#125;&lt;/div&gt;<br>      &lt;/div&gt;<br>    &lt;/div&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br>&lt;script setup&gt;<br>const isShowSceneList = ref(false);<br><br>// 点击展示或隐藏场景列表<br>const clickToggleSelectScene = () =&gt; &#123;<br>  isShowSceneList.value = !isShowSceneList.value;<br>&#125;;<br>&lt;/script&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　页面很简单，主要就是一个选择场景按钮.select-scene和隐藏的场景列表的div.scene-list_box，当点击选择场景时，设置isShowSceneList为true，就可以显示.scene-list_box。</p>
+<p>　　但是我们设想一下，当点击.scene-list_box外面时，也能够隐藏.scene-list_box，因此就需要用到ClickOutside；我们给.scene-list_box绑定点击外层的触发事件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vue">&lt;template&gt;<br>&lt;div :class=&quot;[&#x27;scene-list_box&#x27;, isShowSceneList ? &#x27;show&#x27; : &#x27;&#x27;]&quot; v-click-outside=&quot;hideSelectScene&quot;&gt;<br>&lt;/div&gt;<br>&lt;/template&gt;<br>&lt;script setup&gt;<br>// 隐藏场景列表<br>const hideSelectScene = () =&gt; &#123;<br>  isShowSceneList.value = false;<br>&#125;;<br>&lt;/script&gt;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　这样就很尴尬，我们点击选择场景按钮.select-scene时，既触发了<code>clickToggleSelectScene函数</code>，同时又触发了<code>hideSelectScene函数</code>，导致我们的.scene-list_box并不能很好的关闭。</p>
+<p>　　我们就需要将选择场景按钮添加到过滤的excludes数组，然后传入ClickOutside：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vue">&lt;template&gt;<br>&lt;div :class=&quot;[&#x27;scene-list_box&#x27;, isShowSceneList ? &#x27;show&#x27; : &#x27;&#x27;]&quot; <br>  v-click-outside:[excludes]=&quot;hideSelectScene&quot;&gt;<br>&lt;/div&gt;<br>&lt;/template&gt;<br>&lt;script setup&gt;<br>const excludes = ref([]);<br><br>onMounted(() =&gt; &#123;<br>  excludes.value.push(document.querySelector(&quot;.select-scene&quot;));<br>&#125;);<br>&lt;/script&gt;<br></code></pre></div></td></tr></table></figure>
+
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　本文我们通过对离屏渲染概念的了解，深入理解了WebGLRenderTarget类的用法，最后实现了场景切换的过渡效果；在编写页面代码的过程中，还结合上一篇文章学习的ClickOutside指令的用法，完成了选择场景的功能。</p>
+<blockquote>
+<p>本文的全景过渡效果可以<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/panorama/multi">点击链接查看</a></p>
+</blockquote>
+<blockquote>
+<p>本文所有源码敬请关注公众号【前端壹读】，后台回复关键词【Threejs场景过渡】即可获取。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</blockquote>
+<img src="/images/qrcode.png" srcset="/img/loading.gif" lazyload alt="" align="center" width="40%" style="display:block;margin:0 auto;"/>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Animation/">动画</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Threejs/">Threejs</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Graphical/">图形化</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/05/28/Threejs-Points-Effect.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Threejs粒子云切换效果的实现</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/08/Vue-Click-Outside.html">
+                        <span class="hidden-mobile">深入理解Vue3自定义指令ClickOutside的实现</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

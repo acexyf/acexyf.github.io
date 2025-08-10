@@ -1,0 +1,722 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　随着我们项目代码模块越来越多，打包和启动调试服务器所需要的时间也呈指数级增长，Vite是尤大大在推出Vue3时顺带推出升级的一个web构建工具，旨在解决构建慢的问题，那我们就来看一下，它构建有多快以及是如何构建的。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>深度测评次世代打包工具Vite - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="深度测评次世代打包工具Vite">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-06-10 12:00" pubdate>
+        2021年6月10日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      43
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">深度测评次世代打包工具Vite</h1>
+            
+            <div class="markdown-body">
+              <p>　　随着我们项目代码模块越来越多，打包和启动调试服务器所需要的时间也呈指数级增长，Vite是尤大大在推出Vue3时顺带推出升级的一个web构建工具，旨在解决构建慢的问题，那我们就来看一下，它构建有多快以及是如何构建的。</p>
+<span id="more"></span>
+
+
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>　　Vite对其自身的定义为：</p>
+<blockquote>
+<p>下一代前端开发与构建工具</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</blockquote>
+<p>　　在<a href="https://xieyufei.com/2021/01/28/Package-Tool-Compare.html">深入对比Webpack、Parcel、Rollup打包工具的不同</a>一章中，我们分别详细的对比了Rollup、Parcel和Webpack之间的异同，也分析了每个打包工具使用的场景；那么Vite作为次时代的打包工具，我们先来看下它的优点：</p>
+<ul>
+<li>极速的服务启动：使用原生 ESM 文件，无需打包!</li>
+<li>轻量快速的热重载：无论应用程序大小如何，都始终极快的模块热重载（HMR）</li>
+<li>丰富的功能：对 TypeScript、JSX、CSS 等支持开箱即用。</li>
+<li>优化的构建：可选 “多页应用” 或 “库” 模式的预配置 Rollup 构建</li>
+<li>通用的插件：在开发和构建之间共享 Rollup-superset 插件接口。</li>
+<li>完全类型化的API：灵活的 API 和完整 TypeScript 类型。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</ul>
+<p>　　我们看到Vite主打的特点就是极速服务启动，也就是一个字：快！俗话说得好，天下武功，无坚不摧，唯快不破；我们先来搭建第一个项目看下，通过<code>--template</code>来指定预设的模板：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># npm 6.x</span><br>npm init @vitejs/app vite-vue-app --template vue<br><br><span class="hljs-comment"># npm 7+, 需要额外的双横线：</span><br>npm init @vitejs/app vite-vue-app -- --template vue<br></code></pre></div></td></tr></table></figure>
+
+<p>　　Vite还支持以下模板预设：</p>
+<ul>
+<li>vanilla</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>vue</li>
+<li>vue-ts</li>
+<li>react</li>
+<li>react-ts</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>preact</li>
+<li>preact-ts</li>
+<li>lit-element</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>lit-element-ts</li>
+</ul>
+<p>　　接着我们运行<code>npm run dev</code>或者<code>yarn dev</code>来启动服务器，可以看到服务器很快就启动了，不到400毫秒：</p>
+<p><img src="/images/Front-Package-Vite/vite-ready-time.png" srcset="/img/loading.gif" lazyload alt="Vite启动时间"></p>
+<p>　　Vue预设模板的项目结构大概如下：</p>
+<p><img src="/images/Front-Package-Vite/vite-project.png" srcset="/img/loading.gif" lazyload alt="Vite项目结构"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　可以发现Vue预设模板的目录结构和vue-cli很相似，不同的是index.html文件的位置和配置文件，vite是<code>vite.config.js</code>，而不是<code>vue.config.js</code>。</p>
+<p>　　最后就是我们的<code>package.json</code>，来看下vite需要哪些依赖：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vite-vue-app&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1.0.0&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;dev&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vite&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;build&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vite build&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;serve&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vite preview&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;dependencies&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;vue&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^3.0.5&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;devDependencies&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;@vitejs/plugin-vue&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^1.2.1&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@vue/compiler-sfc&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^3.0.5&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;vite&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.1.5&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　可以看到Vite的依赖非常简单，默认支持Vue3.0，<code>@vitejs/plugin-vue</code>和<code>@vue/compiler-sfc</code>都是Vue3.0的编译插件；如果想要支持Vue2.x，需要安装<code>vite-plugin-vue2</code>插件。</p>
+<h1 id="原生ES模块"><a href="#原生ES模块" class="headerlink" title="原生ES模块"></a>原生ES模块</h1><p>　　我们知道vue-cli的页面模板是在/public/目录下，那么来看下vite根目录下<code>index.html</code>有什么不同的地方：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;icon&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/favicon.ico&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Vite App<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;app&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/src/main.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们发现这里多引用了一个main.js，并且还有一个<code>type=&quot;module&quot;</code>属性，那么这个属性有什么用呢？我们都知道我们代码中引用的ES模块必须要通过打包工具比如webpack等进行处理后才能在浏览器中进行使用；但是一些主流浏览器（Chrome、Edge、Safari、Firefox等）都在尝试原生支持ES模块，这是一个主要的新特性，也就是说我们在浏览器里就能直接使用ES的模块，不过让我们来看下浏览器对这个新特性的支持情况：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/Front-Package-Vite/caniuse.png" srcset="/img/loading.gif" lazyload alt="浏览器支持情况"></p>
+<p>　　我们可以写个demo在浏览器上进行测试：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//count.js</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">num1, num2</span>)&#123;<br>    <span class="hljs-keyword">return</span> num1 + num2<br>&#125;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">sub</span>(<span class="hljs-params">num1, num2</span>)&#123;<br>    <span class="hljs-keyword">return</span> num1 + num2<br>&#125;<br><span class="hljs-comment">//index.js</span><br><span class="hljs-keyword">import</span> &#123; add, sub &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./count.js&#x27;</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">add</span>(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>))<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">sub</span>(<span class="hljs-number">4</span>, <span class="hljs-number">2</span>))<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们先定义好es模块，然后需要通过script的方式进行引用：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/static/js/count.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/static/js/index.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　原生es和普通js脚本有写不同：</p>
+<ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>es module默认使用严格模式</li>
+<li>es module有自己的作用域，使用var并不会创建全局变量</li>
+<li>export和import关键字仅可在es module中使用</li>
+<li>es module只会被浏览器解析并执行一次，普通js脚本每次引入都会解析执行</li>
+<li>es module有跨域限制</li>
+</ul>
+<p>　　我们都知道，js的加载解析默认是会阻塞浏览器的，因此script标签一般都放在页面底部；但是我们可以给script加上defer来让js并发加载执行：</p>
+<p><img src="/images/Front-Package-Vite/load-js.png" srcset="/img/loading.gif" lazyload alt="JS加载顺序"></p>
+<p>　　我们发现原生ES模块和加上defer属性的效果是一样的；vite利用了浏览器对原生ES模块的支持，跳过打包（no bundle）过程，将ES模块解析编译后直接提供给浏览器；只在必要请求时进行代码转换，这样自然就节省了费时费力的打包时间。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　例如我们在请求首页home.vue模块时，只有在浏览器请求home.vue才将vue文件的template等解析编译，解析成浏览器可以执行的js返回。</p>
+<p>　　我们看下官方给出的传统打包工具的打包过程，从入口一直解析庞大的模块，然后打包成bundle，最后才能启动服务器：</p>
+<p><img src="/images/Front-Package-Vite/bundler.png" srcset="/img/loading.gif" lazyload alt="传统打包"></p>
+<p>　　但是Vite可以直接启动服务器，加载入口的文件：</p>
+<p><img src="/images/Front-Package-Vite/esm.png" srcset="/img/loading.gif" lazyload alt="Vite打包"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　灰色部分的是暂时没有用到的模块，初始化不会参与构建，随着项目的路由越来越复杂，构建速度也不会变慢。</p>
+<h1 id="依赖预构建"><a href="#依赖预构建" class="headerlink" title="依赖预构建"></a>依赖预构建</h1><p>　　当我们首次运行项目时可能会发现下面的提示小字：</p>
+<p><img src="/images/Front-Package-Vite/pre-structure.jpeg" srcset="/img/loading.gif" lazyload alt="模块预构建"></p>
+<p>　　我们上面说过Vite是不依赖构建的，那这里为什么还需要预构建呢？这里官方给出了两个原因：</p>
+<ol>
+<li>兼容CommonJS和UMD：由于Vite服务器会将所有的模块当作原生ES模块在浏览器中使用，因此有一些依赖使用的CommonJS和UMD规范需要进行转换</li>
+<li>提升性能：有些依赖包将内部的ESM模块拆分多个，预构建将多个模块转换为单个模块，提升页面加载性能</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</ol>
+<p>　　兼容CommonJS和UMD不用多说，就是为了模块引用规范的统一，对模块化规范不了解的童鞋可以看这篇<a href="https://xieyufei.com/2021/01/08/CommonJS-ES6.html">深入学习CommonJS和ES6模块化规范</a>；提升性能官方给了一个现成的案例就是<code>lodash-es</code>依赖，当我们<code>import &#123; chunk &#125; from &quot;lodash-es&quot;</code>，由于内部有600+个模块，相互导入，因此浏览器会去同时加载600+个http请求，虽然每个请求只有1~2kb，但是大量的请求也会造成网络堵塞；我们可以将lodash-es剔除预构建来看下效果：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; defineConfig &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vite&quot;</span>;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>(&#123;<br>  <span class="hljs-attr">optimizeDeps</span>: &#123;<br>    <span class="hljs-attr">exclude</span>: [<span class="hljs-string">&quot;lodash-es&quot;</span>],<br>  &#125;,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们在<code>vite.config.js</code>中修改<code>optimizeDeps.exclude</code>，然后就能在浏览器中看到效果：</p>
+<p><img src="/images/Front-Package-Vite/lodash-request.jpeg" srcset="/img/loading.gif" lazyload alt="lodash大量请求"></p>
+<p>　　我们看到虽然请求数据不多，但是架不住600+大量的请求，正所谓乱拳打死老师傅；如果通过预构建将这些模块都统一到一起，那么速度快了不是一点点；那么什么样的模块会进行预构建呢？</p>
+<p>　　默认情况下，Vite会将package.json中生产依赖<code>dependencies</code>的部分启用依赖预编译，即会先对该依赖进行编译，然后将编译后的文件缓存在内存中（node_modules/.vite文件下），在启动<code>DevServer</code>时直接请求该缓存内容</p>
+<h1 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h1><p>　　很多情况下我们需要对打包的变量根据环境进行区分，比如请求的域名等，和vue-cli一样，vite也可以区分打包环境，不过它的变量比较特殊；我们知道它并不是通过webpack的DefinePlugin方式来定义全局变量，因此不能通过<code>process.env</code>来获取；而是通过一个特殊的<code>import.meta.env</code>对象来暴露，这个对象有一些公共的内在变量：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<ul>
+<li>import.meta.env.MODE：运行模式，通过<code>--mode</code>来设置</li>
+<li>import.meta.env.BASE_URL：部署的公共基础路径，由config文件中的base确定</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>import.meta.env.PROD：boolean值，是否运行在生产环境</li>
+<li>import.meta.env.DEV：boolean值，是否运行在开发环境 (永远与import.meta.env.PROD相反)</li>
+</ul>
+<p>　　Vite支持dotenv，可以从项目根目录的文件加载额外的环境变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">.<span class="hljs-built_in">env</span>      <span class="hljs-comment"># 所有环境都加载</span><br>.env.test <span class="hljs-comment"># 测试环境</span><br>.env.prod <span class="hljs-comment"># 正式环境</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　加载的变量也会通过import.meta.env暴露给客户端代码，不过为了防止变量泄露，只有<code>VITE_</code>为前缀的变量才会暴露。</p>
+<p>　　这里引入一个模式的概念，默认情况下serve命令运行开发模式（development），而build命令会运行生产模式（production），但是我们可以通过env文件定义自己需要的模式；可以通过<code>--mode</code>选项覆盖命令使用的默认模式。</p>
+<p>　　比如我们项目在测试和正式环境之外可能还会设置一个预发环境，将一些线上的数据拷贝过来以便模拟真实场景，我们就可以定义一个staging模式：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">vite build --mode staging<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们可以将用到的环境配置放入<code>.env.staging</code>文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># .env.staging</span><br>NODE_ENV=production<br>VITE_APP_TITLE=My App (staging)<br>VITE_HOST=https://xieyufei.com<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　这样staging模式就会打包和生产环境类似的代码，但是环境变量却是staging模式的，我们就成功新增了一种模式。</p>
+<h1 id="vite配置"><a href="#vite配置" class="headerlink" title="vite配置"></a>vite配置</h1><p>　　当我们运行vite时，默认会解析项目目录下的<code>vite.config.js</code>地配置文件，基础的配置文件导出一个对象</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//vite.config.js</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-comment">// 配置</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　但是我们一般会引入<code>defineConfig</code>帮手函数，这样在没有jsdoc的配合下，也能获取类型提示：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; defineConfig &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vite&#x27;</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>(&#123;<br>  <span class="hljs-comment">// 配置</span><br>&#125;)<br></code></pre></div></td></tr></table></figure>
+
+<p>　　如果我们的配置文件还需要根据环境或者模式的的不同来传递不同的插件或配置等，可以通过导出一个函数的方式：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> (&#123; command, mode &#125;) =&gt; &#123;<br>  <span class="hljs-keyword">if</span> (command === <span class="hljs-string">&#x27;serve&#x27;</span>) &#123;<br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-comment">// serve 独有配置</span><br>    &#125;<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-comment">// build 独有配置</span><br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<h2 id="css预处理"><a href="#css预处理" class="headerlink" title="css预处理"></a>css预处理</h2><p>　　对css预处理，Vite提供了开箱支持，我们只要安装对应的预处理依赖，无需配置，即可进行使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># .scss and .sass</span><br>npm install -D sass<br><br><span class="hljs-comment"># .less</span><br>npm install -D less<br><br><span class="hljs-comment"># .styl and .stylus</span><br>npm install -D stylus<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　这样我们就可以通过<code>&lt;style lang=&quot;sass&quot;&gt;</code>自动开启预处理了；针对postcss的功能，我们可以直接配置<code>postcss.config.js</code>，它会自动应用所有的css，不过也需要安装对应的插件。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="resolve解析"><a href="#resolve解析" class="headerlink" title="resolve解析"></a>resolve解析</h2><p>　　和webpack类似，<code>resolve</code>字段用来表示如何来解析模块，首先我们看下常用的别名设置<code>alias</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>(&#123;<br>  <span class="hljs-attr">resolve</span>: &#123;<br>    <span class="hljs-attr">alias</span>: &#123;<br>      <span class="hljs-string">&quot;@&quot;</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;./src&quot;</span>),<br>    &#125;,<br>  &#125;,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　这样我们就能用<code>@</code>替换相对路径了，可以通过<code>@</code>来引入组件：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> <span class="hljs-title class_">HelloWorld</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/components/HelloWorld.vue&#x27;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　还有<code>mainFields</code>，主字段解析，标志vite默认从模块的package.json中哪个字段引入模块，默认配置是：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>(&#123;<br>  <span class="hljs-attr">resolve</span>: &#123;<br>    <span class="hljs-attr">mainFields</span>: [<span class="hljs-string">&#x27;module&#x27;</span>, <span class="hljs-string">&#x27;jsnext:main&#x27;</span>, <span class="hljs-string">&#x27;jsnext&#x27;</span>]<br>  &#125;,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<h2 id="server服务器"><a href="#server服务器" class="headerlink" title="server服务器"></a>server服务器</h2><p>　　Vite提供了<code>server</code>选项来配置开发服务器，默认情况只允许localhost访问，我们可以指定<code>server.host</code>来让局域网主机也能访问：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>(&#123;<br>  <span class="hljs-attr">server</span>: &#123;<br>    <span class="hljs-attr">host</span>: <span class="hljs-string">&quot;0.0.0.0&quot;</span>,<br>    <span class="hljs-attr">port</span>: <span class="hljs-number">3001</span>,<br>  &#125;,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　如果我们想让服务器启动时自动在浏览器中打开应用程序，可以配置<code>server.open</code>，配置类型<code>boolean|string</code>，配置为字符串时，会被用作 URL 的路径名：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>(&#123;<br>  <span class="hljs-attr">server</span>: &#123;<br>    <span class="hljs-attr">open</span>: <span class="hljs-string">&#x27;/other-page&#x27;</span><br>  &#125;,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　和webpack一样，我们可以通过<code>server.proxy</code>来为开发服务器配置代理，如果key值以<code>^</code>开头，则会被解析为正则表达式：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>(&#123;<br>  <span class="hljs-attr">server</span>: &#123;<br>    <span class="hljs-comment">// 字符串简写写法</span><br>    <span class="hljs-string">&#x27;/foo&#x27;</span>: <span class="hljs-string">&#x27;http://localhost:4567/foo&#x27;</span>,<br>    <span class="hljs-comment">// 选项写法</span><br>    <span class="hljs-string">&#x27;/api&#x27;</span>: &#123;<br>      <span class="hljs-attr">target</span>: <span class="hljs-string">&#x27;https://xieyufei.com&#x27;</span>,<br>      <span class="hljs-attr">changeOrigin</span>: <span class="hljs-literal">true</span>,<br>      <span class="hljs-attr">rewrite</span>: <span class="hljs-function">(<span class="hljs-params">path</span>) =&gt;</span> path.<span class="hljs-title function_">replace</span>(<span class="hljs-regexp">/^\/api/</span>, <span class="hljs-string">&#x27;&#x27;</span>)<br>    &#125;,<br>    <span class="hljs-comment">// 正则表达式写法</span><br>    <span class="hljs-string">&#x27;^/fallback/.*&#x27;</span>: &#123;<br>      <span class="hljs-attr">target</span>: <span class="hljs-string">&#x27;http://jsonplaceholder.typicode.com&#x27;</span>,<br>      <span class="hljs-attr">changeOrigin</span>: <span class="hljs-literal">true</span>,<br>      <span class="hljs-attr">rewrite</span>: <span class="hljs-function">(<span class="hljs-params">path</span>) =&gt;</span> path.<span class="hljs-title function_">replace</span>(<span class="hljs-regexp">/^\/fallback/</span>, <span class="hljs-string">&#x27;&#x27;</span>)<br>    &#125;<br>  &#125;,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+
+<h2 id="按需引入"><a href="#按需引入" class="headerlink" title="按需引入"></a>按需引入</h2><p>　　我们在使用element时，经常会需要按需引入组件，在vue-cli中使用的是babel的一个插件babel-plugin-component；vite有自己的按需引入插件<code>vite-plugin-style-import</code>，首先我们安装一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">npm install vite-plugin-style-import -D<br></code></pre></div></td></tr></table></figure>
+
+<p>　　然后在<code>vite.config.js</code>中进行配置：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> styleImport <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vite-plugin-style-import&quot;</span>;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>(&#123;<br>  <span class="hljs-attr">plugins</span>: [<br>    <span class="hljs-title function_">vue</span>(),<br>    <span class="hljs-title function_">styleImport</span>(&#123;<br>      <span class="hljs-attr">libs</span>: [<br>        &#123;<br>          <span class="hljs-attr">libraryName</span>: <span class="hljs-string">&quot;element-plus&quot;</span>,<br>          <span class="hljs-attr">esModule</span>: <span class="hljs-literal">true</span>,<br>          <span class="hljs-attr">ensureStyleFile</span>: <span class="hljs-literal">true</span>,<br>          <span class="hljs-attr">resolveStyle</span>: <span class="hljs-function">(<span class="hljs-params">name</span>) =&gt;</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-string">`element-plus/lib/theme-chalk/<span class="hljs-subst">$&#123;name&#125;</span>.css`</span>;<br>          &#125;,<br>          <span class="hljs-attr">resolveComponent</span>: <span class="hljs-function">(<span class="hljs-params">name</span>) =&gt;</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-string">`element-plus/lib/<span class="hljs-subst">$&#123;name&#125;</span>`</span>;<br>          &#125;,<br>        &#125;,<br>      ],<br>    &#125;),<br>  ],<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　接下来如果我们只希望引入部分组件，就可以在main.js中加入：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">ElButton</span>, <span class="hljs-title class_">ElSelect</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;element-plus&#x27;</span>;<br><br><span class="hljs-keyword">const</span> app = <span class="hljs-title function_">createApp</span>(<span class="hljs-title class_">App</span>)<br>app.<span class="hljs-title function_">component</span>(<span class="hljs-title class_">ElButton</span>.<span class="hljs-property">name</span>, <span class="hljs-title class_">ElButton</span>);<br>app.<span class="hljs-title function_">component</span>(<span class="hljs-title class_">ElSelect</span>.<span class="hljs-property">name</span>, <span class="hljs-title class_">ElSelect</span>);<br></code></pre></div></td></tr></table></figure>
+
+
+            </div>
+            <hr>
+            <div>
+              
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p><div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/PackTool/">打包工具</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/06/22/Front-Nginx.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">前端抢饭碗系列之深入Nginx</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/05/10/Vue3-Feature.html">
+                        <span class="hidden-mobile">全面总结Vue3.0的新特性</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

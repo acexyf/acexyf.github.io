@@ -1,0 +1,723 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　最近微信小程序一下子火了起来，我也学习了一下，写了几个简单的demo，分享一下自己的使用心得，希望对大家有帮助。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>微信小程序上手开发和使用总结（上） - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="微信小程序上手开发和使用总结（上）">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2016-10-09 09:58" pubdate>
+        2016年10月9日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      29
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">微信小程序上手开发和使用总结（上）</h1>
+            
+            <div class="markdown-body">
+              <p>　　最近微信小程序一下子火了起来，我也学习了一下，写了几个简单的demo，分享一下自己的使用心得，希望对大家有帮助。</p>
+<span id="more"></span>
+<blockquote>
+<p>我们提供了一种新的开放能力，开发者可以快速的开发一个小程序。小程序可以在微信内被便捷地获取和传播，同时具有出色的使用体验。</p>
+</blockquote>
+<h1 id="搭建环境"><a href="#搭建环境" class="headerlink" title="搭建环境"></a>搭建环境</h1><p>　　要开始做项目，首先要安装微信小程序的开发工具。官网的版本比较旧，笔者分享一个下载链接，大家可以去下载，<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1o86hgue">微信小程序开发工具下载</a>，下载完直接安装后新建项目就可以使用了。当然，由于还处在内测阶段，腾讯只邀请了部分企业参与内侧，所以AppID数量很稀少，读者在添加项目的时候可以选择无AppID。添加项目后打开小程序的开发工具是这样的：<br><img src="/images/Front-Tiny-WeChat/interface.png" srcset="/img/loading.gif" lazyload alt="微信小程序开发工具界面"><br>调试按钮可以打开调试界面，如果读者用惯了Chrome浏览器，想必对这个界面肯定不会陌生；如果需要切换到其他的项目，可以直接点关闭按钮，而不用关闭整个工具。</p>
+<h1 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h1><p>　　整个项目由两部分组成，一个是描述整体程序的app文件和多个框架页面文件组成。</p>
+<h2 id="app文件"><a href="#app文件" class="headerlink" title="app文件"></a>app文件</h2><p>　　描述整体程序的app文件必须放在文件的跟目录，由三个文件组成，app.js、app.json和app.wxss。</p>
+<ul>
+<li>app.js:程序的整体逻辑</li>
+<li>app.json:程序的公共设置</li>
+<li>app.wxss:小程序的公共样式(非必须)</li>
+</ul>
+<p>在app.json文件中可以对小程序进行全局配置，比如页面路由、窗口表现、网络超时、多个tab等；在app.js中我们使用App()注册小程序的，它接受一个object对象作为它的参数，这个参数指定了小程序的生命周期函数。object函数说明：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+<th>触发</th>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</tr>
+</thead>
+<tbody><tr>
+<td>onLaunch</td>
+<td>小程序初始化</td>
+<td>初始化完成后</td>
+</tr>
+<tr>
+<td>onShow</td>
+<td>小程序显示</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<td>小程序由后台进入前台</td>
+</tr>
+<tr>
+<td>onHide</td>
+<td>小程序隐藏</td>
+<td>小程序由前台进入后台</td>
+</tr>
+</tbody></table>
+<p><strong>注意：</strong></p>
+<ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>App()函数只能定义一次，并且只能在app.js中定义。</li>
+<li>onLaunch()函数在整个小程序的生命周期只调用一次，其他两个函数调用多次。</li>
+</ul>
+<h2 id="框架页面文件"><a href="#框架页面文件" class="headerlink" title="框架页面文件"></a>框架页面文件</h2><p>　　项目框架页面可以配置多个，建议页面的文件名称和文件名保持一致。比如有一个下单页book，其中的文件可以设置为book.js、book.wxml、book.wxss、book.json。</p>
+<ul>
+<li>xxx.js:页面逻辑</li>
+<li>xxx.wxml:页面结构</li>
+<li>xxx.wxss:页面样式(非必须)</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>xxx.json:页面配置(非必须)</li>
+</ul>
+<p>我们在框架页面也需要注册页面，注册页面通过Page()函数，这个函数也接受一个object函数，用来指定函数的生命周期函数和初始化的数据。</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>data</td>
+<td>object</td>
+<td>页面初始化数据</td>
+</tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<tr>
+<td>onLoad</td>
+<td>Function</td>
+<td>页面加载时</td>
+</tr>
+<tr>
+<td>onReady</td>
+<td>Function</td>
+<td>页面初次渲染完成</td>
+</tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<tr>
+<td>onShow</td>
+<td>Function</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<td>页面显示时</td>
+</tr>
+<tr>
+<td>onHide</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>Function</td>
+<td>页面隐藏时</td>
+</tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<tr>
+<td>onUnload</td>
+<td>Function</td>
+<td>页面卸载时</td>
+</tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<tr>
+<td>onPullDownRefreash</td>
+<td>Function</td>
+<td>页面下拉时</td>
+</tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</tbody></table>
+<p><strong>注意：</strong></p>
+<ul>
+<li>onLoad()函数在页面加载时只调用一次。可以获取上个页面传来的参数，默认保存在data参数中，可以通过data.param的方式获取。</li>
+<li>onUnload()页面卸载时调用，比如调用redirectTo或者navigateBack时。</li>
+</ul>
+<h1 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h1><p>　　和jQuery等其他js框架不同的，小程序不能直接操作DOM元素，只能通过改变数据来控制页面元素的状态，这样有点类似React的思想。所以我觉得小程序的思想是面向数据，而不是面向元素。</p>
+<h2 id="数据绑定"><a href="#数据绑定" class="headerlink" title="数据绑定"></a>数据绑定</h2><p>　　上一节我们说过注册页面时需要传入一个object参数，这个参数可以挂载很多页面的生命周期函数，同时，也能将页面的数据挂载进去。页面的数据可以直接挂载到object参数的data对象中去。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title class_">Page</span>(&#123;<br>	<span class="hljs-attr">data</span>:&#123;<br>		<span class="hljs-attr">name</span>:<span class="hljs-string">&#x27;xyf&#x27;</span><br>	&#125;,<br>	<span class="hljs-attr">myname</span>:<span class="hljs-string">&#x27;test&#x27;</span><br>	<span class="hljs-attr">onLoad</span>:<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>	&#125;<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　这里我们定义了两个数据，一个数据定义在data对象中，另一个数据直接定义Page的参数中。我们可以将data中的数据渲染到页面中，使用Mustache语法(双大括号)将要渲染的变量包起来，如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">view</span>&gt;</span>&#123;&#123;name&#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>如果需要在组件的属性内渲染数据，也需要用双大括号包起来：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">view</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;item-&#123;&#123;name&#125;&#125;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>在双大括号中，我们可以进行简单的运算和判断，比如三元运算，算数运算，字符串运算等。</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">view</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;&#123;&#123;name==&#x27;xyf&#x27;?&#x27;yes&#x27;:&#x27;no&#x27;&#125;&#125;&quot;</span>&gt;</span>&#123;&#123;name+&#x27; is a smart boy&#x27;&#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<h2 id="数据获取和更改"><a href="#数据获取和更改" class="headerlink" title="数据获取和更改"></a>数据获取和更改</h2><p>　　对于data中的数据，我们必须通过this.data.name这种方式来获取，对于data外面的数据，我们可以通过this.myname的方式来获取。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-attr">onLoad</span>:<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>	<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">data</span>.<span class="hljs-property">name</span>); <span class="hljs-comment">//&#x27;xyf&#x27;</span><br>	<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">myname</span>);    <span class="hljs-comment">//&#x27;test&#x27;</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　对于data中的数据，要想改变它的值，必须要调用setData()方法来改变，而要改变data外的数据，可以直接给他进行赋值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-attr">onLoad</span>:<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>	<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">setData</span>(&#123;<br>		<span class="hljs-attr">name</span>:<span class="hljs-string">&#x27;Corner&#x27;</span><br>	&#125;);<br>	<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">data</span>.<span class="hljs-property">name</span>); <span class="hljs-comment">//&#x27;Corner&#x27;</span><br>	<span class="hljs-variable language_">this</span>.<span class="hljs-property">data</span>.<span class="hljs-property">name</span>=<span class="hljs-string">&#x27;Nick&#x27;</span>;<br>	<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">data</span>.<span class="hljs-property">name</span>); <span class="hljs-comment">//&#x27;Corner&#x27;</span><br>	<span class="hljs-variable language_">this</span>.<span class="hljs-property">myname</span>=<span class="hljs-string">&#x27;mytest&#x27;</span>;<br>	<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">myname</span>);    <span class="hljs-comment">//&#x27;myest&#x27;</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><strong>注意：</strong></p>
+<ul>
+<li>在函数中注意this的作用域。在map函数或者异步回调函数中要使用this，要在函数外先把this赋值给that，然后用that进行操作。</li>
+<li>setData()对象参数的值不能为undefined。每次setData进行赋值时都要对要赋的值进行非空判断，确保不是undefined，否则会报错。</li>
+</ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>总结一下，两种方式定义的数据区别如下：</p>
+<ul>
+<li>能否被渲染：页面只能动态渲染data中的数据，data外的数据不能被渲染到页面上，所以data中放一些需要页面动态渲染的数据</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>获取方式：data中的数据通过this.data.[param]方式获取，data外的数据通过this.[param]方式获取。</li>
+<li>赋值方式：data中的数据只能通过setData()函数进行赋值，而data外的数据可以直接赋值。</li>
+</ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h1 id="页面渲染"><a href="#页面渲染" class="headerlink" title="页面渲染"></a>页面渲染</h1><p>　　对于data中的简单变量，我们可以通过双大括号的方式进行渲染，但是如果对于一些稍微复杂一点的数据结构(比如数组)，双大括号就不能满足我们的需求了。我们需要引入另外两种渲染方式，条件渲染和列表渲染。</p>
+<h2 id="条件渲染"><a href="#条件渲染" class="headerlink" title="条件渲染"></a>条件渲染</h2><p>　　我们使用wx:if=”“的来判断是否需要渲染该模块，还可以添加wx:elif和wx:else渲染。</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">view</span> <span class="hljs-attr">wx:if</span>=<span class="hljs-string">&quot;&#123;&#123;length &gt; 5&#125;&#125;&quot;</span>&gt;</span> 大于 <span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">view</span> <span class="hljs-attr">wx:elif</span>=<span class="hljs-string">&quot;&#123;&#123;length &gt; 2&#125;&#125;&quot;</span>&gt;</span> 中等 <span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">view</span> <span class="hljs-attr">wx:else</span>&gt;</span> 小于 <span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　也可以直接在大括号中使用布尔类型的值控制页面元素隐藏和显示。如果data中flag为false，那么类名为demo的这个view组件就不会渲染到页面上去。</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">view</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;demo&quot;</span> <span class="hljs-attr">wx:if</span>=<span class="hljs-string">&quot;&#123;&#123;flag&#125;&#125;&quot;</span>&gt;</span><br>显示<br><span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<h2 id="列表渲染"><a href="#列表渲染" class="headerlink" title="列表渲染"></a>列表渲染</h2><p>　　有时候我们需要将一个数组渲染到页面上，比如几个用户信息，比如点评列表，这时候就需要用到列表循环。<br>　　列表循环使用wx:for来绑定一个数组，就可以将数组中的每个数据循环遍历到组件中。默认情况下每个元素的变量名为item，每个变量的索引值为index。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">view</span> <span class="hljs-attr">wx:for</span>=<span class="hljs-string">&quot;&#123;&#123;[&#x27;a&#x27;,&#x27;b&#x27;,&#x27;c&#x27;,&#x27;d&#x27;]&#125;&#125;&quot;</span>&gt;</span><br>	这是第&#123;&#123;index&#125;&#125;个元素，元素内容为&#123;&#123;item&#125;&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　在列表遍历时我们并没有定义item和index，小程序自动为我们添加了wx:for-index=”index”和wx:for-item=”item”。因此在嵌套列表渲染时，注意index和item所代表的值和对象。需要我们自己定义变量名和索引，避免混乱。</p>
+<h1 id="总结和期待"><a href="#总结和期待" class="headerlink" title="总结和期待"></a>总结和期待</h1><p>　　微信小程序还在内测阶段就引起了这么多关注，作为一个程序员，尤其是一名前端程序员，上手和熟悉微信小程序的开发无疑会让我们越来越“吃香”。网上也在热议微信小程序是否会颠覆或者代替原生App，我觉得两者还是有以下区别的：</p>
+<ul>
+<li>产品形态：微信小程序更加接近于HTML5产品，开发上也使用JavaScript进行开发，性能比H5好，但是要比原生App性能低。而且微信小程序整体文件大小限制在1MB以内，估计只能运行一些小型的应用和游戏，一些大型的应用肯定还是要用App的。</li>
+<li>用户习惯：很多用户已经用惯了App，要想改变用户的习惯还是挺难的。用户操作肯定是越简单越好。比如现在微博App打开就能用，但是如果有了微博小程序，需要进入微信才能打开，相信用户还是挺反感中间多余的“步骤”。</li>
+</ul>
+<p>　　个人感觉微信小程序的开发也存在着不足之处，希望在以后的版本中能够改进：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<ul>
+<li>开发工具不能实时运行结果：每次都需要编译才能看到结果，程序猿表示每次看效果都比较麻烦。</li>
+<li>不支持ES6：现在ES6越来越流行，确实给开发带来了不少的简洁和便利。每次开发还要使用原生js，程序猿表示鸭梨山大啊。</li>
+<li>组件太少，不支持自定义组件：能够使用的组件偏少，大部分情况下只能使用view和text，不能够满足复杂的业务场景。</li>
+</ul>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+            </div>
+            <hr>
+            <div>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/WeChat/">WeChat</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2016/10/11/Front-Tiny-WeChat-Next.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">微信小程序上手开发和使用总结（下）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2016/09/23/Film-TrainToBusan.html">
+                        <span class="hidden-mobile">釜山行：一段旅途折射出世间百态</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

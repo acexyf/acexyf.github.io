@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="description" content="Panorama — A-Frame">
+  <title>Panorama</title>
+  <script type="text/javascript" src="/js/aframe.min.js"></script>
+</head>
+<body>
+
+  <a-scene>
+    <a-sky color="#f0f0f0"></a-sky>
+    <a-assets>
+      <img id="boxTexture" src="/images/FrontEnd-Panorama/texture.jpg" >
+    </a-assets>
+    <a-box src="#boxTexture" depth="1.5" height="1.5" width="1.5" position="0 2 -4" rotation="0 45 45" scale="">
+      <a-animation attribute="position" to="0 1 -4" direction="alternate" dur="2000" repeat="indefinite"></a-animation> 
+    </a-box>
+    <a-text value="Hello, A-Frame!" color="#0abef0"
+        position="-0.9 0.2 -3" scale="1.5 1.5 1.5"></a-text>
+    <a-light type="ambient" color="yellow" position="0 2 0"></a-light>
+  </a-scene>
+
+</body>
+</html>

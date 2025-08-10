@@ -1,0 +1,607 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　这不最近我司设计师又给我整了点活，实现一个加载进度的动画，刚开始我还以为放两个圆圈转一下就可以了；但是设计说我们是一个3D项目，得搞点高端大气的，于是就有了这篇文章。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>一款解压的3D方块加载动画效果 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="一款解压的3D方块加载动画效果">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2025-08-11 12:00" pubdate>
+        2025年8月11日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      23
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">一款解压的3D方块加载动画效果</h1>
+            
+            <div class="markdown-body">
+              <p>　　这不最近我司设计师又给我整了点活，实现一个加载进度的动画，刚开始我还以为放两个圆圈转一下就可以了；但是设计说我们是一个3D项目，得搞点高端大气的，于是就有了这篇文章。</p>
+<span id="more"></span>
+
+
+<h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h1><p>　　首先我们还是将三维场景的四个要素准备好，这里笔者为了简化代码，使用了自己封装的工具来创建：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-attr">scene</span>: <span class="hljs-title class_">Scene</span>;<br>  <span class="hljs-attr">camera</span>: <span class="hljs-title class_">PerspectiveCamera</span>;<br>  <span class="hljs-attr">renderer</span>: <span class="hljs-title class_">WebGLRenderer</span>;<br>  <span class="hljs-attr">controls</span>: <span class="hljs-title class_">OrbitControls</span>;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span> = <span class="hljs-title function_">initScene</span>();<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span> = <span class="hljs-title function_">initCamera</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Vector3</span>(<span class="hljs-number">60</span>, <span class="hljs-number">50</span>, <span class="hljs-number">70</span>), <span class="hljs-number">55</span>, <span class="hljs-number">0.01</span>, <span class="hljs-number">200</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span> = <span class="hljs-title function_">initRenderer</span>(&#123;<br>      <span class="hljs-attr">antialias</span>: <span class="hljs-literal">true</span>,<br>      <span class="hljs-attr">alpha</span>: <span class="hljs-literal">true</span><br>    &#125;);<br>    <span class="hljs-comment">// 设置透明背景</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-title function_">setClearColor</span>(<span class="hljs-number">0x000000</span>, <span class="hljs-number">0</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">controls</span> = <span class="hljs-title function_">initOrbitControls</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">camera</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>, <span class="hljs-literal">false</span>);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里有一个我们可能会不太常见的函数：<code>renderer.setClearColor</code>，它的主要作用是用于设置渲染器的清除颜色，也就是场景中的背景色；这个函数接收两个参数，第一个是一个十六进制的颜色，默认是0x000000，即黑色；第二个参数是其透明度alpha值；我们后期可以在背景中插入一些预加载图等，因此可以通过设置这个函数的alpha为0来清除背景的颜色。</p>
+<p>　　环境搭建好了，神说要有光；于是我们创建两种光，环境光和平行光：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">initLight</span>(<span class="hljs-params"></span>) &#123;<br>    &#123;<br>      <span class="hljs-comment">// 环境光</span><br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">ambientLight</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AmbientLight</span>(<span class="hljs-number">0xffffff</span>, <span class="hljs-number">1</span>)<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">ambientLight</span>.<span class="hljs-property">castShadow</span> = <span class="hljs-literal">false</span><br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">ambientLight</span>)<br>    &#125;<br><br>    &#123;<br>      <span class="hljs-comment">// 平行光</span><br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">directionalLight</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DirectionalLight</span>(<span class="hljs-number">0xffffff</span>, <span class="hljs-number">1.2</span>)<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">directionalLight</span>.<span class="hljs-property">position</span>.<span class="hljs-title function_">set</span>(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>, <span class="hljs-number">0</span>)<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">directionalLight</span>.<span class="hljs-property">castShadow</span> = <span class="hljs-literal">true</span><br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">directionalLight</span>)<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　接着，就需要我们最重要的物体，三个方块了，我们定义一个函数来批量地创建方块：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">createCube</span>(<span class="hljs-attr">x</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">y</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">z</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">size</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">color</span>: <span class="hljs-built_in">number</span>): <br>  <span class="hljs-title class_">Mesh</span>&lt;<span class="hljs-title class_">BufferGeometry</span>, <span class="hljs-title class_">MeshPhongMaterial</span>&gt; <br>  &#123;<br>    <span class="hljs-keyword">const</span> material = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MeshPhongMaterial</span>(&#123;<br>      color,<br>    &#125;)<br>    <span class="hljs-keyword">const</span> mesh = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Mesh</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BoxGeometry</span>(size, size, size), material)<br>    mesh.<span class="hljs-property">castShadow</span> = <span class="hljs-literal">true</span><br>    mesh.<span class="hljs-property">receiveShadow</span> = <span class="hljs-literal">true</span><br>    mesh.<span class="hljs-property">position</span>.<span class="hljs-title function_">set</span>(x, y, z)<br>    mesh.<span class="hljs-property">name</span> = <span class="hljs-string">&quot;cube&quot;</span><br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(mesh)<br>    <span class="hljs-keyword">return</span> mesh<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　然后按照初始化的位置创建三个方块：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">SIZE</span> = <span class="hljs-number">4.8</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-attr">cube1</span>: <span class="hljs-title class_">Mesh</span>&lt;<span class="hljs-title class_">BufferGeometry</span>, <span class="hljs-title class_">MeshPhongMaterial</span>&gt;;<br>  <span class="hljs-attr">cube2</span>: <span class="hljs-title class_">Mesh</span>&lt;<span class="hljs-title class_">BufferGeometry</span>, <span class="hljs-title class_">MeshPhongMaterial</span>&gt;;<br>  <span class="hljs-attr">cube3</span>: <span class="hljs-title class_">Mesh</span>&lt;<span class="hljs-title class_">BufferGeometry</span>, <span class="hljs-title class_">MeshPhongMaterial</span>&gt;;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">cube1</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">createCube</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-variable constant_">SIZE</span>, <span class="hljs-number">0xf0fafc</span>)<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">cube2</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">createCube</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-variable constant_">SIZE</span>, <span class="hljs-variable constant_">SIZE</span>, <span class="hljs-number">0xf0fafc</span>)<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">cube3</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">createCube</span>(<span class="hljs-number">0</span> - <span class="hljs-variable constant_">SIZE</span>, <span class="hljs-number">0</span>, <span class="hljs-variable constant_">SIZE</span>, <span class="hljs-variable constant_">SIZE</span>, <span class="hljs-number">0xf0fafc</span>)<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<blockquote>
+<p>这里我们定义了一个全局的<code>SIZE</code>变量，用于定义方块的尺寸，后续方块的位置更新也都会使用这个尺寸变量。</p>
+</blockquote>
+<p>　　从代码上可能很难看出来，实际上方块按照这样的位置进行排布了：</p>
+<p><img src="/images/Threejs-Cube-Loading/cube1.jpg" srcset="/img/loading.gif" lazyload alt="初始化位置"></p>
+<h1 id="翻滚把！方块"><a href="#翻滚把！方块" class="headerlink" title="翻滚把！方块"></a>翻滚把！方块</h1><p>　　三个方块出场了，首先我们就来看一下如何先让一个方块向前翻滚，向前翻滚其实包含了两个动作，一个是前进，一个是旋转；因此这里还是引入我们常用的GSAP库，我们让cube3先沿着-Z轴的方向运动看一下效果：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> gsap <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;gsap&quot;</span>;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> tl = gsap.<span class="hljs-title function_">timeline</span>();<br>    tl.<span class="hljs-title function_">to</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">cube3</span>.<span class="hljs-property">position</span>, &#123;<br>      <span class="hljs-attr">z</span>: <span class="hljs-number">0</span>,<br>      <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span>,<br>    &#125;)<br>    .<span class="hljs-title function_">to</span>(<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">cube3</span>.<span class="hljs-property">rotation</span>,<br>      &#123;<br>        <span class="hljs-attr">x</span>: -<span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span> / <span class="hljs-number">2</span>,<br>        <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span>,<br>      &#125;,<br>      <span class="hljs-string">&quot;&lt;&quot;</span><br>    );<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　上面代码中，我们创建了时间线，然后对Cube的position位置和rotation旋转角度进行了动画设置；由于两个动作是同时进行的，在这里我们使用了gsap的<code>&lt;</code>参数，将rotation插入到position动画执行前，表示两个动作之间的时间间隔为0秒；我们允许代码，就能看到方块翻滚运动起来了：</p>
+<p><img src="/images/Threejs-Cube-Loading/move.gif" srcset="/img/loading.gif" lazyload alt="方块翻滚运动"></p>
+<p>　　但是如果每个方块运动我们都写一遍这样的代码，比较费时费力；我们发现方块不是沿着X轴运动就是沿着Z轴运动，因此我们可以将方块的移动代码封装到一个函数中去：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">DURATION</span> = <span class="hljs-number">0.8</span>;<br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 将方块移动并且旋转到指定地方</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Mesh</span>&#125; cube 方块</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">&#x27;x&#x27; | &#x27;z&#x27;</span>&#125; direction 方向,在x轴或者z轴</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">number</span>&#125; pos 移动到的最终位置</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">rotation</span>&#125; rotation 旋转的角度</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">rotationAxes</span>&#125; rotationAxes 绕着哪个轴旋转</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@returns</span> &#123;<span class="hljs-type">gsap.core.Timeline</span>&#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-title function_">rollCube</span>(<span class="hljs-params"></span><br><span class="hljs-params">  cube: Mesh,</span><br><span class="hljs-params">  direction: <span class="hljs-string">&quot;x&quot;</span> | <span class="hljs-string">&quot;z&quot;</span>,</span><br><span class="hljs-params">  pos: <span class="hljs-built_in">number</span>,</span><br><span class="hljs-params">  rotation: <span class="hljs-built_in">number</span>,</span><br><span class="hljs-params">  rotationAxes: <span class="hljs-string">&quot;x&quot;</span> | <span class="hljs-string">&quot;y&quot;</span> | <span class="hljs-string">&quot;z&quot;</span></span><br><span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> tl = gsap.<span class="hljs-title function_">timeline</span>();<br>  <span class="hljs-keyword">if</span> (direction === <span class="hljs-string">&quot;x&quot;</span>) &#123;<br>    tl.<span class="hljs-title function_">to</span>(cube.<span class="hljs-property">position</span>, &#123;<br>      <span class="hljs-attr">x</span>: pos,<br>      <span class="hljs-attr">duration</span>: <span class="hljs-variable constant_">DURATION</span>,<br>    &#125;).<span class="hljs-title function_">to</span>(<br>      cube.<span class="hljs-property">rotation</span>,<br>      &#123;<br>        [rotationAxes]: rotation,<br>        <span class="hljs-attr">duration</span>: <span class="hljs-variable constant_">DURATION</span>,<br>      &#125;,<br>      <span class="hljs-string">&quot;&lt;&quot;</span><br>    );<br>  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (direction === <span class="hljs-string">&quot;z&quot;</span>) &#123;<br>    tl.<span class="hljs-title function_">to</span>(cube.<span class="hljs-property">position</span>, &#123;<br>      <span class="hljs-attr">z</span>: pos,<br>      <span class="hljs-attr">duration</span>: <span class="hljs-variable constant_">DURATION</span>,<br>    &#125;).<span class="hljs-title function_">to</span>(<br>      cube.<span class="hljs-property">rotation</span>,<br>      &#123;<br>        [rotationAxes]: rotation,<br>        <span class="hljs-attr">duration</span>: <span class="hljs-variable constant_">DURATION</span>,<br>      &#125;,<br>      <span class="hljs-string">&quot;&lt;&quot;</span><br>    );<br>  &#125;<br>  <span class="hljs-keyword">return</span> tl;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　我们封装一个<code>rollCube</code>函数，它定义了一个timeline时间线，然后根据传入的方向、位置、旋转角度、旋转轴等参数，将方块的移动和旋转进行设置；对方块的单次运动方式实现完毕之后，那我们下面就要来看下如何让他们一起运动起来呢？我们如何将单次运动的时间线进行串起来？</p>
+<p>　　这里我们使用gsap的一个小技巧：<code>嵌套时间线</code>；嵌套时间线的方式可以改变我们代码的组织逻辑，让我们实现各种复杂的动画逻辑，同时保持代码的简洁和可读性；那么嵌套时间线如何来做呢？</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　由于rollCube中定义了一个一个小的时间线，因此，我们可以在构造函数中定义一个主时间线，然后通过<code>add</code>方法将rollCube返回的小时间线添加到主时间线中：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-attr">mainTimeline</span>: gsap.<span class="hljs-property">core</span>.<span class="hljs-property">Timeline</span>;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">mainTimeline</span> = gsap.<span class="hljs-title function_">timeline</span>(&#123; <span class="hljs-attr">repeat</span>: -<span class="hljs-number">1</span> &#125;);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　这里我们设置<code>repeat: -1</code>，表示这个主时间线会无限重复执行，这样我们对方块移动只需要进行四次，就可以实现效果了，而不需要将所有方块移动到原来的位置；下面我们就可以把每个小方块的运动添加到主时间线中：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">ROTATION_UNIT</span> = <span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span> / <span class="hljs-number">2</span>;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-attr">mainTimeline</span>: gsap.<span class="hljs-property">core</span>.<span class="hljs-property">Timeline</span>;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">mainTimeline</span>.<span class="hljs-title function_">add</span>(<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">rollCube</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">cube3</span>, <span class="hljs-string">&quot;z&quot;</span>, <span class="hljs-number">0</span>, -<span class="hljs-variable constant_">ROTATION_UNIT</span>, <span class="hljs-string">&quot;x&quot;</span>)<br>    );<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">mainTimeline</span>.<span class="hljs-title function_">add</span>(<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">rollCube</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">cube2</span>, <span class="hljs-string">&quot;x&quot;</span>, -<span class="hljs-variable constant_">SIZE</span>, <span class="hljs-variable constant_">ROTATION_UNIT</span>, <span class="hljs-string">&quot;z&quot;</span>)<br>    );<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">mainTimeline</span>.<span class="hljs-title function_">add</span>(<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">rollCube</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">cube1</span>, <span class="hljs-string">&quot;z&quot;</span>, <span class="hljs-variable constant_">SIZE</span>, <span class="hljs-variable constant_">ROTATION_UNIT</span>, <span class="hljs-string">&quot;x&quot;</span>)<br>    );<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">mainTimeline</span>.<span class="hljs-title function_">add</span>(<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">rollCube</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">cube3</span>, <span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-variable constant_">ROTATION_UNIT</span>, <span class="hljs-string">&quot;y&quot;</span>)<br>    );<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们通过一张图来更好的理解这个运动过程：</p>
+<p><img src="/images/Threejs-Cube-Loading/process-movement.jpg" srcset="/img/loading.gif" lazyload alt="方块运动过程"></p>
+<p>　　我们看下最后的实现效果：</p>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="500" src="https://gallery.xieyufei.com/case/three/cube/loading"></iframe>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<blockquote>
+<p>本文所有源码敬请关注公众号【前端壹读】，后台回复关键词【3D方块加载动画】即可获取。</p>
+</blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　本文我们实现了一个有趣的3D方块加载动画的效果，相比于2D加载效果，3D效果通过空间运动和旋转带来了更加丰富的视觉体验。我们学习了通过<code>setClearColor</code>方法设置透明背景，以及通过<code>gsap嵌套时间线</code>的方式将多个方块动画串联起来，形成无限循环的加载动画效果，这种3D动画的实现方式不仅代码结构清晰，而且通过空间运动为加载效果增添了更多趣味性。</p>
+
+            </div>
+            <hr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+            <div>
+              
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p><div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Animation/">动画</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Threejs/">Threejs</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Graphical/">图形化</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/04/09/Threejs-Global.html">
+                        <span class="hidden-mobile">Threejs全球坐标分布效果</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

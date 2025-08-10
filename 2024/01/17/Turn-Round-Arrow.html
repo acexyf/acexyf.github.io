@@ -1,0 +1,677 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　这不最近我司的设计师又给笔者整活了，在数据大屏页面的中间位置，做了一个效果图，不过需要做一个箭头沿着路径实现拐弯的动画效果；这可咋整呢，本文就结合CSS3的特性和svg，看一下实现的思路。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>记一次CSS3和SVG实现箭头拐弯动画 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="记一次CSS3和SVG实现箭头拐弯动画">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-01-17 12:00" pubdate>
+        2024年1月17日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      40
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">记一次CSS3和SVG实现箭头拐弯动画</h1>
+            
+            <div class="markdown-body">
+              <p>　　这不最近我司的设计师又给笔者整活了，在数据大屏页面的中间位置，做了一个效果图，不过需要做一个箭头沿着路径实现拐弯的动画效果；这可咋整呢，本文就结合CSS3的特性和svg，看一下实现的思路。</p>
+<span id="more"></span>
+
+
+<h1 id="实现方案"><a href="#实现方案" class="headerlink" title="实现方案"></a>实现方案</h1><p>　　我们先来看一下最终的实现效果：</p>
+<p><img src="/images/Turn-Round-Arrow/effect1.gif" srcset="/img/loading.gif" lazyload alt="箭头拐弯效果"></p>
+<p>　　面对这种复杂的（奇奇怪怪）动画需求，作为老前端人了，上来肯定就是质问设计师：</p>
+<blockquote>
+<p>你能不能做个GIF图？</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</blockquote>
+<p>　　直接贴个GIF图不就完事了，不过，设计给出了自己理由，最后出图的文件太大以及GIF图容易模糊，另一个原因其实是我们的设计做动画不专业；因此，在得到肯定不能的答复之后，设计给出的方案是：使用<code>蒙版动画</code>。</p>
+<p>　　所谓的蒙版动画，也就是；类似遮罩层动画，将一个遮罩层首先覆盖在想要动画的物体上方，比如我们这里的箭头；然后随着时间的推移，逐渐的抽离遮罩层，实现动画的目的。</p>
+<p>　　不过这种的动画效果用在这里感觉有点low，不是很合适；因此我们还是来一点点实现吧。</p>
+<h1 id="offset-path"><a href="#offset-path" class="headerlink" title="offset-path"></a>offset-path</h1><p>　　就在不知怎么做的时候，好在上网查资料，一眼看到了CSS新的属性<code>offset-path</code>给了我一丝希望；传统的CSS3动画只能实现平移、缩放、拉伸等规则的路径动画。</p>
+<p>　　而offset-path这个属性就比较强大了，可以让元素沿着指定的路径实现不规则路径，可以是任何的形状；我们看下其浏览器的支持程度：</p>
+<p><img src="/images/Turn-Round-Arrow/support.png" srcset="/img/loading.gif" lazyload alt="浏览器支持度"></p>
+<p>　　它的语法很强大，支持画circle（圆）、ellipse（椭圆）或者polygon（折线）等多种图形的函数，不过我们这里就使用自定义的path函数即可，传入一个path路径：</p>
+<figure class="highlight css"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs CSS">offset-path: <span class="hljs-built_in">path</span>(<span class="hljs-string">&#x27;&lt;path-url&gt;&#x27;</span>)<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　对路径语法不熟悉的小伙伴可以学习一下<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/SVG/Tutorial/Paths">MDN路径</a>的这篇文章；此外它还有两个重要的属性，一个是<code>offset-distance</code>，表示元素移动的距离，可以是px单位，也可以是百分比单位：</p>
+<figure class="highlight css"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs CSS">offset-distance: &lt;length&gt; | &lt;percentage&gt;<br></code></pre></div></td></tr></table></figure>
+
+<blockquote>
+<p>我们可以控制offset-distance属性来实现元素的动画效果，一般动画时设置从0%到100%。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</blockquote>
+<p>　　另一个属性就是<code>offset-rotate</code>，定义了元素运动时的角度和方向，可以是某个具体的角度，也可以是auto，也可以组合起来一起使用，auto表示让元素运动时自己根据轨迹调整角度即可：</p>
+<figure class="highlight css"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs CSS">offset-rotate: [ auto | reverse ] || &lt;angle&gt;             <br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<p>　　因此有了上面的属性，我只要画一个div，给它一个线性过渡的背景CSS，然后让它沿着指定路径移动不就行了，说干就干。</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;page&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;scss&quot;</span> <span class="hljs-attr">scoped</span>&gt;</span><span class="language-css"></span><br><span class="language-css"><span class="hljs-selector-class">.box</span> &#123;</span><br><span class="language-css">    <span class="hljs-attribute">width</span>: <span class="hljs-number">200px</span>;</span><br><span class="language-css">    <span class="hljs-attribute">height</span>: <span class="hljs-number">20px</span>;</span><br><span class="language-css">    <span class="hljs-attribute">background</span>: <span class="hljs-built_in">linear-gradient</span>(to left, <span class="hljs-number">#15db30</span>, <span class="hljs-built_in">rgba</span>(<span class="hljs-number">#15db30</span>, <span class="hljs-number">0.2</span>));</span><br><span class="language-css">    offset-path: <span class="hljs-built_in">path</span>(<span class="hljs-string">&quot;M 10 80 C 80 10, 130 10, 190 80 S 300 150, 360 80&quot;</span>);</span><br><span class="language-css">    <span class="hljs-attribute">animation</span>: move <span class="hljs-number">4000ms</span> infinite linear;</span><br><span class="language-css">&#125;</span><br><span class="language-css"><span class="hljs-keyword">@keyframes</span> move &#123;</span><br><span class="language-css">    <span class="hljs-number">0%</span> &#123;</span><br><span class="language-css">        offset-distance: <span class="hljs-number">0%</span>;</span><br><span class="language-css">    &#125;</span><br><span class="language-css">    <span class="hljs-number">100%</span> &#123;</span><br><span class="language-css">        offset-distance: <span class="hljs-number">100%</span>;</span><br><span class="language-css">    &#125;</span><br><span class="language-css">&#125;</span><br><span class="language-css"></span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　上面的path路径看着很复杂，其实就是一个简单的S型曲线的运动，这里我们让div沿着S型曲线运动；虽然想法很美好啦，不过现实也十分的现实，最后的效果如下：</p>
+<p><img src="/images/Turn-Round-Arrow/effect2.gif" srcset="/img/loading.gif" lazyload alt="offset-path效果"></p>
+<p>　　因为我们的div是长条的，并不是流体，所以我们看到的效果就是一长条沿着固定的轨道晃晃悠悠的移动，这肯定不行了，不能用div了。</p>
+<p>　　那怎么办呢，笔者又思考了很久，突然一个想法又冒出来了，想起了微积分的思路；同理，既然一个div太长了，那我把它切割成多个不就行了，只要我们的刀把div切得够细，再拼接起来，用户就看不出来是拼接的，说干就干。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;page&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">:class</span>=<span class="hljs-string">&quot;[&#x27;box&#x27;, `box$&#123;item&#125;`]&quot;</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">&quot;item in 20&quot;</span> <span class="hljs-attr">:key</span>=<span class="hljs-string">&quot;item&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;scss&quot;</span> <span class="hljs-attr">scoped</span>&gt;</span><br>.box &#123;<br>    width: 20px;<br>    height: 20px;<br>    position: absolute;<br>    left: 0;<br>    top: 0;<br>&#125;<br><br>@for $i from 1 through 20 &#123;<br>    .box#&#123;$i&#125; &#123;<br>        background: linear-gradient(<br>            to left,<br>            rgba(#15db30, 1 - ($i - 1) * 0.05),<br>            rgba(#15db30, 1 - $i * 0.05)<br>        );<br>        offset-path: path(&quot;M 10 80 C 80 10, 130 10, 190 80 S 300 150, 360 80&quot;);<br>        offset-rotate: auto;<br>        animation: move 10000ms infinite linear;<br>        animation-delay: 500ms * $i;<br>    &#125;<br>&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　这里代码看着很复杂，其实很简单，首先我们循环了20个div，然后用scss的<code>@for</code>语法给20个div设置样式，这里我们给每个div一个背景颜色的从右到左线性过渡，逐渐透明，最后使用animation-delay设置一个延迟时间，效果如下：</p>
+<p><img src="/images/Turn-Round-Arrow/effect3.gif" srcset="/img/loading.gif" lazyload alt="线性效果"></p>
+<p>　　最后的效果就像一条贪吃蛇一样，从头连到尾；不过这样的实现方式可能会有问题，如果delay的间隔太久，div之间就会有空隙，如果间隔太小，就会导致div之间有颜色重叠的部分，导致颜色排布不是很均匀。</p>
+<p>　　不过我们可以通过将div设置成宽只有几个px的长方形条状，同时把div切割的数量拉大，切成100或者200的div，这样就会好很多。</p>
+<h1 id="SVG动画"><a href="#SVG动画" class="headerlink" title="SVG动画"></a>SVG动画</h1><p>　　箭头拐弯的效果我们已经实现的差不多了，只要再给它加上合适的路径即可；下面那么我们再来考虑一下，如何把箭头动画结合到背景中去；在切图时，我们肯定是需要将背景中的建筑元素切到单独的一张图片，但是箭头的轨道如果我们自己用代码实现会非常棘手。</p>
+<p>　　因此笔者的想法是将轨道单独让设计切图出来，导出成svg，我们就可以参考svg中的代码，能够知道轨道实现的逻辑了；因此我们将整体放到SVG中实现起来会比较方便一点。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="stroke-dasharray"><a href="#stroke-dasharray" class="headerlink" title="stroke-dasharray"></a>stroke-dasharray</h2><p>　　首先我们看一下轨道的实现方式，轨道环的实现很简单，直接使用path，设置stroke颜色和一个opacity就可以：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">path</span></span><br><span class="hljs-tag">    <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M152.444292,118.156631 L492.312457,209.128474 C501.980784,211.716376 509.532541,219.268132 512.120443,228.936459 L603.092286,568.804625 C607.090738,583.742725 598.2224,599.093834 583.2843,603.092286 C578.541228,604.361855 573.547697,604.361855 568.804625,603.092286 L228.936459,512.120443 C219.268132,509.532541 211.716376,501.980784 209.128474,492.312457 L118.156631,152.444292 C114.158179,137.506192 123.026516,122.155083 137.964617,118.156631 C142.707689,116.887062 147.70122,116.887062 152.444292,118.156631 Z&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">transform</span>=<span class="hljs-string">&quot;rotate(-45) translate(-315.5, 114)&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;none&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">stroke</span>=<span class="hljs-string">&quot;#2A73E1&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">stroke-width</span>=<span class="hljs-string">&quot;8&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">opacity</span>=<span class="hljs-string">&quot;0.2&quot;</span></span><br><span class="hljs-tag">&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">path</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们重点来看下轨道中间的点，这里就不得不说到svg的<code>stroke-dasharray</code>属性，这个属性可以用来控制实现描边的点的图案样式；它的语法很简单，就是传入一个数列：</p>
+<figure class="highlight css"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs css">stroke-dasharray=&quot;<span class="hljs-attribute">none</span> | &lt;dasharray&gt;&quot;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<p>　　这个数列中的数用逗号和空格间隔开，比如<code>&quot;5, 3, 2&quot;</code>这种形式，那么每个数字代表什么意思呢？我们先从简单的一个数字和两个数字开始：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">path</span></span><br><span class="hljs-tag">    <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M 0,0 L 300, 0&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">stroke-dasharray</span>=<span class="hljs-string">&quot;10&quot;</span></span><br><span class="hljs-tag">&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">path</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">path</span></span><br><span class="hljs-tag">    <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M 0,0 L 300, 0&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">stroke-dasharray</span>=<span class="hljs-string">&quot;20 10&quot;</span></span><br><span class="hljs-tag">&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">path</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Turn-Round-Arrow/dasharray.png" srcset="/img/loading.gif" lazyload alt="stroke-dasharray"></p>
+<p>　　stroke-dasharray中的每个数字依次来表示短划线和缺口的长度，当一个数字10的时候，表示短划线和缺口的长度都是10，因此我们就会看到它的距离是比较均匀的；而两个数字的时候，第一个数字表示短划线，第二个数字表示缺口，因此我们看到短划线较长，而缺口较短。</p>
+<p>　　理解了上面数字的含义，我们再扩展到三个数字和四个数字来看一下；如果是奇数数字的话会比较特殊，根据<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/SVG/Attribute/stroke-dasharray">MDN文档</a>上的解释：</p>
+<blockquote>
+<p>如果提供了奇数个值，则这个值的数列重复一次，从而变成偶数个值。因此，5,3,2 等同于 5,3,2,5,3,2。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</blockquote>
+<p>　　由于奇数个数字在循环的时候会有一个位置衔接不上，因此这个属性定义的时候就将奇数个自动扩展到了偶数个，我们看下具体代码理解一下：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">path</span></span><br><span class="hljs-tag">    <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M 0,0 L 300, 0&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">stroke-dasharray</span>=<span class="hljs-string">&quot;60, 30, 40&quot;</span></span><br><span class="hljs-tag">&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">path</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">path</span></span><br><span class="hljs-tag">    <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M 0,0 L 300, 0&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">stroke-dasharray</span>=<span class="hljs-string">&quot;60, 30, 40, 50&quot;</span></span><br><span class="hljs-tag">&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">path</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们在每个短划线和缺口处用数字标记一下：</p>
+<p><img src="/images/Turn-Round-Arrow/dasharray2.png" srcset="/img/loading.gif" lazyload alt="stroke-dasharray"></p>
+<p>　　我们发现，3个数字的时候，在第一次排列之后，第二次排列的时候，60所在的位置自动变成了缺口位，而不是短划线，这样自动进行了一次顺序扩展，这就是这个属性将奇数个自动扩展到了偶数个的效果；而4个数字则是照常循环排列。</p>
+<p>　　理解了<code>stroke-dasharray</code>属性，我们的轨道也可以在svg下来最终完成了。</p>
+<h2 id="animateMotion"><a href="#animateMotion" class="headerlink" title="animateMotion"></a>animateMotion</h2><p>　　下面的轨道有了，我们就需要将切好的箭头放到svg中，在svg中，我们使用rect来代替div；那么，如何让rect动起来呢？</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　svg也有自己的动画元素，这里使用<code>animateMotion元素</code>，它的作用就是让一个元素如何沿着运动路径进行移动。它的用法也很简单，在元素下层嵌入animateMotion元素，最重要的属性就是<code>path</code>，相当于CSS3中的<code>offset-path</code>属性：</p>
+<figure class="highlight svg"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs svg"><span class="hljs-tag">&lt;<span class="hljs-name">rect</span></span><br><span class="hljs-tag">    <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;3&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;6&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">:fill</span>=<span class="hljs-string">&quot;`url(#orangeGradient$&#123;item&#125;)`&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">v-for</span>=<span class="hljs-string">&quot;item in 20&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">:key</span>=<span class="hljs-string">&quot;item&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">transform</span>=<span class="hljs-string">&quot;translate(-3, -3)&quot;</span></span><br><span class="hljs-tag">&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">animateMotion</span></span><br><span class="hljs-tag">        <span class="hljs-attr">path</span>=<span class="hljs-string">&quot;M583.2843,603.092286 C598.2224,599.093834 607.090738,583.742725 603.092286,568.804625 L568.5,440&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">:begin</span>=<span class="hljs-string">&quot;10 * item + &#x27;ms&#x27;&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">dur</span>=<span class="hljs-string">&quot;3s&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">repeatCount</span>=<span class="hljs-string">&quot;indefinite&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">rotate</span>=<span class="hljs-string">&quot;auto&quot;</span></span><br><span class="hljs-tag">    &gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">animateMotion</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">rect</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　rotate属性也相当于CSS3中的offset-rotate，因此我们理解了上面CSS中的<code>offset-*</code>等一系列属性，animateMotion也就很好理解了。</p>
+<h2 id="viewBox自适应"><a href="#viewBox自适应" class="headerlink" title="viewBox自适应"></a>viewBox自适应</h2><p>　　通过width/height属性，我们可以设置svg画布的固定大小：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;200&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;200&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<p>　　但是，在实际的场景中，我们经常需要让画布自适应外部div的宽高，以实现画布呈现大小适应页面的缩放；这里就要用到svg另一个属性<code>viewBox</code>了，我们看下mdn上对这个属性的介绍：</p>
+<blockquote>
+<p>viewBox属性允许指定一个给定的一组图形伸展以适应特定的容器元素。</p>
+</blockquote>
+<p>　　它的属性值是一个包含四个参数的列表：min-x，min-y，width，height，四个值可以用空格或者逗号分隔开；</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">viewBox</span>=<span class="hljs-string">&quot;min-x, min-y, width, height&quot;</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　viewBox顾名思义就是视图盒子，把它理解成截图工具呈现的效果就行；简单理解，min-x和min-y就是截图的右上角的x和y坐标，width和height就是截图区域的宽度。</p>
+<p>　　我们看下它的具体效果，首先，不带viewBox的情况下展示svg下的内容：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span></span><br><span class="hljs-tag">    <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;200&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;200&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;border: 1px solid red&quot;</span></span><br><span class="hljs-tag">&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">rect</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;50&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;40&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">circle</span> <span class="hljs-attr">cx</span>=<span class="hljs-string">&quot;10&quot;</span> <span class="hljs-attr">cy</span>=<span class="hljs-string">&quot;20&quot;</span> <span class="hljs-attr">r</span>=<span class="hljs-string">&quot;4&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;white&quot;</span> /&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<p><img src="/images/Turn-Round-Arrow/viewBox1.png" srcset="/img/loading.gif" lazyload alt="没有带viewBox属性"></p>
+<p>　　元素正常大小显示，这时候我们给它加一个viewBox：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span></span><br><span class="hljs-tag">    <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;200&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;200&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">viewBox</span>=<span class="hljs-string">&quot;0 0 60 60&quot;</span></span><br><span class="hljs-tag">&gt;</span><br>    <span class="hljs-comment">&lt;!-- 其他元素 --&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　我们会发现两个元素放大显示了，这个也很好理解，我们在200<em>200的画布上截出一个60</em>60的区域，然后就会等比例放大呈现出来。</p>
+<p><img src="/images/Turn-Round-Arrow/viewBox2.png" srcset="/img/loading.gif" lazyload alt="带viewBox属性"></p>
+<p>　　因此回到我们的箭头svg，为了实现自适应的效果，我们去掉svg的宽高，加上viewBox等于我们的画布宽高即可：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span></span><br><span class="hljs-tag">    <span class="hljs-attr">viewBox</span>=<span class="hljs-string">&quot;0 0 730 561&quot;</span></span><br><span class="hljs-tag">&gt;</span><br>    <span class="hljs-comment">&lt;!-- 其他元素 --&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　点击查看本文的<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/css/turn/round/arrow">实现效果</a>。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　我们从CSS3的<code>offset-*</code>属性入手，了解了如何让一个元素实现非规则路径下的动画效果；然后我们为了方便，将动画效果迁移到了svg中去实现，对svg中的关键属性<code>stroke-dasharray</code>进行了详细的学习；最后为了实现自适应效果，使用了viewBox属性。</p>
+<blockquote>
+<p>本文所有源码敬请关注公众号【前端壹读】，后台回复关键词【SVG箭头拐弯】即可获取。</p>
+</blockquote>
+<img src="/images/qrcode.png" srcset="/img/loading.gif" lazyload alt="" align="center" width="40%" style="display:block;margin:0 auto;"/>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904084625948680">svg viewBox与自适应</a></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Animation/">动画</a>
+                    
+                      <a class="hover-with-bg" href="/tags/CSS/">CSS</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/01/30/Threejs-Ocean.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Threejs海水效果学习</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/12/22/Install-Linux-Nodejs.html">
+                        <span class="hidden-mobile">Linux下源码包Nodejs安装教程</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

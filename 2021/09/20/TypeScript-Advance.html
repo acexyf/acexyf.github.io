@@ -1,0 +1,817 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　在上一篇ts基础篇中，我们介绍了ts的基础类型和如何定义了数组对象函数等；在这一TypeScript进阶篇，我们来介绍TS的高级用法，比如泛型和在项目中如何进行配置以及使用。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>TypeScript从平凡到不凡（进阶篇） - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="TypeScript从平凡到不凡（进阶篇）">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-09-20 21:36" pubdate>
+        2021年9月20日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      71
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">TypeScript从平凡到不凡（进阶篇）</h1>
+            
+            <div class="markdown-body">
+              <p>　　在上一篇<a href="https://xieyufei.com/2021/07/29/TypeScript.html">ts基础篇</a>中，我们介绍了ts的基础类型和如何定义了数组对象函数等；在这一TypeScript进阶篇，我们来介绍TS的高级用法，比如泛型和在项目中如何进行配置以及使用。</p>
+<span id="more"></span>
+
+<h1 id="声明文件"><a href="#声明文件" class="headerlink" title="声明文件"></a>声明文件</h1><p>　　当使用一些第三方库时，有一些通过script标签引入的全局变量，TypeScript会出现识别不到而报错的情况，我们需要对其进行声明，这些声明就需要写到声明文件中。比如我们在项目中使用jQuery，在全局使用变量<code>$</code>或<code>jQuery</code>：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript">$(<span class="hljs-string">&#x27;#foo&#x27;</span>);<br><span class="hljs-comment">// or</span><br><span class="hljs-title function_">jQuery</span>(<span class="hljs-string">&#x27;#foo&#x27;</span>);<br><span class="hljs-comment">// 报错：</span><br><span class="hljs-comment">// Cannot find name &#x27;$&#x27;. Do you need to install type definitions for jQuery? Try `npm i --save-dev @types/jquery` and then add `jquery` to the types field in your tsconfig.</span><br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　我们就需要将jQuery的声明语句放到单独的文件中，这就是声明文件：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-comment">// src/jQuery.d.ts</span><br><span class="hljs-keyword">declare</span> <span class="hljs-keyword">let</span> <span class="hljs-attr">$</span>: <span class="hljs-function">(<span class="hljs-params">selector: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">any</span>;<br><span class="hljs-keyword">declare</span> <span class="hljs-keyword">let</span> <span class="hljs-attr">jQuery</span>: <span class="hljs-function">(<span class="hljs-params">selector: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">any</span>;<br></code></pre></div></td></tr></table></figure>
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　一般ts会解析项目src文件夹下的所有<code>.ts</code>文件，因此也会解析<code>.d.ts</code>文件，这样所有的ts文件就会得到jQuery的类型定义了。</p>
+<h2 id="加载社区声明文件"><a href="#加载社区声明文件" class="headerlink" title="加载社区声明文件"></a>加载社区声明文件</h2><p>　　当然，jQuery的声明文件，社区已经写好了，不需要我们自己来定义；我们可以使用@types来管理声明文件：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">npm install @types/jquery --save-dev<br></code></pre></div></td></tr></table></figure>
+
+<p>　　通过配置<code>tsconfig.json</code>，将声明文件引入：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;compilerOptions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;types&quot;</span> <span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>      <span class="hljs-comment">// 其他配置</span><br>      <span class="hljs-string">&quot;jquery&quot;</span><br>    <span class="hljs-punctuation">]</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h2 id="编写自己的声明文件"><a href="#编写自己的声明文件" class="headerlink" title="编写自己的声明文件"></a>编写自己的声明文件</h2><p>　　声明文件的语法主要有下面几种：</p>
+<ul>
+<li>declare let 和 declare const 声明全局变量</li>
+<li>declare function 声明全局方法</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>declare class 声明全局类</li>
+<li>declare enum 声明全局枚举类型</li>
+<li>declare namespace 声明（含有子属性的）全局对象</li>
+<li>interface 和 type 声明全局类型</li>
+</ul>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　<code>declare let</code> 和 <code>declare const</code>声明是最简单的，用来声明一个全局变量类型；let定义的全局变量允许修改，而const定义的则不允许修改</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-comment">// src/jQuery.d.ts</span><br><span class="hljs-keyword">declare</span> <span class="hljs-keyword">let</span> <span class="hljs-attr">$</span>: <span class="hljs-function">(<span class="hljs-params">selector: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">any</span>;<br><span class="hljs-keyword">declare</span> <span class="hljs-keyword">const</span> <span class="hljs-attr">jQuery</span>: <span class="hljs-function">(<span class="hljs-params">selector: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">any</span>;<br><br><span class="hljs-comment">// src/main.js</span><br>$ = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;&#125;<br><span class="hljs-comment">// 报错</span><br><span class="hljs-comment">// ERROR: Cannot assign to &#x27;jQuery&#x27; because it is a constant or a read-only property.</span><br>jQuery = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　一般来说，声明的全局变量都是禁止修改的常量，所以大部分的情况都应该使用<code>declare const</code>进行声明。同时需要注意的是，声明语句中只能定义类型，而不能定义具体的实现代码。</p>
+<p>　　<code>declare function</code>用来定义全局函数的类型，jQuery是一个函数，因此我们也可以通过函数的方式来进行定义：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-comment">// src/jQuery.d.ts</span><br><span class="hljs-keyword">declare</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">jQuery</span>(<span class="hljs-params">selector: <span class="hljs-built_in">string</span></span>): <span class="hljs-built_in">any</span>;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　在函数声明中也能够支持函数重载：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-comment">// src/jQuery.d.ts</span><br><span class="hljs-keyword">declare</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">jQuery</span>(<span class="hljs-params">selector: <span class="hljs-built_in">string</span></span>): <span class="hljs-built_in">any</span>;<br><span class="hljs-keyword">declare</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">jQuery</span>(<span class="hljs-params">domReadyCallback: () =&gt; <span class="hljs-built_in">any</span></span>): <span class="hljs-built_in">any</span>;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　<code>declare class</code>用来声明一个全局类：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-comment">// src/Animal.d.ts</span><br><span class="hljs-keyword">declare</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Animal</span> &#123;<br>    <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br>    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name: <span class="hljs-built_in">string</span></span>);<br>    <span class="hljs-title function_">sayHi</span>(): <span class="hljs-built_in">string</span>;<br>&#125;<br><br><span class="hljs-comment">// src/index.ts</span><br><span class="hljs-keyword">let</span> cat = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Animal</span>(<span class="hljs-string">&#x27;Tom&#x27;</span>);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　<code>declare enum</code>用来声明全局枚举类型：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-comment">// src/Directions.d.ts</span><br><br><span class="hljs-keyword">declare</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">Directions</span> &#123;<br>    <span class="hljs-title class_">Up</span>,<br>    <span class="hljs-title class_">Down</span>,<br>    <span class="hljs-title class_">Left</span>,<br>    <span class="hljs-title class_">Right</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　<code>declare namespace</code>用来声明含有子属性的全局对象（模块）。刚开始ts使用<code>module</code>关键字来表示内部的模块，但随着ES6也使用了<code>module</code>关键字，ts为了兼容ES6，从1.5版本开始将<code>module</code>改名为<code>namespace</code>；比如jQuery是一个全局变量对象，它上面挂载了很多的方法可以调用，我们就通过<code>namespace</code>来进行声明：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-comment">// src/jQuery.d.ts</span><br><br><span class="hljs-keyword">declare</span> <span class="hljs-keyword">namespace</span> jQuery &#123;<br>    <span class="hljs-keyword">function</span> <span class="hljs-title function_">ajax</span>(<span class="hljs-params">url: <span class="hljs-built_in">string</span>, settings?: <span class="hljs-built_in">any</span></span>): <span class="hljs-built_in">void</span>;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　在jQuery内部，我们还可以使用const、class、enum等语句进行声明：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-comment">// src/jQuery.d.ts</span><br><br><span class="hljs-keyword">declare</span> <span class="hljs-keyword">namespace</span> jQuery &#123;<br>    <span class="hljs-keyword">function</span> <span class="hljs-title function_">ajax</span>(<span class="hljs-params">url: <span class="hljs-built_in">string</span>, settings?: <span class="hljs-built_in">any</span></span>): <span class="hljs-built_in">void</span>;<br>    <span class="hljs-keyword">const</span> <span class="hljs-attr">version</span>: <span class="hljs-built_in">number</span>;<br>    <span class="hljs-keyword">class</span> <span class="hljs-title class_">Event</span> &#123;<br>        <span class="hljs-title function_">blur</span>(<span class="hljs-attr">eventType</span>: <span class="hljs-title class_">EventType</span>): <span class="hljs-built_in">void</span><br>    &#125;<br>    <span class="hljs-keyword">enum</span> <span class="hljs-title class_">EventType</span> &#123;<br>        <span class="hljs-title class_">CustomClick</span><br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　同时，如果需要声明的对象层级较深，我们还可以使用<code>namespace</code>进行嵌套声明：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-comment">// src/jQuery.d.ts</span><br><br><span class="hljs-keyword">declare</span> <span class="hljs-keyword">namespace</span> jQuery &#123;<br>    <span class="hljs-keyword">function</span> <span class="hljs-title function_">ajax</span>(<span class="hljs-params">url: <span class="hljs-built_in">string</span>, settings?: <span class="hljs-built_in">any</span></span>): <span class="hljs-built_in">void</span>;<br>    <span class="hljs-keyword">namespace</span> fn &#123;<br>        <span class="hljs-keyword">function</span> <span class="hljs-title function_">extend</span>(<span class="hljs-params"><span class="hljs-built_in">object</span>: <span class="hljs-built_in">any</span></span>): <span class="hljs-built_in">void</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">//src/main.ts</span><br>jQuery.<span class="hljs-title function_">ajax</span>(<span class="hljs-string">&#x27;/api/get&#x27;</span>);<br>jQuery.<span class="hljs-property">fn</span>.<span class="hljs-title function_">extend</span>(&#123;<br>    <span class="hljs-attr">check</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">each</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">checked</span> = <span class="hljs-literal">true</span>;<br>        &#125;);<br>    &#125;<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+
+
+<h1 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h1><p>　　泛型（Generics）是指在定义函数、接口或类的时候，不预先指定具体的类型，而在使用的时候再指定类型的一种特性；简单来说，就是一种创建可复用代码组件的工具，这种组件不止能被一种类型使用，而是能够被多种类型进行复用。</p>
+<h2 id="简单的泛型例子"><a href="#简单的泛型例子" class="headerlink" title="简单的泛型例子"></a>简单的泛型例子</h2><p>　　我们来实现一个重复元素功能的函数，将给定的元素重复给定的次数，最后返回一个数组：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">repeatArray</span>(<span class="hljs-params">value: <span class="hljs-built_in">string</span>, length: <span class="hljs-built_in">number</span></span>): <span class="hljs-title class_">Array</span>&lt;<span class="hljs-built_in">string</span>&gt; &#123;<br>  <span class="hljs-keyword">let</span> list = [];<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; length; i++) &#123;<br>    list.<span class="hljs-title function_">push</span>(value);<br>  &#125;<br>  <span class="hljs-keyword">return</span> list;<br>&#125;<br><span class="hljs-title function_">repeatArray</span>(<span class="hljs-string">&quot;5&quot;</span>, <span class="hljs-number">3</span>);<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　我们接收了string类型，并且返回string类型的数组；但是这显得太死板了，因为我们只能接收string类型，如果我们想传入number或者object都会报错。那如果改成<code>any</code>呢？</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">repeatArray</span>(<span class="hljs-params">value: <span class="hljs-built_in">any</span>, length: <span class="hljs-built_in">number</span></span>): <span class="hljs-title class_">Array</span>&lt;<span class="hljs-built_in">any</span>&gt; &#123;<br>  <span class="hljs-keyword">let</span> list = [];<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; length; i++) &#123;<br>    list.<span class="hljs-title function_">push</span>(value);<br>  &#125;<br>  <span class="hljs-keyword">return</span> list;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　使用any会导致这个函数可以接收任意类型的参数，这样就导致这个函数缺乏了有效的信息提示，不能告诉函数的调用者传入类型和返回数组中的类型应该是相同的；假设我们传入一个数字，我们只能知道任何类型的值都有可能被返回。</p>
+<p>　　这样我们就需要通过泛型来定义这个函数：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">function</span> repeatArray&lt;T&gt;(<span class="hljs-attr">value</span>: T, <span class="hljs-attr">length</span>: <span class="hljs-built_in">number</span>): <span class="hljs-title class_">Array</span>&lt;T&gt; &#123;<br>  <span class="hljs-keyword">let</span> <span class="hljs-attr">list</span>: T[] = [];<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; length; i++) &#123;<br>    list.<span class="hljs-title function_">push</span>(value);<br>  &#125;<br>  <span class="hljs-keyword">return</span> list;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　我们在函数名后面添加了类型变量<code>&lt;T&gt;</code>，<code>T</code>用来指代任意输入的类型，在后面的输入参数的类型和输出函数的类型中都可以使用。</p>
+<p>　　需要注意的是，这里的字母<code>T</code>只是代表了一个变量，在数学中和x、y的性质是一样的；我们还可以用其他的参数，比如用S、U、T、Y等其他字母来替代。</p>
+<p>　　定义泛型函数后，我们可以用两种方式来调用，第一种，传入所有的参数，包含类型参数：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">let</span> list1 = repeatArray&lt;<span class="hljs-built_in">string</span>&gt;(<span class="hljs-string">&quot;5&quot;</span>, <span class="hljs-number">3</span>);<br><span class="hljs-keyword">let</span> list2 = repeatArray&lt;<span class="hljs-built_in">number</span>&gt;(<span class="hljs-number">6</span>, <span class="hljs-number">5</span>);<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　第二种方式，利用类型推论，让编译器自动确定类型变量的类型：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">let</span> list1 = <span class="hljs-title function_">repeatArray</span>(<span class="hljs-string">&quot;5&quot;</span>, <span class="hljs-number">3</span>);<br><span class="hljs-keyword">let</span> list2 = <span class="hljs-title function_">repeatArray</span>(<span class="hljs-number">6</span>, <span class="hljs-number">5</span>);<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="多个类型参数"><a href="#多个类型参数" class="headerlink" title="多个类型参数"></a>多个类型参数</h2><p>　　在定义函数时，我们有可能会用到多个泛型变量，，用逗号分隔这多个变量：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">function</span> swap&lt;T, U&gt;(<span class="hljs-attr">tuple</span>: [T, U]): [U, T] &#123;<br>    <span class="hljs-keyword">return</span> [tuple[<span class="hljs-number">1</span>], tuple[<span class="hljs-number">0</span>]];<br>&#125;<br><br><span class="hljs-title function_">swap</span>([<span class="hljs-number">7</span>, <span class="hljs-string">&#x27;seven&#x27;</span>]); <span class="hljs-comment">// [&#x27;seven&#x27;, 7]</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<p>　　在swap函数中，我们通过2个变量来交换输入的数组中的元素</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="泛型类"><a href="#泛型类" class="headerlink" title="泛型类"></a>泛型类</h2><p>　　我们不仅用泛型定义函数，还可以用泛型定义一个类，和函数类似，也是通过<code>&lt;T&gt;</code>跟在类名后面：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Animal</span>&lt;T&gt; &#123;<br>  <span class="hljs-attr">name</span>: T;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">name: T</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = name;<br>  &#125;<br>  <span class="hljs-title function_">sayName</span>(): T &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span>;<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">let</span> dog = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Animal</span>(<span class="hljs-string">&quot;tom&quot;</span>);<br>dog.<span class="hljs-title function_">sayName</span>()<br></code></pre></div></td></tr></table></figure>
+
+
+<h2 id="泛型约束"><a href="#泛型约束" class="headerlink" title="泛型约束"></a>泛型约束</h2><p>　　在函数内部，如果需要使用泛型变量上的属性，由于不知道它的类型（等同于Unknow类型），因此不能随意调用属性和方法：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">function</span> showLength&lt;T&gt;(<span class="hljs-attr">arg</span>: T): T &#123;<br>  <span class="hljs-comment">//报错：</span><br>  <span class="hljs-comment">//Property &#x27;length&#x27; does not exist on type &#x27;T&#x27;.</span><br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(arg.<span class="hljs-property">length</span>);<br>  <span class="hljs-keyword">return</span> arg;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　泛型变量T不一定有属性length，因此会报错；我们可以对泛型变量进行约束，只允许传入包含length属性的变量：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Lengthwise</span> &#123;<br>  <span class="hljs-attr">length</span>: <span class="hljs-built_in">number</span>;<br>&#125;<br><span class="hljs-keyword">function</span> showLength&lt;T <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Lengthwise</span>&gt;(<span class="hljs-attr">arg</span>: T): T &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(arg.<span class="hljs-property">length</span>);<br>  <span class="hljs-keyword">return</span> arg;<br>&#125;<br><br><span class="hljs-title function_">showLength</span>(<span class="hljs-string">&#x27;123&#x27;</span>)<br><span class="hljs-title function_">showLength</span>([])<br><span class="hljs-title function_">showLength</span>(&#123; <span class="hljs-attr">length</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">value</span>: <span class="hljs-number">4</span> &#125;)<br><br><span class="hljs-comment">// 报错：</span><br><span class="hljs-comment">// Argument of type &#x27;number&#x27; is not assignable to parameter of type &#x27;Lengthwise&#x27;</span><br><span class="hljs-title function_">showLength</span>(<span class="hljs-number">5</span>)<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<p>　　另外，多个泛型参数之间也可以互相约束：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">function</span> copy&lt;T <span class="hljs-keyword">extends</span> U, U&gt;(<span class="hljs-attr">target</span>: T, <span class="hljs-attr">source</span>: U): T &#123;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> id <span class="hljs-keyword">in</span> source) &#123;<br>    target[id] = (&lt;T&gt;source)[id];<br>  &#125;<br>  <span class="hljs-keyword">return</span> target;<br>&#125;<br><br><span class="hljs-title function_">copy</span>(&#123; <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">b</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">c</span>: <span class="hljs-number">3</span> &#125;, &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">b</span>: <span class="hljs-number">2</span> &#125;);<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　我们将source上所有的属性拷贝到target上，通过<code>T extends U</code>，保证了source上所有的属性在target上都有。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="泛型接口"><a href="#泛型接口" class="headerlink" title="泛型接口"></a>泛型接口</h2><p>　　在<a href="https://xieyufei.com/2021/07/29/TypeScript.html">ts基础篇</a>中，我们通过接口来定义了函数表达式：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">ISumFunc</span> &#123;<br>  (<span class="hljs-attr">x</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">y</span>: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">number</span>;<br>&#125;<br><span class="hljs-keyword">let</span> <span class="hljs-attr">sum</span>: <span class="hljs-title class_">ISumFunc</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">x, y</span>) &#123;<br>  <span class="hljs-keyword">return</span> x + y;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　同时可以使用含有泛型的接口来约束函数：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">CreateArrayFn</span> &#123;<br>  &lt;T&gt;(<span class="hljs-attr">length</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">item</span>: T): <span class="hljs-title class_">Array</span>&lt;T&gt;;<br>&#125;<br><br><span class="hljs-keyword">let</span> <span class="hljs-attr">createList</span>: <span class="hljs-title class_">CreateArrayFn</span>;<br><br>createList = <span class="hljs-keyword">function</span> &lt;T&gt;(<span class="hljs-attr">len</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">item</span>: T): <span class="hljs-title class_">Array</span>&lt;T&gt; &#123;<br>  <span class="hljs-keyword">let</span> <span class="hljs-attr">list</span>: T[] = [];<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) &#123;<br>    list.<span class="hljs-title function_">push</span>(item);<br>  &#125;<br>  <span class="hljs-keyword">return</span> list;<br>&#125;;<br><span class="hljs-title function_">createList</span>(<span class="hljs-number">3</span>, <span class="hljs-string">&quot;4&quot;</span>);<br><br><span class="hljs-title function_">createList</span>(<span class="hljs-number">3</span>, <span class="hljs-number">5</span>);<br></code></pre></div></td></tr></table></figure>
+
+
+<h1 id="项目配置"><a href="#项目配置" class="headerlink" title="项目配置"></a>项目配置</h1><p>　　说了这么多ts的知识，我们来把他结合到项目中进行使用和配置。</p>
+<h2 id="tsconfig-json配置文件详解"><a href="#tsconfig-json配置文件详解" class="headerlink" title="tsconfig.json配置文件详解"></a>tsconfig.json配置文件详解</h2><p>　　tsconfig.json是ts编译器的配置文件，ts编译器可根据它的信息来对代码进行编译；运行tsc，它会在当前目录或者父级目录寻找配置文件。在配置文件中可以通过<code>compilerOptions</code>来定制我们的编译选项：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;compilerOptions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br><br>    <span class="hljs-comment">/* 基本选项 */</span><br>    <span class="hljs-attr">&quot;target&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;es5&quot;</span><span class="hljs-punctuation">,</span>                       <span class="hljs-comment">// 指定 ECMAScript 目标版本: &#x27;ES3&#x27; (default), &#x27;ES5&#x27;, &#x27;ES6&#x27;/&#x27;ES2015&#x27;, &#x27;ES2016&#x27;, &#x27;ES2017&#x27;, or &#x27;ESNEXT&#x27;</span><br>    <span class="hljs-attr">&quot;module&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;commonjs&quot;</span><span class="hljs-punctuation">,</span>                  <span class="hljs-comment">// 指定使用模块: &#x27;commonjs&#x27;, &#x27;amd&#x27;, &#x27;system&#x27;, &#x27;umd&#x27; or &#x27;es2015&#x27;</span><br>    <span class="hljs-attr">&quot;lib&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>                             <span class="hljs-comment">// 指定要包含在编译中的库文件</span><br>    <span class="hljs-attr">&quot;allowJs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>                       <span class="hljs-comment">// 允许编译 javascript 文件</span><br>    <span class="hljs-attr">&quot;checkJs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>                       <span class="hljs-comment">// 报告 javascript 文件中的错误</span><br>    <span class="hljs-attr">&quot;jsx&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;preserve&quot;</span><span class="hljs-punctuation">,</span>                     <span class="hljs-comment">// 指定 jsx 代码的生成: &#x27;preserve&#x27;, &#x27;react-native&#x27;, or &#x27;react&#x27;</span><br>    <span class="hljs-attr">&quot;declaration&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>                   <span class="hljs-comment">// 生成相应的 &#x27;.d.ts&#x27; 文件</span><br>    <span class="hljs-attr">&quot;sourceMap&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>                     <span class="hljs-comment">// 生成相应的 &#x27;.map&#x27; 文件</span><br>    <span class="hljs-attr">&quot;outFile&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./&quot;</span><span class="hljs-punctuation">,</span>                       <span class="hljs-comment">// 将输出文件合并为一个文件</span><br>    <span class="hljs-attr">&quot;outDir&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./&quot;</span><span class="hljs-punctuation">,</span>                        <span class="hljs-comment">// 指定输出目录</span><br>    <span class="hljs-attr">&quot;rootDir&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./&quot;</span><span class="hljs-punctuation">,</span>                       <span class="hljs-comment">// 用来控制输出目录结构 --outDir.</span><br>    <span class="hljs-attr">&quot;removeComments&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>                <span class="hljs-comment">// 删除编译后的所有的注释</span><br>    <span class="hljs-attr">&quot;noEmit&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>                        <span class="hljs-comment">// 不生成输出文件</span><br>    <span class="hljs-attr">&quot;importHelpers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>                 <span class="hljs-comment">// 从 tslib 导入辅助工具函数</span><br>    <span class="hljs-attr">&quot;isolatedModules&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>               <span class="hljs-comment">// 将每个文件作为单独的模块 （与 &#x27;ts.transpileModule&#x27; 类似）.</span><br><br>    <span class="hljs-comment">/* 严格的类型检查选项 */</span><br>    <span class="hljs-attr">&quot;strict&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>                        <span class="hljs-comment">// 启用所有严格类型检查选项</span><br>    <span class="hljs-attr">&quot;noImplicitAny&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>                 <span class="hljs-comment">// 在表达式和声明上有隐含的 any类型时报错</span><br>    <span class="hljs-attr">&quot;strictNullChecks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>              <span class="hljs-comment">// 启用严格的 null 检查</span><br>    <span class="hljs-attr">&quot;noImplicitThis&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>                <span class="hljs-comment">// 当 this 表达式值为 any 类型的时候，生成一个错误</span><br>    <span class="hljs-attr">&quot;alwaysStrict&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>                  <span class="hljs-comment">// 以严格模式检查每个模块，并在每个文件里加入 &#x27;use strict&#x27;</span><br><br>    <span class="hljs-comment">/* 额外的检查 */</span><br>    <span class="hljs-attr">&quot;noUnusedLocals&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>                <span class="hljs-comment">// 有未使用的变量时，抛出错误</span><br>    <span class="hljs-attr">&quot;noUnusedParameters&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>            <span class="hljs-comment">// 有未使用的参数时，抛出错误</span><br>    <span class="hljs-attr">&quot;noImplicitReturns&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>             <span class="hljs-comment">// 并不是所有函数里的代码都有返回值时，抛出错误</span><br>    <span class="hljs-attr">&quot;noFallthroughCasesInSwitch&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>    <span class="hljs-comment">// 报告 switch 语句的 fallthrough 错误。（即，不允许 switch 的 case 语句贯穿）</span><br><br>    <span class="hljs-comment">/* 模块解析选项 */</span><br>    <span class="hljs-attr">&quot;moduleResolution&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;node&quot;</span><span class="hljs-punctuation">,</span>            <span class="hljs-comment">// 选择模块解析策略： &#x27;node&#x27; (Node.js) or &#x27;classic&#x27; (TypeScript pre-1.6)</span><br>    <span class="hljs-attr">&quot;baseUrl&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./&quot;</span><span class="hljs-punctuation">,</span>                       <span class="hljs-comment">// 用于解析非相对模块名称的基目录</span><br>    <span class="hljs-attr">&quot;paths&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span>                           <span class="hljs-comment">// 模块名到基于 baseUrl 的路径映射的列表</span><br>    <span class="hljs-attr">&quot;rootDirs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>                        <span class="hljs-comment">// 根文件夹列表，其组合内容表示项目运行时的结构内容</span><br>    <span class="hljs-attr">&quot;typeRoots&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>                       <span class="hljs-comment">// 包含类型声明的文件列表</span><br>    <span class="hljs-attr">&quot;types&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>                           <span class="hljs-comment">// 需要包含的类型声明文件名列表</span><br>    <span class="hljs-attr">&quot;allowSyntheticDefaultImports&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>  <span class="hljs-comment">// 允许从没有设置默认导出的模块中默认导入。</span><br><br>    <span class="hljs-comment">/* Source Map Options */</span><br>    <span class="hljs-attr">&quot;sourceRoot&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./&quot;</span><span class="hljs-punctuation">,</span>                    <span class="hljs-comment">// 指定调试器应该找到 TypeScript 文件而不是源文件的位置</span><br>    <span class="hljs-attr">&quot;mapRoot&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./&quot;</span><span class="hljs-punctuation">,</span>                       <span class="hljs-comment">// 指定调试器应该找到映射文件而不是生成文件的位置</span><br>    <span class="hljs-attr">&quot;inlineSourceMap&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>               <span class="hljs-comment">// 生成单个 soucemaps 文件，而不是将 sourcemaps 生成不同的文件</span><br>    <span class="hljs-attr">&quot;inlineSources&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>                 <span class="hljs-comment">// 将代码与 sourcemaps 生成到一个文件中，要求同时设置了 --inlineSourceMap 或 --sourceMap 属性</span><br><br>    <span class="hljs-comment">/* 其他选项 */</span><br>    <span class="hljs-attr">&quot;experimentalDecorators&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>        <span class="hljs-comment">// 启用装饰器</span><br>    <span class="hljs-attr">&quot;emitDecoratorMetadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span>          <span class="hljs-comment">// 为装饰器提供元数据的支持</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　也可以通过<code>files</code>显式指定需要编译的文件：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;files&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;./some/file.ts&quot;</span><br>  <span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　还可以使用<code>include</code>和<code>exclude</code>选项来指定需要包含的文件和排除的文件：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;include&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;src/**/*.ts&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-string">&quot;src/**/*.tsx&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-string">&quot;src/**/*.vue&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-string">&quot;tests/**/*.ts&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-string">&quot;tests/**/*.tsx&quot;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;exclude&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;node_modules&quot;</span><span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　<code>include</code>和<code>exclude</code>支持的glob通配符有：</p>
+<ul>
+<li><code>*</code>匹配0或多个字符（不包括目录分隔符）</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li><code>?</code>匹配一个任意字符（不包括目录分隔符）</li>
+<li><code>**/</code>递归匹配任意子目录</li>
+</ul>
+<h2 id="在ts中使用ESLint和Prettier"><a href="#在ts中使用ESLint和Prettier" class="headerlink" title="在ts中使用ESLint和Prettier"></a>在ts中使用ESLint和Prettier</h2><p>　　有些童鞋可能会有疑惑了，ts在编译阶段就能排查出代码错误，为什么还需要用到eslint来检查呢？因为ts重点关注的是类型的检查，而不是代码和风格的检查，有一些代码的问题，比如==与===的检查、禁用var等功能，还是需要eslint来配合；首先在项目中安装eslint的依赖：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">npm i eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin -D<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　这三个依赖的作用分别是：</p>
+<ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>eslint: ESLint的核心代码</li>
+<li>@typescript-eslint/parser：ESLint的解析器，用于解析typescript，从而检查和规范Typescript代码</li>
+<li>@typescript-eslint/eslint-plugin：这是一个ESLint插件，包含了各类定义好的检测Typescript代码的规范</li>
+</ul>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　安装依赖后我们就可以在.eslintrc.js中配置插件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>    <span class="hljs-attr">parser</span>:  <span class="hljs-string">&#x27;@typescript-eslint/parser&#x27;</span>, <span class="hljs-comment">//定义ESLint的解析器</span><br>    <span class="hljs-attr">extends</span>: [<span class="hljs-string">&#x27;plugin:@typescript-eslint/recommended&#x27;</span>],<span class="hljs-comment">//定义文件继承的子规范</span><br>    <span class="hljs-attr">plugins</span>: [<span class="hljs-string">&#x27;@typescript-eslint&#x27;</span>],<span class="hljs-comment">//定义了该eslint文件所依赖的插件</span><br>    <span class="hljs-attr">env</span>:&#123;                          <span class="hljs-comment">//指定代码的运行环境</span><br>        <span class="hljs-attr">browser</span>: <span class="hljs-literal">true</span>,<br>        <span class="hljs-attr">node</span>: <span class="hljs-literal">true</span>,<br>    &#125;                               <br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　在<a href="https://xieyufei.com/2021/04/25/Front-Eslint.html">一文彻底读懂ESLint</a>中还介绍了Eslint配合了Prettier，在ts项目，我们也可以搭配Prettier来格式化代码，首先也是进行安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">npm i -g prettier eslint-config-prettier eslint-plugin-prettier<br></code></pre></div></td></tr></table></figure>
+
+<ul>
+<li>prettier：prettier插件的核心代码</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>eslint-config-prettier：解决ESLint中的样式规范和prettier中样式规范的冲突，以prettier的样式规范为准，使ESLint中的样式规范自动失效</li>
+<li>eslint-plugin-prettier：将prettier作为ESLint规范来使用</li>
+</ul>
+<p>然后还是在.eslintrc.js配置Prettier：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>    <span class="hljs-attr">parser</span>:  <span class="hljs-string">&#x27;@typescript-eslint/parser&#x27;</span>,<br>    <span class="hljs-attr">extends</span>:[ <br>      <span class="hljs-string">&#x27;prettier/@typescript-eslint&#x27;</span>,<br>      <span class="hljs-string">&#x27;plugin:prettier/recommended&#x27;</span><br>    ],<br>    <span class="hljs-attr">parserOptions</span>: &#123;<br>        <span class="hljs-string">&quot;ecmaVersion&quot;</span>: <span class="hljs-number">2019</span>,<br>        <span class="hljs-string">&quot;sourceType&quot;</span>: <span class="hljs-string">&#x27;module&#x27;</span>,<br>        <span class="hljs-string">&quot;ecmaFeatures&quot;</span>:&#123;<br>            <span class="hljs-attr">jsx</span>:<span class="hljs-literal">true</span><br>        &#125;<br>    &#125;,<br>    <span class="hljs-attr">env</span>:&#123;<br>        <span class="hljs-attr">browser</span>: <span class="hljs-literal">true</span>,<br>        <span class="hljs-attr">node</span>: <span class="hljs-literal">true</span>,<br>    &#125;  <br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<h1 id="在vue中使用ts"><a href="#在vue中使用ts" class="headerlink" title="在vue中使用ts"></a>在vue中使用ts</h1><p>　　在vue中使用ts，推荐使用<code>基于类的注解装饰器</code>进行开发，vue官方推荐<code>vue-class-component</code>插件，但是我们在实际开发中都会用到<code>vue-class-component</code>这个插件，也是vue社区推荐的；它是基于<code>vue-class-component</code>开发而成，但是性能上有一些改进；他具备以下几个装饰器和功能：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<ul>
+<li>@Component</li>
+<li>@Prop</li>
+<li>@PropSync</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>@Model</li>
+<li>@Watch</li>
+<li>@Provide</li>
+<li>@Inject</li>
+<li>@ProvideReactive</li>
+<li>@InjectReactive</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>@Emit</li>
+<li>@Ref</li>
+</ul>
+<p>　　我们来看下每个装饰器的用法：</p>
+<h2 id="Component"><a href="#Component" class="headerlink" title="@Component"></a>@Component</h2><p>　　@Component装饰器接口一个对象做参数，可以在对象中声明<code>components</code>，<code>filters</code>，<code>directives</code>等装饰器的选项，也可以声明computed，watch等。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vue">&lt;template&gt;<br>&lt;div&gt;<br>  &lt;div&gt;&#123;&#123; firtName | filterName &#125;&#125;&lt;/div&gt;<br>  &lt;HelloWorld&gt;&lt;/HelloWorld&gt;<br>&lt;/div&gt;<br>&lt;/template&gt;<br><br>&lt;script lang=&quot;ts&quot;&gt;<br>import &#123; Component, Vue &#125; from &quot;vue-property-decorator&quot;;<br>@Component(&#123;<br>  components: &#123;<br>    HelloWorld,<br>  &#125;,<br>  filters: &#123;<br>    filterName(val: string) &#123;<br>      return val + &quot;：filter name&quot;;<br>    &#125;,<br>  &#125;,<br>&#125;)<br>export default class Home extends Vue &#123;<br>  private firtName = &quot;tom&quot;;<br>&#125;<br>&lt;/script&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　除了上面介绍的属性，还可以注册钩子函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vue">&lt;script lang=&quot;ts&quot;&gt;<br>Component.registerHooks([<br>  &quot;beforeRouteLeave&quot;,<br>  &quot;beforeRouteEnter&quot;,<br>]);<br><br>@Component<br>export default class Home extends Vue &#123;<br>  beforeRouteLeave(to: any, from: any, next: any) &#123;<br>    console.log(&#x27;beforeRouteLeave&#x27;);<br>    next();<br>  &#125;<br>  beforeRouteEnter(to: any, from: any, next: any) &#123;<br>    console.log(&#x27;beforeRouteLeave&#x27;);<br>    next();<br>  &#125;<br>&#125;<br>&lt;/script&gt;<br></code></pre></div></td></tr></table></figure>
+
+
+<h2 id="Prop"><a href="#Prop" class="headerlink" title="@Prop"></a>@Prop</h2><p>　　@Prop装饰器同vue中props功能相同，接收一个参数，这个参数可以有三种写法：</p>
+<ul>
+<li>Constructor：例如String，Number，Boolean等，指定 prop 的类型；</li>
+<li>Constructor[]：指定 prop 的可选类型；</li>
+<li>PropOptions：可以使用以下选项：type，default，required，validator。</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vue">&lt;script lang=&quot;ts&quot;&gt;<br><br>@Component<br>export default class Home extends Vue &#123;<br>   @Prop(String) readonly name!: string | undefined;<br>   @Prop(&#123; default: 30, type: Number &#125;) private age!: number;<br>   @Prop([String, Boolean]) private sex!: string | boolean;<br>&#125;<br>&lt;/script&gt;<br></code></pre></div></td></tr></table></figure>
+
+<blockquote>
+<p>需要注意的是：属性的ts类型后面需要加上undefined类型；或者在属性名后面加上!，表示非null 和 非undefined<br>的断言，否则编译器会给出错误提示。</p>
+</blockquote>
+<h2 id="PropSync"><a href="#PropSync" class="headerlink" title="@PropSync"></a>@PropSync</h2><p>　　@PropSync装饰器与@prop用法类似，二者的区别在于：</p>
+<ul>
+<li>@PropSync 装饰器接收两个参数：<br>  propName: string 表示父组件传递过来的属性名；<br>  options: Constructor | Constructor[] | PropOptions 与@Prop的第一个参数一致；</li>
+<li>@PropSync 会生成一个新的计算属性。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</ul>
+<p>　　@PropSync本质上就是通过vue的sync方式传参：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vue">&lt;template&gt;<br>    &lt;h3 @click=&quot;changeMsg&quot;&gt;&#123;&#123; msg &#125;&#125;&lt;/h3&gt;<br>&lt;/template&gt;<br><br>&lt;script lang=&quot;ts&quot;&gt;<br>import &#123; Component,PropSync, Vue &#125; from &quot;vue-property-decorator&quot;;<br><br>@Component<br>export default class HelloWorld extends Vue &#123;<br>  @PropSync(&quot;msg&quot;) msgSync!: string;<br>  changeMsg(): void &#123;<br>    this.msgSync = &quot;new msg&quot;;<br>  &#125;<br>&#125;<br>&lt;/script&gt;<br></code></pre></div></td></tr></table></figure>
+
+
+
+
+<h2 id="Watch"><a href="#Watch" class="headerlink" title="@Watch"></a>@Watch</h2><p>　　@Watch装饰器同vue中的watch功能相同，监听依赖的变量值变化而做一系列操作，它接收两个参数：</p>
+<ul>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>path: string 被侦听的属性名；</li>
+<li>options?: options可以包含两个属性 ：<br>immediate?:boolean 侦听开始之后是否立即调用该回调函数；<br>deep?:boolean 被侦听的对象的属性被改变时，是否调用该回调函数；</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vue">&lt;template&gt;<br>  &lt;div&gt;<br>    &lt;h1&gt;child:&#123;&#123;child&#125;&#125;&lt;/h1&gt;<br>    &lt;input type=&quot;text&quot; v-model=&quot;child&quot;/&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br> <br>&lt;script lang=&quot;ts&quot;&gt;<br>import &#123; Vue, Watch, Component &#125; from &#x27;vue-property-decorator&#x27;;<br> <br>@Component<br>export default class Home extends Vue &#123;<br>  private child = &#x27;&#x27;;<br> <br>  @Watch(&#x27;child&#x27;, &#123; immediate: false, deep: false &#125;)<br>  onChildChanged(newValue: string, oldValue: string) &#123;<br>    console.log(newValue);<br>    console.log(oldValue);<br>  &#125;<br>&#125;<br>&lt;/script&gt;<br></code></pre></div></td></tr></table></figure>
+
+
+<h2 id="Emit"><a href="#Emit" class="headerlink" title="@Emit"></a>@Emit</h2><p>　　@Emit同vue中的$emit，它接收一个可选参数，该参数是$emit的第一个参数，充当事件名；如果没有提供这个参数，$Emit会将回调函数名的camelCase转为kebab-case，并将其作为事件名。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vue">&lt;script lang=&quot;ts&quot;&gt;<br>export default class Home extends Vue &#123;<br>  @Emit()<br>  clickBtn() &#123;<br>  &#125;<br>  @Emit(&#x27;click-my-btn&#x27;)<br>  clickBtn1() &#123;<br>  &#125;<br>&#125;<br>&lt;/script&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　最后相当于以下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vue">&lt;script&gt;<br>export default &#123;<br>  clickBtn()&#123;<br>    this.$emit(&#x27;click-btn&#x27;)<br>  &#125;<br>  clickBtn1()&#123;<br>    this.$emit(&#x27;click-my-btn&#x27;)<br>  &#125;<br>&#125;<br>&lt;/script&gt;<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　@Emit会将回调函数的返回值作为第二个参数返回给父级函数，如果没有返回值，则会默认使用括号里的参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vue">&lt;script lang=&quot;ts&quot;&gt;<br>export default class Home extends Vue &#123;<br>  @Emit()<br>  returnVal() &#123;<br>    return &#x27;hello parent&#x27;<br>  &#125;<br>  @Emit()<br>  clickBtn(ev) &#123;<br>  &#125;<br>&#125;<br>&lt;/script&gt;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　等同于以下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vue">&lt;script&gt;<br>export default &#123;<br>  returnVal()&#123;<br>    this.$emit(&#x27;return-val&#x27;, &#x27;hello parent&#x27;)<br>  &#125;<br>  clickBtn(ev)&#123;<br>    this.$emit(&#x27;click-btn&#x27;, ev)<br>  &#125;<br>&#125;<br>&lt;/script&gt;<br></code></pre></div></td></tr></table></figure>
+
+
+<h2 id="Model"><a href="#Model" class="headerlink" title="@Model"></a>@Model</h2><p>　　@Model装饰器允许我们在一个组件上自定义v-model，它接收两个参数：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<ul>
+<li>event: string 事件名。</li>
+<li>options: Constructor | Constructor[] | PropOptions 与@Prop的第一个参数一致。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vue">&lt;template&gt;<br>  &lt;div&gt;<br>    &lt;div&gt;v-model的值： &#123;&#123; val &#125;&#125;&lt;/div&gt;<br>    &lt;input type=&quot;text&quot; :value=&quot;val&quot; @input=&quot;changeInput&quot; /&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br><br>&lt;script lang=&quot;ts&quot;&gt;<br>import &#123; Component, Emit, Model, Vue &#125; from &quot;vue-property-decorator&quot;;<br>@Component<br>export default class Input extends Vue &#123;<br>  @Model(&quot;change&quot;, &#123; type: String &#125;) readonly val!: string;<br><br>  @Emit(&quot;change&quot;)<br>  changeInput(ev: any) &#123;<br>    return ev.target.value;<br>  &#125;<br>&#125;<br>&lt;/script&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们将父组件接收的value值作为变量val，将接收的input函数改名change，在输入框改变时触发了change函数（也就是input函数）。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="Ref"><a href="#Ref" class="headerlink" title="@Ref"></a>@Ref</h2><p>　　@Ref同vue中的$ref，接收一个可选字符串，用来指向元素或子组件的引用信息；如果没有这个参数，则使用装饰器后面的属性名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vue">&lt;template&gt;<br>  &lt;div&gt;<br>    &lt;div ref=&quot;refDiv&quot;&gt;&#123;&#123; fullName | filterName &#125;&#125;&lt;/div&gt;<br>    &lt;SubComponent ref=&quot;subComponent&quot;&gt;&lt;/SubComponent&gt;<br>    &lt;div @click=&quot;clickSubmit&quot;&gt;submit&lt;/div&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br>&lt;script lang=&quot;ts&quot;&gt;<br>import SubComponent from &quot;@/components/SubComponent&quot;<br>@Component(&#123;<br>  components: &#123;<br>    SubComponent,<br>  &#125;,<br>&#125;)<br>export default class Home extends Vue &#123;<br>  @Ref() readonly refDiv!: HTMLElement;<br>  @Ref(&quot;refDiv&quot;) readonly newRef!: HTMLElement;<br>  @Ref() readonly subComponent!: SubComponent;<br>  @Ref(&quot;subComponent&quot;) readonly compRef!: SubComponent;<br><br>  clickSubmit(): void &#123;<br>    console.log(this.refDiv);<br>    console.log(this.newRef);<br>    console.log(this.subComponent);<br>    console.log(this.compRef);<br>  &#125;<br>&#125;<br>&lt;/script&gt;<br></code></pre></div></td></tr></table></figure>
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Interview/">面试</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/10/06/React-Native-Env.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">深入学习React Native之环境搭建</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/09/06/Revealjs.html">
+                        <span class="hidden-mobile">网页幻灯片演示框架：Reveal.js</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

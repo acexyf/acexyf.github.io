@@ -1,0 +1,658 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　之前的一篇文章中我们介绍了一款高性能、开源的内网穿透工具FRP，但是对于很多小白用户来说，上手的成本比较高，既要配置服务端又需要客户端，还需要各种配置文件；因此本文给大家带来一款新的内网穿透组网工具Zerotier，五分钟让大家更轻松的实现摸鱼；最后分享搭建自己的服务器进行私有化部署教程，拒绝摸鱼中有任何的延迟。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>穿越防火墙的秘籍，打造个人专属内网穿透网络 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="穿越防火墙的秘籍，打造个人专属内网穿透网络">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-12-02 22:09" pubdate>
+        2024年12月2日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      27
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">穿越防火墙的秘籍，打造个人专属内网穿透网络</h1>
+            
+            <div class="markdown-body">
+              <p>　　之前的一篇文章中我们介绍了一款高性能、开源的内网穿透工具FRP，但是对于很多小白用户来说，上手的成本比较高，既要配置服务端又需要客户端，还需要各种配置文件；因此本文给大家带来一款新的内网穿透组网工具Zerotier，五分钟让大家更轻松的实现摸鱼；最后分享搭建自己的服务器进行私有化部署教程，拒绝摸鱼中有任何的延迟。</p>
+<span id="more"></span>
+
+
+<p>　　经常搞打洞穿透的小伙伴都知道，FRP是一个穿透工具，是专门用来穿透到内网的，实现点对点、设备到设备的穿透功能；而这次介绍的Zerotier则加了一个组网的关键词，那么什么是组网呢？它是如何来组网的呢？</p>
+<p>　　所谓的组网，其实就是构建了一个<code>虚拟局域网</code>，简单来说就是将处于异地不同网络中的设备，跨网络组建在同一个虚拟局域网中，从而实现基于内网IP的设备间的互相访问。</p>
+<p>　　这么说起来有点枯燥无聊，如果我们装了Zerotier之后打开电脑的<code>网络连接</code>，就可以看到一个新的虚拟网络：</p>
+<p><img src="/images/Zerotier/net.png" srcset="/img/loading.gif" lazyload alt="虚拟局域网"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　这里我们就看到它创建了一个新的网络<code>Zerotier One</code>，不过这个网络在物理上并不存在，因为它不是一张网卡也不是一根网线连接的，只是一个虚拟的网络；同时你可以将不同的设备（比如pad、phone等）都安装软件后，添加到这个局域网，通过IP的方式互相访问，下图是组网示意图：</p>
+<p><img src="/images/Zerotier/zerotier-network.png" srcset="/img/loading.gif" lazyload alt="Zerotier网络示意图"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　因此我们发现Zerotier的内网穿透方式和FRP有着本质的不同，FRP依赖于公网IP，对单个设备特定端口号进行隧道穿透，适合部署网站服务、ssh连接等少量固定端口的办公环境；而Zerotier适合多设备间多端口号之间组网，常见的情况例如访问家里的nas设备，同时我们在nas上运行了多个服务，需要开放多个端口，这个时候通过Zerotier就可以让我们在异地通过手机、电脑等多种设备都能够访问到nas中的服务。</p>
+<p>　　同时Zerotier没有直接暴露内网设备的端口，避免了设备被大量网络扫描到，更类似FRP的stcp模式。</p>
+<p>　　好了，话不多说，我们下面就来看下它是如何安装配置的。</p>
+<h1 id="客户端安装配置"><a href="#客户端安装配置" class="headerlink" title="客户端安装配置"></a>客户端安装配置</h1><p>　　Zerotier支持多种客户端的接入，我们可以在它的官网下载页面，找到常见的Windows、MacOS、Linux下载软件，还有不常见的如OpenWRT系统、FreeNAS和群晖等不同的nas系统；下面我们看下几种常用系统是如何来安装的。</p>
+<blockquote>
+<p>笔者将本文所有的安装软件都整理上传了，需要的直接跳转到文末自取。</p>
+</blockquote>
+<h2 id="Windows环境"><a href="#Windows环境" class="headerlink" title="Windows环境"></a>Windows环境</h2><p>　　首先我们需要去官网注册开通一个免费的网络Network，打开<a target="_blank" rel="noopener" href="https://my.zerotier.com/">官网注册地址</a>，点击<code>SIGN UP</code>，填写一系列信息后，重新登录进去，到我们的网络页面；点击<code>Create A Network</code>就可以新建网络：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/Zerotier/new.png" srcset="/img/loading.gif" lazyload alt="创建网络"></p>
+<p>　　在网络页面，我们可以看到我们有多少网络和多少设备，如果是免费用户的话最多只能创建3个网络和连接10个设备；记住我们新创建<strong>网络的ID</strong>，下面需要用到。</p>
+<p>　　然后下载我们<code>ZeroTierOne.msi</code>的安装包，双击安装后我们桌面右下角就会出现Zerotier图标，右击出现一个操作框：</p>
+<p><img src="/images/Zerotier/join.png" srcset="/img/loading.gif" lazyload alt="加入网络"></p>
+<p>　　点击<code>Join New Network</code>，出现一个弹框，将我们上面的<strong>网络的ID</strong>复制粘贴进去，这样我们就加入这个网络了；但是加入网络后还需要对该设备进行认证，我们点击网络详情页面，找到该设备中Edit按钮，在出现的弹框最上面点击<code>Authorized</code>，然后点击Save即可。</p>
+<p><img src="/images/Zerotier/auth.png" srcset="/img/loading.gif" lazyload alt="加入网络"></p>
+<p>　　这样我们的设备就认证通过了，我们可以通过<code>Managed IPs</code>分配的IP访问到该设备下的服务。</p>
+<h2 id="Linux环境"><a href="#Linux环境" class="headerlink" title="Linux环境"></a>Linux环境</h2><p>　　Linux下安装Zerotier则相对容易，Zerotier提供了一键安装的脚本，我们只需要在Linux环境下输入如下的命令即可：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">curl -s https://install.zerotier.com | sudo bash<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　最后看到如下的提示就安装成功了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">Success! You are ZeroTier address<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<p>　　我们也需要通过命令加入网络：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">sudo zerotier-cli <span class="hljs-built_in">join</span> &lt;NETWORK ID&gt;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　看到如下加入成功的提示即可：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">200 <span class="hljs-built_in">join</span> OK<br></code></pre></div></td></tr></table></figure>
+
+<p>　　加入成功后也需要对设备进行认证。</p>
+<p>　　还有一些nas设备会自带的ZeroTier插件，我们切到设备面板，然后输入<code>网络ID</code>，点击<code>启用</code>按钮，即可实现nas设备的接入网络；比如下面就是笔者家中的一台安装iStore的nas设备的配置界面：</p>
+<p><img src="/images/Zerotier/istore.png" srcset="/img/loading.gif" lazyload alt="iStore"></p>
+<p>　　还有Macos和安卓环境的安装也都很简单，这里不再赘述了。</p>
+<h1 id="自建planet服务器"><a href="#自建planet服务器" class="headerlink" title="自建planet服务器"></a>自建planet服务器</h1><p>　　我们上面创建和加入的网络都是官方的，但是由于众所周知的原因，官方的网络延迟比较大，使用起来体验可能不是很友好；因此有自己服务器并且对延迟要求比较高的小伙伴就可以愉快的搭建私有服务器进行玩耍了。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　这里推荐一下笔者目前在用的<a target="_blank" rel="noopener" href="https://www.aliyun.com/minisite/goods?userCode=oe95ob41">阿里云服务器</a>，专门用来部署我自己的planet服务器；滑到下面找到99月一年的ECS实例服务器购买，它不仅性价比极高，而且性能稳定可靠，完全能够满足个人和小型企业的日常需求；无论你是想要搭建个人网站、进行小型项目开发，还是作为学习实践的平台，这款服务器都是一个绝佳的选择；笔者都已经续费到26年了，这样的羊毛不薅更待何时。</p>
+<p><img src="/images/Zerotier/ecs.png" srcset="/img/loading.gif" lazyload alt="服务器实例"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　除了服务器之外，这里需要用到一个开源的仓库：<code>docker-zerotier-planet</code>，我们将其克隆到服务器后后执行部署的脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">git <span class="hljs-built_in">clone</span> https://github.com/xubiaolin/docker-zerotier-planet<br><br><span class="hljs-built_in">cd</span> docker-zerotier-planet/<br><br>./deploy.sh<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="/images/Zerotier/deploy.png" srcset="/img/loading.gif" lazyload alt="docker部署"></p>
+<p>　　部署成功后，我们需要去开放端口，开放<code>9994/tcp</code>、<code>9994/udp</code>、<code>3443/tcp</code>、<code>3000/tcp</code>4个端口；然后访问http://[公网ip]:3443，进入控制页面，默认账号/密码为：admin/password，修改初始密码。</p>
+<p>　　然后再次登录，点击<code>Add Network</code>，然后输入网络名称，创建一个新的网络，这里我们会得到一个网络的id：</p>
+<p><img src="/images/Zerotier/create1.png" srcset="/img/loading.gif" lazyload alt="创建网络"></p>
+<p>　　选中<code>easy setup</code>，输入默认的ip地址范围，提交即可：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Zerotier/setup.png" srcset="/img/loading.gif" lazyload alt="setup"></p>
+<p>　　创建网络后，对于我们加入网络的设备，勾选<code>Authorized</code>选项框即可通过认证：</p>
+<p><img src="/images/Zerotier/detail.png" srcset="/img/loading.gif" lazyload alt="加入网络"></p>
+<p>　　上面脚本运行成功后，我们会看到在<code>./data/zerotier/dist</code>目录下生成<code>planet</code>和<code>moon</code>配置文件，保存这两个文件，后面需要进行替换操作。</p>
+<h2 id="替换文件"><a href="#替换文件" class="headerlink" title="替换文件"></a>替换文件</h2><p>　　我们服务器安装好后，还需要对不同客户端进行配置文件替换，将客户端中的配置替换成我们上面服务生成的配置文件；在Windows中，将<code>plant</code>文件覆盖粘贴到<code>C:\ProgramData\ZeroTier\One</code>目录下：</p>
+<p><img src="/images/Zerotier/replace.png" srcset="/img/loading.gif" lazyload alt="Windows替换文件"></p>
+<blockquote>
+<p>需要注意的是，ProgramData目录是一个隐藏文件夹，需要允许查看隐藏目录才可打开。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</blockquote>
+<blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>替换后需要重启ZeroTier。</p>
+</blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　对于Linux环境，执行wget命令覆盖plant文件，然后重启网络即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /var/lib/zerotier-one<br>sudo wget -O planet http://[your ip]:3000/planet?key=[your key]<br>sudo service zerotier-one restart<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="安卓客户端"><a href="#安卓客户端" class="headerlink" title="安卓客户端"></a>安卓客户端</h2><p>　　对于安卓客户端，自建服务就不能直接用官方的客户端了；这里我们下载一个第三方的开源客户端：<code>ZerotierFix.apk</code>，点击右上角三个点，然后<code>入轨 =&gt; 从文件导入</code>，导入从服务器下载的moon文件：</p>
+<blockquote>
+<p>安卓客户端的安装包笔者也已经整理好了，在文末自取。</p>
+</blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Zerotier/moon.jpg" srcset="/img/loading.gif" lazyload alt="入轨"></p>
+<p>　　入轨后，点击底部的加号，还是老样子，输入<code>网络ID</code>，我们就可以在主界面看到一条新建的网络了，点击右边的switch开关即可开启网络：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/Zerotier/fix.jpg" srcset="/img/loading.gif" lazyload alt="ZerotierFix连接上网络"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　这里进行一个简单的总结，笔者在日常生活中也体验过很多的内网穿透工具，每家的穿透工具在功能和使用上各有侧重，像基于开源FRP衍生的主要商业化工具ngrok、NATAPP、Cpolar都侧重端口映射，在流量、域名、隧道条数上进行收费，比较适用于部署网站、搭建服务等办公场景下的应用。</p>
+<p>　　而笔者在日常生活中会选择Zerotier的原因，是因为体验下来是一款非常<code>适合家用组网</code>的工具软件，它可以帮助我们十分方便的访问家里的各种设备，以及设备的不同端口；同时Zerotier在软件上对于设备的支持程度也是相当丰富的，Windows、Linux、Macos、安卓和iPhone等常见的系统都能够支持到，甚至我们也能看到Zerotier还支持一些nas版的软件；因此哪怕是在外出的环境下，我们通过身边的手机或平板，也能够很方便的穿透到内网环境。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<blockquote>
+<p>甚至笔者在服务器上安装VSCode网页版后，实现了通过手机远程回公司改代码。</p>
+</blockquote>
+<p>　　而且通过本文的安装教程我们也能看到，只需要让设备安装软件然后加入网络即可，安装组网十分便捷，设备会自动获取IP地址；Zerotier官方在设备数量和网络数量上也有限制，但是对于有公网服务器的同学来说，通过自建服务器可以绕开数量的限制，同时也可以极大降低延迟。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<blockquote>
+<p>本文所有软件敬请关注公众号【前端壹读】，后台回复关键词【Zerotier】即可获取。</p>
+</blockquote>
+<img src="/images/qrcode.png" srcset="/img/loading.gif" lazyload alt="" align="center" width="40%" style="display:block;margin:0 auto;"/>
+
+
+            </div>
+            <hr>
+            <div>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/tools/">工具</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Installation/">安装教程</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Linux/">Linux</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Server/">服务器</a>
+                    
+                      <a class="hover-with-bg" href="/tags/OpenSource/">开源</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/04/09/Threejs-Global.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Threejs全球坐标分布效果</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/11/25/Vue3-Ref.html">
+                        <span class="hidden-mobile">从Vue3源码深入理解ref响应式</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

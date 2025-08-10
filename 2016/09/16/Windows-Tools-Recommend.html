@@ -1,0 +1,585 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　作为一个程序猿，有一个好的撸码工具肯定会让你的效率成倍的提升。这篇文章总结了自笔者工作以来用过的比较好的提升效率的Windows下的小工具，推荐给大家来用(非广告)，这些小工具不仅仅是撸码的，还有其他的一些软件。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>Windows程序员必备小工具推荐 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Windows程序员必备小工具推荐">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2016-09-16 08:49" pubdate>
+        2016年9月16日 早上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      18
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Windows程序员必备小工具推荐</h1>
+            
+            <div class="markdown-body">
+              <p>　　作为一个程序猿，有一个好的撸码工具肯定会让你的效率成倍的提升。这篇文章总结了自笔者工作以来用过的比较好的提升效率的Windows下的小工具，推荐给大家来用(非广告)，这些小工具不仅仅是撸码的，还有其他的一些软件。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>工欲善其事，必先利其器</p>
+</blockquote>
+<p>　　“工”是指的工作，一件事情要想做好，必定先要让工具“锋利”。</p>
+<h1 id="撸码神器Sublime-Text"><a href="#撸码神器Sublime-Text" class="headerlink" title="撸码神器Sublime Text"></a>撸码神器Sublime Text</h1><h2 id="推荐指数★★★★★"><a href="#推荐指数★★★★★" class="headerlink" title="推荐指数★★★★★"></a>推荐指数★★★★★</h2><p>　　Sublime是我用过的最好的撸码神器，没有之一。那些撸码还在用什么EditPlus、DreamWeaver的，和Sublime比，简直就是拿石器时代的石器武器和二十一世纪的大规模杀伤性武器做比较。Sublime拥有漂亮的用户界面和无比强大的功能，例如代码的缩略图、自定义按键绑定、拼写检查、项目切换、多窗口等等。Sublime的界面如下：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Windows-Tools-Recommend/Sublime-UI.png" srcset="/img/loading.gif" lazyload alt="Sublime界面"></p>
+<p>　　Sublime还能支持多种编程语言的语法高亮，有优秀的代码自动补全的功能。而且Sublime还有非常强大的插件系统作为其功能的补充。一些常见和实用的插件如Emmet(快速编写 HTML/CSS 代码的方案)、ColorPicker(颜色选择器)、MarkdownPreview(markdown预览)、DocBlockr(代码注释规范)、SideBar(侧边栏工具)等等，其他一些强大的插件等待读者去体验。</p>
+<h1 id="小孩桌面便签"><a href="#小孩桌面便签" class="headerlink" title="小孩桌面便签"></a>小孩桌面便签</h1><h2 id="推荐指数★★★☆☆"><a href="#推荐指数★★★☆☆" class="headerlink" title="推荐指数★★★☆☆"></a>推荐指数★★★☆☆</h2><p>　　大家在上学的时候肯定都用过便签纸一类的东西来记一些上课笔记之类的东西，然后贴在课本上，整个课本就贴的花花绿绿的。小孩桌面便签就是这样一个在桌面上贴上便签的工具。正如它的名字一样：DeskNotes(桌面贴纸)。</p>
+<p>　　这是我一个女同事推荐我使用的，刚开始我还很不屑的，没怎么用。后来随着工作越来越多，渐渐的发现……脑子越来越不够用了。然后我就把这个工具用起来了，确实能够提醒我很多事情。它的界面如下：</p>
+<p><img src="/images/Windows-Tools-Recommend/DesktopNotes.jpg" srcset="/img/loading.gif" lazyload alt="小孩桌面便签界面"></p>
+<p>　　除了能够添加贴纸外，小孩便签还增加了实用的小功能，如闹钟提醒和定时关机。</p>
+<h1 id="FastStone-Capture"><a href="#FastStone-Capture" class="headerlink" title="FastStone Capture"></a>FastStone Capture</h1><h2 id="推荐指数★★☆☆☆"><a href="#推荐指数★★☆☆☆" class="headerlink" title="推荐指数★★☆☆☆"></a>推荐指数★★☆☆☆</h2><p>　　由于笔者从事网页的工作，经常要和图片打交道，所以经常需要截图、取色、测量像素等等。这是笔者在上学时一个老师推荐的软件，基本能够解决上述需求。FastStone Capture的界面如下：</p>
+<p><img src="/images/Windows-Tools-Recommend/FastStone-Capture.png" srcset="/img/loading.gif" lazyload alt="FastStone Capture"></p>
+<p>　　很多读者可能会说：那你用PhotoShop啊，功能更强悍。诚然，PhotoShop功能确实相当的强悍，笔者的电脑里也装了，但是体积大，而且又十分的吃内存，每次打开都要耗不少时间(估计是电脑太老了)。</p>
+<p>　　相比于PhotoShop，FastStone Capture就轻巧了不少。整个软件的大小不超过3MB，通过任务管理器看到所占用的内存仅0.3MB，基本上可以忽略不计，每次打开基本上都是秒开的。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　它的主要功能有截图、屏幕录像、图像处理(裁切，改变图像效果等)。附带的特色小功能有屏幕放大器、屏幕取色器、屏幕标尺、图像转为PDF，功能可是非常的强大。</p>
+<h1 id="有道云笔记"><a href="#有道云笔记" class="headerlink" title="有道云笔记"></a>有道云笔记</h1><h2 id="推荐指数★★☆☆☆-1"><a href="#推荐指数★★☆☆☆-1" class="headerlink" title="推荐指数★★☆☆☆"></a>推荐指数★★☆☆☆</h2><p>　　有的读者可能会说：欸，上面不是有小孩桌面便签可以用来记事了么，怎么还要有道云笔记呢。诚然，便签是可以记录生活中的琐事，但是要想把记录的内容从一台电脑转移到另一台电脑却比较费时。</p>
+<p>　　笔者的所处的环境就是需要在多个地点记录，比如上班的时候看到有用的东西需要记录下来，下班在家里做一些学习笔记也需要记录下来，虽然小孩桌面便签有强大的导入导出功能，但是频繁的导入导出操作也是比较麻烦的，或许是笔者比较懒。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/Windows-Tools-Recommend/YNote.png" srcset="/img/loading.gif" lazyload alt="有道云笔记"></p>
+<p>　　这个时候使用有道云笔记就可以很方便的在“云上”进行办公，而且还支持Android、iPhone、iPad、Mac、WP和web等平台，让工作摆脱了平台和设备的限制。有道云笔记还支持多种编辑格式，可以用富文本进行编辑也可以采用Markdown语法进行编辑，Markdown支持有预览的功能。读者还可以将写的文章比较好的文章在微博、微信和扣扣中进行分享。</p>
+<h1 id="Beyond-Compare"><a href="#Beyond-Compare" class="headerlink" title="Beyond Compare"></a>Beyond Compare</h1><h2 id="推荐指数★★★★☆"><a href="#推荐指数★★★★☆" class="headerlink" title="推荐指数★★★★☆"></a>推荐指数★★★★☆</h2><p>　　在工作和生活中，笔者经常会将文件添加上版本号以区分，但是时间一长，就会忘记不同的版本号所更改的内容，所以经常需要一一地比对，这就让笔者很苦恼。有一天在上网时无意中发现了这款“神器”，让我们来看看它长什么样：</p>
+<p><img src="/images/Windows-Tools-Recommend/Beyond-Compare.png" srcset="/img/loading.gif" lazyload alt="Beyond Compare"></p>
+<p>　　Beyond Compare主要用途是对比两个文件夹或者文件的不同，并将差异 通过颜色的不同以标识。对的，你没有看错，就是文件夹的不同。它还可以按照你的需要进行比较，比如需要对比文件的不同或者对比文件的相同，都可以显示。</p>
+<h1 id="Everything"><a href="#Everything" class="headerlink" title="Everything"></a>Everything</h1><h2 id="推荐指数★★★★★-1"><a href="#推荐指数★★★★★-1" class="headerlink" title="推荐指数★★★★★"></a>推荐指数★★★★★</h2><p>　　由于笔者的每天工作都会收到很多不同文件，但是笔者又不善于对文件归类存放，都是杂乱的放在桌面，需要用到的时候找起来又相当的麻烦。这时候Everything这款文件快速搜索软件就成为我们这种“懒人”的福音了。他的界面如下：</p>
+<p><img src="/images/Windows-Tools-Recommend/everything.png" srcset="/img/loading.gif" lazyload alt="Everything"></p>
+<p>　　它的体积也相当的轻巧，才30多MB，和现在动辄几百MB的软件相比确实小了很多；它的界面也很简洁易用，常用的就一个输入框和下面的文件列表，非常方便日常的使用；占用系统资源极低，Everything搜索只基于文件和文件夹的名称，所以建立起搜索数据库非常的快，搜索文件基本上都是秒搜。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h1 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a>Chrome</h1><h2 id="推荐指数★★★★★-2"><a href="#推荐指数★★★★★-2" class="headerlink" title="推荐指数★★★★★"></a>推荐指数★★★★★</h2><p>　　Chrome是笔者用过最好用的浏览器，没有之一。不管是日常生活中的使用还是开发中的测试等，Chrome都能够轻松胜任。</p>
+<p><img src="/images/Windows-Tools-Recommend/chrome.jpg" srcset="/img/loading.gif" lazyload alt="Chrome"></p>
+<p>　　Chrome的特点是简洁、快速。它支持多个标签进行浏览，即使有一个标签崩溃，其他标签页不会崩溃。而且，Chrome是基于V8 JavaScript引擎的，页面性能更加优异。</p>
+<p>　　对于像笔者一样的网页开发者来说，Chrome更是开发网页的“利器”。使用F12调出控制台，在这里你能看到Elements(页面元素)、Console(网页运行的提示消息)、Sources(页面运行所加载的源码)、Resources(页面所需要的文件、存储的cookie和session等资源)、Network(可以看到网页加载脚本样式页面的时间还有异步的资源)</p>
+
+            </div>
+            <hr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/tools/">工具</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Recommend/">推荐</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2016/09/18/Explain-Js-This.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Js中this的用法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2016/09/11/Git-Command-Start.html">
+                        <span class="hidden-mobile">Git命令学习（上）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

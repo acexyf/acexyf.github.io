@@ -1,0 +1,715 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　最近在看面试题的时候总会看到有一些关于Http缓存的题目，但是总是一知半解，不甚理解；尤其是Http头信息中有一大堆的字段，什么if-modified-since，什么if-none-match，真是令人头疼。后来突然想到，要是能通过自己构建一个服务器，自己添加头信息，然后看实现的效果，不就更好了么。说干就干，在网上各种找资料，然后再使用expressjs添加各种头信息，就能够很好的理解Htt">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>前端也要懂Http缓存机制 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="前端也要懂Http缓存机制">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2018-08-06 21:00" pubdate>
+        2018年8月6日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      34
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">前端也要懂Http缓存机制</h1>
+            
+            <div class="markdown-body">
+              <p>　　最近在看面试题的时候总会看到有一些关于Http缓存的题目，但是总是一知半解，不甚理解；尤其是Http头信息中有一大堆的字段，什么if-modified-since，什么if-none-match，真是令人头疼。后来突然想到，要是能通过自己构建一个服务器，自己添加头信息，然后看实现的效果，不就更好了么。说干就干，在网上各种找资料，然后再使用expressjs添加各种头信息，就能够很好的理解Http缓存了。</p>
+<span id="more"></span>
+
+
+<h1 id="Http简介"><a href="#Http简介" class="headerlink" title="Http简介"></a>Http简介</h1><p>　　浏览器和服务器之间通信是通过HTTP协议，HTTP协议永远都是客户端发起请求，服务器回送响应。模型如下：</p>
+<p><img src="/images/Http-Cache/http-modal.jpg" srcset="/img/loading.gif" lazyload alt="http-modal"></p>
+<p>　　HTTP报文就是浏览器和服务器间通信时发送及响应的数据块。浏览器向服务器请求数据，发送请求(request)报文；服务器向浏览器返回数据，返回响应(response)报文。报文信息主要分为两部分：</p>
+<ol>
+<li>报文头部：一些附加信息（cookie，缓存信息等），与缓存相关的规则信息，均包含在头部中</li>
+<li>数据主体部分：HTTP请求真正想要传输的数据内容</li>
+</ol>
+<p>　　本文用到的一些报文头如下：</p>
+<table>
+<thead>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<tr>
+<th>字段名称</th>
+<th>字段所属</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pragma</td>
+<td>通用头</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</tr>
+<tr>
+<td>Expires</td>
+<td>响应头</td>
+</tr>
+<tr>
+<td>Cache-Control</td>
+<td>通用头</td>
+</tr>
+<tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<td>Last-Modified</td>
+<td>响应头</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</tr>
+<tr>
+<td>If-Modified-Sice</td>
+<td>请求头</td>
+</tr>
+<tr>
+<td>ETag</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<td>响应头</td>
+</tr>
+<tr>
+<td>If-None-Match</td>
+<td>请求头</td>
+</tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</tbody></table>
+<h1 id="Http缓存的分类"><a href="#Http缓存的分类" class="headerlink" title="Http缓存的分类"></a>Http缓存的分类</h1><p>　　Http缓存可以分为两大类，强制缓存（也称强缓存）和协商缓存。两类缓存规则不同，强制缓存在缓存数据未失效的情况下，不需要再和服务器发生交互；而协商缓存，顾名思义，需要进行比较判断是否可以使用缓存。 </p>
+<p>　　两类缓存规则可以同时存在，强制缓存优先级高于协商缓存，也就是说，当执行强制缓存的规则时，如果缓存生效，直接使用缓存，不再执行协商缓存规则。</p>
+<h1 id="原始模型"><a href="#原始模型" class="headerlink" title="原始模型"></a>原始模型</h1><p>　　我们先简单搭建一个Express的服务器，不加任何缓存信息头。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;express&#x27;</span>);<br><span class="hljs-keyword">const</span> app = <span class="hljs-title function_">express</span>();<br><span class="hljs-keyword">const</span> port = <span class="hljs-number">8080</span>;<br><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>);<br><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;path&#x27;</span>);<br><br>app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/&#x27;</span>,<span class="hljs-function">(<span class="hljs-params">req,res</span>) =&gt;</span> &#123;<br>    res.<span class="hljs-title function_">send</span>(<span class="hljs-string">`&lt;!DOCTYPE html&gt;</span><br><span class="hljs-string">    &lt;html lang=&quot;en&quot;&gt;</span><br><span class="hljs-string">    &lt;head&gt;</span><br><span class="hljs-string">        &lt;title&gt;Document&lt;/title&gt;</span><br><span class="hljs-string">    &lt;/head&gt;</span><br><span class="hljs-string">    &lt;body&gt;</span><br><span class="hljs-string">        Http Cache Demo</span><br><span class="hljs-string">        &lt;script src=&quot;/demo.js&quot;&gt;&lt;/script&gt;</span><br><span class="hljs-string">    &lt;/body&gt;</span><br><span class="hljs-string">    &lt;/html&gt;`</span>)<br>&#125;)<br><br>app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/demo.js&#x27;</span>,<span class="hljs-function">(<span class="hljs-params">req, res</span>)=&gt;</span>&#123;<br>    <span class="hljs-keyword">let</span> jsPath = path.<span class="hljs-title function_">resolve</span>(__dirname,<span class="hljs-string">&#x27;./static/js/demo.js&#x27;</span>);<br>    <span class="hljs-keyword">let</span> cont = fs.<span class="hljs-title function_">readFileSync</span>(jsPath);<br>    res.<span class="hljs-title function_">end</span>(cont)<br>&#125;)<br><br>app.<span class="hljs-title function_">listen</span>(port,<span class="hljs-function">()=&gt;</span>&#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`listen on <span class="hljs-subst">$&#123;port&#125;</span>`</span>)    <br>&#125;)<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　我们可以看到请求结果如下：</p>
+<p><img src="/images/Http-Cache/no-cache1.png" srcset="/img/loading.gif" lazyload alt="no-cache"></p>
+<p>　　请求过程如下：</p>
+<ul>
+<li>浏览器请求静态资源demo.js</li>
+<li>服务器读取磁盘文件demo.js，返给浏览器</li>
+<li>浏览器再次请求，服务器又重新读取磁盘文件 a.js，返给浏览器。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>循环请求。。</li>
+</ul>
+<p>　　看得出来这种请求方式的流量与请求次数有关，同时，缺点也很明显：</p>
+<ul>
+<li>浪费用户流量</li>
+<li>浪费服务器资源，服务器要读磁盘文件，然后发送文件到浏览器</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>浏览器要等待js下载并且执行后才能渲染页面，影响用户体验</li>
+</ul>
+<p>　　接下来我们开始在头信息中添加缓存信息。</p>
+<h1 id="一、强制缓存"><a href="#一、强制缓存" class="headerlink" title="一、强制缓存"></a>一、强制缓存</h1><p>　　强制缓存分为两种情况，Expires和Cache-Control。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="Expires"><a href="#Expires" class="headerlink" title="Expires"></a>Expires</h2><p>　　Expires的值是服务器告诉浏览器的缓存过期时间（值为GMT时间，即格林尼治时间），即下一次请求时，如果浏览器端的当前时间还没有到达过期时间，则直接使用缓存数据。下面通过我们的Express服务器来设置一下Expires响应头信息。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">//其他代码...</span><br><span class="hljs-keyword">const</span> moment = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;moment&#x27;</span>);<br><br>app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/demo.js&#x27;</span>,<span class="hljs-function">(<span class="hljs-params">req, res</span>)=&gt;</span>&#123;<br>    <span class="hljs-keyword">let</span> jsPath = path.<span class="hljs-title function_">resolve</span>(__dirname,<span class="hljs-string">&#x27;./static/js/demo.js&#x27;</span>);<br>    <span class="hljs-keyword">let</span> cont = fs.<span class="hljs-title function_">readFileSync</span>(jsPath);<br>    res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&#x27;Expires&#x27;</span>, <span class="hljs-title function_">getGLNZ</span>()) <span class="hljs-comment">//2分钟</span><br>    res.<span class="hljs-title function_">end</span>(cont)<br>&#125;)<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">getGLNZ</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-title function_">moment</span>().<span class="hljs-title function_">utc</span>().<span class="hljs-title function_">add</span>(<span class="hljs-number">2</span>,<span class="hljs-string">&#x27;m&#x27;</span>).<span class="hljs-title function_">format</span>(<span class="hljs-string">&#x27;ddd, DD MMM YYYY HH:mm:ss&#x27;</span>)+<span class="hljs-string">&#x27; GMT&#x27;</span>;<br>&#125;<br><span class="hljs-comment">//其他代码...</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们在demo.js中添加了一个Expires响应头，不过由于是格林尼治时间，所以通过momentjs转换一下。第一次请求的时候还是会向服务器发起请求，同时会把过期时间和文件一起返回给我们；但是当我们刷新的时候，才是见证奇迹的时刻：</p>
+<p><img src="/images/Http-Cache/expires-cache1.png" srcset="/img/loading.gif" lazyload alt="expires-cache"></p>
+<p>　　可以看出文件是直接从缓存（memory cache）中读取的，并没有发起请求。我们在这边设置过期时间为两分钟，两分钟过后可以刷新一下页面看到浏览器再次发送请求了。</p>
+<p>　　虽然这种方式添加了缓存控制，节省流量，但是还是有以下几个问题的：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<ul>
+<li>由于浏览器时间和服务器时间不同步，如果浏览器设置了一个很后的时间，过期时间一直没有用</li>
+<li>缓存过期后，不管文件有没有发生变化，服务器都会再次读取文件返回给浏览器</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</ul>
+<p>　　不过Expires 是HTTP 1.0的东西，现在默认浏览器均默认使用HTTP 1.1，所以它的作用基本忽略。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h2 id="Cache-Control"><a href="#Cache-Control" class="headerlink" title="Cache-Control"></a>Cache-Control</h2><p>　　针对浏览器和服务器时间不同步，加入了新的缓存方案；这次服务器不是直接告诉浏览器过期时间，而是告诉一个相对时间Cache-Control=10秒，意思是10秒内，直接使用浏览器缓存。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/demo.js&#x27;</span>,<span class="hljs-function">(<span class="hljs-params">req, res</span>)=&gt;</span>&#123;<br>    <span class="hljs-keyword">let</span> jsPath = path.<span class="hljs-title function_">resolve</span>(__dirname,<span class="hljs-string">&#x27;./static/js/demo.js&#x27;</span>);<br>    <span class="hljs-keyword">let</span> cont = fs.<span class="hljs-title function_">readFileSync</span>(jsPath);<br>    res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&#x27;Cache-Control&#x27;</span>, <span class="hljs-string">&#x27;public,max-age=120&#x27;</span>) <span class="hljs-comment">//2分钟</span><br>    res.<span class="hljs-title function_">end</span>(cont)<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="/images/Http-Cache/cache-control1.png" srcset="/img/loading.gif" lazyload alt="cache-control"></p>
+<h1 id="二、协商缓存"><a href="#二、协商缓存" class="headerlink" title="二、协商缓存"></a>二、协商缓存</h1><p>　　强制缓存的弊端很明显，即每次都是根据时间来判断缓存是否过期；但是当到达过期时间后，如果文件没有改动，再次去获取文件就有点浪费服务器的资源了。协商缓存有两组报文结合使用：</p>
+<ol>
+<li>Last-Modified和If-Modified-Since</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>ETag和If-None-Match</li>
+</ol>
+<p><img src="/images/Http-Cache/diagram-http.png" srcset="/img/loading.gif" lazyload alt="diagram-http"></p>
+<h2 id="Last-Modified"><a href="#Last-Modified" class="headerlink" title="Last-Modified"></a>Last-Modified</h2><p>　　为了节省服务器的资源，再次改进方案。浏览器和服务器协商，服务器每次返回文件的同时，告诉浏览器文件在服务器上最近的修改时间。请求过程如下：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<ul>
+<li>浏览器请求静态资源demo.js</li>
+<li>服务器读取磁盘文件demo.js，返给浏览器，同时带上文件上次修改时间 Last-Modified（GMT标准格式）</li>
+<li>当浏览器上的缓存文件过期时，浏览器带上请求头<code>If-Modified-Since</code>（等于上一次请求的Last-Modified）请求服务器</li>
+<li>服务器比较请求头里的<code>If-Modified-Since</code>和文件的上次修改时间。如果果一致就继续使用本地缓存（304），如果不一致就再次返回文件内容和Last-Modified。</li>
+<li>循环请求。。</li>
+</ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　代码实现过程如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/demo.js&#x27;</span>,<span class="hljs-function">(<span class="hljs-params">req, res</span>)=&gt;</span>&#123;<br>    <span class="hljs-keyword">let</span> jsPath = path.<span class="hljs-title function_">resolve</span>(__dirname,<span class="hljs-string">&#x27;./static/js/demo.js&#x27;</span>)<br>    <span class="hljs-keyword">let</span> cont = fs.<span class="hljs-title function_">readFileSync</span>(jsPath);<br>    <span class="hljs-keyword">let</span> status = fs.<span class="hljs-title function_">statSync</span>(jsPath)<br><br>    <span class="hljs-keyword">let</span> lastModified = status.<span class="hljs-property">mtime</span>.<span class="hljs-title function_">toUTCString</span>()<br>    <span class="hljs-keyword">if</span>(lastModified === req.<span class="hljs-property">headers</span>[<span class="hljs-string">&#x27;if-modified-since&#x27;</span>])&#123;<br>        res.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">304</span>, <span class="hljs-string">&#x27;Not Modified&#x27;</span>)<br>        res.<span class="hljs-title function_">end</span>()<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&#x27;Cache-Control&#x27;</span>, <span class="hljs-string">&#x27;public,max-age=5&#x27;</span>)<br>        res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&#x27;Last-Modified&#x27;</span>, lastModified)<br>        res.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">200</span>, <span class="hljs-string">&#x27;OK&#x27;</span>)<br>        res.<span class="hljs-title function_">end</span>(cont)<br>    &#125;<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们多次刷新页面，可以看到请求结果如下：</p>
+<p><img src="/images/Http-Cache/last-modified-cache1.png" srcset="/img/loading.gif" lazyload alt="last-modified-cache"></p>
+<p>　　虽然这个方案比前面三个方案有了进一步的优化，浏览器检测文件是否有修改，如果没有变化就不再发送文件；但是还是有以下缺点：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<ul>
+<li>由于Last-Modified修改时间是GMT时间，只能精确到秒，如果文件在1秒内有多次改动，服务器并不知道文件有改动，浏览器拿不到最新的文件</li>
+<li>如果服务器上文件被多次修改了但是内容却没有发生改变，服务器需要再次重新返回文件。</li>
+</ul>
+<h2 id="ETag"><a href="#ETag" class="headerlink" title="ETag"></a>ETag</h2><p>　　为了解决文件修改时间不精确带来的问题，服务器和浏览器再次协商，这次不返回时间，返回文件的唯一标识ETag。只有当文件内容改变时，ETag才改变。请求过程如下：</p>
+<ul>
+<li>浏览器请求静态资源demo.js</li>
+<li>服务器读取磁盘文件demo.js，返给浏览器，同时带上文件的唯一标识ETag</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>当浏览器上的缓存文件过期时，浏览器带上请求头<code>If-None-Match</code>（等于上一次请求的ETag）请求服务器</li>
+<li>服务器比较请求头里的<code>If-None-Match</code>和文件的ETag。如果一致就继续使用本地缓存（304），如果不一致就再次返回文件内容和ETag。</li>
+<li>循环请求。。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> md5 = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;md5&#x27;</span>);<br><br>app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/demo.js&#x27;</span>,<span class="hljs-function">(<span class="hljs-params">req, res</span>)=&gt;</span>&#123;<br>    <span class="hljs-keyword">let</span> jsPath = path.<span class="hljs-title function_">resolve</span>(__dirname,<span class="hljs-string">&#x27;./static/js/demo.js&#x27;</span>);<br>    <span class="hljs-keyword">let</span> cont = fs.<span class="hljs-title function_">readFileSync</span>(jsPath);<br>    <span class="hljs-keyword">let</span> etag = <span class="hljs-title function_">md5</span>(cont);<br><br>    <span class="hljs-keyword">if</span>(req.<span class="hljs-property">headers</span>[<span class="hljs-string">&#x27;if-none-match&#x27;</span>] === etag)&#123;<br>        res.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">304</span>, <span class="hljs-string">&#x27;Not Modified&#x27;</span>);<br>        res.<span class="hljs-title function_">end</span>();<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&#x27;ETag&#x27;</span>, etag);<br>        res.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">200</span>, <span class="hljs-string">&#x27;OK&#x27;</span>);<br>        res.<span class="hljs-title function_">end</span>(cont);<br>    &#125;<br>&#125;)<br></code></pre></div></td></tr></table></figure>
+
+<p>　　请求结果如下：</p>
+<p><img src="/images/Http-Cache/etag-cache1.png" srcset="/img/loading.gif" lazyload alt="etag-cache"></p>
+<h1 id="一些额外的东西"><a href="#一些额外的东西" class="headerlink" title="一些额外的东西"></a>一些额外的东西</h1><p>　　在报文头的表格中我们可以看到有一个字段叫Pragma，这是一段尘封的历史….</p>
+<p><img src="/images/Http-Cache/secret.jpg" srcset="/img/loading.gif" lazyload alt="secret"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　在“遥远的”http1.0时代，给客户端设定缓存方式可通过两个字段–Pragma和Expires。虽然这两个字段早可抛弃，但为了做http协议的向下兼容，你还是可以看到很多网站依旧会带上这两个字段。</p>
+<h2 id="关于Pragma"><a href="#关于Pragma" class="headerlink" title="关于Pragma"></a>关于Pragma</h2><p>　　当该字段值为<code>no-cache</code>的时候，会告诉浏览器不要对该资源缓存，即每次都得向服务器发一次请求才行。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&#x27;Pragma&#x27;</span>, <span class="hljs-string">&#x27;no-cache&#x27;</span>) <span class="hljs-comment">//禁止缓存</span><br>res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&#x27;Cache-Control&#x27;</span>, <span class="hljs-string">&#x27;public,max-age=120&#x27;</span>) <span class="hljs-comment">//2分钟</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　通过Pragma来禁止缓存，通过Cache-Control设置两分钟缓存，但是重新访问我们会发现浏览器会再次发起一次请求，说明了<code>Pragma的优先级高于Cache-Control</code></p>
+<h2 id="关于Cache-Control"><a href="#关于Cache-Control" class="headerlink" title="关于Cache-Control"></a>关于Cache-Control</h2><p>　　我们看到Cache-Control中有一个属性是public，那么这代表了什么意思呢？其实Cache-Control不光有max-age，它常见的取值private、public、no-cache、max-age，no-store，默认值为private，各个取值的含义如下：</p>
+<ul>
+<li>private: 客户端可以缓存</li>
+<li>public: 客户端和代理服务器都可缓存</li>
+<li>max-age=xxx: 缓存的内容将在 xxx 秒后失效</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>no-cache: 需要使用对比缓存来验证缓存数据</li>
+<li>no-store: 所有内容都不会缓存，强制缓存，对比缓存都不会触发</li>
+</ul>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　所以我们在刷新页面的时候，如果只按F5只是单纯的发送请求，按Ctrl+F5会发现请求头上多了两个字段Pragma: no-cache和Cache-Control: no-cache。</p>
+<h2 id="缓存的优先级"><a href="#缓存的优先级" class="headerlink" title="缓存的优先级"></a>缓存的优先级</h2><p>　　上面我们说过强制缓存的优先级高于协商缓存，Pragma的优先级高于Cache-Control，那么其他缓存的优先级顺序怎么样呢？网上查阅了资料得出以下顺序（PS：有兴趣的童鞋可以验证一下正确性告诉我）：</p>
+<blockquote>
+<p>Pragma  &gt;  Cache-Control  &gt; Expires  &gt; ETag  &gt; Last-Modified</p>
+</blockquote>
+<p>　　参考资料：</p>
+<p><a target="_blank" rel="noopener" href="https://m.imooc.com/article/22841">http缓存优先级问题</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/WuLex/article/details/77767855">彻底弄懂HTTP缓存机制及原理</a><br><a target="_blank" rel="noopener" href="http://imweb.io/topic/5795dcb6fb312541492eda8c">HTTP缓存控制小结</a><br><a target="_blank" rel="noopener" href="http://www.cnblogs.com/vajoy/p/5341664.html">浅谈浏览器http的缓存机制</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3bc803a4313f">通过express框架简单实践几种设置HTTP对缓存的控制</a></p>
+
+            </div>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Browser/">浏览器</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/06/This-Point.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JS的this指向</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/03/07/JS-Decimal-Accuracy.html">
+                        <span class="hidden-mobile">JS中浮点数精度问题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

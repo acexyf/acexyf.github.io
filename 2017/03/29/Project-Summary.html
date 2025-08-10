@@ -1,0 +1,688 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　这一个月来一直在做项目，在做项目的时候遇到了不少的问题和坑，归纳了一下，主要是文件上传、停止Promise链式调用和chrome自动填充，整理总结了一下解决方法。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>记一次项目总结 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="记一次项目总结">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2017-03-29 17:06" pubdate>
+        2017年3月29日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      31
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">记一次项目总结</h1>
+            
+            <div class="markdown-body">
+              <p>　　这一个月来一直在做项目，在做项目的时候遇到了不少的问题和坑，归纳了一下，主要是文件上传、停止Promise链式调用和chrome自动填充，整理总结了一下解决方法。</p>
+<span id="more"></span>
+
+<h1 id="一、文件上传"><a href="#一、文件上传" class="headerlink" title="一、文件上传"></a>一、文件上传</h1><h2 id="选择文件"><a href="#选择文件" class="headerlink" title="选择文件"></a>选择文件</h2><p>　　在选择文件之前，我们需要对文件类型进行一些过滤的操作。</p>
+<h3 id="文件类型"><a href="#文件类型" class="headerlink" title="文件类型"></a>文件类型</h3><p>　　通过input:file来选择我们需要的文件类型，有两个属性值是我们需要的：</p>
+<ul>
+<li>accept:表示可以选择的文件MIME类型，多个MIME类型用英文逗号分开，常用的MIME类型见下表。</li>
+<li>multiple:是否可以选择多个文件。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">后缀名            <span class="hljs-variable constant_">MIME</span>名称<br>*.3gpp      audio/3gpp, video/3gpp<br>*.<span class="hljs-property">ac3</span>       audio/ac3<br>*.<span class="hljs-property">asf</span>       allpication/vnd.<span class="hljs-property">ms</span>-asf<br>*.<span class="hljs-property">au</span>        audio/basic<br>*.<span class="hljs-property">css</span>       text/css<br>*.<span class="hljs-property">csv</span>       text/csv<br>*.<span class="hljs-property">doc</span>       application/msword    <br>*.<span class="hljs-property">dot</span>       application/msword    <br>*.<span class="hljs-property">dtd</span>       application/xml-dtd    <br>*.<span class="hljs-property">dwg</span>       image/vnd.<span class="hljs-property">dwg</span>    <br>*.<span class="hljs-property">dxf</span>       image/vnd.<span class="hljs-property">dxf</span><br>*.<span class="hljs-property">gif</span>       image/gif    <br>*.<span class="hljs-property">htm</span>       text/html    <br>*.<span class="hljs-property">html</span>      text/html    <br>*.<span class="hljs-property">jp2</span>       image/jp2    <br>*.<span class="hljs-property">jpe</span>       image/jpeg<br>*.<span class="hljs-property">jpeg</span>      image/jpeg<br>*.<span class="hljs-property">jpg</span>       image/jpeg    <br>*.<span class="hljs-property">js</span>        text/javascript, application/javascript    <br>*.<span class="hljs-property">json</span>      application/json    <br>*.<span class="hljs-property">mp2</span>       audio/mpeg, video/mpeg    <br>*.<span class="hljs-property">mp3</span>       audio/mpeg    <br>*.<span class="hljs-property">mp4</span>       audio/mp4, video/mp4    <br>*.<span class="hljs-property">mpeg</span>      video/mpeg    <br>*.<span class="hljs-property">mpg</span>       video/mpeg    <br>*.<span class="hljs-property">mpp</span>       application/vnd.<span class="hljs-property">ms</span>-project    <br>*.<span class="hljs-property">ogg</span>       application/ogg, audio/ogg    <br>*.<span class="hljs-property">pdf</span>       application/pdf    <br>*.<span class="hljs-property">png</span>       image/png    <br>*.<span class="hljs-property">pot</span>       application/vnd.<span class="hljs-property">ms</span>-powerpoint    <br>*.<span class="hljs-property">pps</span>       application/vnd.<span class="hljs-property">ms</span>-powerpoint    <br>*.<span class="hljs-property">ppt</span>       application/vnd.<span class="hljs-property">ms</span>-powerpoint    <br>*.<span class="hljs-property">rtf</span>       application/rtf, text/rtf    <br>*.<span class="hljs-property">svf</span>       image/vnd.<span class="hljs-property">svf</span>    <br>*.<span class="hljs-property">tif</span>       image/tiff    <br>*.<span class="hljs-property">tiff</span>      image/tiff    <br>*.<span class="hljs-property">txt</span>       text/plain    <br>*.<span class="hljs-property">wdb</span>       application/vnd.<span class="hljs-property">ms</span>-works    <br>*.<span class="hljs-property">wps</span>       application/vnd.<span class="hljs-property">ms</span>-works    <br>*.<span class="hljs-property">xhtml</span>     application/xhtml+xml    <br>*.<span class="hljs-property">xlc</span>       application/vnd.<span class="hljs-property">ms</span>-excel    <br>*.<span class="hljs-property">xlm</span>       application/vnd.<span class="hljs-property">ms</span>-excel    <br>*.<span class="hljs-property">xls</span>       application/vnd.<span class="hljs-property">ms</span>-excel    <br>*.<span class="hljs-property">xlt</span>       application/vnd.<span class="hljs-property">ms</span>-excel    <br>*.<span class="hljs-property">xlw</span>       application/vnd.<span class="hljs-property">ms</span>-excel    <br>*.<span class="hljs-property">xml</span>       text/xml, application/xml    <br>*.<span class="hljs-property">zip</span>       aplication/zip    <br>*.<span class="hljs-property">xlsx</span>      application/vnd.<span class="hljs-property">openxmlformats</span>-officedocument.<span class="hljs-property">spreadsheetml</span>.<span class="hljs-property">sheet</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　但是在开发时，我们习惯把accept设置为<code>image/*</code>来过滤所有非图片的文件。虽然这种方式简单粗暴，但是在新版本的chrome中，会出现点击input之后，文件选择框弹出非常慢的问题。将<code>accept=&quot;image/*&quot;</code>改为指定的图片格式，比如指定几种常用格式，就能解决这个问题。</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;file&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;file&quot;</span> <span class="hljs-attr">accept</span>=<span class="hljs-string">&quot;image/jpg,image/jpeg,image/png,image/gif&quot;</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<h3 id="文件读取"><a href="#文件读取" class="headerlink" title="文件读取"></a>文件读取</h3><p>　　在input选取文件后，我们可以监听chang事件来获取所选取的文件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">$(<span class="hljs-string">&#x27;input&#x27;</span>).<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;change&#x27;</span>,<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>  <span class="hljs-keyword">if</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">files</span> &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">files</span>.<span class="hljs-property">length</span>&gt;<span class="hljs-number">0</span>)&#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">files</span>);<br>  &#125;<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<p>　　这里获取到的this.files是一个FileList对象，也是一个类数组对象，可以通过this.files[index]来获取每一个文件。</p>
+<p><img src="/images/Project-Summary/select-files.png" srcset="/img/loading.gif" lazyload alt="select-files"></p>
+<p>　　这个数组对象中的每个对象有以下几个属性：</p>
+<ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>lastModified:上次修改时间的时间戳</li>
+<li>lastModifiedDate:上次修改时间的日期</li>
+<li>name:文件名称</li>
+<li>size:文件大小</li>
+<li>type:文件类型</li>
+<li>webkitRelativePath:</li>
+</ul>
+<p>　　在获取到文件后，我们可以根据type和size对文件的类型和大小进行过滤匹配。匹配后需要对文件的内容进行读取。HTML5定义了一个FileReader对象用来读取文件。FileReader使用方式也非常简单，需要创建FileReader对象并调用方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">if</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">FileReader</span>)&#123;<br>  <span class="hljs-keyword">var</span> fileReader = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileReader</span>();<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　FileReader的实例对象有4个方法，三个方法是用来读取文件的，还有一个方法用来中断读取。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<tbody><tr>
+<td>abort</td>
+<td>none</td>
+<td>中断读取</td>
+</tr>
+<tr>
+<td>readAsBinaryString</td>
+<td>file</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<td>将文件读取为二进制码</td>
+</tr>
+<tr>
+<td>readAsDataURL</td>
+<td>file</td>
+<td>将文件读取为 DataURL</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</tr>
+<tr>
+<td>readAsText</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<td>file, [encoding]</td>
+<td>将文件读取为文本</td>
+</tr>
+</tbody></table>
+<p>　　readAsText主要用来读取文本文件的内容，readAsDataURL用来读取文件并将其转为DataUrl格式。FileReader还有一系列完整的事件函数，用来捕获读取文件时的状态。</p>
+<table>
+<thead>
+<tr>
+<th>事件</th>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<th>描述</th>
+</tr>
+</thead>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<tbody><tr>
+<td>onabort</td>
+<td>中断时触发</td>
+</tr>
+<tr>
+<td>onerror</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>出错时触发</td>
+</tr>
+<tr>
+<td>onload</td>
+<td>文件读取成功完成时触发</td>
+</tr>
+<tr>
+<td>onloadend</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<td>读取完成触发，无论成功或失败</td>
+</tr>
+<tr>
+<td>onloadstart</td>
+<td>读取开始时触发</td>
+</tr>
+<tr>
+<td>onprogress</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>读取中</td>
+</tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</tbody></table>
+<p>　　文件一旦开始读取，无论成功或失败，实例的<code>result</code>属性都会被填充。如果读取失败，则<code>result</code>的值为 null，否则即是读取的结果，绝大多数的程序都会在成功读取文件的时候，抓取这个值。</p>
+<figure class="highlight arcade"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs arcade"><span class="hljs-keyword">var</span> fileReader = <span class="hljs-keyword">new</span> FileReader();<br>fileReader.readAsDataURL(imgFile);<br>reader.onload = <span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) &#123;<br>  <span class="hljs-built_in">console</span>.<span class="hljs-built_in">log</span>(this.result);<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　通过readAsDataURL来读取图片变成DataUrl格式。将其字符串嵌入到页面中，我们可以看到读取后的图片，通过这种方式实现选取图片后的预览效果。</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"> <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;data:image/gif;base64,R0lGODlhMwAxAIAAAAAAAP///</span></span><br><span class="hljs-string"><span class="hljs-tag">yH5BAAAAAAALAAAAAAzADEAAAK8jI+pBr0PowytzotTtbm/DTqQ6C3hGX</span></span><br><span class="hljs-string"><span class="hljs-tag">ElcraA9jIr66ozVpM3nseUvYP1UEHF0FUUHkNJxhLZfEJNvol06tzwrgd</span></span><br><span class="hljs-string"><span class="hljs-tag">LbXsFZYmSMPnHLB+zNJFbq15+SOf50+6rG7lKOjwV1ibGdhHYRVYVJ9Wn</span></span><br><span class="hljs-string"><span class="hljs-tag">k2HWtLdIWMSH9lfyODZoZTb4xdnpxQSEF9oyOWIqp6gaI9pI1Qo7BijbF</span></span><br><span class="hljs-string"><span class="hljs-tag">ZkoaAtEeiiLeKn72xM7vMZofJy8zJys2UxsCT3kO229LH1tXAAAOw==&quot;</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<h2 id="base64方式上传"><a href="#base64方式上传" class="headerlink" title="base64方式上传"></a>base64方式上传</h2><p>　　在通过readAsDataURL方法读取到文件的DataUrl后，我们可以将这么长的字符串直接放到ajax中作为string类型发送到后台解析（建议使用post方式）。不过会有一定的局限性，就是如果文件很大，服务器可能会拒绝接受这么长的字符串。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="FormData方式上传"><a href="#FormData方式上传" class="headerlink" title="FormData方式上传"></a>FormData方式上传</h2><p>　　FormData对象是HTML5新增的一个对象，目前一些主流的浏览器都已经兼容了，我们可以通过FormData来向服务器传递数据。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> formData = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FormData</span>();<br>formData.<span class="hljs-title function_">append</span>(<span class="hljs-string">&#x27;username&#x27;</span>,<span class="hljs-string">&#x27;corner&#x27;</span>);<br>formData.<span class="hljs-title function_">append</span>(<span class="hljs-string">&#x27;pwd&#x27;</span>,<span class="hljs-string">&#x27;corner&#x27;</span>);<br>$.<span class="hljs-title function_">ajax</span>(&#123;<br>  <span class="hljs-attr">url</span>:<span class="hljs-string">&#x27;this is your url&#x27;</span>,<br>  <span class="hljs-attr">type</span>:<span class="hljs-string">&#x27;get&#x27;</span>,<br>  <span class="hljs-attr">data</span>:formData,<br>  <span class="hljs-attr">success</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)&#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data);<br>  &#125;<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<p>　　但是如果这样直接把FormData对象作为data数据来发送，浏览器会报一个非法调用的错误。<br><img src="/images/Project-Summary/error.png" srcset="/img/loading.gif" lazyload alt="error"><br>　　在发送FormData对象时，还需要给ajax加上另外两个属性：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">$.<span class="hljs-title function_">ajax</span>(&#123;<br>  <span class="hljs-attr">url</span>:<span class="hljs-string">&#x27;this is your url&#x27;</span>,<br>  <span class="hljs-attr">type</span>:<span class="hljs-string">&#x27;get&#x27;</span>,<br>  <span class="hljs-attr">data</span>:formData,<br>  <span class="hljs-attr">processData</span>:<span class="hljs-literal">false</span>,<br>  <span class="hljs-attr">contentType</span>:<span class="hljs-literal">false</span>,<br>  <span class="hljs-attr">success</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)&#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data);<br>  &#125;<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<p>　　jQuery在发送异步请求的时候会自动将data数据进行序列化处理，转化成key/value格式的字符串，加上<code>processData:false</code>说明禁止对数据进行序列化处理。contentType用来指定发送至服务器时的内容编码类型。<br>　　如果每个表单数据都需要使用append来添加就比较麻烦，FormData还支持直接从html中的表单生成数据，就是在html页面中已经有数据了，然后FormData可以直接把这个表单的数据写入这个对象，然后直接提交给后台。</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;form&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;file&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;img&quot;</span> <span class="hljs-attr">accept</span>=<span class="hljs-string">&quot;image/jpeg,image/jpg,image/png,image/gif&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;username&quot;</span>/&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;button&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;submit&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;submit&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+<p>　　我们定义了一个form表单，有text类型和file类型的input。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">$(<span class="hljs-string">&#x27;.submit&#x27;</span>).<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;click&#x27;</span>,<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>  <span class="hljs-keyword">var</span> formData = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FormData</span>($(<span class="hljs-string">&#x27;#form&#x27;</span>)[<span class="hljs-number">0</span>]);<br>  $.<span class="hljs-title function_">ajax</span>(&#123;<br>    <span class="hljs-attr">url</span>:<span class="hljs-string">&#x27;this is your url&#x27;</span>,<br>    <span class="hljs-attr">type</span>:<span class="hljs-string">&#x27;post&#x27;</span>,<br>    <span class="hljs-attr">data</span>:formData,<br>    <span class="hljs-attr">processData</span>:<span class="hljs-literal">false</span>,<br>    <span class="hljs-attr">contentType</span>:<span class="hljs-literal">false</span>,<br>    <span class="hljs-attr">success</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)&#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data);<br>    &#125;<br>  &#125;);<br></code></pre></div></td></tr></table></figure>
+<p>　　FormData还支持异步的上传文件，以前我们上传文件，需要写一个表单直接刷新提交，现在可以使用FormData，在构造这个对象的时候，把表单的对象，作为一个参数放进去，就可以了，然后FormData，就会得到这个表单对象里面的所有的参数，甚至我们在表单中，都不需要声明<code>enctype =&quot;multipart/form-data&quot;</code>，就可以直接提交。<br>　　使用FormData的优点，第一是在提交表单的时候，不需要写大量的js来获得表单数据，直接把表单对象构造就行了。第二就是可以直接异步上传文件。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h1 id="二、停止Promise链式调用"><a href="#二、停止Promise链式调用" class="headerlink" title="二、停止Promise链式调用"></a>二、停止Promise链式调用</h1><p>　　Promise的链式调用虽然方便我们不用再写恶心的嵌套回调，但是有一个问题，就是如果第一个异步没有发送成功，进入了reject函数，后面的链式调用的resolve函数的data都是undefined，对后面的then调用造成了很大的问题。</p>
+<h2 id="第一个解决方法"><a href="#第一个解决方法" class="headerlink" title="第一个解决方法"></a>第一个解决方法</h2><p>　　在每个then方法中对data进行非空判断。</p>
+<h2 id="第二个解决方法"><a href="#第二个解决方法" class="headerlink" title="第二个解决方法"></a>第二个解决方法</h2><p>　　如果当前的Promise进入reject函数，对后面的Promise都进行abort操作，该方法适用于jQuery的Promise操作。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title function_">getAsync1</span>()<br>.<span class="hljs-title function_">then</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">getAsync2</span>();<br>&#125;,<span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>)&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">getAsync2</span>().<span class="hljs-title function_">abort</span>();<br>&#125;)<br>.<span class="hljs-title function_">then</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">getAsync3</span>();<br>&#125;,<span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>)&#123;<br>  <span class="hljs-keyword">if</span>(err.<span class="hljs-property">statusText</span> != <span class="hljs-string">&#x27;abort&#x27;</span>)&#123;<br>    <span class="hljs-comment">// ...不是通过上一个Promise的abort进入</span><br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">getAsync3</span>().<span class="hljs-title function_">abort</span>();<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<h1 id="三、chrome禁止自动填充"><a href="#三、chrome禁止自动填充" class="headerlink" title="三、chrome禁止自动填充"></a>三、chrome禁止自动填充</h1><p>　　chrome保存密码并且自动填充的功能确实能够方便我们在浏览网站的时候登录进去，但是有时候chrome会莫名其妙的抽风，在我们不想要填充的地方自动给input填充上账号，为了不让chrome自动填充，我们采用下面的方式禁止自动填充：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;display:none&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;pwd&quot;</span> <span class="hljs-attr">autocomplete</span>=<span class="hljs-string">&quot;off&quot;</span>/&gt;</span><br></code></pre></div></td></tr></table></figure>
+<p>　　我们在我们需要的input#pwd上面加一个display:none隐藏的div，然后给input#pwd加上一个autocomplete=”off”的属性，这样，这个input#pwd就不会自动填充了。</p>
+<h1 id="四、文件下载"><a href="#四、文件下载" class="headerlink" title="四、文件下载"></a>四、文件下载</h1><p>　　刚开始，笔者在页面上用jQuery的$.post方法发送一个请求给服务器，然后服务器根据这个参数再生成相应的一个文件流返回给客户端。但是，在$.post方法的回调函数中，只能处理xml, json, script, or html类型，对返回的文件流却没办法弹出对话框让用户下载了。经过百度，看到了很多人采用隐藏form提交的方式，再用response来推就可以。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">exportRecord</span>(<span class="hljs-params">ajaxData</span>) &#123;<br>  <span class="hljs-keyword">var</span> form = $(<span class="hljs-string">&quot;&lt;form&gt;&quot;</span>);<br>  form.<span class="hljs-title function_">attr</span>(<span class="hljs-string">&#x27;style&#x27;</span>, <span class="hljs-string">&#x27;display:none&#x27;</span>);<br>  form.<span class="hljs-title function_">attr</span>(<span class="hljs-string">&#x27;target&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>);<br>  form.<span class="hljs-title function_">attr</span>(<span class="hljs-string">&#x27;method&#x27;</span>, ajaxData.<span class="hljs-property">method</span>); <span class="hljs-comment">//请求方式</span><br>  form.<span class="hljs-title function_">attr</span>(<span class="hljs-string">&#x27;action&#x27;</span>, ajaxData.<span class="hljs-property">url</span>);<span class="hljs-comment">//请求地址</span><br>  <span class="hljs-keyword">var</span> input1 = $(<span class="hljs-string">&#x27;&lt;input&gt;&#x27;</span>);<span class="hljs-comment">//将你请求的数据模仿成一个input表单</span><br>  input1.<span class="hljs-title function_">attr</span>(<span class="hljs-string">&#x27;type&#x27;</span>, <span class="hljs-string">&#x27;hidden&#x27;</span>);<br>  input1.<span class="hljs-title function_">attr</span>(<span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>);<span class="hljs-comment">//该输入框的name</span><br>  input1.<span class="hljs-title function_">attr</span>(<span class="hljs-string">&#x27;value&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>);<span class="hljs-comment">//该输入框的值value</span><br>  $(<span class="hljs-string">&#x27;body&#x27;</span>).<span class="hljs-title function_">append</span>(form);<br>  form.<span class="hljs-title function_">append</span>(input1);<br>  form.<span class="hljs-title function_">submit</span>();<br>  form.<span class="hljs-title function_">remove</span>();<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>　　这种方法发出的请求格式类似于username=username&amp;password=password. 代码中的name就是请求中的key，代码中的value就是请求数据中的value</p>
+
+            </div>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+            <hr>
+            <div>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Recommend/">推荐</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2017/04/09/FrontEnd-Panorama.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">走进网页虚拟现实WebVR</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2017/02/28/jQuery-Realize-Snake.html">
+                        <span class="hidden-mobile">jQuery实现贪吃蛇游戏</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

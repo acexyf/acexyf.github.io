@@ -1,0 +1,706 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　在知乎上有这么一个问题：为什么很多程序员都建议使用Linux？在这个问题上我其实有挺多想聊的，虽然比不上专门用C/C++编译的工程师了解的那么底层，也比不上运维工程师每天接触Linux，但是我们的工作中还是会接触到不少Linux的，今天我们来讨论一下学习Linux的必要性以及带来的价值。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>为什么很多程序员都建议使用Linux？ - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="为什么很多程序员都建议使用Linux？">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-12-10 11:00" pubdate>
+        2022年12月10日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      64
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">为什么很多程序员都建议使用Linux？</h1>
+            
+            <div class="markdown-body">
+              <p>　　在知乎上有这么一个问题：为什么很多程序员都建议使用Linux？在这个问题上我其实有挺多想聊的，虽然比不上专门用C/C++编译的工程师了解的那么底层，也比不上运维工程师每天接触Linux，但是我们的工作中还是会接触到不少Linux的，今天我们来讨论一下学习Linux的必要性以及带来的价值。</p>
+<span id="more"></span>
+
+
+<h1 id="发展历程"><a href="#发展历程" class="headerlink" title="发展历程"></a>发展历程</h1><p>　　相信对Linux系统有一些了解的童鞋都听过这么一个故事，Linux是一名芬兰的学生Linus Torvalds在Unix系统的基础上开发的，并发布在学校论坛，最后火了起来。但是这么说并不十分的准确，Linux的故事缘起于更早的UNIX系统。</p>
+<h2 id="UNIX"><a href="#UNIX" class="headerlink" title="UNIX"></a>UNIX</h2><p>　　说到Linux，就不能提到大名鼎鼎的<code>UNIX系统</code>，在上世纪60年代末的时候，那时候计算机系统还是批处理的，在又大又笨的大型机器上运行，要先将程序卡片装入设备，然后等1个小时后才能取运算的结果。不仅慢，还很废纸。</p>
+<p><img src="/images/Recommend-Linux/big.jpg" srcset="/img/loading.gif" lazyload alt="大型机器"></p>
+<p>　　于是美国电话电报公司(下面简称AT&amp;T公司)下面的贝尔实验室联合麻省理工学院及美国通用电气公司本来是打算开发一个大型机上的多人使用、多任务、多层次的操作系统<code>multics</code>。但是<code>multics</code>这个系统步子迈得太大了，贝尔实验室认为这个项目周期长、成本高，不久就撤资了，各方也陆续退出，项目于是凉凉了。</p>
+<p>　　但是贝尔实验室下面的两个研究员肯·汤普森（Ken Thompson）和丹尼斯·里奇（Dennis Ritchie）对项目关闭很失望，因为他们在这个系统上开发了一个游戏<code>太空旅行(Space Travel)</code>，实验室的其他人员对这个游戏玩得也很上头。</p>
+<p><img src="/images/Recommend-Linux/space-travel.png" srcset="/img/loading.gif" lazyload alt="太空旅行游戏"></p>
+<p>　　于是，为了能够<code>继续玩游戏</code>，肯·汤普森和丹尼斯·里奇决定自己开发一个操作系统；是的，你没有看错，大神就是大神，出发点都异于常人。肯·汤普森找来了一台五年前老旧的PDP-7小型机，虽然称为小型机，但是也有一间屋子那么大！</p>
+<p><img src="/images/Recommend-Linux/pdp-7.png" srcset="/img/loading.gif" lazyload alt="PDP-7小型机"></p>
+<p>　　正好在这段时间，他老婆带着孩子回娘家住了3个礼拜，也就是说他有整整3个礼拜没有人打扰他的工作。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<blockquote>
+<p>这件事告诉了我们,一个男人想要搞大事，老婆不在家是多么的重要！</p>
+</blockquote>
+<p><img src="/images/Recommend-Linux/woman.jpg" srcset="/img/loading.gif" lazyload alt="老婆不在家"></p>
+<p>　　在这台机器上，他首先重写了游戏，然后想要开发一个全新的操作系统，由于有之前multics系统的经验，在一个月内他很快完成了内核系统、文件系统、编辑器、编译系统的工作。1969年第一版的UNIX系统正式诞生了。</p>
+<p>　　在<a target="_blank" rel="noopener" href="https://union-click.jd.com/jdc?e=618%7Cpc%7C&p=JF8BANgJK1olXQUCXVtUD0sSCl8IGloQVQECUV5eDUsTAF9MRANLAjZbERscSkAJHTdNTwcKBlMdBgABFksWAmoAHFsQXQUHVFpeFxJSXzI4BVJnPnRgCyQ-CR9DfR1rYQZnCQZeJFJROEonA24JGF8dXAUGU25tCEwnQgEAElsRXzYDZF5aDksXC2sAGFodWgMyU15UOBtFVyZATGslbQUyU15UHE1lQj0cHSklbQYyV24fZkJACmxdG1oWWgMBUVtaDhlHUG1cS1JHWwcAAFpYXEkfM20JGl8cbTY">《UNIX传奇》</a>一书中，提及了UNIX系统的高光时刻，上映于1993年的科幻冒险电影《侏罗纪公园》相信不少同学肯定对这部老电影仍旧印象深刻；其中一个名场面，哈蒙德教授的孙女就是操作UNIX系统，关闭了闸门，从而拯救了一行人，有兴趣可以重温<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/bv1NZ4y1f7m1">B站视频片段</a>。</p>
+<blockquote>
+<p>这个故事告诉了我们，多学一门操作系统，在关键时刻说不定能够保命。</p>
+</blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Recommend-Linux/know-unix.png" srcset="/img/loading.gif" lazyload alt="电影片段截图"></p>
+<p>　　但是UNIX是由不少使用汇编语言完成的，汇编语言用来编程不够强大，也不具备很好的可移植性，于是1971年丹尼斯·里奇在B语言的基础上开发出了C语言，1973年UNIX也用C语言进行了重写，随后发布了4、5、6几个版本的UNIX。此后，UNIX被政府机关、研究机构、企业、大学纷纷注意，并逐步流行；随着UNIX系统的广泛流行，C语言也成为了最受欢迎的语言之一，一直延续至今。</p>
+<p><img src="/images/Recommend-Linux/film-unix.png" srcset="/img/loading.gif" lazyload alt="电影片段UNIX系统界面"></p>
+<p>　　一开始AT&amp;T公司也没有把UNIX当回事，毕竟不是正式的项目，况且在操作系统上（multics）还吃过大亏，也就没想拿它卖钱，因此被免费提供给大学使用，甚至直接给V7版本的源码以做研究。</p>
+<p>　　因此在后面的10年，UNIX在各个学术机构得到广泛应用，甚至许多机构在此源码基础上加以改进，其中最著名的变种之一是由加州大学柏克莱分校开发的BSD产品(Berkeley Software Distribution)，在此基础上又诞生了三条分支：FreeBSD、OpenBSD和NetBSD，就连苹果电脑的内核Darwin所使用的NextSETP也是BSD的衍生版本。</p>
+<p>　　AT&amp;T公司一看，哟呵，UNIX居然这么火，于是意识到了UNIX巨大的商业价值，不再将UNIX源码授权给学术机构，并对之前的UNIX及其变种声明了版权，后面引发了各种旷日持久的版权纠纷，这是UNIX的后话。</p>
+<p><img src="/images/Recommend-Linux/unix.jpeg" srcset="/img/loading.gif" lazyload alt="UNIX"></p>
+<h2 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h2><p>　　时间来到了80年代，随着AT&amp;T公司闭源UNIX系统，在学校里给学生用的操作系统很少；当时计算机主要使用的操作系统有UNIX、MS-DOS和MacOS这几种，UNIX已经开始商用，比较昂贵，仅局限于大型机；MS-DOS系统比较简陋，且源代码被软件厂商严格保密；而MacOS大家肯定也都知道，是专门用在苹果计算机上的系统，而且当时应该没有黑苹果一说。</p>
+<p>　　1987年当时在荷兰阿姆斯特丹Vrije大学当教授的美国人安迪·塔内鲍姆（AndrewS.Tanenbaum）为了让学生更好的理解操作系统的原理，就仿照BSD的源代码，编写了一个类UNIX系统，取名为<code>MINIX</code>，意为迷你的UNIX，并且开放全部代码给大学教学和研究用；既然是MINI，它的代码体量也是比较小的，全部代码共约12000行，而且只是一个教学工具，没有什么实际的应用价值。</p>
+<p>　　1991年，我们的主人公Linus Torvalds（简称Linus）在芬兰赫尔辛基大学期间，开始对UNIX产生了浓厚的兴趣；在校期间，由于Linus经常要用他的终端仿真器（Terminal Emulator）去访问大学主机上的新闻组和邮件，他对MINIX只允许在教育上使用很不满，同时也为了方便读写和下载文件，他开始写属于自己的类UNIX系统；在一个暑假没日没夜的开发中，最终开发出了Linux的第一个内核（0.02版），并取名<code>Linus&#39; Minix</code>，后来改名为Linux。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/Recommend-Linux/linus.png" srcset="/img/loading.gif" lazyload alt="Linus Torvalds"></p>
+<p>　　1991年10月Linus在Minix新闻组发布消息，对外宣布Linux内核的诞生，并公开了内核源码；公开后Linux因为结构清晰、功能简洁，一经发布立即收受好评；后来在很多热心支持者的帮助下，经过多次版本升级迭代，终于在1994年3月，Linux1.0正式发布。</p>
+<p>　　Linux的标志和吉祥物是一只叫做Tux的企鹅，它的由来是因为Linus之前在澳洲时，在动物园里曾被一只企鹅咬了一口，便选择了企鹅作为Linux的标志。</p>
+<p><img src="/images/Recommend-Linux/linux.jpeg" srcset="/img/loading.gif" lazyload alt="Linux的Logo"></p>
+<p>　　如同当初汤普森和里奇没有想到UNIX系统的成功一样，Linus也没有想到自己花了一个暑假做着玩的内核系统，竟然能以商品化操作系统的形态，运行在今天全球数十亿台设备上。</p>
+<p>　　在Linux的官网，有这么一篇文章，<a target="_blank" rel="noopener" href="https://www.linux.com/what-is-linux/">什么是Linux</a>，详细的介绍了Linux的功能、内核每个部分作用，以及为什么我们要使用Linux，感兴趣的童鞋可以看看。</p>
+<h2 id="Linux与UNIX的区别和联系"><a href="#Linux与UNIX的区别和联系" class="headerlink" title="Linux与UNIX的区别和联系"></a>Linux与UNIX的区别和联系</h2><p>　　我们上面提到了一个词：<code>类UNIX系统</code>，那什么是类UNIX系统呢？</p>
+<blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>类UNIX系统是指继承UNIX的设计风格演变出来的系统。</p>
+</blockquote>
+<p>　　类UNIX系统就是长得像UNIX、但实际不是UNIX的系统；其实本质上就是<code>借鉴</code>了UNIX系统的界面、特性（多用户、多任务等），但是没有直接抄人家的源代码，毕竟人家是有版权限制的，因此更多是思想理念上的传承。上面提到的BSD、MINIX系统，以及Linux系统都属于类UNIX系统。由于UNIX标准认定价格昂贵，所以目前唯一获得UNIX标准认定的为苹果的MACOS系统。</p>
+<p>　　Linux系统和UNIX系统主要有以下区别：</p>
+<ol>
+<li>开源性：UNIX是闭源的，Linux是开源的。</li>
+<li>跨平台性：UNIX系统大多是与硬件配套的，只能在工作站或小型机上运行，且价格昂贵；而Linux则可运行在多种硬件平台上。</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</ol>
+<h1 id="Linux发行版"><a href="#Linux发行版" class="headerlink" title="Linux发行版"></a>Linux发行版</h1><p>　　我们很多时候都能看到<code>Linux发行版</code>这个词，或者又看到说<code>Linux内核</code>怎么样，很多同学容易混淆这两个概念。其实当初Linus开发的Linux只是一个<code>内核</code>，是一个提供设备驱动、文件系统、进程管理、网络通信等功能的系统软件，是硬件和软件之间进行通信的桥梁，内核并不是一套完整的操作系统；我们可以把内核理解为手机的芯片，有了芯片，手机的各个功能才能运行起来，因此内核是整个操作系统的核心。我们在<a target="_blank" rel="noopener" href="https://kernel.org/">The Linux Kernel Archives网站</a>可以下载到各种版本的Linux内核，并且对其进行编译。</p>
+<blockquote>
+<p>内核是操作系统重要组成部分，接近于物理硬件，不是操作系统。</p>
+</blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　我们常说的<code>Linux系统</code>，其实更多说的是广义上<code>Linux众多的发行版</code>，因为你并不会直接去操作系统的内核。发行版是指一些组织或厂商将Linux的内核与各种软件、软件包管理器等封装起来，并提供系统安装界面、系统配置和桌面环境等，构成了Linux的发行版。相当于小米、VIVO的手机厂商，将芯片集成到手机里，装上屏幕、外壳、扬声器、电池等等部件，然后把手机整个的卖给你。</p>
+<p>　　Linux的各个发行版使用的是同一个Linux内核（内核版本可能有差异），因此在内核层不存在什么兼容性问题；每个发行版有不一样的感觉，只是在发行版的最外层（比如界面、包管理器）才有所体现。</p>
+<blockquote>
+<p>uname -srm命令可以查看Linux系统的内核版本号。</p>
+</blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　Linux的发行版本有很多，其大体可以分为两类：</p>
+<ul>
+<li>商业公司维护的商业版本，以著名的Red Hat为代表；</li>
+<li>社区组织维护的免费版本，以Debian、Ubuntu为代表。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</ul>
+<p>　　有些同学可能会开始疑惑了，上面不是说Linux是开源的吗？为什么还会有商业版？是的，Linux内核是开源的，但是<code>开源不等于免费</code>，商业版收费的是它的商业服务和支持。</p>
+<p>　　比如Red Hat虽然使用的都是开源软件，但是付出了很多人工将成千上万的开源软件整合成一个系统，并且保证软件间的兼容性稳定性，提供后续的支持、维护以及升级服务，因此它是收费的；如果你氪金氪了足够多，比如购买他们的高级服务，你甚至可以让Red Hat的工程师现场过来给你解决问题。</p>
+<p><img src="/images/Recommend-Linux/rich.gif" srcset="/img/loading.gif" lazyload alt="氪金玩家"></p>
+<p>　　很多同学可能还是觉得开源收费不太能理解，但其实如果你去尝试编译多个开源软件，或者在操作系统时遇到一些莫名其妙的错误，然后你花费几天找遍github、stackoverflow和Google也没有找到问题而苦恼时，你会觉得如果有人能够帮你解决问题是一件非常高兴的事。更何况企业项目在运行时往往都会追求快速上线，计时按照天甚至小时，这个时候快速解决问题就显得非常的重要；这点费用对于企业来说是非常划算的。</p>
+<blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>这件事告诉了我们，天下没有免费的午餐，免费往往是最贵的。</p>
+</blockquote>
+<p>　　下面我们简单介绍几个常见的Linux发行版本。</p>
+<h2 id="Red-Hat"><a href="#Red-Hat" class="headerlink" title="Red Hat"></a>Red Hat</h2><p>　　Red Hat（红帽公司）创建于1993年，是一家开源解决方案供应商，部位于美国北卡罗来纳州的罗利市。</p>
+<p>　　1993年，Bob Young 成立了ACC公司，这家公司主要是做邮购业务，主营业务是出售Linux和Unix的软件附件。1994年，Marc Ewing创建了自己的Linux发行版，并将其命名为：红帽Linux，Ewing在就读卡内基·梅隆大学期间曾经戴着一顶红色的康奈尔大学长曲棍球帽子，这是他的祖父赠送给他的。Young在1995年收购了Ewing的企业，两者合并成为红帽软件公司，由Young担任首席执行官。</p>
+<p><img src="/images/Recommend-Linux/red-hat.jpeg" srcset="/img/loading.gif" lazyload alt="Red Hat"></p>
+<p>　　Red Hat公司的产品主要包括RHEL（Red Hat Enterprise Linux，收费版本）和 CentOS（RHEL 的社区克隆版本，免费版本）、Fedora Core（由 Red Hat 桌面版发展而来，免费版本）。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="Fedora"><a href="#Fedora" class="headerlink" title="Fedora"></a>Fedora</h2><p>　　Fedora Linux是由Fedora项目社区开发、红帽公司赞助，目标是创建一套新颖、多功能并且自由的操作系统。</p>
+<p>　　Fedora对于用户而言，是一套功能完备、更新快速的免费操作系统；而对赞助者Red Hat公司而言，它是许多新技术的测试平台，因此它的稳定性不如Centos。</p>
+<p><img src="/images/Recommend-Linux/fedora.png" srcset="/img/loading.gif" lazyload alt="Fedora"></p>
+<h2 id="CentOS"><a href="#CentOS" class="headerlink" title="CentOS"></a>CentOS</h2><p>　　CentOS可以理解为是基于Red Hat商业版系统的社区编译重发布版，完全开源免费，因此相较于其他一些免费的Linux发行版会更加稳定，也因此一般企业里常用作服务器操作系统。</p>
+<p><img src="/images/Recommend-Linux/centos.png" srcset="/img/loading.gif" lazyload alt="CentOS"></p>
+<h2 id="Debian"><a href="#Debian" class="headerlink" title="Debian"></a>Debian</h2><p>　　Debian是目前世界最大的非商业性Linux发行版之一，是由世界范围1000多名计算机业余爱好者和专业人员在业余时间制做。</p>
+<p><img src="/images/Recommend-Linux/debian.jpeg" srcset="/img/loading.gif" lazyload alt="Debian"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h2 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h2><p>　　Ubuntu是<code>基于Debian发展</code>而来，界面友好，容易上手，对硬件的支持非常全面，是目前最适合做桌面系统的Linux发行版，而且Ubuntu的所有发行版都免费提供，也是笔者个人非常喜欢的一个Linux发行版。</p>
+<p>　　Ubuntu的创始人马克·沙特尔沃思(Mark Shuttleworth)是一名有传奇色彩的南非人，他在大学毕业后创建了一家安全咨询公司，后以5.75亿美元被收购，一跃成为南非本地的富翁。2002年马克自费乘坐罗斯联盟号飞船，在国际空间站中度过了8天的时光，之后创立了Ubuntu社区。他说太空的所见正是他创立Ubuntu的精神所在。Ubuntu这个词也是来源自非洲一个部落，意思是”人性””我的存在是因为大家的存在”，是非洲传统的一种价值观。</p>
+<p><img src="/images/Recommend-Linux/ubuntu.png" srcset="/img/loading.gif" lazyload alt="Ubuntu官网"></p>
+<p>　　作为Linux发行版中的后起之秀，Ubuntu在短短几年时间里便迅速成长为从Linux初学者到实验室用计算机/服务器都适合使用的发行版。</p>
+<h2 id="如何选择"><a href="#如何选择" class="headerlink" title="如何选择"></a>如何选择</h2><p>　　Linux系统的发行版有很多，就不逐一介绍了，在<a target="_blank" rel="noopener" href="https://union-click.jd.com/jdc?e=618%7Cpc%7C&p=JF8BANkJK1olXQYFV1pfDkIfBF8IGloQVQcCVldZAE8XCl9MRANLAjZbERscSkAJHTdNTwcKBlMdBgABFksWAmoAGlsXVAIKUF5UFxJSXzI4UidMBEABCzY4axdCfTlBeFpyKXEGAlJROEonA24JGF8dXAUGU25tCEwnQgEPGV8WWgYyVW5dD00UCmwIHVoSXQ4EZFldAXtHUTtBUwwlbTYBZFldAV8RcS5aD11nbTYCZF1tSiVHAmgOS1xHCQUHXVhYDE8UC2cJTFsWClIBXFtfW0IQU18KGloRVDYy">《Linux从入门到精通》</a>一书中整理了不同的发行版；我们如何来选择不同特性的版本呢？</p>
+<ol>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>如果你需要一个服务器系统，想要一个比较稳定的服务器，可以选择CentOS或者RHEL。</li>
+<li>如果你需要桌面系统，既不想用盗版，也不想在系统配置上浪费太多时间，可以选择Ubuntu。</li>
+<li>如果你喜欢折腾新功能特性可选Fedora。</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://union-click.jd.com/jdc?e=618%7Cpc%7C&p=JF8BANkJK1olXQYFV1pfDkIfBF8IGloQVQcCVldZAE8XCl9MRANLAjZbERscSkAJHTdNTwcKBlMdBgABFksWAmoAGlsXVAIKUF5UFxJSXzI4UidMBEABCzY4axdCfTlBeFpyKXEGAlJROEonA24JGF8dXAUGU25tCEwnQgEPGV8WWgYyVW5dD00UCmwIHVoSXQ4EZFldAXtHUTtBUwwlbTYBZFldAV8RcS5aD11nbTYCZF1tSiVHAmgOS1xHCQUHXVhYDE8UC2cJTFsWClIBXFtfW0IQU18KGloRVDYy"><img src="/images/Recommend-Linux/master.jpg" srcset="/img/loading.gif" lazyload alt="Linux从入门到精通"></a></p>
+<h1 id="Linux的优势"><a href="#Linux的优势" class="headerlink" title="Linux的优势"></a>Linux的优势</h1><p>　　相信计算机科班出身的同学在大学里都会接触一门课程：计算机操作系统，笔者在大学里，这门课老师让用过一段的时间的Ubuntu开发，做做作业，当时觉得命令行shell就像深不见底的黑洞，太麻烦了，完全没有图形化界面来的方便快捷；但是工作了一段时间，接触了一下Linux系统，熟悉命令行之后，哎，真香，比Windows好用多了。</p>
+<p><img src="/images/Recommend-Linux/xiang.jpg" srcset="/img/loading.gif" lazyload alt="真香"></p>
+<p>　　简单介绍一下，笔者也算是Linux系统中度用户吧，个人桌面系统主力虽然是Windows 10，主要是由于之前系统存了很多文件资料等；目前转向使用Ubuntu 22.04系统；自己将家用闲置的一台电脑改造成为家用nas系统，搭载CentOS 7，因此改造的过程中接触了不少Linux系统的命令，于是就开始自学并喜欢上。</p>
+<p>　　我相信很多童鞋开始学习和使用Linux系统应该和我一样，主要是在工作中开始的，因为毕竟Linux系统下娱乐、游戏、社交功能有限，全面使用Linux系统会带来一定的限制（主要是没有微信），我平时也是将Linux系统作为日常工作和编程开发的一个补充。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<blockquote>
+<p>PS：steam平台也支持Ubuntu了，QQ推出了全新的Linux3.0版本。</p>
+</blockquote>
+<p>　　下面简单的介绍几个觉得使用Linux系统的个人推荐看法吧，仅供参考。</p>
+<h2 id="界面优雅美观"><a href="#界面优雅美观" class="headerlink" title="界面优雅美观"></a>界面优雅美观</h2><p>　　常言道：始于颜值，陷于才华；看惯了Windows下千篇一律的图标，说实话，使用Ubuntu 22有一部分原因确实是被它的界面所吸引的。</p>
+<p><img src="/images/Recommend-Linux/windows.jpg" srcset="/img/loading.gif" lazyload alt="Windows图标"></p>
+<p>　　打开Ubuntu系统，我们会发现，整体的风格非常简洁优雅。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Recommend-Linux/desktop.png" srcset="/img/loading.gif" lazyload alt="Ubuntu桌面"></p>
+<p>　　很多刚从Windows转过来的小伙伴（包括我自己），一开始接触Ubuntu桌面，会常常感觉不习惯，经常会疑惑：</p>
+<blockquote>
+<p>桌面的那些我的电脑、回收站等图标都去哪了？</p>
+</blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　包括在安装完很多应用后，我们发现这些应用也不会在桌面留下任何痕迹，没有Windows软件那种安装完后，还要死皮赖脸的请求你创建桌面快捷方式，还给你默认勾选；只要一不留神，你的桌面说不定就多了三四个不常用的图标。</p>
+<p>　　因此在Windows系统，我们用过一段时间后会有各式各样繁杂的图标存在；但是Ubuntu就不会有这样的烦恼，用了几个月，我的桌面也仅仅只有刚开始的主目录文件夹存在，加上Foxit Reader创建的一个图标，仅此而已。</p>
+<p>　　Ubuntu界面的设计者考虑到，大部分用户在工作时，桌面上的图标几乎都是被应用窗口遮住，把窗口移开来查找想要的应用是一件非常痛苦的事，因此停用了桌面图标，改用在应用程序中提供了入口；点击右下角的按钮，我们可以看到所有的程序。</p>
+<p><img src="/images/Recommend-Linux/applications.png" srcset="/img/loading.gif" lazyload alt="所有应用程序"></p>
+<p>　　对于一些常用的程序，我们可以将它固定到下方的程序坞中，方便随时访问。Ubuntu给了我们一个干净的环境，让我们能够更专注于当前的工作环境，更少被其他弹框打扰；因此更适合用来干活。</p>
+<h2 id="开源"><a href="#开源" class="headerlink" title="开源"></a>开源</h2><p>　　开源带来的一大显而易见的好处就是，你不用每次安装完系统去找各种Windows激活工具了，相信很多小伙伴都有装完系统被下面各种软件支配的恐惧，不装的话系统各种提示，装了又怕有风险。</p>
+<p><img src="/images/Recommend-Linux/active.png" srcset="/img/loading.gif" lazyload alt="Windows激活软件"></p>
+<p>　　开源意味着使用者可以免费自由使用、查看和修改系统的源代码，这种完全开放透明的架构对于政府机构或者特殊需求的组织等来说是非常重要的。</p>
+<p>　　同时你会发现Linux系统有广泛的硬件支持，甚至可以拿出一台上个世纪老旧的intel奔腾3处理器来运行也能很流畅；正是得益于开源的特点，很多程序员不断地向Linux社区提供代码，使得Linux有着丰富的设备驱动资源，对主流硬件有着很好的支持，几乎能运行在所有主流的处理器上。</p>
+<p>　　在<a target="_blank" rel="noopener" href="https://alim0x.gitbooks.io/awesome-linux-software-zh_cn/content/">超赞的Linux软件</a>这篇文章中，作者整理了非常多Linux中开源的软件，也都是日常很实用的软件。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="系统安全稳定"><a href="#系统安全稳定" class="headerlink" title="系统安全稳定"></a>系统安全稳定</h2><p>　　系统安全稳定之于电脑，如同法律对于人们，是最基本的要求和准则。大多数小伙伴应该也是从Windows开始接触计算机和网络的，因此觉得Windows也能满足日从的工作需求。但客观来说，在安全性、高性能方面，Windows相比Linux依然有不小的差距。</p>
+<p>　　使用Windows过程中相信大家在日常中会遇到不少卡顿、蓝屏的情况发生；笔者在之前的公司就遇到IT装完系统，一段时间经常蓝屏死机的情况发生，然后数次重装系统，这在办公时是及其痛苦的。</p>
+<p><img src="/images/Recommend-Linux/blue.jpg" srcset="/img/loading.gif" lazyload alt="Windows蓝屏"></p>
+<p>　　但是Linux系统极少出现卡顿情况，除非你运行多个大型的软件。在我实际的体验中，在同一配置的电脑中，运行相同多软件的情况下，Linux系统的流畅度是明显优于Windows电脑的。</p>
+<p>　　在Windows中，我们经常会遇到磁盘空间不够的情况，尤其是C盘空间，很多软件都会默认安装到C盘（比如Chrome），或者将缓存文件放到C盘，过一段时间就需要清理；但在Linux系统中不需要。</p>
+<p>　　首先Linux系统安装完成后，本身不会占用太多的磁盘空间，占用较少的资源；其次Linux系统自身的<code>树形目录结构</code>已经将每个文件的位置规范了，/home是用户目录，/usr软件目录等等进行划分，我们可以将硬盘格式成一个区，然后直接挂载根目录。</p>
+<p><img src="/images/Recommend-Linux/tree.jpg" srcset="/img/loading.gif" lazyload alt="树形目录结构"></p>
+<p>　　正是由于Linux系统的安全稳定高效，因此Linux天然适合用来做服务器；无论是企业级的大型服务器，还是最近流行的家用nas系统；无论是你用的手机操作系统，还是看家用大屏电视机，亦或是小巧的机顶盒，Linux系统出现在生活中的各个角落。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>　　要想学好Linux，不能只记住几个命令，最好的方式是为自己搭建一个Linux的环境，在真实的环境下进行学习；Ubuntu就是一个比较适合初学者的发行版；如果怕装系统麻烦，最简单的方式是在Windows10下安装Ubuntu子系统体验，参考<a href="zhuanlan.zhihu.com/p/62658094">安装教程</a>，不过有一些命令会被阉割。</p>
+<p>　　如果手头有闲置移动硬盘，想要真实体验一下Ubuntu系统（虚拟机体验不好），又不想舍弃Windows系统，可以将Ubuntu环境安装到移动硬盘，打造自己的个人移动工作平台；这样你不管是在办公室还是回家干活，只需要随身携带一块小小的硬盘就能轻松将工作用到的所有资料打包带走，保持工作的进度和环境。这里推荐笔者自用的国产的<a target="_blank" rel="noopener" href="https://union-click.jd.com/jdc?e=618%7Cpc%7C&p=JF8BANAJK1olXDYCVV9cCEITB28IHVslGVlaCgFtUQ5SQi0DBUVNGFJeSwUIFxlJX3EIGloUXQ8GUF5dDksIWipURmt-VQFkIDgAdShgXzZoGCtXD01GAwQ9BEcnAl8IGloWWQ4DV1paOHsXBF9edVsUXAcAUVdcAUsnAl8IHF0WVAUBVFdeCkIWM2gIEmtFD1JLHAltOHsUM2gIEk8TL0dQQFgvOHsXM2w4WTUUVVIHV1lVXU9HBmoNGVhAVVJWVFYNC0pABmkPSAtCVDYAVV9ZAXsn">致态1TB SSD固态</a>和<a target="_blank" rel="noopener" href="https://union-click.jd.com/jdc?e=618%7Cpc%7C&p=JF8BANAJK1olXDYCVV9cC0kTBmYBHlMlGVlaCgFtUQ5SQi0DBUVNGFJeSwUIFxlJX3EIGloUXgQGUVdUDUMIWipURmsRKwZbPx8fYCsffXUJfRBOWH10HD89BEcnAl8IGloWWQ4DV1paOHsXBF9edVsUXAcDVV1bCE0nAl8IHF0WVAUBV1pZC04fM2gIEmtFD1JLHAltOHsUM2gIEk8TL0dQQFgvOHsXM2w4WTVACFFVVVlZW0pEBGcNGFkXVVUGXVgPCU4XBzoOHVtGDTYAVV9ZAXsn">绿联M2移动硬盘盒</a>组合，方便打造自己的<code>Ubuntu To Go</code>环境。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><a target="_blank" rel="noopener" href="https://union-click.jd.com/jdc?e=618%7Cpc%7C&p=JF8BANAJK1olXDYCVV9cCEITB28IHVslGVlaCgFtUQ5SQi0DBUVNGFJeSwUIFxlJX3EIGloUXQ8GUF5dDksIWipURmt-VQFkIDgAdShgXzZoGCtXD01GAwQ9BEcnAl8IGloWWQ4DV1paOHsXBF9edVsUXAcAUVdcAUsnAl8IHF0WVAUBVFdeCkIWM2gIEmtFD1JLHAltOHsUM2gIEk8TL0dQQFgvOHsXM2w4WTUUVVIHV1lVXU9HBmoNGVhAVVJWVFYNC0pABmkPSAtCVDYAVV9ZAXsn"><img src="/images/Recommend-Linux/ssd.jpg" srcset="/img/loading.gif" lazyload alt="致态SSD"></a></p>
+<p>　　刚装完系统，看着空荡荡的桌面，你可能会不知所措，可能会迷茫<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/19963978">Ubuntu系统下可以做什么？</a>；双击安装exe不再存在了，而是通过命令行来安装，甚至连接网络也要敲命令，当你熟悉命令行的环境后，你会发现这是一种高效的方式，也是另一种的体验。借用一位知乎前辈的话：</p>
+<blockquote>
+<p>Windows为不知道自己正在做什么的人设计，Linux为知道自己要做什么，正在做什么的人设计。</p>
+</blockquote>
+<p>　　在这里，你可以做任何事，你可以热衷于更换各种酷炫的桌面和主题，也可以享受学习带来的无穷乐趣；先是命令，再是shell脚本，搭建服务器，学习数据库，部署自己的网站等等；我相信，你也会喜欢上这个简洁而优雅的开源世界。</p>
+
+            </div>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+            <hr>
+            <div>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/life/">代码人生</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Internet/">互联网科技</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Linux/">Linux</a>
+                    
+                      <a class="hover-with-bg" href="/tags/OpenSource/">开源</a>
+                    
+                      <a class="hover-with-bg" href="/tags/History/">历史</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/01/12/Linux-Office.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Linux下好用的神级办公软件</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/15/FrontEnd-Sideline.html">
+                        <span class="hidden-mobile">聊一下最近做的副业项目</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

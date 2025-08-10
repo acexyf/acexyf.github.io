@@ -1,0 +1,696 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　我们在Webpack基础篇介绍了多种loader和plugin以及每种的用途；那么他们两者在webpack内部是如何进行工作的呢？让我们手写一个loader和plugin来看看它内部的原理，以便加深对webpack的理解。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>Webpack手写loader和plugin - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Webpack手写loader和plugin">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-10-12 12:00" pubdate>
+        2020年10月12日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      50
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Webpack手写loader和plugin</h1>
+            
+            <div class="markdown-body">
+              <p>　　我们在Webpack基础篇介绍了多种loader和plugin以及每种的用途；那么他们两者在webpack内部是如何进行工作的呢？让我们手写一个loader和plugin来看看它内部的原理，以便加深对webpack的理解。</p>
+<span id="more"></span>
+
+
+<h1 id="手写loader"><a href="#手写loader" class="headerlink" title="手写loader"></a>手写loader</h1><p>　　我们在<a href="https://xieyufei.com/2020/06/06/Webpack-Learned.html">在Webpack配置基础篇</a>介绍过，loader是链式传递的，对文件资源从上一个loader传递到下一个，而loader的处理也遵循着从下到上的顺序，我们简单了解一下loader的开发原则：</p>
+<ol>
+<li>单一原则: 每个Loader只做一件事，简单易用，便于维护；</li>
+<li>链式调用: Webpack 会按顺序链式调用每个Loader；</li>
+<li>统一原则: 遵循<code>Webpack</code>制定的设计规则和结构，输入与输出均为字符串，各个<code>Loader</code>完全独立，即插即用；</li>
+<li>无状态原则：在转换不同模块时，不应该在loader中保留状态；</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</ol>
+<p>　　因此我们就来尝试写一个<code>less-loader</code>和<code>style-loader</code>，将<code>less文件</code>处理后通过style标签的方式渲染到页面上去。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="同步loader"><a href="#同步loader" class="headerlink" title="同步loader"></a>同步loader</h2><p>　　loader默认导出一个函数，接受匹配到的文件资源字符串和SourceMap，我们可以修改文件内容字符串后再返回给下一个loader进行处理，因此最简单的一个loader如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">source, map</span>)&#123;<br>    <span class="hljs-keyword">return</span> source<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<blockquote>
+<p>导出的<code>loader函数</code>不能使用箭头函数，很多loader内部的属性和方法都需要通过<code>this</code>进行调用，比如<code>this.cacheable()</code>来进行缓存、<code>this.sourceMap</code>判断是否需要生成sourceMap等。</p>
+</blockquote>
+<p>　　我们在项目中创建一个loader文件夹，用来存放我们自己写的loader，然后新建我们自己的style-loader：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//loader/style-loader.js</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">loader</span>(<span class="hljs-params">source, map</span>) &#123;<br>  <span class="hljs-keyword">let</span> style = <span class="hljs-string">`</span><br><span class="hljs-string">    let style = document.createElement(&#x27;style&#x27;);</span><br><span class="hljs-string">    style.innerHTML = <span class="hljs-subst">$&#123;<span class="hljs-built_in">JSON</span>.stringify(source)&#125;</span>;</span><br><span class="hljs-string">    document.head.appendChild(style)</span><br><span class="hljs-string">  `</span>;<br>  <span class="hljs-keyword">return</span> style;<br>&#125;<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = loader;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里的<code>source</code>就可以看做是处理后的css文件字符串，我们把它通过style标签的形式插入到head中；同时我们也发现最后返回的是一个JS代码的字符串，webpack最后会将返回的字符串打包进模块中。</p>
+<h2 id="异步loader"><a href="#异步loader" class="headerlink" title="异步loader"></a>异步loader</h2><p>　　上面的<code>style-loader</code>都是同步操作，我们在处理source时，有时候会进行异步操作，一种方法是通过async/await，阻塞操作执行；另一种方法可以通过loader本身提供的回调函数<code>callback</code>。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//loader/less-loader</span><br><span class="hljs-keyword">const</span> less = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;less&quot;</span>);<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">loader</span>(<span class="hljs-params">source</span>) &#123;<br>  <span class="hljs-keyword">const</span> callback = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">async</span>();<br>  less.<span class="hljs-title function_">render</span>(source, <span class="hljs-keyword">function</span> (<span class="hljs-params">err, res</span>) &#123;<br>    <span class="hljs-keyword">let</span> &#123; css &#125; = res;<br>    <span class="hljs-title function_">callback</span>(<span class="hljs-literal">null</span>, css);<br>  &#125;);<br>&#125;<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = loader;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　callback的详细传参方法如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-title function_">callback</span>(&#123;<br>    <span class="hljs-comment">//当无法转换原内容时，给 Webpack 返回一个 Error</span><br>    <span class="hljs-attr">error</span>: <span class="hljs-title class_">Error</span> | <span class="hljs-title class_">Null</span>,<br>    <span class="hljs-comment">//转换后的内容</span><br>    <span class="hljs-attr">content</span>: <span class="hljs-title class_">String</span> | <span class="hljs-title class_">Buffer</span>,<br>    <span class="hljs-comment">//转换后的内容得出原内容的Source Map（可选）</span><br>    sourceMap?: <span class="hljs-title class_">SourceMap</span>,<br>    <span class="hljs-comment">//原内容生成 AST语法树（可选）</span><br>    abstractSyntaxTree?: <span class="hljs-variable constant_">AST</span> <br>&#125;)<br></code></pre></div></td></tr></table></figure>
+
+<p>　　有些时候，除了将原内容转换返回之外，还需要返回原内容对应的Source Map，比如我们转换less和scss代码，以及babel-loader转换ES6代码，为了方便调试，需要将Source Map也一起随着内容返回。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//loader/less-loader</span><br><span class="hljs-keyword">const</span> less = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;less&quot;</span>);<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">loader</span>(<span class="hljs-params">source</span>) &#123;<br>  <span class="hljs-keyword">const</span> callback = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">async</span>();<br>  less.<span class="hljs-title function_">render</span>(source,&#123;<span class="hljs-attr">sourceMap</span>: &#123;&#125;&#125;, <span class="hljs-keyword">function</span> (<span class="hljs-params">err, res</span>) &#123;<br>    <span class="hljs-keyword">let</span> &#123; css, map &#125; = res;<br>    <span class="hljs-title function_">callback</span>(<span class="hljs-literal">null</span>, css, map);<br>  &#125;);<br>&#125;<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = loader;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　这样我们在下一个loader就能接收到less-loader返回的sourceMap了，但是需要注意的是：</p>
+<blockquote>
+<p>Source Map生成很耗时，通常在开发环境下才会生成Source Map，其它环境下不用生成。Webpack为loader提供了<code>this.sourceMap</code>这个属性来告诉loader当前构建环境用户是否需要生成Source Map。</p>
+</blockquote>
+<h2 id="加载本地loader"><a href="#加载本地loader" class="headerlink" title="加载本地loader"></a>加载本地loader</h2><p>　　loader文件准备好了之后，我们需要将它们加载到webpack配置中去；在基础篇中，我们加载第三方的loader只需要安装后在loader属性中写loader名称即可，现在加载本地loader需要把loader的路径配置上。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">module</span>: &#123;<br>    <span class="hljs-attr">rules</span>: [&#123;<br>      <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.less/</span>,<br>      <span class="hljs-attr">use</span>: [<br>        &#123;<br>          <span class="hljs-attr">loader</span>: <span class="hljs-string">&#x27;./loader/style-loader.js&#x27;</span>,<br>        &#125;,<br>        &#123;<br>          <span class="hljs-attr">loader</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;loader&quot;</span>, <span class="hljs-string">&quot;less-loader&quot;</span>),<br>        &#125;,<br>      ],<br>    &#125;]<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们可以在loader中配置本地loader的相对路径或者绝对路径，但是这样写起来比较繁琐，我们可以利用webpack提供的<code>resolveLoader</code>属性，来告诉webpack应该去哪里解析本地loader。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">module</span>: &#123;<br>    <span class="hljs-attr">rules</span>: [&#123;<br>      <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.less/</span>,<br>      <span class="hljs-attr">use</span>: [<br>        &#123;<br>          <span class="hljs-attr">loader</span>: <span class="hljs-string">&#x27;style-loader&#x27;</span>,<br>        &#125;,<br>        &#123;<br>          <span class="hljs-attr">loader</span>: <span class="hljs-string">&#x27;less-loader&#x27;</span>,<br>        &#125;,<br>      ],<br>    &#125;]<br>  &#125;,<br>  <span class="hljs-attr">resolveLoader</span>:&#123;<br>    <span class="hljs-attr">modules</span>: [path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&#x27;loader&#x27;</span>), <span class="hljs-string">&#x27;node_modules&#x27;</span>]<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样webpack会先去loader文件夹下找loader，没有找到才去node_modules；因此我们写的loader尽量不要和第三方loader重名，否则会导致第三方loader被覆盖加载。</p>
+<h2 id="处理参数"><a href="#处理参数" class="headerlink" title="处理参数"></a>处理参数</h2><p>　　我们在配置loader时，经常会给loader传递参数进行配置，一般是通过options属性来传递的，也有像<code>url-loader</code>通过字符串来传参：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">&#123;<br>  <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.(jpg|png|gif|bmp|jpeg)$/</span>,<br>  <span class="hljs-attr">use</span>: <span class="hljs-string">&#x27;url-loader?limt=1024&amp;name=[hash:8].[ext]&#x27;</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　webpack也提供了<code>query属性</code>来获取传参；但是<code>query属性</code>很不稳定，如果像上面的通过字符串来传参，query就返回字符串格式，通过options方式就会返回对象格式，这样不利于我们处理。因此我们借助一个官方的包<code>loader-utils</code>帮助处理，它还提供了很多有用的工具。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> &#123; <br>  getOptions,<br>  parseQuery,<br>  stringifyRequest,<br>&#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;loader-utils&quot;</span>);<br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">source, map</span>) &#123;<br>  <span class="hljs-comment">//获取options参数</span><br>  <span class="hljs-keyword">const</span> options = <span class="hljs-title function_">getOptions</span>(<span class="hljs-variable language_">this</span>);<br>  <span class="hljs-comment">//解析字符串为对象</span><br>  <span class="hljs-title function_">parseQuery</span>(<span class="hljs-string">&quot;?param1=foo&quot;</span>)<br>  <span class="hljs-comment">//将绝对路由转换成相对路径</span><br>  <span class="hljs-comment">//以便能在require或者import中使用以避免绝对路径</span><br>  <span class="hljs-title function_">stringifyRequest</span>(<span class="hljs-variable language_">this</span>, <span class="hljs-string">&quot;test/lib/index.js&quot;</span>)<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　常用的就是<code>getOptions</code>将处理后的参数返回出来，它内部的实现逻辑也非常的简单，也是根据<code>query属性</code>进行处理，如果是字符串的话调用<code>parseQuery</code>方法进行解析，源码如下：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//loader-utils/lib/getOptions.js</span><br><span class="hljs-meta">&#x27;use strict&#x27;</span>;<br><span class="hljs-keyword">const</span> parseQuery = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./parseQuery&#x27;</span>);<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">getOptions</span>(<span class="hljs-params">loaderContext</span>) &#123;<br>  <span class="hljs-keyword">const</span> query = loaderContext.<span class="hljs-property">query</span>;<br>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> query === <span class="hljs-string">&#x27;string&#x27;</span> &amp;&amp; query !== <span class="hljs-string">&#x27;&#x27;</span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-title function_">parseQuery</span>(loaderContext.<span class="hljs-property">query</span>);<br>  &#125;<br>  <span class="hljs-keyword">if</span> (!query || <span class="hljs-keyword">typeof</span> query !== <span class="hljs-string">&#x27;object&#x27;</span>) &#123;<br>    <span class="hljs-keyword">return</span> &#123;&#125;;<br>  &#125;<br>  <span class="hljs-keyword">return</span> query;<br>&#125;<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = getOptions;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　获取到参数后，我们还需要对获取到的<code>options</code>参数进行完整性校验，避免有些参数漏传，如果一个个判断校验比较繁琐，这就用到另一个官方包<code>schema-utils</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> &#123; getOptions &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;loader-utils&quot;</span>);<br><span class="hljs-keyword">const</span> &#123; validate &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;schema-utils&quot;</span>);<br><span class="hljs-keyword">const</span> schema = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./schema.json&quot;</span>);<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">source, map</span>) &#123;<br>  <span class="hljs-keyword">const</span> options = <span class="hljs-title function_">getOptions</span>(<span class="hljs-variable language_">this</span>);<br>  <span class="hljs-keyword">const</span> configuration = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Loader Name&quot;</span>&#125;;<br>  <span class="hljs-title function_">validate</span>(schema, options, configuration);<br>  <span class="hljs-comment">//省略其他代码</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　<code>validate</code>函数并没有返回值，打印返回值发现是`undefined<code>，因为如果参数不通过的话直接会抛出</code>ValidationError<code>异常，直接进程中断；这里引入了一个</code>schema.json<code>，就是我们对</code>options``中参数进行校验的一个json格式的对应表：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;object&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;properties&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;source&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;boolean&quot;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;string&quot;</span><br>        <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;additionalProperties&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　<code>properties</code>中的健名就是我们需要检验的<code>options</code>中的字段名称，<code>additionalProperties</code>代表了是否允许<code>options</code>中还有其他额外的属性。</p>
+<h2 id="less-loader源码分析"><a href="#less-loader源码分析" class="headerlink" title="less-loader源码分析"></a>less-loader源码分析</h2><p>　　写完我们自己简单的<code>less-loader</code>，让我们来看一下官方的<code>less-loader</code>源码到底是怎么样的，这里贴上部分源码：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">import</span> less <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;less&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; getOptions &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;loader-utils&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; validate &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;schema-utils&#x27;</span>;<br><span class="hljs-keyword">import</span> schema <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./options.json&#x27;</span>;<br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">lessLoader</span>(<span class="hljs-params">source</span>) &#123;<br>  <span class="hljs-keyword">const</span> options = <span class="hljs-title function_">getOptions</span>(<span class="hljs-variable language_">this</span>);<br>  <span class="hljs-comment">//校验参数</span><br>  <span class="hljs-title function_">validate</span>(schema, options, &#123;<br>    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Less Loader&#x27;</span>,<br>    <span class="hljs-attr">baseDataPath</span>: <span class="hljs-string">&#x27;options&#x27;</span>,<br>  &#125;);<br>  <span class="hljs-keyword">const</span> callback = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">async</span>();<br>  <span class="hljs-comment">//对options进一步处理，生成less渲染的参数</span><br>  <span class="hljs-keyword">const</span> lessOptions = <span class="hljs-title function_">getLessOptions</span>(<span class="hljs-variable language_">this</span>, options);<br>  <span class="hljs-comment">//是否使用sourceMap，默认取options中的参数</span><br>  <span class="hljs-keyword">const</span> useSourceMap =<br>    <span class="hljs-keyword">typeof</span> options.<span class="hljs-property">sourceMap</span> === <span class="hljs-string">&#x27;boolean&#x27;</span> <br>    ? options.<span class="hljs-property">sourceMap</span> : <span class="hljs-variable language_">this</span>.<span class="hljs-property">sourceMap</span>;<br>  <span class="hljs-comment">//如果使用sourceMap，就在渲染参数加入</span><br>  <span class="hljs-keyword">if</span> (useSourceMap) &#123;<br>    lessOptions.<span class="hljs-property">sourceMap</span> = &#123;<br>      <span class="hljs-attr">outputSourceFiles</span>: <span class="hljs-literal">true</span>,<br>    &#125;;<br>  &#125;<br>  <span class="hljs-keyword">let</span> data = source;<br>  <span class="hljs-keyword">let</span> result;<br>  <span class="hljs-keyword">try</span> &#123;<br>    result = <span class="hljs-keyword">await</span> less.<span class="hljs-title function_">render</span>(data, lessOptions);<br>  &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>  &#125;<br>  <span class="hljs-keyword">const</span> &#123; css, imports &#125; = result;<br>  <span class="hljs-comment">//有sourceMap就进行处理</span><br>  <span class="hljs-keyword">let</span> map =<br>    <span class="hljs-keyword">typeof</span> result.<span class="hljs-property">map</span> === <span class="hljs-string">&#x27;string&#x27;</span> <br>    ? <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(result.<span class="hljs-property">map</span>) : result.<span class="hljs-property">map</span>;<br>  <br>  <span class="hljs-title function_">callback</span>(<span class="hljs-literal">null</span>, css, map);<br>&#125;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> lessLoader;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　可以看到官方的less-loader和我们写的简单的loader本质上都是调用<code>less.render</code>函数，对文件资源字符串进行处理，然后将处理好后的字符串和sourceMap通过callback返回。</p>
+<h2 id="loader依赖"><a href="#loader依赖" class="headerlink" title="loader依赖"></a>loader依赖</h2><p>　　在loader中，我们有时候也会使用到外部的资源文件，我们需要在loader对这些资源文件进行声明；这些声明信息主要用于使得缓存loader失效，以及在观察模式(watch mode)下重新编译。</p>
+<p>　　我们尝试写一个<code>banner-loader</code>，在每个js文件资源后面加上我们自定义的注释内容；如果传了<code>filename</code>，就从文件中获取预设好的banner内容，首先我们预设两个banner的txt：</p>
+<figure class="highlight text"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs text">//loader/banner1.txt<br>/* build from banner1 */<br><br>//loader/banner2.txt<br>/* build from banner2 */<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　然后在我们的banner-loader中根据参数来进行判断：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//loader/banner-loader</span><br><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;fs&quot;</span>);<br><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>);<br><span class="hljs-keyword">const</span> &#123; getOptions &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;loader-utils&quot;</span>);<br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">source</span>) &#123;<br>  <span class="hljs-keyword">const</span> options = <span class="hljs-title function_">getOptions</span>(<span class="hljs-variable language_">this</span>);<br>  <span class="hljs-keyword">if</span> (options.<span class="hljs-property">filename</span>) &#123;<br>    <span class="hljs-keyword">let</span> txt = <span class="hljs-string">&quot;&quot;</span>;<br>    <span class="hljs-keyword">if</span> (options.<span class="hljs-property">filename</span> == <span class="hljs-string">&quot;banner1&quot;</span>) &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">addDependency</span>(path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;./banner1.txt&quot;</span>));<br>      txt = fs.<span class="hljs-title function_">readFileSync</span>(path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;./banner1.txt&quot;</span>));<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (options.<span class="hljs-property">filename</span> == <span class="hljs-string">&quot;banner2&quot;</span>) &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">addDependency</span>(path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;./banner1.txt&quot;</span>));<br>      txt = fs.<span class="hljs-title function_">readFileSync</span>(path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;./banner1.txt&quot;</span>));<br>    &#125;<br>    <span class="hljs-keyword">return</span> source + txt;<br>  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (options.<span class="hljs-property">text</span>) &#123;<br>    <span class="hljs-keyword">return</span> source + <span class="hljs-string">`/* <span class="hljs-subst">$&#123;options.text&#125;</span> */`</span>;<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">return</span> source;<br>  &#125;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　这里使用了<code>this.addDependency</code>的API将当前处理的文件添加到文件依赖中（并不是项目的package.json）。如果在观察模式下，依赖的text文件发生了变化，那么打包生成的文件内容也随之变化。</p>
+<blockquote>
+<p>如果不添加<code>this.addDependency</code>的话项目并不会报错，只是在<strong>观察模式下</strong>，如果依赖的文件发生了变化生成的bundle文件并不能及时更新。</p>
+</blockquote>
+<h2 id="缓存加速"><a href="#缓存加速" class="headerlink" title="缓存加速"></a>缓存加速</h2><p>　　在有些情况下，loader处理需要大量的计算非常耗性能（比如babel-loader），如果每次构建都重新执行相同的转换操作每次构建都会非常慢。</p>
+<p>　　因此webpack默认会将loader的处理结果标记为可缓存，也就是说在需要被处理的文件或者其依赖的文件没有发生变化时，它的输出结果必然是相同的；如果不想让webpack缓存该loader，可以禁用缓存：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">source</span>) &#123;<br>  <span class="hljs-comment">// 强制不缓存</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">cacheable</span>(<span class="hljs-literal">false</span>);<br>  <span class="hljs-keyword">return</span> source;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<p>手写loader所有代码均在<a target="_blank" rel="noopener" href="https://github.com/acexyf/WebpackDemo/tree/master/demo19">webpackdemo19</a></p>
+<h1 id="手写plugin"><a href="#手写plugin" class="headerlink" title="手写plugin"></a>手写plugin</h1><p>　　在 Webpack 运行的生命周期中会广播出许多事件，Plugin 可以监听这些事件，在合适的时机通过Webpack提供的API改变输出结果。和手写loader一样，我们先来写一个简单的plugin：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//plugins/MyPlugin.js</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyPlugin</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Plugin被创建了&quot;</span>);<br>  &#125;<br>  apply (compiler) &#123;&#125;<br>&#125;<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-title class_">MyPlugin</span>;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　plugin的本质是类；我们在定义plugin时，其实是在定义一个类；定义好plugin后就可以在webpack配置中使用这个插件：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//webpack.config.js</span><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">MyPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./plugins/MyPlugin&#x27;</span>)<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">plugins</span>: [<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyPlugin</span>()<br>  ],<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p><img src="/images/Webpack-Handwrite/plugin.png" srcset="/img/loading.gif" lazyload alt="plugin.png"></p>
+<p>　　这样我们的插件就在webpack中生效了；这时有些童鞋可能会想起来，我们在使用<code>HtmlWebpackPlugin</code>或者<code>CleanWebpackPlugin</code>等一些官方插件时，可以通过实例化插件传入参数；那么这里我们是否也能通过这种方式给我们的插件传参呢？</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//plugins/MyPlugin.js</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyPlugin</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">options</span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Plugin被创建了&quot;</span>);<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(options);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">options</span> = options;<br>  &#125;<br>  apply (compiler) &#123;&#125;<br>&#125;<br><span class="hljs-comment">//webpack.config.js</span><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-attr">plugins</span>: [<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyPlugin</span>(&#123; <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;MyPlugin&#x27;</span> &#125;)<br>  ],<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><img src="/images/Webpack-Handwrite/plugin1.png" srcset="/img/loading.gif" lazyload alt="plugin1.png"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　我们在构建插件时就能通过<code>options</code>获取配置信息，对插件做一些初始化的工作。在构造函数中我们发现多了一个<code>apply</code>函数，它会在webpack运行时被调用，并且注入<code>compiler</code>对象；其工作流程如下：</p>
+<ol>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>webpack启动，执行new myPlugin(options)，初始化插件并获取实例</li>
+<li>初始化complier对象，调用myPlugin.apply(complier)给插件传入complier对象</li>
+<li>插件实例获取complier，通过complier监听webpack广播的事件，通过complier对象操作webpack</li>
+</ol>
+<p>　　我们可以通过<code>apply</code>函数中注入的<code>compiler</code>对象进行注册事件：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyPlugin</span> &#123;<br>  <span class="hljs-title function_">apply</span>(<span class="hljs-params">compiler</span>) &#123;<br>    <span class="hljs-comment">//不推荐使用，plugin函数被废弃了</span><br>    <span class="hljs-comment">// compiler.plugin(&quot;compile&quot;, (compilation) =&gt; &#123;</span><br>    <span class="hljs-comment">//   console.log(&quot;compile&quot;);</span><br>    <span class="hljs-comment">// &#125;);</span><br>    <span class="hljs-comment">//注册完成的钩子</span><br>    compiler.<span class="hljs-property">hooks</span>.<span class="hljs-property">done</span>.<span class="hljs-title function_">tap</span>(<span class="hljs-string">&quot;MyPlugin&quot;</span>, <span class="hljs-function">(<span class="hljs-params">compilation</span>) =&gt;</span> &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;compilation done&quot;</span>);<br>    &#125;);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　compiler不仅有同步的钩子，通过tap函数来注册，还有异步的钩子，通过<code>tapAsync</code>和<code>tapPromise</code>来注册：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyPlugin</span> &#123;<br>  <span class="hljs-title function_">apply</span>(<span class="hljs-params">compiler</span>) &#123;<br>    compiler.<span class="hljs-property">hooks</span>.<span class="hljs-property">run</span>.<span class="hljs-title function_">tapAsync</span>(<span class="hljs-string">&quot;MyPlugin&quot;</span>, <span class="hljs-function">(<span class="hljs-params">compilation, callback</span>) =&gt;</span> &#123;<br>      <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">()=&gt;</span>&#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;compilation run&quot;</span>);<br>        <span class="hljs-title function_">callback</span>()<br>      &#125;, <span class="hljs-number">1000</span>)<br>    &#125;);<br>    compiler.<span class="hljs-property">hooks</span>.<span class="hljs-property">emit</span>.<span class="hljs-title function_">tapPromise</span>(<span class="hljs-string">&quot;MyPlugin&quot;</span>, <span class="hljs-function">(<span class="hljs-params">compilation</span>) =&gt;</span> &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> &#123;<br>        <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">()=&gt;</span>&#123;<br>          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;compilation emit&quot;</span>);<br>          <span class="hljs-title function_">resolve</span>();<br>        &#125;, <span class="hljs-number">1000</span>)<br>      &#125;);<br>    &#125;);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　这里又有一个<code>compilation</code>对象，它和上面提到的<code>compiler</code>对象都是Plugin和webpack之间的桥梁：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<ul>
+<li><code>compiler</code>对象包含了 Webpack 环境所有的的配置信息。这个对象在启动 webpack 时被一次性建立，并配置好所有可操作的设置，包括 options，loader 和 plugin。当在 webpack 环境中应用一个插件时，插件将收到此 compiler 对象的引用。可以使用它来访问 webpack 的主环境。</li>
+<li><code>compilation</code>对象包含了当前的模块资源、编译生成资源、变化的文件等。当运行webpack 开发环境中间件时，每当检测到一个文件变化，就会创建一个新的 compilation，从而生成一组新的编译资源。compilation 对象也提供了很多关键时机的回调，以供插件做自定义处理时选择使用。</li>
+</ul>
+<p>　　compiler和compilation的区别在于：</p>
+<ul>
+<li>compiler代表了整个webpack从启动到关闭的生命周期，而compilation只是代表了一次新的编译过程</li>
+<li>compiler和compilation暴露出许多钩子，我们可以根据实际需求的场景进行自定义处理</li>
+</ul>
+<h2 id="手写FileListPlugin"><a href="#手写FileListPlugin" class="headerlink" title="手写FileListPlugin"></a>手写FileListPlugin</h2><p>　　了解了compiler和compilation的区别，我们就来尝试一个简单的示例插件，在打包目录生成一个<code>filelist.md</code>文件，文件的内容是将所有构建生成文件展示在一个列表中：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">class</span> <span class="hljs-title class_">FileListPlugin</span> &#123;<br>    <span class="hljs-title function_">apply</span>(<span class="hljs-params">compiler</span>)&#123;<br>        compiler.<span class="hljs-property">hooks</span>.<span class="hljs-property">emit</span>.<span class="hljs-title function_">tapAsync</span>(<span class="hljs-string">&#x27;FileListPlugin&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">compilation, callback</span>)=&gt;</span>&#123;<br>            <span class="hljs-keyword">var</span> filelist = <span class="hljs-string">&#x27;In this build:\n\n&#x27;</span>;<br>            <span class="hljs-comment">// 遍历所有编译过的资源文件，</span><br>            <span class="hljs-comment">// 对于每个文件名称，都添加一行内容。</span><br>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> filename <span class="hljs-keyword">in</span> compilation.<span class="hljs-property">assets</span>) &#123;<br>                filelist += <span class="hljs-string">&#x27;- &#x27;</span> + filename + <span class="hljs-string">&#x27;\n&#x27;</span>;<br>            &#125;<br>            <span class="hljs-comment">// 将这个列表作为一个新的文件资源，插入到 webpack 构建中：</span><br>            compilation.<span class="hljs-property">assets</span>[<span class="hljs-string">&#x27;filelist.md&#x27;</span>] = &#123;<br>                <span class="hljs-attr">source</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>                    <span class="hljs-keyword">return</span> filelist;<br>                &#125;,<br>                <span class="hljs-attr">size</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>                    <span class="hljs-keyword">return</span> filelist.<span class="hljs-property">length</span>;<br>                &#125;<br>            &#125;;<br>            <span class="hljs-title function_">callback</span>();<br>        &#125;)<br>    &#125;<br>&#125;<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-title class_">FileListPlugin</span><br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　我们这里用到了<code>assets</code>对象，它是所有构建文件的一个输出对象，打印出来大概长这样：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  &#x27;main.bundle.js&#x27;<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span> source<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>Function<span class="hljs-punctuation">:</span> source<span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> size<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>Function<span class="hljs-punctuation">:</span> size<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  &#x27;index.html&#x27;<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span> source<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>Function<span class="hljs-punctuation">:</span> source<span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> size<span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>Function<span class="hljs-punctuation">:</span> size<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们手动加入一个<code>filelist.md</code>文件的输出；打包后我们在dist文件夹中会发现多了这个文件：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight md"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs md">In this build:<br><br><span class="hljs-bullet">-</span> main.bundle.js<br><span class="hljs-bullet">-</span> index.html<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这个插件就完成了我们的预期任务了。</p>
+<p>参考</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wu5229485/article/details/96475954">webpack loader从入门到精通全解析</a></p>
+
+            </div>
+            <hr>
+            <div>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/PackTool/">打包工具</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/11/18/Babel-Practice.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">一文彻底读懂Babel</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/09/12/Tab-Communicate.html">
+                        <span class="hidden-mobile">四种实现浏览器标签页数据通信方式</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

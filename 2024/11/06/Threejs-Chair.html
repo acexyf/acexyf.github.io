@@ -1,0 +1,738 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　我们在浏览一些3D网站时，经常能看到一些模型提供了切换外观的按钮，通过不同的颜色或者纹理的按钮切换，来让模型呈现出来更多的效果，比如给展示的汽车换个外观颜色之类的。本文我们先从简单的模型入手，看下给椅子模型切换纹理是如何来实现这样的效果。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>我做了三把椅子原来纹理这样加载切换 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="我做了三把椅子原来纹理这样加载切换">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-11-06 20:12" pubdate>
+        2024年11月6日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      52
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">我做了三把椅子原来纹理这样加载切换</h1>
+            
+            <div class="markdown-body">
+              <p>　　我们在浏览一些3D网站时，经常能看到一些模型提供了切换外观的按钮，通过不同的颜色或者纹理的按钮切换，来让模型呈现出来更多的效果，比如给展示的汽车换个外观颜色之类的。本文我们先从简单的模型入手，看下给椅子模型切换纹理是如何来实现这样的效果。</p>
+<span id="more"></span>
+
+<p>　　首先既然要对纹理图片进行切换，那么我们对纹理的基本属性和用法要有一个简单的了解，本文的基础知识我们就从纹理Texture的使用开始。</p>
+<h1 id="纹理的使用"><a href="#纹理的使用" class="headerlink" title="纹理的使用"></a>纹理的使用</h1><p>　　我们在加载纹理图片的时候，经常会看到<code>wrapS = wrapT = RepeatWrapping</code>的写法，并且设置repeat，那么为什么要这样设置呢？我们简单看下纹理的用法。</p>
+<p>　　首先纹理的使用，可以让我们的将图像应用到几何体上，实现更加真实和逼真的渲染效果；比如我们想让一块长方体呈现出石头的纹理或者门的木纹理，如果通过纯代码Shader实现，先不说能不能实现吧，如果效果用Shader去呈现，对GPU、内存的压力也会非常的大；但是如果我们贴个图片纹理上去，实现的效果相同，并且成本也相对低了很多。</p>
+<p>　　纹理的创建方式有多种，首先我们可以通过<code>THREE.Texture</code>构造函数来创建一个纹理对象，将图片Image传入构造函数中去：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> img = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Image</span>();<br>img.<span class="hljs-property">src</span> = <span class="hljs-string">&quot;path/to/your/image.jpg&quot;</span>;<br><span class="hljs-keyword">const</span> tx = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Texture</span>(img);<br>img.<span class="hljs-property">onload</span> = <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-comment">// 加载成功后更新纹理 </span><br>  tx.<span class="hljs-property">needsUpdate</span> = <span class="hljs-literal">true</span>;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　这里由于img是异步加载的，因此Texture的图像改变了，所以我们需要在图片的回调函数中重新更新纹理的<code>needsUpdate</code>为true；另一种方式则更简单，直接使用<code>TextureLoader</code>，通过名字我们也能看出来，它就是个Texture的加载器；加载后返回的纹理对象，我们还可以在回调函数中对Texture的属性进行调整：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> textureLoader = <span class="hljs-keyword">new</span> <span class="hljs-variable constant_">THREE</span>.<span class="hljs-title class_">TextureLoader</span>();  <br><span class="hljs-keyword">const</span> texture = textureLoader.<span class="hljs-title function_">load</span>(<span class="hljs-string">&#x27;path/to/your/image.jpg&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;  <br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Texture loaded&#x27;</span>);  <br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　接着，我们再来看纹理的几个常用属性的效果。</p>
+<h2 id="image"><a href="#image" class="headerlink" title="image"></a>image</h2><p>　　我们通过<code>THREE.Texture</code>构造函数来创建一个纹理对象，如果后期还想修改纹理的图片，就可以通过它的一个重要的属性<code>image</code>：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> img = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Image</span>();<br>img.<span class="hljs-property">src</span> = <span class="hljs-string">&quot;path/to/your/image.jpg&quot;</span>;<br><br><span class="hljs-keyword">const</span> tx = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Texture</span>();<br>img.<span class="hljs-property">onload</span> = <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-comment">// 图片加载完成后修改image属性</span><br>  tx.<span class="hljs-property">image</span> = img;<br>  tx.<span class="hljs-property">needsUpdate</span> = <span class="hljs-literal">true</span>;<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　这里我们新建一个空的Texture，当图片加载完成后，我们修改纹理的image属性，并设置<code>needsUpdate</code>为true，这样纹理的图片就修改成功了。</p>
+<h2 id="repeat"><a href="#repeat" class="headerlink" title="repeat"></a>repeat</h2><p>　　我们纹理正常是平铺在物体的表面的，相当于<code>object-fit: fill</code>的效果；但是会有拉伸的效果，因此需要进行重复排列；<code>repeat</code>属性就是用来设置纹理在物体表面上的重复次数，它是一个<code>THREE.Vector2</code>对象，分别表示在水平方向和垂直方向上的重复次数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// 在水平和垂直方向上各重复两次</span><br>texture.<span class="hljs-property">repeat</span>.<span class="hljs-title function_">set</span>(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　比如我们对一个常见的木头纹理，设置重复排列两次，由于默认的包装模式是<code>ClampToEdgeWrapping</code>，因此我们会看到如下的纹理：</p>
+<p><img src="/images/Threejs-Chair/repeat.png" srcset="/img/loading.gif" lazyload alt="重复排列两次"></p>
+<h2 id="wrapS和wrapT"><a href="#wrapS和wrapT" class="headerlink" title="wrapS和wrapT"></a>wrapS和wrapT</h2><p>　　<code>wrapS</code>和<code>wrapT</code>属性用于设置纹理在S（U）方向和T（V）方向上的包装模式，常见的包装模式有如下：</p>
+<ul>
+<li>THREE.ClampToEdgeWrapping：默认，纹理中的最后一个像素将延伸到网格的边缘。</li>
+<li>THREE.RepeatWrapping：纹理将简单地重复到无穷大。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>THREE.MirroredRepeatWrapping： 纹理将重复到无穷大，在每次重复时将进行镜像。</li>
+</ul>
+<p>　　默认情况下wrapS和wrapT都是<code>ClampToEdgeWrapping</code>，因此我们会看到上面设置了repeat后纹理彷佛模糊了一样，我们改为RepeatWrapping：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">texture.<span class="hljs-property">wrapS</span> = texture.<span class="hljs-property">wrapT</span> = <span class="hljs-variable constant_">THREE</span>.<span class="hljs-property">RepeatWrapping</span>;  <br></code></pre></div></td></tr></table></figure>
+
+<p>　　再看重复的效果就会正常很多了。</p>
+<p><img src="/images/Threejs-Chair/repeat1.png" srcset="/img/loading.gif" lazyload alt="重复排列两次"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h2 id="rotation"><a href="#rotation" class="headerlink" title="rotation"></a>rotation</h2><p>　　<code>rotation</code>属性用于设置纹理在物体表面上的旋转角度；它是一个数值，表示纹理绕其中心点旋转的角度（以弧度为单位）。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">texture.<span class="hljs-property">rotation</span> = <span class="hljs-number">45</span>;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们看旋转的效果：</p>
+<p><img src="/images/Threejs-Chair/rotation.png" srcset="/img/loading.gif" lazyload alt="旋转"></p>
+<h2 id="offset"><a href="#offset" class="headerlink" title="offset"></a>offset</h2><p>　　<code>offset</code>属性用于设置纹理在物体表面上的偏移量，它也是一个<code>THREE.Vector2</code>对象，分别表示在水平方向和垂直方向上的偏移量：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">texture.<span class="hljs-property">offset</span>.<span class="hljs-title function_">set</span>(<span class="hljs-number">0.8</span>, <span class="hljs-number">0.8</span>);<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<blockquote>
+<p>偏移量的设置范围是0到1。</p>
+</blockquote>
+<p>　　我们看下偏移的效果：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/Threejs-Chair/offset.png" srcset="/img/loading.gif" lazyload alt="偏移"></p>
+<h2 id="flip"><a href="#flip" class="headerlink" title="flip"></a>flip</h2><p>　　<code>flip</code>属性用于翻转纹理，它有两个布尔值属性，<code>flipX</code>和<code>flipY</code>，分别表示是否沿X轴和Y轴翻转纹理。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">texture.<span class="hljs-property">flipX</span> = <span class="hljs-literal">true</span>;<br>texture.<span class="hljs-property">flipY</span> = <span class="hljs-literal">true</span>;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<h2 id="needsUpdate"><a href="#needsUpdate" class="headerlink" title="needsUpdate"></a>needsUpdate</h2><p>　　<code>needsUpdate</code>属性是一个布尔值，用于标记纹理是否需要在下次渲染时更新；当纹理的源图像发生变化时，需要将其设置为true：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">texture.<span class="hljs-property">needsUpdate</span> = <span class="hljs-literal">true</span>;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<p>　　在了解了纹理的基本使用后，我们下面就可以来看下切换的案例了；既然要切换模型纹理，那我们至少需要异步加载两个以上的纹理图片，同时我们的3D模型也是异步加载的，因此笔者做换肤的模型练习，其实刚开始面临最大最棘手的问题是：3D模型和多张纹理图片如何加载后结合起来？如果都要通过异步嵌套，那么我们的代码会异常的繁杂；最后，经过几个案例的练习后，笔者找到了预加载和渐进加载两种方式。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h1 id="预加载所有纹理"><a href="#预加载所有纹理" class="headerlink" title="预加载所有纹理"></a>预加载所有纹理</h1><p>　　第一把椅子实现的方案，我们可以通过<code>LoadingManager</code>加载管理器，来等待我们所有的模型和纹理文件加载完成后，再去创建添加网格对象Mesh；首先我们初始化环境，创建一个渲染器：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Index</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">options</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebGLRenderer</span>(&#123;<br>      <span class="hljs-attr">antialias</span>: <span class="hljs-literal">true</span>,<br>    &#125;);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-title function_">setClearColor</span>(<span class="hljs-number">0xffffff</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-title function_">setPixelRatio</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">devicePixelRatio</span> * <span class="hljs-number">2</span>);<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-title function_">setSize</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">innerWidth</span>, <span class="hljs-variable language_">window</span>.<span class="hljs-property">innerHeight</span>);<br>    <span class="hljs-comment">// 开启阴影</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-property">shadowMap</span>.<span class="hljs-property">enabled</span> = <span class="hljs-literal">true</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">renderer</span>.<span class="hljs-property">autoClear</span> = <span class="hljs-literal">false</span>;<br>    <span class="hljs-comment">// 其他初始化</span><br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+
+<p>　　使用<code>shadowMap.enabled = true</code>开启阴影；然后新建LoadingManager，它的作用是用来管理我们所有的Loader加载进度的；新建后传入到我们下面所需要三个Loader中：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> loadingManager = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LoadingManager</span>();<br><br><span class="hljs-variable language_">this</span>.<span class="hljs-property">objLoader</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">OBJLoader</span>(loadingManager);<br><span class="hljs-variable language_">this</span>.<span class="hljs-property">textureLoader</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TextureLoader</span>(loadingManager);<br><span class="hljs-variable language_">this</span>.<span class="hljs-property">cubeLoader</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">CubeTextureLoader</span>(loadingManager);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　然后在<code>loadAssets</code>初始化加载我们所有的资源文件，加载完成后使用<code>initMesh</code>去创建网格对象了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-variable language_">this</span>.<span class="hljs-title function_">initLight</span>();<br><span class="hljs-variable language_">this</span>.<span class="hljs-title function_">loadAssets</span>();<br>loadingManager.<span class="hljs-property">onProgress</span> = <span class="hljs-function">(<span class="hljs-params">url, itemsLoaded, itemsTotal</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">// 设置进度条</span><br>&#125;;<br>loadingManager.<span class="hljs-property">onError</span> = <span class="hljs-function">() =&gt;</span> &#123;&#125;;<br>loadingManager.<span class="hljs-property">onLoad</span> = <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-comment">// 加载完成</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">initMesh</span>();<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　LoadingManager提供了三个回调函数：</p>
+<ul>
+<li>onLoad：所有加载器加载完成后。</li>
+<li>onProgress：当每个项目完成后，将调用此函数。</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li>onError：当一个加载器遇到错误时。</li>
+</ul>
+<p>　　而在<code>onProgress</code>函数中，也提供的几个参数：</p>
+<ul>
+<li>url：当前被加载的项的url。</li>
+<li>itemsLoaded：目前已加载项的个数。</li>
+<li>itemsTotal：总共所需要加载项的个数。</li>
+</ul>
+<p>　　可以发现，通过<code>itemsLoaded / itemsTotal * 100%</code>的计算公式，我们就可以计算出当前资源的加载进度，设置一个全屏的加载等待效果来缓解用户浏览空白页面的焦虑感，同时在<code>onLoad</code>加载结束的回调中再把这个加载的弹框给隐藏。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Threejs-Chair/loading.png" srcset="/img/loading.gif" lazyload alt="加载等待"></p>
+<p>　　在<code>loadAssets</code>函数中，使用<code>CubeTextureLoader</code>我们加载一些环境纹理的素材，<code>TextureLoader</code>加载模型纹理，<code>OBJLoader</code>加载我们的模型文件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">&#123;<br>    <span class="hljs-title function_">loadAssets</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">envMap</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">cubeLoader</span>.<span class="hljs-title function_">load</span>([<br>            <span class="hljs-string">&quot;posx.jpg&quot;</span>,<br>            <span class="hljs-string">&quot;negx.jpg&quot;</span>,<br>            <span class="hljs-string">&quot;posy.jpg&quot;</span>,<br>            <span class="hljs-string">&quot;negy.jpg&quot;</span>,<br>            <span class="hljs-string">&quot;posz.jpg&quot;</span>,<br>            <span class="hljs-string">&quot;negz.jpg&quot;</span>,<br>        ]);<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">textureLoader</span>.<span class="hljs-title function_">load</span>(<span class="hljs-string">&quot;fabric_blue.jpg&quot;</span>, <span class="hljs-function">(<span class="hljs-params">texture</span>) =&gt;</span> &#123;<br>            texture.<span class="hljs-property">needsUpdate</span> = <span class="hljs-literal">true</span>;<br>            texture.<span class="hljs-property">wrapS</span> = texture.<span class="hljs-property">wrapT</span> = <span class="hljs-title class_">RepeatWrapping</span>;<br>            texture.<span class="hljs-property">repeat</span>.<span class="hljs-title function_">set</span>(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>);<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">fabricBlue</span> = texture;<br>        &#125;);<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">textureLoader</span>.<span class="hljs-title function_">load</span>(<span class="hljs-string">&quot;fabric_yellow.jpg&quot;</span>, <span class="hljs-function">(<span class="hljs-params">texture</span>) =&gt;</span> &#123;<br>            texture.<span class="hljs-property">needsUpdate</span> = <span class="hljs-literal">true</span>;<br>            texture.<span class="hljs-property">wrapS</span> = texture.<span class="hljs-property">wrapT</span> = <span class="hljs-title class_">RepeatWrapping</span>;<br>            texture.<span class="hljs-property">repeat</span>.<span class="hljs-title function_">set</span>(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>);<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">fabricYellow</span> = texture;<br>        &#125;);<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">objLoader</span>.<span class="hljs-title function_">load</span>(<span class="hljs-string">&quot;cushion.obj&quot;</span>, <span class="hljs-function">(<span class="hljs-params">obj</span>) =&gt;</span> &#123;<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">cushionObj</span> = obj;<br>        &#125;);<br>        <span class="hljs-comment">// 省略加载其他素材</span><br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里我们简单加载并全局保存了两种织物材质，蓝色的材质fabricBlue和黄色的材质fabricYellow；还有一个坐垫模型cushionObj。</p>
+<p>　　等待所有的素材加载完成后，我们在initMesh中就可以来添加网格对象了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">&#123;<br>    <span class="hljs-title function_">initMesh</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">const</span> group = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object3D</span>();<br><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">cushionObj</span>.<span class="hljs-title function_">traverse</span>(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> &#123;<br>            <span class="hljs-keyword">if</span> (el <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Mesh</span>) &#123;<br>                el.<span class="hljs-property">material</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MeshStandardMaterial</span>(&#123;<br>                    <span class="hljs-attr">map</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">fabricBlue</span>,<br>                    <span class="hljs-attr">envMap</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">envMap</span>,<br>                    <span class="hljs-comment">// 省略其他属性</span><br>                &#125;);<br>                <span class="hljs-comment">// 添加投影</span><br>                el.<span class="hljs-property">receiveShadow</span> = <span class="hljs-literal">true</span>;<br>                el.<span class="hljs-property">castShadow</span> = <span class="hljs-literal">true</span>;<br>            &#125;<br>        &#125;);<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">cushionObj</span>.<span class="hljs-property">position</span>.<span class="hljs-property">y</span> = -<span class="hljs-number">10</span>;<br>        group.<span class="hljs-title function_">add</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">cushionObj</span>);<br>        <span class="hljs-comment">// 省略其他椅子的部件</span><br><br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(group);<br>    &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里我们新建了一个Object3D对象，它也是场景中的一个节点，不过和Mesh不同的是，它没有材质和几何体，我们只是用它来创建一个局部空间，有点类似三体中云天明送给程欣的一个小宇宙来躲避宇宙大坍缩，而我们可以利用这个空节点来承载椅子的各个部件，后面如果椅子需要旋转或者移动，我们直接在这个对象上进行操作即可；具体的使用方式也可以参考官网<a target="_blank" rel="noopener" href="https://threejs.org/manual/#zh/scenegraph">场景图</a></p>
+<blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>最后不要忘记将Object3D对象添加到scene场景中去。</p>
+</blockquote>
+<p>　　有些案例中，我们还会看到使用了Group对象来包裹了子对象，其实Group继承自Object3D，我们打开three.js的源码就会看到如下代码，因此两者本质上是同一个东西：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// src/objects/Group.js</span><br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Object3D</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../core/Object3D.js&#x27;</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Group</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Object3D</span> &#123;<br>	<span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123;<br>		<span class="hljs-variable language_">super</span>();<br>		<span class="hljs-variable language_">this</span>.<span class="hljs-property">isGroup</span> = <span class="hljs-literal">true</span>;<br>		<span class="hljs-variable language_">this</span>.<span class="hljs-property">type</span> = <span class="hljs-string">&#x27;Group&#x27;</span>;<br>	&#125;<br>&#125;<br><span class="hljs-keyword">export</span> &#123; <span class="hljs-title class_">Group</span> &#125;;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　所有的网格对象添加完，我们的看到椅子大概就是这样的：</p>
+<p><img src="/images/Threejs-Chair/chair1.png" srcset="/img/loading.gif" lazyload alt="椅子网格对象"></p>
+<p>　　那么最关键的问题来了，如何可以让它的材质从fabricBlue切换到fabricYellow呢？我们添加gui调试：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">&#123;<br>  <span class="hljs-title function_">initGui</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> params = &#123;<br>      <span class="hljs-title function_">yellow</span>(<span class="hljs-params"></span>) &#123;<br>        _this.<span class="hljs-property">cushionObj</span>.<span class="hljs-title function_">traverse</span>(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> &#123;<br>          <span class="hljs-keyword">if</span> (el <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Mesh</span>) &#123;<br>            el.<span class="hljs-property">material</span>.<span class="hljs-property">map</span> = _this.<span class="hljs-property">fabricYellow</span>;<br>            el.<span class="hljs-property">material</span>.<span class="hljs-property">needsUpdate</span> = <span class="hljs-literal">true</span>;<br>          &#125;<br>        &#125;);<br>      &#125;,<br>      <span class="hljs-title function_">blue</span>(<span class="hljs-params"></span>) &#123;<br>        _this.<span class="hljs-property">cushionObj</span>.<span class="hljs-title function_">traverse</span>(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> &#123;<br>          <span class="hljs-keyword">if</span> (el <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Mesh</span>) &#123;<br>            el.<span class="hljs-property">material</span>.<span class="hljs-property">map</span> = _this.<span class="hljs-property">fabricBlue</span>;<br>            el.<span class="hljs-property">material</span>.<span class="hljs-property">needsUpdate</span> = <span class="hljs-literal">true</span>;<br>          &#125;<br>        &#125;);<br>      &#125;,<br>    &#125;;<br>    <span class="hljs-keyword">const</span> folder1 = <span class="hljs-variable language_">this</span>.<span class="hljs-property">gui</span>.<span class="hljs-title function_">addFolder</span>(<span class="hljs-string">&quot;织物材质&quot;</span>);<br>    folder1.<span class="hljs-title function_">add</span>(params, <span class="hljs-string">&quot;blue&quot;</span>);<br>    folder1.<span class="hljs-title function_">add</span>(params, <span class="hljs-string">&quot;yellow&quot;</span>);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们只需要在模型中找到需要改变的部分，修改它的map属性为对应的纹理，这样在页面上点击按钮切换就可以呈现不同的效果；这种方式最常见，也比较适合模型比较简单、纹理也不是很复杂的情况。</p>
+<p>　　我们看下实际的页面效果：</p>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="500" src="https://gallery.xieyufei.com/case/three/backrest/chair"></iframe>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<h1 id="渐进式加载纹理"><a href="#渐进式加载纹理" class="headerlink" title="渐进式加载纹理"></a>渐进式加载纹理</h1><p>　　<code>渐进式加载纹理</code>，这是笔者给这种方式起的一种形象的名称，有点类似vue渐进式框架的意思；这种方式就是只要加载一点素材就添加到场景中来，比如加载一个椅子上的垫子模型，就把这个垫子添加进来展示，尽管垫子的纹理可能还没有加载好。</p>
+<p>　　通过描述，我们就会发现这种方式会比前面的预加载的方式麻烦，因为不确定模型文件和纹理文件哪个先加载完成，并且还需要等加载完成后，再把两者结合起来。</p>
+<p>　　但是这种方式的优势也很明显，用户不用漫长的等待所有素材加载完成，可以一点一点看到模型加载的整个过程，有点类似于搭积木的感觉；首先我们还是需要通过LoadingManager加载管理器，加载过程中在页面中间显示一个圆形的进度条和百分比：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> loadingManager = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LoadingManager</span>();<br><span class="hljs-variable language_">this</span>.<span class="hljs-property">objLoader</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">OBJLoader</span>(loadingManager);<br><span class="hljs-variable language_">this</span>.<span class="hljs-property">imgLoader</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ImageLoader</span>(loadingManager);<br><br>loadingManager.<span class="hljs-property">onStart</span> = <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-comment">// 显示进度条</span><br>    showLoading.<span class="hljs-property">value</span> = <span class="hljs-literal">true</span>;<br>&#125;;<br>loadingManager.<span class="hljs-property">onProgress</span> = <span class="hljs-function">(<span class="hljs-params">url, num, total</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">// 进度条百分比</span><br>    loadingNum.<span class="hljs-property">value</span> = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(num / total * <span class="hljs-number">100</span>);<br>&#125;;<br>loadingManager.<span class="hljs-property">onLoad</span> = <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-comment">// 隐藏进度条</span><br>    showLoading.<span class="hljs-property">value</span> = <span class="hljs-literal">false</span>;<br>&#125;;<br><span class="hljs-variable language_">this</span>.<span class="hljs-title function_">loadAssets</span>();<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　我们在<code>onLoad</code>回调中也不需要初始化网格对象了，所有模型和纹理的加载都是在<code>loadAssets</code>中完成的。这里我们也不需要TextureLoader了，而是创建了一个<code>ImageLoader</code>图片加载器来加载图片，我们下面会看到它的作用。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">&#123;<br>  <span class="hljs-title function_">loadAssets</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">leatherTexture</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Texture</span>();<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">leatherBump</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Texture</span>();<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">group</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object3D</span>();<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">imgLoader</span>.<span class="hljs-title function_">load</span>(<span class="hljs-string">&quot;leather_white.jpg&quot;</span>, <span class="hljs-function">(<span class="hljs-params">img</span>) =&gt;</span> &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">leatherTexture</span>.<span class="hljs-property">image</span> = img;<br>      <span class="hljs-comment">// 省略其他</span><br>    &#125;);<br><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">imgLoader</span>.<span class="hljs-title function_">load</span>(<span class="hljs-string">&quot;leather_bump.jpg&quot;</span>, <span class="hljs-function">(<span class="hljs-params">img</span>) =&gt;</span> &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">leatherBump</span>.<span class="hljs-property">image</span> = img;<br>      <span class="hljs-comment">// 省略其他</span><br>    &#125;);<br><br>    <span class="hljs-comment">// 坐垫模型</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">objLoader</span>.<span class="hljs-title function_">load</span>(<br>      <span class="hljs-string">&quot;barcelona-cushion.obj&quot;</span>,<br>      <span class="hljs-function">(<span class="hljs-params">obj</span>) =&gt;</span> &#123;<br>        obj.<span class="hljs-title function_">traverse</span>(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> &#123;<br>          <span class="hljs-keyword">if</span> (el <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Mesh</span>) &#123;<br>            el.<span class="hljs-property">material</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MeshStandardMaterial</span>(&#123;<br>              <span class="hljs-attr">map</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">leatherTexture</span>,<br>              <span class="hljs-attr">bumpMap</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">leatherBump</span>,<br>              <span class="hljs-comment">// 省略其他属性</span><br>            &#125;);<br>          &#125;<br>        &#125;);<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">group</span>.<span class="hljs-title function_">add</span>(obj);<br>      &#125;<br>    );<br>    <span class="hljs-comment">// 省略加载其他部件</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">group</span>);<br>  &#125;,<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　这边我们使用了两种类型<code>媒介对象</code>，首先就是通过Texture类创建的leatherTexture和leatherBump空材质对象，作为图片和模型之间的媒介；如果上面的jpg图片还没有加载，那么barcelona-cushion.obj加载空的材质，在图片加载完成后再给Texture的<code>image</code>属性赋值，因此模型的加载就和纹理的加载进行了解耦。</p>
+<blockquote>
+<p>修改了纹理的image属性后，不要忘记修改needsUpdate。</p>
+</blockquote>
+<p>　　其次就是我们上面说的<code>Object3D</code>对象，它可以作为整个模型加载的媒介；假设下面还有其他的obj模型，不管哪个模型先加载完成，都会向这个局部空间中去添加网格对象；我们来看下模型一点点加载的效果：</p>
+<p><img src="/images/Threejs-Chair/chair2.gif" srcset="/img/loading.gif" lazyload alt="渐进加载椅子模型"></p>
+<p>　　椅子模型加载完成后，我们也需要来改变它的纹理，不过和上面直接改变材质的map属性不同，这里只需要加载图片后直接修改全局的Texture的image属性即可。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">&#123;<br>    <span class="hljs-title function_">initGui</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> _this = <span class="hljs-variable language_">this</span>;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">gui</span> = <span class="hljs-title function_">initGui</span>();<br>    <span class="hljs-keyword">const</span> params = &#123;<br>      <span class="hljs-title class_">White</span>() &#123;<br>        _this.<span class="hljs-property">imgLoader</span>.<span class="hljs-title function_">load</span>(<span class="hljs-string">&quot;leather_white.jpg&quot;</span>, <span class="hljs-function">(<span class="hljs-params">img</span>) =&gt;</span> &#123;<br>          _this.<span class="hljs-property">leatherTexture</span>.<span class="hljs-property">image</span> = img;<br>          <span class="hljs-comment">// 省略其他</span><br>        &#125;);<br>      &#125;,<br>      <span class="hljs-title class_">Black</span>() &#123;<br>        _this.<span class="hljs-property">imgLoader</span>.<span class="hljs-title function_">load</span>(<span class="hljs-string">&quot;leather_black.jpg&quot;</span>, <span class="hljs-function">(<span class="hljs-params">img</span>) =&gt;</span> &#123;<br>          _this.<span class="hljs-property">leatherTexture</span>.<span class="hljs-property">image</span> = img;<br>          <span class="hljs-comment">// 省略其他</span><br>        &#125;);<br>      &#125;,<br>    &#125;;<br><br>    <span class="hljs-keyword">const</span> folder = <span class="hljs-variable language_">this</span>.<span class="hljs-property">gui</span>.<span class="hljs-title function_">addFolder</span>(<span class="hljs-string">&quot;皮革颜色&quot;</span>);<br>    folder.<span class="hljs-title function_">add</span>(params, <span class="hljs-string">&quot;White&quot;</span>);<br>    folder.<span class="hljs-title function_">add</span>(params, <span class="hljs-string">&quot;Black&quot;</span>);<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　我们在切换纹理的时候，ImageLoader也会触发加载器的回调函数，因此我们还会看到一个加载loading；我们看下实际的页面效果：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="500" src="https://gallery.xieyufei.com/case/three/armless/chair"></iframe>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<h1 id="切换颜色或纹理"><a href="#切换颜色或纹理" class="headerlink" title="切换颜色或纹理"></a>切换颜色或纹理</h1><p>　　最后一把椅子案例，也比较有意思，选择不同椅子部位后，可以切换不同的材质或者颜色；这里我们加载它的模型，给每个部件重新创建一个MeshPhongMaterial的材质：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-variable language_">this</span>.<span class="hljs-property">gltfLoader</span>.<span class="hljs-title function_">load</span>(<span class="hljs-string">&quot;chair.glb&quot;</span>, <span class="hljs-function">(<span class="hljs-params">gltf</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> theModel = gltf.<span class="hljs-property">scene</span>;<br><br>  theModel.<span class="hljs-title function_">traverse</span>(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (el.<span class="hljs-property">isMesh</span>) &#123;<br>      el.<span class="hljs-property">material</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MeshPhongMaterial</span>(&#123; <span class="hljs-attr">color</span>: <span class="hljs-number">0xf1f1f1</span>, <span class="hljs-attr">shininess</span>: <span class="hljs-number">10</span> &#125;);<br>    &#125;<br>  &#125;);<br>  <span class="hljs-comment">// 省略其他代码</span><br><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">theModel</span> = theModel;<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">scene</span>.<span class="hljs-title function_">add</span>(theModel);<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<p>　　加载可以看下椅子的模型外观：</p>
+<p><img src="/images/Threejs-Chair/chair3.png" srcset="/img/loading.gif" lazyload alt="椅子模型效果"></p>
+<p>　　当我们点击右侧的时候，将椅子激活的部位保存起来。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">&#123;<br>  <span class="hljs-comment">// 设置左侧选中的部位</span><br>  <span class="hljs-title function_">setOptions</span>(<span class="hljs-params">opt</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">active</span> = opt;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　当点击下面材质和颜色的选项时，根据item的texture属性，判断是纹理还是颜色，如果是纹理的话加载Texture；如果是颜色的话，传入color，最后都生成了一个新的MeshPhongMaterial：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">&#123;<br>  <span class="hljs-comment">// 设置下方材质和颜色</span><br>  <span class="hljs-title function_">setControls</span>(<span class="hljs-params">item</span>) &#123;<br>    <span class="hljs-keyword">const</span> &#123; texture, color, size, shininess = <span class="hljs-number">10</span> &#125; = item;<br><br>    <span class="hljs-keyword">let</span> new_mtl = <span class="hljs-literal">null</span>;<br>    <span class="hljs-keyword">if</span> (texture) &#123;<br>      <span class="hljs-keyword">const</span> txt = <span class="hljs-variable language_">this</span>.<span class="hljs-property">textureLoader</span>.<span class="hljs-title function_">load</span>(texture);<br>      txt.<span class="hljs-property">repeat</span>.<span class="hljs-title function_">set</span>(size[<span class="hljs-number">0</span>], size[<span class="hljs-number">1</span>]);<br>      txt.<span class="hljs-property">wrapS</span> = txt.<span class="hljs-property">wrapT</span> = <span class="hljs-title class_">RepeatWrapping</span>;<br><br>      new_mtl = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MeshPhongMaterial</span>(&#123;<br>        <span class="hljs-attr">map</span>: txt,<br>        shininess,<br>      &#125;);<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (color) &#123;<br>      new_mtl = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MeshPhongMaterial</span>(&#123;<br>        <span class="hljs-attr">color</span>: <span class="hljs-built_in">parseInt</span>(<span class="hljs-string">`0x<span class="hljs-subst">$&#123;color&#125;</span>`</span>),<br>        shininess,<br>      &#125;);<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　最后在模型theModel中找到对应的椅子部件，修改material为新的材质即可。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">&#123;<br>  <span class="hljs-title function_">setControls</span>(<span class="hljs-params">item</span>) &#123;<br>    <span class="hljs-comment">// 其他代码</span><br>    <span class="hljs-keyword">if</span> (new_mtl &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">theModel</span>) &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">theModel</span>.<span class="hljs-title function_">traverse</span>(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> &#123;<br>        <span class="hljs-keyword">if</span> (el.<span class="hljs-property">isMesh</span> &amp;&amp; el.<span class="hljs-property">name</span> === <span class="hljs-variable language_">this</span>.<span class="hljs-property">active</span>) &#123;<br>          el.<span class="hljs-property">material</span> = new_mtl;<br>        &#125;<br>      &#125;);<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　我们看下实际的页面效果：</p>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="500" src="https://gallery.xieyufei.com/case/three/customize/chair"></iframe>
+
+
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　通过以上几个案例，这里笔者简单的总结一下；我们发现其实切换纹理的方式很简单，无非是两种方式，一种是修改材质的map属性，另一种就是修改纹理的image属性。</p>
+<p>　　渐进加载方式确实比较有意思，通过修改纹理image属性，能让用户眼前一亮的感觉；但是如果只加载一个两个模型，其实应用的空间也不是很大，因为它需要去开辟一个局部空间来添加很多的模型和材质。</p>
+<p>　　因此，很多时候，我们的模型不是很复杂的情况下，会选择一次性的去加载模型纹理；当需要修改哪个部位的纹理时，使用<code>traverse</code>遍历模型后修改对应的<code>map</code>属性即可。</p>
+<blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>本文所有源码敬请关注公众号【前端壹读】，后台回复关键词【椅子模型换肤】即可获取。</p>
+</blockquote>
+<img src="/images/qrcode.png" srcset="/img/loading.gif" lazyload alt="" align="center" width="40%" style="display:block;margin:0 auto;"/>
+
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>　　最后感谢下面网站的模型和素材，笔者用以学习和研究。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><a target="_blank" rel="noopener" href="http://threedpad.com/">threedpad.com</a><br><a target="_blank" rel="noopener" href="https://tympanus.net/Tutorials/3DModelCustomizer/">tympanus.net</a></p>
+
+            </div>
+            <hr>
+            <div>
+              
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script><div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Animation/">动画</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Threejs/">Threejs</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Graphical/">图形化</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/11/25/Vue3-Ref.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">从Vue3源码深入理解ref响应式</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/11/02/Accept-Cookie.html">
+                        <span class="hidden-mobile">浏览网站时为什么老是要我接受Cookie</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

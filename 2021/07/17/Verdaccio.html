@@ -1,0 +1,666 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　在公司项目开发中，我们经常会有相同的业务逻辑或者组件可以复用；但是这些由于安全性，我们又希望将这些代码在内部项目中使用，并不希望公开访问；verdaccio提供了一个搭建npm私有服务器的方式，我们来看下如何搭建以及上传我们自己的依赖包。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>Verdaccio搭建npm私有服务器 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Verdaccio搭建npm私有服务器">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-17 21:36" pubdate>
+        2021年7月17日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      27
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Verdaccio搭建npm私有服务器</h1>
+            
+            <div class="markdown-body">
+              <p>　　在公司项目开发中，我们经常会有相同的业务逻辑或者组件可以复用；但是这些由于安全性，我们又希望将这些代码在内部项目中使用，并不希望公开访问；verdaccio提供了一个搭建npm私有服务器的方式，我们来看下如何搭建以及上传我们自己的依赖包。</p>
+<span id="more"></span>
+
+
+<h1 id="介绍及安装"><a href="#介绍及安装" class="headerlink" title="介绍及安装"></a>介绍及安装</h1><p>　　Verdaccio是什么？</p>
+<blockquote>
+<p><code>Verdaccio</code>是一个 Node.js创建的轻量的私有npm代理注册源（proxy registry）</p>
+</blockquote>
+<p>　　通过Verdaccio搭建私有npm服务器有着以下优势：</p>
+<ol>
+<li>零配置：无需安装数据库，基于nodejs，安装及运行。</li>
+<li>使用方便：将内部高复用的代码进行提取，方便在多个项目中引用。</li>
+<li>安全性：仓库搭建在局域网内部，只针对内部人员使用。</li>
+<li>权限管理：对发布和下载npm包配置权限管理。</li>
+<li>加速包下载：将下载过的依赖包进行缓存，再次下载加快下载速度。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</ol>
+<p>　　Verdaccio是sinopia开源框架的一个fork，由于sinopia作者两年前就已经停止更新，坑比较多，因此Verdaccio是目前最好的选择；首先进行全局安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 全局安装</span><br>npm install -g verdaccio<br><span class="hljs-comment"># 启动服务器</span><br>verdaccio<br></code></pre></div></td></tr></table></figure>
+
+<p>　　安装后直接输入命令即可运行：</p>
+<p><img src="/images/Verdaccio/run.png" srcset="/img/loading.gif" lazyload alt="运行服务器"></p>
+<p>　　<code>config.yaml</code>是配置文件的路径，我们可以进行权限等配置；4873是Verdaccio启动的默认端口，支持在配置文件中进行修改；我们再浏览器中打开localhost:4873就能看到他的管理界面了：</p>
+<p><img src="/images/Verdaccio/home.png" srcset="/img/loading.gif" lazyload alt="Verdaccio首页"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　通过命令行启动的话，如果终端停止了，那我们的服务器也就停止了，因此一般我们通过pm2启动守护进程。</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">npm install -g pm2<br>pm2 start verdaccio<br>pm2 list<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　这样verdaccio就在后台运行了。</p>
+<p><img src="/images/Verdaccio/pm2.png" srcset="/img/loading.gif" lazyload alt="pm2守护进程"></p>
+<p>　　除此之外，我们还可以通过docker来进行安装</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs dockerfile">docker <span class="hljs-keyword">run</span><span class="language-bash"> --name verdaccio -itd -v ~/docker/verdaccio:/verdaccio -p 4873:4873 verdaccio/verdaccio</span><br></code></pre></div></td></tr></table></figure>
+
+
+<h1 id="nrm管理镜像源地址"><a href="#nrm管理镜像源地址" class="headerlink" title="nrm管理镜像源地址"></a>nrm管理镜像源地址</h1><p>　　Verdaccio安装好后，我们可以更改npm源为本地地址：</p>
+<figure class="highlight tcl"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs tcl"><span class="hljs-comment"># 设置npm使用的源为本地私服</span><br>npm <span class="hljs-keyword">set</span> <span class="hljs-keyword">registry</span> <span class="hljs-keyword">http</span>://localhost:<span class="hljs-number">4873</span>/<br></code></pre></div></td></tr></table></figure>
+
+<p>　　或者针对某个依赖安装时选用自己的源地址：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">npm install lodash --registry http://localhost:4873<br></code></pre></div></td></tr></table></figure>
+
+<p>　　但是如果我们想再次切换到淘宝或者其他的镜像地址，就不那么方便了；我们可以通过<code>nrm</code>这个工具来管理我们的源地址，可以查看和切换地址；首先还是进行安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">npm install -g nrm<br></code></pre></div></td></tr></table></figure>
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　安装后我们可以通过<code>nrm add [name] [address]</code>这个命令来新增一个源地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">nrm add localnpm http://localhost:4873/<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　使用<code>nrm ls</code>可以查看我们使用的所有源地址，带<code>*</code>是正在使用的地址；通过<code>nrm use [name]</code>来切换地址：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Verdaccio/nrm.png" srcset="/img/loading.gif" lazyload alt="nrm管理源地址"></p>
+<h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><p>　　通过配置文件，我们可以对Verdaccio进行更多的自定义设置，默认的配置文件如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf"># 依赖缓存地址<br>storage: ./storage<br># 插件地址<br>plugins: ./plugins<br><br>web:<br>  title: Verdaccio<br><br># 认证信息<br>auth:<br>  # 用户账号存储文件<br>  htpasswd:<br>    file: ./htpasswd<br><br># 上游链接<br>uplinks:<br>  npmjs:<br>    url: https://registry.npmjs.org/<br><br># 包管理<br>packages:<br>  &#x27;@*/*&#x27;:<br>    access: $all<br>    publish: $authenticated<br>    unpublish: $authenticated<br>    proxy: npmjs<br>  &#x27;**&#x27;:<br>    access: $all<br>    publish: $authenticated<br>    unpublish: $authenticated<br>    proxy: npmjs<br><br>server:<br>  keepAliveTimeout: 60<br><br># 插件开启<br>middlewares:<br>  audit:<br>    enabled: true<br><br># 日志管理<br>logs:<br>  - &#123; type: stdout, format: pretty, level: http &#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　Verdaccio默认只能本机访问，我们可以在配置文件最后加入监听的端口，让局域网访问：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf"># 监听的端口，不配置这个，只能本机能访问<br>listen: 0.0.0.0:4873<br># 界面默认设为中文<br>i18n:<br>  web: zh-CN<br></code></pre></div></td></tr></table></figure>
+
+<p>　　所有的账号密码都会保存在<code>htpasswd</code>这个文件中，我们可以通过<a target="_blank" rel="noopener" href="https://tool.oschina.net/htpasswd">在线htpasswd生成器</a>生成加密的密码文件，或者通过命令行的形式来添加用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 新增用户</span><br>npm adduser --registry http://localhost:4873/<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<h2 id="uplinks"><a href="#uplinks" class="headerlink" title="uplinks"></a>uplinks</h2><p>　　上游链接<code>uplinks</code>表示如果在本地找不到依赖包，去上游哪个地址获取包；我们可以配置多个地址，每个地址都有一个唯一的key值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">uplinks:<br>  npmjs:<br>    url: https://registry.npmjs.org/<br>    timeout: 10s<br>  yarn:<br>    url: https://registry.yarnpkg.com/<br>    timeout: 10s<br>  taobao:<br>    url: https://registry.npm.taobao.org/<br>    timeout: 10s<br><br>packages:<br>  &#x27;@*/*&#x27;:<br>    proxy: taobao yarn<br>  &#x27;**&#x27;:<br>    proxy: taobao<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　官方的地址会比较慢，一般建议配置淘宝的地址：配置好上游链接后我们就可以将包的代理指向链接，支持多个链接地址，请求失败时会向后面的链接进行尝试。</p>
+<h2 id="令牌"><a href="#令牌" class="headerlink" title="令牌"></a>令牌</h2><p>　　从<code>verdaccio@4.0.0</code>开始支持配置自定义令牌签名，要启用JWT签名，我们需要将jwt添加到api部分：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">security:<br>  api:<br>    jwt:<br>      sign:<br>        expiresIn: 15d<br>        notBefore: 0<br>  web:<br>    sign:<br>      expiresIn: 7d<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="packages包管理"><a href="#packages包管理" class="headerlink" title="packages包管理"></a>packages包管理</h2><p>　　在<code>packages</code>字段中，我们可以对每个域下面的包进行管理，在verdaccio中有三种身份：所有人、匿名用户、认证(登陆)用户（即”$all”, “$anonymous”, “$authenticated”），默认情况下所有人都有访问的权限（access），认证的用户才有包的发布权限（publish）和撤回权限（unpublish）。</p>
+<p>　　除此之外，我们可以对包进行更进一步的划分，比如公司的包和个人的包，通过<code>@scope</code>的方式进行访问控制：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">packages:<br>  &#x27;@company/*&#x27;:<br>    access: $authenticated<br>    publish: $authenticated<br>    unpublish: $authenticated<br>    proxy: npmjs<br>  &#x27;@my/*&#x27;:<br>    access: $authenticated<br>    publish: $authenticated<br>    unpublish: $authenticated<br>    proxy: npmjs<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　默认情况下，任何用户都可以通过<code>npm adduser</code>来向我们的服务器注册用户；如果我们的npm服务器部署在外网的话是不利的，我们还可以通过max_users为-1来禁止注册用户，如果在内网的话，可以设置某个具体的值来限制用户的数量：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">auth:<br>  htpasswd:<br>    file: ./htpasswd<br>  max_users: -1<br></code></pre></div></td></tr></table></figure>
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h1 id="依赖包创建和发布"><a href="#依赖包创建和发布" class="headerlink" title="依赖包创建和发布"></a>依赖包创建和发布</h1><p>　　搭建好了npm私服，我们就可以上传npm包了，我们创建一个utils项目，放一些自己的工具等，首先通过<code>npm init</code>初始化package.json，然后我们可以对包的信息进行一些修改：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;@demo/utils&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1.0.0&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;my own utils&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;main&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;index.js&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;test&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;author&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;corner&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;license&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ISC&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　我们就可以在入口文件<code>index.js</code>中写代码了，比如这里我们定义了判断环境的几个变量：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">UA</span> = <span class="hljs-variable language_">window</span>.<span class="hljs-property">navigator</span>.<span class="hljs-property">userAgent</span>.<span class="hljs-title function_">toLowerCase</span>();<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> isAndroid = <span class="hljs-variable constant_">UA</span> &amp;&amp; <span class="hljs-variable constant_">UA</span>.<span class="hljs-title function_">indexOf</span>(<span class="hljs-string">&quot;android&quot;</span>) &gt; <span class="hljs-number">0</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> isIOS = <span class="hljs-variable constant_">UA</span> &amp;&amp; <span class="hljs-regexp">/iphone|ipad|ipod|ios/</span>.<span class="hljs-title function_">test</span>(<span class="hljs-variable constant_">UA</span>);<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> isWeixin = <span class="hljs-variable constant_">UA</span> &amp;&amp; <span class="hljs-regexp">/micromessenger/i</span>.<span class="hljs-title function_">test</span>(<span class="hljs-variable constant_">UA</span>);<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　然后我们登录上面注册的用户，输入用户名、密码以及邮箱等：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 登录账号</span><br>npm login<br></code></pre></div></td></tr></table></figure>
+
+<p>　　也可以通过<code>npm logout</code>退出登录，以及<code>npm who am i</code>查看当前登录的用户名；登录成功后就可以将我们的包进行发布了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 发布依赖包</span><br>npm publish<br></code></pre></div></td></tr></table></figure>
+
+
+<p><img src="/images/Verdaccio/publish.png" srcset="/img/loading.gif" lazyload alt="npm发包"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　在首页我们登录后就能成功看到刚刚发布的第一个包了，也能给其他同事使用：</p>
+<p><img src="/images/Verdaccio/package.png" srcset="/img/loading.gif" lazyload alt="查看依赖包"></p>
+<p>　　我们注意到整个包的入口是<code>main</code>字段指定的index.js，这是一个es module模块规范的包，但是在commonjs规范的项目中就不能使用了，因此我们可以通过打包工具对其进行打包优化。</p>
+<p>　　我们在<a href="https://xieyufei.com/2021/01/28/Package-Tool-Compare.html">深入对比Webpack、Parcel、Rollup打包工具的不同</a>介绍过Rollup比较适合用来打包一个类库，因此这里就选用Rollup进行打包，我们在项目下新建<code>rollup.config.js</code>：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-attr">input</span>: <span class="hljs-string">&quot;./index.js&quot;</span>,<br>  <span class="hljs-attr">output</span>: [<br>    &#123;<br>      <span class="hljs-attr">format</span>: <span class="hljs-string">&quot;cjs&quot;</span>,<br>      <span class="hljs-attr">file</span>: <span class="hljs-string">&quot;dist/index.commonjs.js&quot;</span>,<br>    &#125;,<br>    &#123;<br>      <span class="hljs-attr">format</span>: <span class="hljs-string">&quot;es&quot;</span>,<br>      <span class="hljs-attr">file</span>: <span class="hljs-string">&quot;dist/index.esm.js&quot;</span>,<br>    &#125;,<br>    &#123;<br>      <span class="hljs-attr">format</span>: <span class="hljs-string">&quot;iife&quot;</span>,<br>      <span class="hljs-attr">file</span>: <span class="hljs-string">&quot;dist/index.bundle.js&quot;</span>,<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;DemoUtils&#x27;</span><br>    &#125;,<br>  ],<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　通过rollup将入口文件<code>index.js</code>打包成commonjs、es module和iife三种规范，然后就在<code>package.json</code>中分别定义三种规范的文件路径：</p>
+<figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;@demo/utils&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1.0.2&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;my own utils&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-comment">// 指向 CommonJS 模块规范的代码入口文件</span><br>  <span class="hljs-attr">&quot;main&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;dist/index.commonjs.js&quot;</span><span class="hljs-punctuation">,</span><br>   <span class="hljs-comment">// 指向 ES Module 模块规范的代码入口文件</span><br>  <span class="hljs-attr">&quot;module&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;dist/index.esm.js&quot;</span><span class="hljs-punctuation">,</span><br>   <span class="hljs-comment">// 指向 ES Module 模块规范的代码入口文件</span><br>  <span class="hljs-attr">&quot;jsnext:main&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;dist/index.esm.js&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;unpkg&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;dist/index.bundle.js&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;jsdelivr&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;dist/index.bundle.js&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;test&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;build&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;rollup --config&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;author&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;corner&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;license&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ISC&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;devDependencies&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;rollup&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.54.0&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　如果还想对我们的包有详细的使用说明等，可以在项目中新建一个README.md文档；build打包后，再次publish发包就能更新线上的依赖包了。</p>
+
+            </div>
+            <hr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+            <div>
+              
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p><div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Server/">服务器</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/07/29/TypeScript.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">TypeScript从平凡到不凡（基础篇）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/06/22/Front-Nginx.html">
+                        <span class="hidden-mobile">前端抢饭碗系列之深入Nginx</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

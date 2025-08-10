@@ -1,0 +1,663 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　最近几年，虚拟现实VR的概念火了一把，各种VR概念的游戏、设备、视频受到人们的广泛关注。笔者在逛商场的时候也经常会看到有VR设备体验的地方让游人体验一把，各种酷炫的头盔和酷炫的设备着实抓人眼球。但是作为一个前端工作者，我们肯定也希望在我们的网页里也能看到这么酷炫的效果，不经意间在网上发现了一个网页虚拟现实框架A-Frame，分享一下笔者的使用心得。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>走进网页虚拟现实WebVR - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="走进网页虚拟现实WebVR">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2017-04-09 20:51" pubdate>
+        2017年4月9日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      36
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">走进网页虚拟现实WebVR</h1>
+            
+            <div class="markdown-body">
+              <p>　　最近几年，虚拟现实VR的概念火了一把，各种VR概念的游戏、设备、视频受到人们的广泛关注。笔者在逛商场的时候也经常会看到有VR设备体验的地方让游人体验一把，各种酷炫的头盔和酷炫的设备着实抓人眼球。但是作为一个前端工作者，我们肯定也希望在我们的网页里也能看到这么酷炫的效果，不经意间在网上发现了一个网页虚拟现实框架A-Frame，分享一下笔者的使用心得。</p>
+<span id="more"></span>
+
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>　　A-Frame是Mozilla发布的一个全新的开源框架，旨在帮助开发者开发在浏览器中运行的高性能响应式的VR体验。只需要在页面中引入<code>aFrame.min.js</code>就能够集成支持VR页面所需要的组件了。</p>
+<p><img src="/images/FrontEnd-Panorama/A-Frame.png" srcset="/img/loading.gif" lazyload alt="A-Frame"></p>
+<h1 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h1><h2 id="基于DOM"><a href="#基于DOM" class="headerlink" title="基于DOM"></a>基于DOM</h2><p>　　我们可以使用传统的JavaScript DOM API来操纵A-Frame场景来添加逻辑，行为和功能。同时，A-Frame是基于DOM的，现在一些流行的框架能够基于A-Frame工作，比如React、Vue、jQuery和Angular。</p>
+<h2 id="实体组件系统"><a href="#实体组件系统" class="headerlink" title="实体组件系统"></a>实体组件系统</h2><p>　　A-Frame是一个基于three.js的实体组件系统。在A-Frame里一切都是实体，我们插入组件，可以随意撰写外观，行为和功能集成。</p>
+<h2 id="丰富的生态系统"><a href="#丰富的生态系统" class="headerlink" title="丰富的生态系统"></a>丰富的生态系统</h2><p>　　A-Frame配备了多个组件，但由于A-Frame在其核心部分是完全可扩展的，社区已经为生态系统填充了许多组件，如物理，粒子系统，音频可视化和Leap Motion控件。这个生态系统是A-Frame的命脉。开发人员可以构建一个组件并发布它，然后其他人可以使用该组件并直接从HTML使用，甚至不必知道任何JavaScript。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/FrontEnd-Panorama/e-system.png" srcset="/img/loading.gif" lazyload alt="e-system"></p>
+<h2 id="强大的可视化检查器"><a href="#强大的可视化检查器" class="headerlink" title="强大的可视化检查器"></a>强大的可视化检查器</h2><p>　　可视化编辑器用于检查和编辑A框架场景的可视化工具。与浏览器的DOM检查器类似，您可以进入任何A-Frame场景，本地或Web上，然后点击<code>ctrl+alt+i</code>键盘。<br>　　这将打开视觉检查器，我们可以在其中进行更改。可以在视觉上移动和放置物体，用组件的属性随意的挪动物体，或者围绕相机平移以查看场景的不同视图。</p>
+<h1 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h1><p>　　介绍了这么多，让我们来看一下A-Frame是如何来构造组件的。</p>
+<h2 id="a-scene"><a href="#a-scene" class="headerlink" title="a-scene"></a>a-scene</h2><p>　　一个场景是由a-scene创建的，是全景渲染的根对象，所有的元素都需要放在a-scene这个组件里。它会处理3D所需的所有设置：设置WebGL、画布、相机、灯光、渲染器、渲染循环以及开启及时的WebVR支持。</p>
+<h2 id="a-sky"><a href="#a-sky" class="headerlink" title="a-sky"></a>a-sky</h2><p>　　每一个场景都需要一个背景，<code>a-sky</code>标签用来设置场景的背景，可以直接放置src为全景图片，或者直接渲染color值。</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">a-scene</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">a-sky</span> <span class="hljs-attr">color</span>=<span class="hljs-string">&quot;#ccc&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;images/panorama.jpg&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a-sky</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">a-scene</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　如果直接渲染了color值，那么整个背景就会变成该颜色；如果设置全景图片，可以左右移动来查看。效果链接戳<a href="//xieyufei.com/demo/panorama.html">这里</a>。</p>
+<p><img src="/images/FrontEnd-Panorama/effect.gif" srcset="/img/loading.gif" lazyload alt="effect"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="a-box"><a href="#a-box" class="headerlink" title="a-box"></a>a-box</h2><p>　　我们通过<code>a-box</code>标签来生成一个长方体，有一下几个重要的属性：</p>
+<ul>
+<li>width：宽度</li>
+<li>height：高度</li>
+<li>depth：深度</li>
+<li>color：颜色</li>
+<li>position：位置</li>
+<li>rotation：旋转</li>
+<li>scale：缩放</li>
+</ul>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">a-scene</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">a-sky</span> <span class="hljs-attr">color</span>=<span class="hljs-string">&quot;#f0f0f0&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a-sky</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">a-box</span> </span><br><span class="hljs-tag">    <span class="hljs-attr">color</span>=<span class="hljs-string">&quot;red&quot;</span> </span><br><span class="hljs-tag">    <span class="hljs-attr">depth</span>=<span class="hljs-string">&quot;1&quot;</span> </span><br><span class="hljs-tag">    <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;1&quot;</span> </span><br><span class="hljs-tag">    <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;1&quot;</span> </span><br><span class="hljs-tag">    <span class="hljs-attr">position</span>=<span class="hljs-string">&quot;0 2 -5&quot;</span> </span><br><span class="hljs-tag">    <span class="hljs-attr">rotation</span>=<span class="hljs-string">&quot;0 45 45&quot;</span> </span><br><span class="hljs-tag">    <span class="hljs-attr">scale</span>=<span class="hljs-string">&quot;1 1 1&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">a-box</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">a-scene</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<p>　　最后生成一个长1高1深1颜色为红色的长方体：</p>
+<p><img src="/images/FrontEnd-Panorama/cub.png" srcset="/img/loading.gif" lazyload alt="cub"></p>
+<h2 id="a-assets"><a href="#a-assets" class="headerlink" title="a-assets"></a>a-assets</h2><p>　　但是如果仅仅是红色的外观那么就太单调了。A-Frame允许我们给组件设置纹理图片，虽然可以直接给组件设置src属性，不过不推荐这种做法，推荐通过资源管理系统<code>a-assets</code>。<br>　　一般在游戏等视觉体验丰富的场景中，由于有着大量的图片、模型、声音等资源，都会对这些资源进行一个预加载处理，确保在渲染的时候不会出现缺失的现象。<br>　　我们把这些资源放到<code>a-assets</code>也是为了进行预加载。我们可以存放以下资源：</p>
+<ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li><code>&lt;a-asset-item&gt;</code>：其他资产，如3D模型和材料</li>
+<li><code>&lt;audio&gt;</code>：声音文件</li>
+<li><code>&lt;img&gt;</code>：图像纹理</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li><code>&lt;video&gt;</code>：视频纹理</li>
+</ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　我们通过给资源标志一个唯一的id，然后在组件的src中引用这个id来进行调用。</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">a-box</span> </span><br><span class="hljs-tag">  <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;#boxTexture&quot;</span> </span><br><span class="hljs-tag">  <span class="hljs-attr">depth</span>=<span class="hljs-string">&quot;1&quot;</span> </span><br><span class="hljs-tag">  <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;1&quot;</span> </span><br><span class="hljs-tag">  <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;1&quot;</span> </span><br><span class="hljs-tag">  <span class="hljs-attr">position</span>=<span class="hljs-string">&quot;0 2 -5&quot;</span> </span><br><span class="hljs-tag">  <span class="hljs-attr">rotation</span>=<span class="hljs-string">&quot;0 45 45&quot;</span> </span><br><span class="hljs-tag">  <span class="hljs-attr">scale</span>=<span class="hljs-string">&quot;1 1 1&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">a-box</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+<p>　　这样我们的长方体就变成了一个带有图案纹理的长方体。</p>
+<p><img src="/images/FrontEnd-Panorama/cub1.png" srcset="/img/loading.gif" lazyload alt="cub1"></p>
+<h2 id="a-light"><a href="#a-light" class="headerlink" title="a-light"></a>a-light</h2><p>　　我们可以通过使用a-light来改变场景的亮度。默认情况下，如果我们没有指定任何指示灯，A-Frame将添加环境光和定向光。如果A-Frame没有为我们添加灯，场景将是黑色的。一旦我们添加了我们自己的灯，默认的照明设置将被删除，并替换为我们的设置。<br>　　我们还会添加一个点光源，点光源就像灯泡; 我们可以将它们放在场景周围，点光源对实体的影响取决于它与实体的距离。</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html">&lt;！ - 红色定向灯从左上方闪烁。 - &gt;<br><span class="hljs-tag">&lt;<span class="hljs-name">a-light</span> <span class="hljs-attr">color</span>=<span class="hljs-string">&quot;red&quot;</span> <span class="hljs-attr">position</span>=<span class="hljs-string">&quot;-1 1 0&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a-light</span>&gt;</span><br><br>&lt;！ - 蓝点光，5米空中。 - &gt;<br><span class="hljs-tag">&lt;<span class="hljs-name">a-light</span> <span class="hljs-attr">tpye</span>=<span class="hljs-string">&quot;point&quot;</span> <span class="hljs-attr">color</span>=<span class="hljs-string">&quot;blue&quot;</span> <span class="hljs-attr">position</span>=<span class="hljs-string">&quot;0 5 0&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a-light</span>&gt;</span><br><br>&lt;！ - 昏暗环境照明。 - &gt;<br><span class="hljs-tag">&lt;<span class="hljs-name">a-light</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;ambient&quot;</span> <span class="hljs-attr">color</span>=<span class="hljs-string">&quot;yellow&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a-light</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+<p>　　我们给环境一个黄色照明的光源，最后的效果是这样的。</p>
+<p><img src="/images/FrontEnd-Panorama/cub2.png" srcset="/img/loading.gif" lazyload alt="cub2"></p>
+<h2 id="a-animation"><a href="#a-animation" class="headerlink" title="a-animation"></a>a-animation</h2><p>　　我们可以使用A-Frame的内置动画系统<code>&lt;a-animation&gt;</code>向盒子添加动画。我们可以将<code>&lt;a-animation&gt;</code>元素作为实体的子代。让我们把盒子上下摆动来给场景添加一些动作。</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">a-box</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;#boxTexture&quot;</span> <span class="hljs-attr">depth</span>=<span class="hljs-string">&quot;1&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;1&quot;</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;1&quot;</span> <span class="hljs-attr">position</span>=<span class="hljs-string">&quot;0 2 -5&quot;</span> <span class="hljs-attr">rotation</span>=<span class="hljs-string">&quot;0 45 45&quot;</span> <span class="hljs-attr">scale</span>=<span class="hljs-string">&quot;1 1 1&quot;</span>&gt;</span><br>  <span class="hljs-comment">&lt;!-- 在box里面添加animation元素 --&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">a-animation</span> </span><br><span class="hljs-tag">    <span class="hljs-attr">attribute</span>=<span class="hljs-string">&quot;position&quot;</span> </span><br><span class="hljs-tag">    <span class="hljs-attr">to</span>=<span class="hljs-string">&quot;0 1 -5&quot;</span> </span><br><span class="hljs-tag">    <span class="hljs-attr">direction</span>=<span class="hljs-string">&quot;alternate&quot;</span> </span><br><span class="hljs-tag">    <span class="hljs-attr">dur</span>=<span class="hljs-string">&quot;2000&quot;</span> </span><br><span class="hljs-tag">    <span class="hljs-attr">repeat</span>=<span class="hljs-string">&quot;indefinite&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">a-animation</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">a-box</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p><img src="/images/FrontEnd-Panorama/animation.gif" srcset="/img/loading.gif" lazyload alt="animation"></p>
+<p>　　一些属性说明：</p>
+<ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>attribute：需要把哪个属性作为动画</li>
+<li>to：属性到某个值</li>
+<li>direction：方向，alternate表示来回</li>
+<li>dur：时间间隔</li>
+<li>repeat：重复次数</li>
+</ul>
+<h2 id="a-text"><a href="#a-text" class="headerlink" title="a-text"></a>a-text</h2><p>　　在A-Frame中还可以添加文本组件<code>&lt;a-text&gt;</code>。</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">a-text</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;Hello, A-Frame!&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">color</span>=<span class="hljs-string">&quot;#0abef0&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">position</span>=<span class="hljs-string">&quot;-0.9 0.2 -3&quot;</span> </span><br><span class="hljs-tag">        <span class="hljs-attr">scale</span>=<span class="hljs-string">&quot;1.5 1.5 1.5&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">a-text</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+<p>　　最后添加文字的效果，效果链接戳<a href="//xieyufei.com/demo/panorama1.html">这里</a>。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/FrontEnd-Panorama/cub3.png" srcset="/img/loading.gif" lazyload alt="cub3"></p>
+<h2 id="a-cylinder"><a href="#a-cylinder" class="headerlink" title="a-cylinder"></a>a-cylinder</h2><p>　　圆筒原型是多功能的，可用于创建不同种类的形状：</p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 基本圆筒。 -- &gt;</span><br><span class="hljs-comment">&lt;a-cylinder  color=&quot;crimson&quot;  height=&quot;3&quot;  radius=&quot;1.5&quot;&gt;&lt;/a-cylinder&gt;</span><br><span class="hljs-comment">&lt;!-- 六角形。 -- &gt;</span><br><span class="hljs-comment">&lt;a-cylinder  color=&quot;cyan&quot;  segments-radial=&quot;8&quot;&gt;&lt;/a-cylinder&gt;</span><br><span class="hljs-comment">&lt;!-- 吃豆人。 -- &gt;</span><br><span class="hljs-comment">&lt;a-cylinder color=&quot;yellow&quot;  theta-start=&quot;50&quot;  theta-length=&quot;280&quot;  side=&quot;double&quot;&gt;&lt;/a-cylinder &gt;</span><br><span class="hljs-comment">&lt;!-- 绿色管道。 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">a-cylinder</span>  <span class="hljs-attr">color</span>=<span class="hljs-string">&quot;green&quot;</span>  <span class="hljs-attr">open-ended</span>=<span class="hljs-string">&quot;true&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a-cylinder</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<h2 id="a-cone"><a href="#a-cone" class="headerlink" title="a-cone"></a>a-cone</h2><p>　　用于创造一个椎体。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">a-cone</span> <span class="hljs-attr">position</span>=<span class="hljs-string">&quot;0 0 -20&quot;</span> <span class="hljs-attr">rotation</span>=<span class="hljs-string">&quot;35 45 30&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;10&quot;</span> <span class="hljs-attr">radius-top</span>=<span class="hljs-string">&quot;2&quot;</span> <span class="hljs-attr">radius-bottom</span>=<span class="hljs-string">&quot;10&quot;</span> <span class="hljs-attr">color</span>=<span class="hljs-string">&quot;#F3BA8D&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a-cone</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
+
+<h2 id="使用JS和DOM"><a href="#使用JS和DOM" class="headerlink" title="使用JS和DOM"></a>使用JS和DOM</h2><p>　　在A-Frame中也有DOM元素，通过querySelector()和querySelectorAll()方法来提供元素的遍历，查询，查找和选择。这个很像jQuery中的选择器。</p>
+<h3 id="querySelector"><a href="#querySelector" class="headerlink" title="querySelector"></a>querySelector</h3><p>　　如果我们想抓住一个元素，我们使用querySelector()返回那一个元素。比如我们来抓住场景元素：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> scene = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;a-scene&#x27;</span>);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(scene);<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　如果元素具有ID，则可以使用ID选择器（即，#<ID>）。我们来抓住一个有一个ID的红色框。之前我们在整个文档上做了一个查询选择器。在这里，我们将在场景范围内做一个查询选择器。使用查询选择器，我们可以将查询的范围限制在任何元素内：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> scene = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;a-scene&#x27;</span>);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(scene.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;#mybox&#x27;</span>));<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="querySelectorAll"><a href="#querySelectorAll" class="headerlink" title="querySelectorAll"></a>querySelectorAll</h3><p>　　如果我们要抓取一组元素，我们使用querySelector()哪个返回一个元素数组。我们可以查询元素名称、类名、属性名：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">// 查询元素名称</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelectorAll</span>(<span class="hljs-string">&#x27;a-box&#x27;</span>));<br><span class="hljs-comment">// 查询类名</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelectorAll</span>(<span class="hljs-string">&#x27;.mybox&#x27;</span>));<br><span class="hljs-comment">// [</span><br><span class="hljs-comment">// &lt;a-entity light=&quot;type:ambient&quot;&gt;&lt;/a-entity&gt;</span><br><span class="hljs-comment">// &lt;a-entity light=&quot;type:directional&quot;&gt;&lt;/a-entity&gt;</span><br><span class="hljs-comment">//]</span><br><span class="hljs-comment">// 查询属性名</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelectorAll</span>(<span class="hljs-string">&#x27;[light]&#x27;</span>));<br></code></pre></div></td></tr></table></figure>
+
+<p>　　如果我们抓住了一组使用的实体querySelectorAll()，我们可以循环使用它们for。我们围绕场景中的每个元素循环遍历。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> els = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelectorAll</span>(<span class="hljs-string">&#x27;a-box&#x27;</span>);<br><span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; els.<span class="hljs-property">length</span>; i++)&#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(els[i]);<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h3 id="createElement"><a href="#createElement" class="headerlink" title="createElement"></a>createElement</h3><p>　　要创建一个实体，我们可以使用document.createElement。这将给我们一个空白的实体：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> el = <span class="hljs-variable language_">document</span> .<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;a-entity&#x27;</span>);<br></code></pre></div></td></tr></table></figure>
+<p>　　但是，在将实体附加到我们的场景之前，该实体将不会被初始化或者成为场景的一部分。</p>
+<h3 id="appendChild"><a href="#appendChild" class="headerlink" title="appendChild"></a>appendChild</h3><p>　　要向DOM添加实体，我们可以使用.appendChild(element)。具体来说，我们想把它添加到我们的场景中。我们抓住现场，创建实体，并将实体附加到我们的场景。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> sceneEl = <span class="hljs-variable language_">document</span> .<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;a-scene&#x27;</span>);<br><span class="hljs-keyword">var</span> entityEl = <span class="hljs-variable language_">document</span> .<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;a-entity&#x27;</span>);<br>sceneEl.<span class="hljs-title function_">appendChild</span>(entityEl);<br></code></pre></div></td></tr></table></figure>
+<p>　　请注意，这appendChild()方法是浏览器中的异步操作。在实体完成附加到DOM之前，我们不能对实体执行许多操作（如调用.getAttribute()）。如果我们需要查询刚被追加的实体上的一个属性，我们可以监听loaded该实体上的事件，或者将逻辑放在A-Frame组件中，以便一旦它被准备好就执行：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h3 id="removeChild"><a href="#removeChild" class="headerlink" title="removeChild"></a>removeChild</h3><p>　　要从DOM中移除实体，因此从场景中删除一个实体，我们removeChild(element)从父元素调用。如果我们有一个实体，我们必须要用它的parent(parentNode)去除实体。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">entityEl.<span class="hljs-property">parentNode</span>.<span class="hljs-title function_">removeChild</span>(entityEl);<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<h3 id="setAttribute"><a href="#setAttribute" class="headerlink" title="setAttribute"></a>setAttribute</h3><p>　　要更新组件，我们可以使用setAttribute()方法。更新组件需要几种形式。如果组件是单属性组件，则setAttribute其行为与通常情况相同：</p>
+<figure class="highlight vhdl"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs vhdl"><span class="hljs-keyword">entity</span>.setAttribute(<span class="hljs-symbol">&#x27;visible</span>&#x27;,<span class="hljs-literal">false</span>);<br></code></pre></div></td></tr></table></figure>
+<p>　　但是如果是单属性，它可以处理该值的特殊解析。例如，position组件是单属性组件，但其属性类型解析器允许它占用一个对象：</p>
+<figure class="highlight php"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs php">entity.<span class="hljs-title function_ invoke__">setAttribute</span>(<span class="hljs-string">&#x27;position&#x27;</span>,&#123;<span class="hljs-attr">x</span>:<span class="hljs-number">1</span>,<span class="hljs-attr">y</span>:<span class="hljs-number">2</span>,<span class="hljs-attr">z</span>:<span class="hljs-number">3</span>&#125;);<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　要设置或替换多属性组件的组件数据，我们可以传递注册组件的属性名称，并将属性对象传递为value：</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">entity.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&#x27;light&#x27;</span>, &#123;<br>  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;spot&#x27;</span>,<br>  <span class="hljs-attr">distance</span>: <span class="hljs-number">30</span>,<br>  <span class="hljs-attr">intensity</span>: <span class="hljs-number">2.0</span><br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h3 id="removeAttribute"><a href="#removeAttribute" class="headerlink" title="removeAttribute"></a>removeAttribute</h3><p>　　从DOM中删除属性或者分离组件，调用组件的remove生命周期方法。</p>
+<figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">entity.<span class="hljs-title function_">removeAttribute</span>(<span class="hljs-string">&#x27;goemetry&#x27;</span>);  <span class="hljs-comment">//分离几何组件。</span><br>entity.<span class="hljs-title function_">removeAttribute</span>(<span class="hljs-string">&#x27;sound&#x27;</span>);  <span class="hljs-comment">//分离声音组件。</span><br></code></pre></div></td></tr></table></figure>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Game/">游戏</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2017/04/16/FrontEnd-JS-Prototype.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JavaScript深入理解原型和原型链</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2017/03/29/Project-Summary.html">
+                        <span class="hidden-mobile">记一次项目总结</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
