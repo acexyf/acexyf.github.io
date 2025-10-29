@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://xieyufei.com/2025/10/30/Threejs-Pie-Annular.html</loc>
+    <lastmod>2025-10-29</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2025/08/28/Echarts-Custom-Render.html</loc>
+    <lastmod>2025-08-30</lastmod>
+  </url>
+  <url>
     <loc>https://xieyufei.com/2025/08/11/Threejs-Cube-Loading.html</loc>
-    <lastmod>2025-08-10</lastmod>
+    <lastmod>2025-08-11</lastmod>
   </url>
   <url>
     <loc>https://xieyufei.com/2017/02/28/jQuery-Realize-Snake.html</loc>
@@ -145,11 +153,11 @@
     <lastmod>2025-08-03</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2021/10/26/React-Native-Style.html</loc>
+    <loc>https://xieyufei.com/2022/08/28/React-Native-Safebox.html</loc>
     <lastmod>2025-08-03</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2022/08/28/React-Native-Safebox.html</loc>
+    <loc>https://xieyufei.com/2021/10/26/React-Native-Style.html</loc>
     <lastmod>2025-08-03</lastmod>
   </url>
   <url>
@@ -245,19 +253,19 @@
     <lastmod>2025-08-03</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2023/12/22/Install-Linux-Nodejs.html</loc>
-    <lastmod>2025-08-03</lastmod>
-  </url>
-  <url>
     <loc>https://xieyufei.com/2024/09/17/Install-Linux-Frp.html</loc>
     <lastmod>2025-08-03</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2023/09/05/Install-Windows-Cuda.html</loc>
+    <loc>https://xieyufei.com/2023/12/22/Install-Linux-Nodejs.html</loc>
     <lastmod>2025-08-03</lastmod>
   </url>
   <url>
     <loc>https://xieyufei.com/2023/11/02/Install-Linux-StableDiffusion.html</loc>
+    <lastmod>2025-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://xieyufei.com/2023/09/05/Install-Windows-Cuda.html</loc>
     <lastmod>2025-08-03</lastmod>
   </url>
   <url>
@@ -373,11 +381,11 @@
     <lastmod>2025-08-03</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2019/08/29/Cors.html</loc>
+    <loc>https://xieyufei.com/2021/01/08/CommonJS-ES6.html</loc>
     <lastmod>2025-08-03</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2021/01/08/CommonJS-ES6.html</loc>
+    <loc>https://xieyufei.com/2019/08/29/Cors.html</loc>
     <lastmod>2025-08-03</lastmod>
   </url>
   <url>
@@ -401,11 +409,11 @@
     <lastmod>2025-08-03</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2017/02/21/Dotjs-Usage.html</loc>
+    <loc>https://xieyufei.com/2024/07/01/Dig-Microsoft.html</loc>
     <lastmod>2025-08-03</lastmod>
   </url>
   <url>
-    <loc>https://xieyufei.com/2024/07/01/Dig-Microsoft.html</loc>
+    <loc>https://xieyufei.com/2017/02/21/Dotjs-Usage.html</loc>
     <lastmod>2025-08-03</lastmod>
   </url>
   <url>

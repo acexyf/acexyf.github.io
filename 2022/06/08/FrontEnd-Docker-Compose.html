@@ -278,36 +278,33 @@
 <h1 id="容器的环境变量"><a href="#容器的环境变量" class="headerlink" title="容器的环境变量"></a>容器的环境变量</h1><p>　　我们在启动docker容器的时候，经常需要向容器传递一些参数，以便容器进行一些特殊的配置，比如给mysql传入<code>MYSQL_ROOT_PASSWORD</code>的root用户密码，或者我们想在自己的容器中传入一些数据库的配置等等。</p>
 <p>　　第一种方式也最简单的，也是最常见的，在run容器时使用<code>--env</code>，也就是我们在各个文档中经常见到的简写<code>-e</code>：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -itd -e MYSQL_USER=root -e MYSQL_PASS=pass xxx:latest<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　我们在js代码中可以通过环境变量<code>process.env</code>来获取</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> &#123; <span class="hljs-variable constant_">MYSQL_USER</span>, <span class="hljs-variable constant_">MYSQL_PASS</span> &#125; = process.<span class="hljs-property">env</span>;<br></code></pre></div></td></tr></table></figure>
 
 <p>　　在python代码中调用<code>os.getenv</code>获取：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight python"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs python">MYSQL_USER = os.getenv(<span class="hljs-string">&quot;MYSQL_USER&quot;</span>, <span class="hljs-string">&quot;&quot;</span>)<br>MYSQL_PASS = os.getenv(<span class="hljs-string">&quot;MYSQL_PASS&quot;</span>, <span class="hljs-string">&quot;&quot;</span>)<br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　第二种方式，也是我们在<a href="https://xieyufei.com/2022/03/22/FrontEnd-Docker-Advance.html">Docker进阶部署</a>中介绍的，通过Dockerfile文件的<code>ENV指令</code>：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs file">ENV MYSQL_USER root<br>ENV MYSQL_PASS pass<br></code></pre></div></td></tr></table></figure>
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　第三种方式，run容器时，通过<code>--env-file</code>指令加载env文件，首先我们把配置信息放在文件env.list中：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> env.list<br>MYSQL_USER=root3<br>MYSQL_PASS=pass3<br></code></pre></div></td></tr></table></figure>
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　启动容器时传入文件，这样我们就不用传入一大堆的-e命令了：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -itd --env-file env.list xxx:latest<br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　经过测试，三种方式的优先级如下：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <blockquote>
 <p>-e指令 <code>大于&gt;</code> –env-file <code>大于&gt;</code> ENV指令</p>
 </blockquote>
 <p>　　我们查看容器的环境变量也很简单，通过<code>inspect</code>命令，也可以加上grep过滤想要的字段：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker inspect XXX <br>$ docker inspect XXX | grep MYSQL_USER<br></code></pre></div></td></tr></table></figure>
 
 <p>　　也可以解析一下返回内容：</p>
@@ -317,17 +314,18 @@
 <h1 id="镜像与容器的导入导出"><a href="#镜像与容器的导入导出" class="headerlink" title="镜像与容器的导入导出"></a>镜像与容器的导入导出</h1><p>　　有时候我们部署docker容器会遇到问题，比如服务器在内网，不能连接外网的情况（一些具有较高保密性的企业），或者网络下载慢，不通畅；我们就可以编译、导出镜像后在内网服务器导入，就可以实现内网部署。</p>
 <h2 id="镜像save和load"><a href="#镜像save和load" class="headerlink" title="镜像save和load"></a>镜像save和load</h2><p>　　镜像的导入我们通常使用<code>docker save</code>和``docker load`命令，save命令将镜像打包成tar文件：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker save img:latest &gt; img.tar<br><span class="hljs-comment"># 或者</span><br>$ docker save -o img.tar img:latest<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <blockquote>
 <p>导出镜像尽量使用<code>镜像名:标签</code>的形式，使用镜像id容易出现导入后镜像名出现<code>&lt;none&gt;</code>的情况。</p>
 </blockquote>
 <p>　　我们还可以将多个镜像打包到一个文件进行导出：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker save img1:latest img2:latest &gt; img.tar<br></code></pre></div></td></tr></table></figure>
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　使用load命令就可以将导出的镜像包加载进来：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker load &lt; img.tar<br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 
 <p>　　save和load的应用场景，就是我们上面说的内网部署的情况；同时如果我们的应用还是使用docker compose编排的多个镜像组合，就可以使用save将用到的多个镜像打包，然后拷贝到客户服务器上使用load载入。</p>
@@ -348,13 +346,12 @@
 <li>docker load用来载入镜像包，docker import用来载入容器包，但两者都会恢复为镜像；</li>
 <li>docker load不能对载入的镜像重命名，而docker import可以为镜像指定新名称。</li>
 </ul>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h1 id="私有仓库"><a href="#私有仓库" class="headerlink" title="私有仓库"></a>私有仓库</h1><p>　　在Docker中，我们执行<code>pull XXX</code>某个镜像的时候，实际上它是从<code>registry.hub.docker.com</code>官方的镜像仓库去拉取的；在实际工作中，我们不会把企业的项目push到公有仓库中管理；所以为了更好的管理，Docker不仅提供了公有仓库，也允许我们搭建私有仓库。</p>
 <p>　　Docker Registry是一个无状态，高度可扩展的服务器端应用程序，它存储并允许您分发Docker映像；我们通过run命令启动：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -d -p 5000:5000 -v <span class="hljs-variable">$PWD</span>:/var/lib/registry --restart=always --name registry registry:2<br></code></pre></div></td></tr></table></figure>
 
 <p>　　Registry服务默认将上传的镜像保存在容器的<code>/var/lib/registry</code>，我们可以将服务器本地的文件夹挂载到该目录，即可实现保存镜像；通过以下curl我们可以查看服务器是否启动，以及服务器上的镜像。</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ curl http://192.168.0.1:5000/v2/_catalog<br><br><span class="hljs-comment"># 返回数据：&#123;&quot;repositories&quot;:[]&#125;</span><br></code></pre></div></td></tr></table></figure>
 
 
@@ -362,14 +359,15 @@
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">The push refers to repository [192.168.0.1:5000/server]<br>Get <span class="hljs-string">&quot;https://192.168.0.1:5000/v2/&quot;</span>: http: server gave HTTP response to HTTPS client<br></code></pre></div></td></tr></table></figure>
 
 <p>　　在windows的Docker客户端，我们可以直接修改Desktop的配置，在Setting中选择<code>Docker Engine</code>，添加insecure-registries字段，完成后点击<code>Apply &amp; Restart</code>重启即可：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/FrontEnd-Docker-Compose/registry-http.png" srcset="/img/loading.gif" lazyload alt="添加http仓库地址"></p>
 <p>　　在linux客户端，我们修改<code>/etc/docker/daemon.json</code>文件，我们同样也是加入<code>insecure-registries</code>，然后执行命令<code>sudo service docker restart</code>重启docker：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;insecure-registries&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;192.168.0.1:5000&quot;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <blockquote>
 <p>修改该文件必须符合JSON文件规范，否则会启动失败</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </blockquote>
 <p>　　Registry服务启动后，我们来看下如何推送镜像到仓库中；我们从Docker Hub下载一个<code>ubuntu:18.04</code>镜像，然后将它推送到私有仓库；首先给这个镜像重新打上服务器的标签：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker tag ubuntu:18.04 192.168.0.1:5000/my-ubuntu:latest<br></code></pre></div></td></tr></table></figure>
@@ -378,46 +376,44 @@
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker push 192.168.0.1:5000/my-ubuntu:latest<br></code></pre></div></td></tr></table></figure>
 
 <p>　　我们可以在另外一台机器上拉取这个镜像，也可以将本地的<code>192.168.0.1:5000/my-ubuntu:latest</code>和<code>ubuntu:18.04</code>镜像删除后，再次拉取：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker pull 192.168.0.1:5000/my-ubuntu:latest<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　再次curl查看服务器，我们就能看到该镜像已经在服务器生效了</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ curl http://192.168.0.1:5000/v2/_catalog<br><br><span class="hljs-comment"># 返回数据：&#123;&quot;repositories&quot;:[&quot;my-ubuntu&quot;]&#125;</span><br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <h2 id="开启认证"><a href="#开启认证" class="headerlink" title="开启认证"></a>开启认证</h2><p>　　我们上面仓库搭建后，所有客户端都可以push、pull，这是我们不希望看到的，我们想要认证的用户才能够访问；将原有容器删除，创建一个保存账号密码的文件：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ <span class="hljs-built_in">mkdir</span> -p ~/auth &amp;&amp; <span class="hljs-built_in">cd</span> ~/auth<br>$ docker run --<span class="hljs-built_in">rm</span>  --entrypoint htpasswd httpd:alpine -Bbn username password &gt; ./htpasswd<br></code></pre></div></td></tr></table></figure>
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　将上面的username和password替换成自己的账号密码，运行容器时我们绑定auth文件夹：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -d -p 5000:5000<br>    -v <span class="hljs-variable">$PWD</span>:/var/lib/registry \ <br>    -v ~/auth:/auth \<br>    -e <span class="hljs-string">&quot;REGISTRY_AUTH=htpasswd&quot;</span> \<br>    -e <span class="hljs-string">&quot;REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm&quot;</span> \<br>    -e  REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \<br>    --restart always --name registry registry:2<br></code></pre></div></td></tr></table></figure>
 
 <p>　　服务器开启认证后客户端再pull、push会提示<code>no basic auth credentials</code>，我们需要先进行登录操作：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 登录</span><br>$ docker login 192.168.0.1:5000<br><span class="hljs-comment"># 退出登录</span><br>$ docker <span class="hljs-built_in">logout</span> 192.168.0.1:5000<br><br><span class="hljs-comment"># windows客户端运行添加winpty</span><br>$ winpty docker login 192.168.0.1:5000<br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 
 <h1 id="Compose"><a href="#Compose" class="headerlink" title="Compose"></a>Compose</h1><p>　　<code>Docker Compose</code>是Docker官方的开源项目，负责实现对Docker容器集群的快速编排。在前两篇Docker中，我们都是介绍了单个容器的构建和使用方式；在日常开发中我们经常会遇到需要多个容器相互配合使用的情况，比如除了web项目本身，还要数据库支持，nginx负载均衡等等；如果所有容器都通过命令行的方式构建、启动、删除等操作会十分繁琐；就好像你每天下班回到家里，都需要进行开灯、关闭窗帘、打开电视、煮饭等等一系列简单且重复的操作。</p>
 <p>　　Compose的出现就解决了这个问题，它通过定义一个模板文件<code>docker-compose.yml</code>来管理一组相关联的容器，所有容器的配置、环境等都记录到文件中，通过一个命令就可以控制所有的容器；Compose就像智能家居的管家，我们只需要将开灯、关闭窗帘、打开电视、煮饭等操作在App中进行定义，我们下班回到家里只要对着它发出指令：<code>回家啦！</code>，它就会自动帮你把所有的事情做了。</p>
 <p><img src="/images/FrontEnd-Docker-Compose/home.jpg" srcset="/img/loading.gif" lazyload alt="回家啦"></p>
-<h2 id="安装卸载"><a href="#安装卸载" class="headerlink" title="安装卸载"></a>安装卸载</h2><p>　　Docker Compose支持Windows、macOS和Linux平台，在Windows和macOS平台我们直接下载安装包安装后自带Compose，直接可以使用，我们通过<code>version</code>查看安装情况：</p>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="安装卸载"><a href="#安装卸载" class="headerlink" title="安装卸载"></a>安装卸载</h2><p>　　Docker Compose支持Windows、macOS和Linux平台，在Windows和macOS平台我们直接下载安装包安装后自带Compose，直接可以使用，我们通过<code>version</code>查看安装情况：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker-compose --version<br>docker-compose version 1.29.2, build 5becea4c<br></code></pre></div></td></tr></table></figure>
 
 <p>　　Linux的安装也很简单，直接从官网下载编译好的二进制文件并赋予执行权限即可：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ sudo curl -L https://github.com/docker/compose/releases/download/1.27.4/docker-compose-`<span class="hljs-built_in">uname</span> -s`-`<span class="hljs-built_in">uname</span> -m` &gt; /usr/local/bin/docker-compose<br><br><span class="hljs-comment"># 国内用户可以使用以下方式加快下载</span><br>$ sudo curl -L https://download.fastgit.org/docker/compose/releases/download/1.27.4/docker-compose-`<span class="hljs-built_in">uname</span> -s`-`<span class="hljs-built_in">uname</span> -m` &gt; /usr/local/bin/docker-compose<br><br>$ sudo <span class="hljs-built_in">chmod</span> +x /usr/local/bin/docker-compose<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 
 <h2 id="nodejs和redis使用"><a href="#nodejs和redis使用" class="headerlink" title="nodejs和redis使用"></a>nodejs和redis使用</h2><p>　　常见的项目就是web网站，包括web应用和数据库（mysql、mongodb或redis），我们尝试一个能够简单记录页面访问次数的web应用。新建一个express项目，编写<code>app.js</code>文件：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;express&quot;</span>);<br><span class="hljs-keyword">const</span> &#123; createClient &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;redis&quot;</span>);<br><span class="hljs-keyword">const</span> app = <span class="hljs-title function_">express</span>();<br><span class="hljs-keyword">const</span> client = <span class="hljs-title function_">createClient</span>(&#123;<br>  <span class="hljs-attr">url</span>: <span class="hljs-string">&quot;redis://redis:6379&quot;</span>,<br>&#125;);<br>app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;/&quot;</span>, <span class="hljs-keyword">async</span> (req, res) =&gt; &#123;<br>  <span class="hljs-keyword">let</span> counter = <span class="hljs-keyword">await</span> client.<span class="hljs-title function_">incr</span>(<span class="hljs-string">&quot;counter&quot;</span>);<br>  res.<span class="hljs-title function_">send</span>(<span class="hljs-string">`Hello World! 该页面已被访问 <span class="hljs-subst">$&#123;counter&#125;</span> 次`</span>);<br>&#125;);<br>app.<span class="hljs-title function_">listen</span>(<span class="hljs-number">8000</span>, <span class="hljs-keyword">async</span> () =&gt; &#123;<br>  <span class="hljs-keyword">await</span> client.<span class="hljs-title function_">connect</span>();<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 
 <p>　　这里我们连接redis的时候使用了容器名称，而不是ip，下面我们会使用容器名称和静态两种连接方式。再编写我们的<code>Dockerfile</code>，构建镜像：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight dockerfile"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> node:<span class="hljs-number">14.19</span>-alpine<br><span class="hljs-keyword">WORKDIR</span><span class="language-bash"> /app</span><br><span class="hljs-keyword">COPY</span><span class="language-bash"> package*.json ./</span><br><span class="hljs-keyword">RUN</span><span class="language-bash"> npm install --registry https://registry.npm.taobao.org</span><br><span class="hljs-keyword">COPY</span><span class="language-bash"> . .</span><br><span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">8000</span><br><span class="hljs-keyword">CMD</span><span class="language-bash"> npm run start</span><br></code></pre></div></td></tr></table></figure>
 
 
 <p>　　编写<code>docker-compose.yml</code>文件，这是Compose的模板文件，我们用到2个服务：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">web:</span><br>    <span class="hljs-attr">build:</span> <span class="hljs-string">./</span><br>    <span class="hljs-attr">depends_on:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">redis</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;8000:8000&quot;</span><br>    <span class="hljs-attr">restart:</span> <span class="hljs-string">always</span><br>  <span class="hljs-attr">redis:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">&quot;redis:alpine&quot;</span><br>    <span class="hljs-attr">restart:</span> <span class="hljs-string">always</span><br></code></pre></div></td></tr></table></figure>
 
 <p>　　在项目中允许<code>docker-compose up -d</code>就在后台启动了Compose项目，访问8000端口，每次刷新页面，计数就会加1。</p>
@@ -437,15 +433,15 @@
 
 <h3 id="start"><a href="#start" class="headerlink" title="start"></a>start</h3><p>　　启动已经存在的服务容器。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker-compose start [service name]<br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <h3 id="stop"><a href="#stop" class="headerlink" title="stop"></a>stop</h3><p>　　停止已经处于运行状态的容器，但不删除它。通过<code>start</code>可以再次启动这些容器。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker-compose stop [service name]<br></code></pre></div></td></tr></table></figure>
 
 
-
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
 <h3 id="images"><a href="#images" class="headerlink" title="images"></a>images</h3><p>　　列出Compose文件中包含的镜像。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker-compose images<br></code></pre></div></td></tr></table></figure>
 
@@ -453,10 +449,11 @@
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker-compose scale web=2 db=3<br></code></pre></div></td></tr></table></figure>
 
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <h3 id="build"><a href="#build" class="headerlink" title="build"></a>build</h3><p>　　构建（重新构建）项目中的服务容器。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker-compose build<br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　或者单独构建某个服务的容器。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker-compose build [service name]<br></code></pre></div></td></tr></table></figure>
@@ -465,8 +462,8 @@
 <h3 id="down"><a href="#down" class="headerlink" title="down"></a>down</h3><p>　　此命令将会停止up命令所启动的容器，并移除网络。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker-compose down<br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h3 id="up"><a href="#up" class="headerlink" title="up"></a>up</h3><p>　　此命令将自动完成包括构建镜像，（重新）创建服务，启动服务，并关联服务相关容器的一系列操作；可以直接通过该命令来启动一个项目。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker-compose up<br></code></pre></div></td></tr></table></figure>
 
 <p>　　默认情况下，启动的容器都在前台运行，使用<code>-d</code>参数，将会在后台启动并运行所有的容器，一般在生产环境使用。</p>
@@ -474,75 +471,76 @@
 
 
 <h2 id="Compose模板文件"><a href="#Compose模板文件" class="headerlink" title="Compose模板文件"></a>Compose模板文件</h2><p>　　Compose通过配置文件<code>docker-compose.yml</code>来管理多个Docker容器，模板文件主要分为3个部分：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <ul>
 <li>service（服务）:在它下面可以定义应用需要的一些服务，每个服务都有自己的名字、使用的镜像、挂载的数据卷、所属的网络、依赖哪些其他服务等等。</li>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <li>volumes（数据卷）：定义数据卷，然后挂载到不同的服务使用。</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <li>networks （应用网络）：定义应用名字，使用的网络类型。</li>
 </ul>
 <p>　　下面介绍一些主要指令的使用。</p>
 <h3 id="version"><a href="#version" class="headerlink" title="version"></a>version</h3><p>　　yarm文件一般开头就是version字段，version指定了版本信息，关乎docker的兼容性，Compose文件格式有3个版本，分别为1，2.x和3.x。两者的版本要求如下表：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <table>
 <thead>
 <tr>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <th>compose文件格式版本</th>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <th>docker版本</th>
 </tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </thead>
 <tbody><tr>
 <td>3.4</td>
 <td>17.09.0+</td>
 </tr>
 <tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>3.3</td>
 <td>17.06.0+</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
 <tr>
 <td>3.2</td>
 <td>17.04.0+</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
 <tr>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>3.1</td>
 <td>1.13.1+</td>
 </tr>
 <tr>
 <td>3.0</td>
 <td>1.13.0+</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
 <tr>
 <td>2.3</td>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>17.06.0+</td>
 </tr>
 <tr>
 <td>2.2</td>
 <td>1.13.0+</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
 <tr>
 <td>2.1</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>1.12.0+</td>
 </tr>
 <tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>2.0</td>
 <td>1.10.0+</td>
 </tr>
 <tr>
 <td>1.0</td>
 <td>1.9.1.+</td>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
-</tbody></table>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</tbody></table>
 <h3 id="image"><a href="#image" class="headerlink" title="image"></a>image</h3><p>　　从指定的镜像中启动容器，可以是存储仓库、标签以及镜像ID。</p>
 <h3 id="build-1"><a href="#build-1" class="headerlink" title="build"></a>build</h3><p>　　指定<code>Dockerfile</code>所在文件夹的路径，可以是绝对路径，也可以是相对docker-compose.yml文件的路径</p>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">web:</span><br>    <span class="hljs-attr">build:</span> <span class="hljs-string">/path/to/build/dir</span><br></code></pre></div></td></tr></table></figure>
-
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
 <p>　　如果dockerfile文件名不是默认名，需要指定：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">web:</span><br>    <span class="hljs-attr">build:</span><br>      <span class="hljs-attr">context:</span> <span class="hljs-string">./</span><br>      <span class="hljs-attr">dockerfile:</span> <span class="hljs-string">Dockerfile-alternate</span><br>      <span class="hljs-attr">args:</span><br>        <span class="hljs-attr">var1:</span> <span class="hljs-number">1</span><br>        <span class="hljs-attr">var2:</span> <span class="hljs-string">c</span><br></code></pre></div></td></tr></table></figure>
 
@@ -550,73 +548,71 @@
 <blockquote>
 <p>注意：任何environment与args变量同名的env变量（使用块指定）将覆盖该变量。</p>
 </blockquote>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h3 id="command"><a href="#command" class="headerlink" title="command"></a>command</h3><p>　　覆盖容器启动后默认执行的命令。</p>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">web:</span><br>    <span class="hljs-attr">build:</span> <span class="hljs-string">./</span><br>    <span class="hljs-attr">command:</span> <span class="hljs-string">echo</span> <span class="hljs-string">&quot;hello world&quot;</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <h3 id="links"><a href="#links" class="headerlink" title="links"></a>links</h3><p>　　将指定容器连接到当前连接，可以设置别名，避免ip方式导致的容器重启动态改变的无法连接情况。</p>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">web:</span><br>    <span class="hljs-attr">build:</span> <span class="hljs-string">./</span><br>    <span class="hljs-attr">links:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">redis:rd</span><br>  <span class="hljs-attr">redis:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">&quot;redis:alpine&quot;</span><br></code></pre></div></td></tr></table></figure>
 
-
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
 <p>　　我们在web容器中使用<code>rd</code>就能访问redis，而不用ip。</p>
 <h3 id="external-links"><a href="#external-links" class="headerlink" title="external_links"></a>external_links</h3><p>　　链接到<code>docker-compose.yml</code>外部的容器，甚至并非Compose管理的外部容器。</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">external_links:</span><br> <span class="hljs-bullet">-</span> <span class="hljs-string">redis_1</span><br> <span class="hljs-bullet">-</span> <span class="hljs-string">project_db_1:mysql</span><br> <span class="hljs-bullet">-</span> <span class="hljs-string">project_db_1:postgresql</span><br></code></pre></div></td></tr></table></figure>
 
 
 <h3 id="depends-on"><a href="#depends-on" class="headerlink" title="depends_on"></a>depends_on</h3><p>　　解决容器的依赖、启动先后的问题。以下例子中会先启动redis和db再启动web。</p>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">web:</span><br>    <span class="hljs-attr">build:</span> <span class="hljs-string">.</span><br>    <span class="hljs-attr">depends_on:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">db</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">redis</span><br><br>  <span class="hljs-attr">redis:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">redis</span><br><br>  <span class="hljs-attr">db:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">postgres</span><br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>注意：web服务不会等待redis db「完全启动」之后才启动。</p>
 </blockquote>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h3 id="networks"><a href="#networks" class="headerlink" title="networks"></a>networks</h3><p>　　默认情况下，Compose会为我们的应用设置一个网络，服务的每个容器都加入默认网络，并且可以被该网络上的其他容器访问。</p>
 <p>　　Compose创建的网络名称基于我们所在项目的<code>目录名称</code>，比如我们项目在myapp目录下，那Compose会创建一个<code>myapp_default</code>网络。</p>
 <p>　　有些场景下，默认的网络配置不能满足我们的需求，我们可以通过<code>networks</code>指令配置网络，通过<code>default</code>对默认的网络进行配置：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">web:</span><br>    <span class="hljs-attr">build:</span> <span class="hljs-string">.</span><br><br><span class="hljs-attr">networks:</span><br>  <span class="hljs-attr">default:</span><br>    <span class="hljs-attr">driver:</span> <span class="hljs-string">bridge</span><br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　我们还可以自定义网络：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">web:</span><br>    <span class="hljs-attr">build:</span> <span class="hljs-string">.</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">front</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">back</span><br>  <span class="hljs-attr">redis:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">&quot;redis:alpine&quot;</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">front</span><br>  <span class="hljs-attr">db:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">postgres</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">back</span><br><br><br><span class="hljs-attr">networks:</span><br>  <span class="hljs-attr">front:</span><br>    <span class="hljs-attr">driver:</span> <span class="hljs-string">bridge</span><br>  <span class="hljs-attr">back:</span><br>    <span class="hljs-attr">driver:</span> <span class="hljs-string">bridge</span><br>    <span class="hljs-attr">driver_opts:</span><br>      <span class="hljs-attr">foo:</span> <span class="hljs-string">&quot;1&quot;</span><br>      <span class="hljs-attr">bar:</span> <span class="hljs-string">&quot;2&quot;</span><br></code></pre></div></td></tr></table></figure>
 
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　我们这里定义了front和back两个网络，web应用同时在两个网络中均能访问redis和db，而redis和db实现了隔离。<code>driver_opts</code>将选项列表指定为键值对以传递给此网络的驱动程序。</p>
 <p>　　我们有时候不需要创建新的网络，只需要加入已有网络，可以使用<code>external</code>选项，指定一个已经存在的网络名称：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">web:</span><br>    <span class="hljs-attr">build:</span> <span class="hljs-string">.</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">outside</span><br><br><span class="hljs-attr">networks:</span><br>  <span class="hljs-attr">outside:</span><br>    <span class="hljs-attr">external:</span><br>      <span class="hljs-attr">name:</span> <span class="hljs-string">&#x27;my-existing-network&#x27;</span><br></code></pre></div></td></tr></table></figure>
 
 
 
 <p>　　加入网络时，我们可以指定容器的<code>静态ip地址</code>，这样我们在进行数据库连接时，可以不用容器服务名称，而直接使用ip地址：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">web:</span><br>    <span class="hljs-attr">build:</span> <span class="hljs-string">.</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-attr">mynet:</span> <br>        <span class="hljs-attr">ipv4_address:</span> <span class="hljs-number">172.19</span><span class="hljs-number">.0</span><span class="hljs-number">.3</span><br><br>  <span class="hljs-attr">redis:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">&quot;redis:alpine&quot;</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-attr">mynet:</span><br>        <span class="hljs-attr">ipv4_address:</span> <span class="hljs-number">172.19</span><span class="hljs-number">.0</span><span class="hljs-number">.4</span><br><br><span class="hljs-attr">networks:</span><br>  <span class="hljs-attr">mynet:</span><br>    <span class="hljs-attr">ipam:</span><br>      <span class="hljs-attr">driver:</span> <span class="hljs-string">default</span><br>      <span class="hljs-attr">config:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-attr">subnet:</span> <span class="hljs-number">172.19</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span><span class="hljs-string">/16</span><br></code></pre></div></td></tr></table></figure>
 
 
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h3 id="network-mode"><a href="#network-mode" class="headerlink" title="network_mode"></a>network_mode</h3><p>　　设置网络模式。使用和docker run的–network参数一样的值。</p>
 <figure class="highlight avrasm"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs avrasm"><span class="hljs-symbol">network_mode:</span> <span class="hljs-string">&quot;bridge&quot;</span><br><span class="hljs-symbol">network_mode:</span> <span class="hljs-string">&quot;host&quot;</span><br><span class="hljs-symbol">network_mode:</span> <span class="hljs-string">&quot;none&quot;</span><br><span class="hljs-symbol">network_mode:</span> <span class="hljs-string">&quot;service:[service name]&quot;</span><br><span class="hljs-symbol">network_mode:</span> <span class="hljs-string">&quot;container:[container name/id]&quot;</span><br></code></pre></div></td></tr></table></figure>
 
 
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h3 id="environment"><a href="#environment" class="headerlink" title="environment"></a>environment</h3><p>　　在容器中设置环境变量，等同于<code>docker run -e VARIABLE=VALUE ...</code></p>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">web:</span><br>    <span class="hljs-attr">build:</span> <span class="hljs-string">.</span><br>    <span class="hljs-attr">environment:</span><br>      <span class="hljs-attr">MODE:</span> <span class="hljs-string">development</span><br>      <span class="hljs-attr">SHOW:</span> <span class="hljs-string">&#x27;true&#x27;</span><br>    <span class="hljs-comment"># 等同于</span><br>    <span class="hljs-attr">environment:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">MODE=development</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">SHOW=&#x27;true&#x27;</span><br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 
 <h3 id="env-file"><a href="#env-file" class="headerlink" title="env_file"></a>env_file</h3><p>　　从文件中获取环境变量，等同于<code>docker run --env-file ...</code>。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">env_file:</span> <span class="hljs-string">.env</span><br><br><span class="hljs-attr">env_file:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">./common.env</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">./apps/web.env</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">/opt/secrets.env</span><br></code></pre></div></td></tr></table></figure>
 
 <p>　　环境变量文件中每一行必须符合格式，支持<code>#</code>开头的注释行。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight ini"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ini"><span class="hljs-comment"># common.env: Set development environment</span><br><span class="hljs-attr">PROG_ENV</span>=development<br></code></pre></div></td></tr></table></figure>
 
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <blockquote>
 <p>如果有变量名称与environment指令冲突，以environment指令为准。</p>
 </blockquote>
@@ -624,73 +620,73 @@
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">web:</span><br>    <span class="hljs-attr">build:</span> <span class="hljs-string">.</span><br>    <span class="hljs-attr">volumes:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">/app/configs</span> <span class="hljs-comment"># 随机数据卷</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">./configs:/app/configs:ro</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">/path/to/logs:/app/logs</span><br></code></pre></div></td></tr></table></figure>
 
 <p>　　另一种方式直接设置数据卷的名称，需要在文件中配置数据卷：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">web:</span><br>    <span class="hljs-attr">build:</span> <span class="hljs-string">./</span><br>    <span class="hljs-attr">volumes:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">config_data:/app/configs</span><br><br><span class="hljs-attr">volumes:</span><br>  <span class="hljs-attr">config_data:</span><br></code></pre></div></td></tr></table></figure>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">web:</span><br>    <span class="hljs-attr">build:</span> <span class="hljs-string">./</span><br>    <span class="hljs-attr">volumes:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">config_data:/app/configs</span><br><br><span class="hljs-attr">volumes:</span><br>  <span class="hljs-attr">config_data:</span><br></code></pre></div></td></tr></table></figure>
 
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h3 id="ports"><a href="#ports" class="headerlink" title="ports"></a>ports</h3><p>　　端口暴露给宿主机，如果仅仅指定容器端口，宿主机将会随机选择端口。</p>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">ports:</span><br> <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;3000&quot;</span> <span class="hljs-comment"># 绑定容器的3000端口到主机任意端口</span><br> <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;8000:8000&quot;</span><br> <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;12222:22&quot;</span><br></code></pre></div></td></tr></table></figure>
 
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <h3 id="expose"><a href="#expose" class="headerlink" title="expose"></a>expose</h3><p>　　暴露端口，和ports的区别是，expose不映射到宿主机，只被连接的服务访问。</p>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">expose:</span><br> <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;3000&quot;</span><br> <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;8000&quot;</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <h3 id="dns"><a href="#dns" class="headerlink" title="dns"></a>dns</h3><p>　　自定义DNS服务器。可以是一个值，也可以是一个列表。</p>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">dns:</span> <span class="hljs-number">8.8</span><span class="hljs-number">.8</span><span class="hljs-number">.8</span><br><br><span class="hljs-attr">dns:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-number">8.8</span><span class="hljs-number">.8</span><span class="hljs-number">.8</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-number">114.114</span><span class="hljs-number">.114</span><span class="hljs-number">.114</span><br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 
 <h3 id="restart"><a href="#restart" class="headerlink" title="restart"></a>restart</h3><p>　　指定容器退出后的重启策略为始终重启。该命令对保持服务始终运行十分有效，在生产环境中推荐配置为<code>always</code>或者 <code>unless-stopped</code>。</p>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">web:</span><br>    <span class="hljs-attr">build:</span> <span class="hljs-string">./</span><br>    <span class="hljs-attr">restart:</span> <span class="hljs-string">always</span><br></code></pre></div></td></tr></table></figure>
 
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h1 id="docker镜像推荐"><a href="#docker镜像推荐" class="headerlink" title="docker镜像推荐"></a>docker镜像推荐</h1><p>　　下面推荐一些笔者常用的镜像。</p>
 <h2 id="gitbucket"><a href="#gitbucket" class="headerlink" title="gitbucket"></a>gitbucket</h2><p>　　如果我们自己想要一个私有的git开发仓库，或者公司小团队使用，gitbucket是一个不错的选择；相比于gitlab动辄就占用内存3G，gitbucket几百mb的大小已经是很小巧迷你了，再配上直男般的蓝黑色，让人简直。。。。不过好在一般我们都是敲的git命令，所以不用在意他的界面。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run --name git -itd -v <span class="hljs-variable">$PWD</span>:/var/gitbucket -p 8080:8080 -p 29418:29418 gitbucket/gitbucket<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　<code>8080</code>端口是它的界面的地址，<code>29418</code>端口是给git通过SSH去链接仓库的，建议开启。</p>
 <p><img src="/images/FrontEnd-Docker-Compose/gitbucket.png" srcset="/img/loading.gif" lazyload alt="gitbucket"></p>
 <h2 id="filebrowser"><a href="#filebrowser" class="headerlink" title="filebrowser"></a>filebrowser</h2><p>　　如果你受够了某网盘几十KB的小水管速度，那么<code>filebrowser</code>是你搭建一个轻量级的私有云盘不错的选择。另一款网盘工具nextcloud也十分的不错，功能丰富且强大，带有app功能，不过需要结合数据库使用，配置略微繁琐，喜欢折腾的小伙伴可以自己尝试。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　filebrowser使用了go语言编写，可以通过浏览器对服务器上的文件进行管理。可以是修改文件，或者是添加删除文件，甚至可以分享文件，是一个很棒的文件管理器，使用非常简单方便，功能很强大。</p>
 <p>　　使用docker安装也很方便，我们可以只映射/srv目录下的文件：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -d --restart=always -v <span class="hljs-variable">$PWD</span>:/srv -p 8080:80 filebrowser/filebrowser<br></code></pre></div></td></tr></table></figure>
 
 <p>　　再通过nginx转发8080端口，这样我们就能在外网访问了；nginx配置文件中还需要修改上传文件的大小限制，这里我们改到2GB，大部分的文件都能上传了：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs conf">http&#123;<br>    client_max_body_size 2000M;<br>    client_body_timeout  20m;<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/FrontEnd-Docker-Compose/filebrowser.gif" srcset="/img/loading.gif" lazyload alt="filebrowser"></p>
 <h2 id="scrapyd"><a href="#scrapyd" class="headerlink" title="scrapyd"></a>scrapyd</h2><p>　　我们身边有很多的爬虫应用案例，比如百度、Google、必应等搜索引擎都有自己的爬虫，会定时来抓取你的网站；再比如过年回家需要抢火车票，我们经常能够看到很多的抢票软件等，也都是爬虫的应用；不过我们在网络上肆意使用爬虫的时候也要注意相关法律法规，毕竟俗话说得好：</p>
 <blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>爬虫写得好，牢饭吃得饱</p>
 </blockquote>
 <p><img src="/images/FrontEnd-Docker-Compose/problem.jpg" srcset="/img/loading.gif" lazyload alt="不是说问题不大么"></p>
 <p>　　Scrapy是由Python语言开发的一个快速、高层次的屏幕抓取和web抓取框架，用于抓取web站点并从页面中提取结构化的数据，只需要实现少量的代码，就能够快速的抓取。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/FrontEnd-Docker-Compose/scrapy-flow.png" srcset="/img/loading.gif" lazyload alt="Scrapy爬虫流程"></p>
 <p>　　Scrapy爬虫部署需要使用scrapyd和scrapydweb，scrapyd是由scrapy开发者开发的、通过简单的JSON API来管理多个项目的应用；通过docker我们可以很轻松的启动一个scrapyd服务器：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -d -p 6800:6800 germey/scrapyd<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　它的界面比较简单，我们需要通过繁琐的API接口来上传项目、启动或者停止项目：</p>
 <p><img src="/images/FrontEnd-Docker-Compose/scrapyd.png" srcset="/img/loading.gif" lazyload alt="Scrapyd界面"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　因此Scrapy开发还提供了一个可视化管理爬虫的web应用，同时支持Scrapy日志分析和可视化。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run --name scrapydweb -e USERNAME admin \<br>    -e PASSWORD admin \<br>    -e SCRAPYD_SERVERS 127.0.0.1:6800 \<br>    -v /etc/timezone:/etc/timezone \<br>    -d scrapydweb:latest<br></code></pre></div></td></tr></table></figure>
 
 <p><img src="/images/FrontEnd-Docker-Compose/scrapydweb.png" srcset="/img/loading.gif" lazyload alt="Scrapydweb可视化界面"></p>
 <p>　　我们在web界面上就可以清楚的看到每个服务器运行爬虫的状态和数量，以及定时启动爬虫。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　Scrapy是一个非常好用的爬虫框架，如果本文的阅读量突破一万，后面笔者可以聊一下它的使用。</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="chevereto"><a href="#chevereto" class="headerlink" title="chevereto"></a>chevereto</h2><p>　　Chevereto是目前最好的图床之一了。功能也非常强大。其免费版和收费版的区别，在于收费版多了硬盘扩展，社交分享功能和技术支持，免费版的功能也够用了；Chevereto依赖的环境如下：</p>
 <ul>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>PHP 5.5+</li>
 <li>MySQL 5.0+</li>
 </ul>
@@ -704,27 +700,29 @@
 <p>　　PHP默认限制上传大小为2MB，我们需要修改容器中的文件解除此限制；首先使用<code>cp命令</code>把容器中的<code>.htaccess</code>文件拷贝出来：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker <span class="hljs-built_in">cp</span> XXXX:/var/www/html/.htaccess ./<br></code></pre></div></td></tr></table></figure>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　然后编辑文件.htaccess，设置最大上传大小为大一点的数值，比如这里设为128MB，数值可以根据自己需要调整：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs file">php_value post_max_size 128M<br>php_value upload_max_filesize 128M<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　我们把文件拷贝回容器的原处即可：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker <span class="hljs-built_in">cp</span> ./.htaccess XXXX:/var/www/html/<br></code></pre></div></td></tr></table></figure>
 
 <p>　　最后一步我们在设置中修改上传限制，进入Chevereto，单击用户名弹出下拉菜单，选择【仪表盘】，然后点【设置】，弹出页面中选择【图片上传】，找到【最大上传文件大小】选项，修改不超过128的数值即可：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/FrontEnd-Docker-Compose/chevereto-upload.png" srcset="/img/loading.gif" lazyload alt="修改上传大小"></p>
 <blockquote>
 <p>如果没有修改.htaccess文件，最后一个步骤的设置调整是不能超过2MB的。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </blockquote>
 <p>　　这样我们的图床就搭建以及配置完毕了，其他个性化需要可以在设置中自行配置；我们去首页就能随意上传和查看图片了；通过nginx代理转发我们还可以暴露到外网，将你的美照分享给好友（前提是有公网IP或云服务器）。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/FrontEnd-Docker-Compose/chevereto-home.png" srcset="/img/loading.gif" lazyload alt="Chevereto首页"></p>
 <h2 id="portainer"><a href="#portainer" class="headerlink" title="portainer"></a>portainer</h2><p>　　Portainer是一个可视化的Docker操作界面，提供状态显示面板、应用模板快速部署、容器镜像网络数据卷的基本操作（包括上传下载镜像，创建容器等操作）、事件日志显示、容器控制台操作、Swarm集群和服务等集中管理和操作、登录用户管理和控制等功能。功能十分全面，基本能满足中小型单位对容器管理的全部需求。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　通过一个run命令我们就可以启动portainer，<code>/var/run/docker.sock</code>是绑定宿主机的docker文件，在容器内部直接与docker守护进程通信进行接口调用：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run --name portainer -d -p 9000:9000 --restart=always \<br>        -v <span class="hljs-variable">$PWD</span>:/data<br>        -v /var/run/docker.sock:/var/run/docker.sock \<br>        portainer/portainer-ce<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　容器启动后，设置管理员账号密码，进入Portainer后台管理界面，点击Local环境就能够使用了：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/FrontEnd-Docker-Compose/portainer.png" srcset="/img/loading.gif" lazyload alt="Portainer"></p>
 <p>　　容器和镜像的管理也很方便，在管理界面直接增删镜像或容器即可；创建容器也直接可视化了，我们打开【Container】=&gt;【Add container】，然后设置容器运行所需要的参数，我们这里以mysql为例：</p>
 <p><img src="/images/FrontEnd-Docker-Compose/portainer-create.png" srcset="/img/loading.gif" lazyload alt="Portainer创建容器"></p>
@@ -733,32 +731,33 @@
 <h2 id="webssh"><a href="#webssh" class="headerlink" title="webssh"></a>webssh</h2><p>　　Webssh是指通过浏览器以网页的形式通过SSH协议远程访问任何开启了SSH服务的设备；webssh工作的原理也很简单，大致如下：</p>
 <figure class="highlight smalltalk"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs smalltalk">+---------+     http     +--------+    ssh    +-----------+<br>| browser | &lt;==========&gt; | webssh | &lt;=======&gt; | ssh server|<br>+---------+   websocket  +--------+    ssh    +-----------+<br></code></pre></div></td></tr></table></figure>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　在后台启动一个webssh的后端服务器（python程序或其他语言开发的），前端浏览器通过websocket和服务器进行通信，将一些命令发送到webssh服务器，webssh服务器再将接收命令发送给需要通信且开启了ssh功能的服务器。</p>
 <p>　　使用Webssh的好处是：在存在堡垒机（即跳板机）的环境下，如果堡垒机本身有开启web服务的话，那可以在堡垒机上部署webssh，这时不用通过SSH或者RDP访问堡垒机，直接打开浏览器就能以web形式通过堡垒机来SSH远程访问网络设备，这在一些内网防火墙不允许SSH，但是允许HTTP和HTTPS的环境中很实用。而且免去了安装putty、secureCRT等SSH client软件的必要。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　通过docker运行webssh服务器也很简单：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run -itd --name webssh --restart=always -p 8888:8888 webssh<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　然后通过浏览器访问webssh服务器IP+8888端口号就可以进入它的界面了，它的界面也很简洁，甚至有着一丝丝的简陋，不过部署到堡垒机能用就行，还要啥自行车啊。通过填写堡垒机的hostname、端口等参数就能连接堡垒机ssh了：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/FrontEnd-Docker-Compose/webssh.png" srcset="/img/loading.gif" lazyload alt="webssh界面"></p>
 <h2 id="wizserver"><a href="#wizserver" class="headerlink" title="wizserver"></a>wizserver</h2><p>　　为知笔记是一款老牌笔记应用了，支持markdown、网页笔记、网页剪藏和分享等多功能，最近推出了docker私有化部署的功能，同时支持5个用户，适合小团队使用。</p>
 <p>　　我们新建一个wiznote目录，用于保存笔记的内容，然后run启动服务：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ docker run --name wiz \<br>    --restart=always -itd \<br>    -v <span class="hljs-variable">$PWD</span>/wiznote:/wiz/storage \<br>    -p 8080:80 \<br>    -p 9269:9269/udp \<br>    wiznote/wizserver<br></code></pre></div></td></tr></table></figure>
-
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
-<p>　　稍等几分钟就能看到服务启动了，在本地打开localhost:8080打开主界面，默认管理员账号：<a href="mailto:&#97;&#x64;&#109;&#105;&#110;&#x40;&#119;&#x69;&#x7a;&#46;&#x63;&#110;">&#97;&#x64;&#109;&#105;&#110;&#x40;&#119;&#x69;&#x7a;&#46;&#x63;&#110;</a>和密码123456。</p>
+
+<p>　　稍等几分钟就能看到服务启动了，在本地打开localhost:8080打开主界面，默认管理员账号：<a href="mailto:&#x61;&#100;&#x6d;&#105;&#x6e;&#64;&#119;&#105;&#x7a;&#46;&#99;&#110;">&#x61;&#100;&#x6d;&#105;&#x6e;&#64;&#119;&#105;&#x7a;&#46;&#99;&#110;</a>和密码123456。</p>
 <p><img src="/images/FrontEnd-Docker-Compose/wiz.png" srcset="/img/loading.gif" lazyload alt="为知笔记"></p>
 <p>　　为知笔记支持多平台客户端和移动端客户端，我们在客户端界面点击【切换服务器】，选择【企业私有服务器】，输入服务器的ip地址及端口号就能登录私有服务器：</p>
 <p><img src="/images/FrontEnd-Docker-Compose/wiz-private.png" srcset="/img/loading.gif" lazyload alt="私有服务器"></p>
 <h2 id="jellyfin"><a href="#jellyfin" class="headerlink" title="jellyfin"></a>jellyfin</h2><p>　　Jellyfin是一个自由的软件媒体系统，用于管理媒体和提供媒体服务，展示你自己的电影、电视剧、音乐等多媒体数据，并提供多平台访问播放服务。通过docker，我们可以很方便的启动它的服务；在本地创建media和config文件夹，media文件夹是媒体文件夹，我们可以根据需求继续创建media/movie、media/music等文件夹存放不同媒体资源：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">docker run -d --name jellyfin \<br>  -p 8096:8096 \<br>  -v <span class="hljs-variable">$PWD</span>/media:/media \<br>  -v <span class="hljs-variable">$PWD</span>/config:/config \<br>  --restart=always \<br>  jellyfin/jellyfin<br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　绑定不同端口说明如下：</p>
 <table>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <thead>
 <tr>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <th>端口</th>
 <th>说明</th>
 </tr>
@@ -766,8 +765,8 @@
 <tbody><tr>
 <td>8096</td>
 <td>WebUI 访问端口</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <tr>
 <td>7359/udp</td>
 <td>（可选）允许本地网络的客户端发现 Jellyfin</td>
@@ -776,29 +775,30 @@
 <td>1900/udp</td>
 <td>（可选）DLNA服务</td>
 </tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tbody></table>
 <p>　　容器创建后，我们打开localhost:8096就能打开安装向导页面，它的界面还是：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/FrontEnd-Docker-Compose/jellyfin.png" srcset="/img/loading.gif" lazyload alt="jellyfin安装"></p>
 <p>　　选择一系列的语言、国家（国家选择<code>People&#39;s Republic of China</code>）以及配置账号密码后我们就进入它的首页了；我们选择【添加媒体库】，选择你media文件夹下的子文件夹，就能看到其下面的媒体文件了：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/FrontEnd-Docker-Compose/jellyfin-media.png" srcset="/img/loading.gif" lazyload alt="添加媒体库"></p>
 <h2 id="aria2"><a href="#aria2" class="headerlink" title="aria2"></a>aria2</h2><p>　　Aria2是一款开源下载工具，可帮助简化不同设备和服务器之间的下载过程。它支持磁力链接、BT种子、http等类型的文件下载，与迅雷及QQ旋风相比，Aria2有着优秀的性能及较低的资源占用，架构本身非常轻巧，通常只需要4兆字节（HTTP下载）到9兆字节（用于BitTorrent交互）之间。</p>
 <p>　　另外，aria2由于它的开源特性，因此也用在很多离线下载的场景，比如很多路由器都支持aria2离线下载功能，我们在路由器的插件市场中安装aria2后，在路由器挂载u盘，上班的时候想要下载的电影、视频等链接丢给它，回到家就可以直接观看了；顺带提一下，chrome浏览器配合油猴插件直接愉快的离线下载百度网盘的文件。</p>
 <p>　　我们通过docker来安装aria2十分方便，新建一个<code>aria2-downloads</code>文件夹映射下载的目录，<code>aria2-config</code>文件夹映射配置的目录。这里的<code>p3terx/aria2-pro</code>镜像就是我们aria2下载的主程序，它是一个命令行的程序，因此搭配<code>p3terx/ariang</code>镜像作为它的可视化管理界面。用到了多个镜像，我们就可以通过docker compose来进行构建：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&quot;3&quot;</span><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">aria2-pro:</span><br>    <span class="hljs-attr">container_name:</span> <span class="hljs-string">aria2-pro</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">p3terx/aria2-pro</span><br>    <span class="hljs-attr">environment:</span><br>      <span class="hljs-comment"># uid，这里默认是nobody</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">PUID=65534</span><br>      <span class="hljs-comment"># gid，这里默认是nobody</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">PGID=65534</span><br>      <span class="hljs-comment"># 权限掩码</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">UMASK_SET=022</span><br>      <span class="hljs-comment"># rpc密钥token</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">RPC_SECRET=123456</span><br>      <span class="hljs-comment"># rpc端口</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">RPC_PORT=6800</span><br>      <span class="hljs-comment"># BT监听端口</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">LISTEN_PORT=6888</span><br>      <span class="hljs-comment"># 缓存</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">DISK_CACHE=64M</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">IPV6_MODE=false</span><br>      <span class="hljs-comment"># 自动更新tracker</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">UPDATE_TRACKERS=true</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">CUSTOM_TRACKER_URL=</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">TZ=Asia/Shanghai</span><br>    <span class="hljs-attr">network_mode:</span> <span class="hljs-string">bridge</span><br>    <span class="hljs-attr">volumes:</span><br>      <span class="hljs-comment"># 映射配置目录，默认为当前目录的aria2-confg</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">$&#123;PWD&#125;/aria2-config:/config</span><br>      <span class="hljs-comment"># 映射下载目录，默认为当前目录的aria2-downloads</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">$&#123;PWD&#125;/aria2-downloads:/downloads</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-number">6800</span><span class="hljs-string">:6800</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-number">6888</span><span class="hljs-string">:6888</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-number">6888</span><span class="hljs-string">:6888/udp</span><br>    <span class="hljs-attr">restart:</span> <span class="hljs-string">unless-stopped</span><br>    <span class="hljs-attr">logging:</span><br>      <span class="hljs-attr">driver:</span> <span class="hljs-string">json-file</span><br>      <span class="hljs-attr">options:</span><br>        <span class="hljs-attr">max-size:</span> <span class="hljs-string">1m</span><br>  <span class="hljs-attr">ariang:</span><br>    <span class="hljs-attr">container_name:</span> <span class="hljs-string">ariang</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">p3terx/ariang</span><br>    <span class="hljs-attr">network_mode:</span> <span class="hljs-string">bridge</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-comment"># 端口映射，默认6880，后面通过此端口访问页面</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-number">6880</span><span class="hljs-string">:6880</span><br>    <span class="hljs-attr">restart:</span> <span class="hljs-string">unless-stopped</span><br>    <span class="hljs-attr">logging:</span><br>      <span class="hljs-attr">driver:</span> <span class="hljs-string">json-file</span><br>      <span class="hljs-attr">options:</span><br>        <span class="hljs-attr">max-size:</span> <span class="hljs-string">1m</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　项目启动后，我们打开AriaNg的管理界面，在设置中配置yarml文件中的RPC端口（默认6800）和RPC密钥。</p>
 <p><img src="/images/FrontEnd-Docker-Compose/aria2-config.png" srcset="/img/loading.gif" lazyload alt="aria2配置"></p>
 <p>　　配置完成后，点击【新建】，输入你的下载链接就可以愉快地等待了。</p>
 <p><img src="/images/FrontEnd-Docker-Compose/aria2.png" srcset="/img/loading.gif" lazyload alt="aria2下载"></p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　下载速度和你的实际带宽以及资源情况等都有关系，上图仅做展示。</p>
 
             </div>
             <hr>
             <div>
-              <div class="post-metas mb-3">
+              
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script><div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>

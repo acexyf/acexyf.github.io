@@ -279,51 +279,53 @@
 
 
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>修改<code>配置文件</code></p>
 <figure class="highlight ini"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ini"><span class="hljs-comment">## 由于github仓库拉取较慢，所以会默认添加代理前缀，如不需要请移除</span><br><span class="hljs-attr">GithubProxyUrl</span>=<span class="hljs-string">&quot;https://git.metauniverse-cn.com/&quot;</span><br></code></pre></div></td></tr></table></figure>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 
 <p>在定时任务，新建<code>拉取任务脚本</code>的任务</p>
 <figure class="highlight awk"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs awk">ql repo https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/shufflewzc/</span>faker2.git <span class="hljs-string">&quot;jd_|jx_|gua_|jddj_|jdCookie&quot;</span> <span class="hljs-string">&quot;activity|backUp&quot;</span> <span class="hljs-string">&quot;^jd[^_]|USER|function|utils|sendNotify|ZooFaker_Necklace.js|JDJRValidator_|sign_graphics_validate|ql|JDSignValidator|magic|depend|h5sts&quot;</span> <span class="hljs-string">&quot;main&quot;</span><br></code></pre></div></td></tr></table></figure>
 
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>定时规则</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight basic"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span><span class="hljs-number">0</span> * * *<br></code></pre></div></td></tr></table></figure>
 
 
 
 
 <p>安装依赖</p>
-<p>Nodejs依赖</p>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>Nodejs依赖</p>
 <figure class="highlight crmsh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs crmsh">dotenv<br>jsdom<br>typescript<br>axios<br>ds<br>fs<br>js-base64<br>tslib<br>moment<br>proxy<br>json5<br>depend<br><span class="hljs-keyword">date</span>-fns<br>ts-md5<br>jieba<br>crypto-js<br>https<br>cjs<br>prettytable<br>ts-<span class="hljs-keyword">node</span><br><span class="hljs-title">node-telegram-bot-api</span><br>png-js<br>tough-cookie<br>@types/<span class="hljs-keyword">node</span><br><span class="hljs-title">npm</span><br>ws@<span class="hljs-number">7.4</span>.<span class="hljs-number">3</span><br>global-agent<br>ql<br>require<br>qs<br>agent<br><span class="hljs-keyword">node</span><span class="hljs-title">-jsencrypt</span><br>crypto<br>dm<br>common<br>requests<br>typescript<br></code></pre></div></td></tr></table></figure>
 
-
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
 
 <p>python3依赖</p>
 <figure class="highlight ebnf"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ebnf"><span class="hljs-attribute">httpx</span><br><span class="hljs-attribute">jieba</span><br><span class="hljs-attribute">typescript</span><br></code></pre></div></td></tr></table></figure>
 
-
-
-<p>Linux依赖</p>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>Linux依赖</p>
 <figure class="highlight ebnf"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ebnf"><span class="hljs-attribute">gcc</span><br><span class="hljs-attribute">lxm</span><br><span class="hljs-attribute">magic</span><br><span class="hljs-attribute">python-devel</span><br><span class="hljs-attribute">bizMsg</span><br><span class="hljs-attribute">aiohttp</span><br><span class="hljs-attribute">bizCode</span><br></code></pre></div></td></tr></table></figure>
 
 
 <p>新建环境变量<code>JD_COOKIE</code></p>
 <figure class="highlight ini"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ini"><span class="hljs-attr">pt_key</span>=XXX<br></code></pre></div></td></tr></table></figure>
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
             </div>
             <hr>
             <div>
-              <div class="post-metas mb-3">
+              
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p><div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>

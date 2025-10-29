@@ -1,0 +1,747 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="　　这不最近我司设计又又给我整活了，甩给我几张炫酷的图表效果图，看得我眼花缭乱；笔者瞅了一眼ECharts常规配置项，果然直接配置是实现不了的。不过没关系，这次正好深入ECharts的renderItem函数，它可以说是ECharts中实现高度自定义图表的”终极武器”。">
+  <meta name="author" content="Corner">
+  <meta name="keywords" content="Corner">
+  
+  <title>Echarts高级柱状图开发：渐变与3D效果实现 - 谢小飞的博客</title>
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://xieyufei.com/npm/highlight.js@10.7.2/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"xieyufei.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"466240fe55764d8ee20bd7f43c5e8b26","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":1260607518,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/title.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="谢小飞的博客" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>谢小飞的博客</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-pen"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-friends"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://gallery.xieyufei.com/">
+                <i class="iconfont icon-link-fill"></i>
+                创意
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookshelf/">
+                <i class="iconfont icon-books"></i>
+                书架
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('//xieyufei.com/blog/bg_small.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Echarts高级柱状图开发：渐变与3D效果实现">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2025-08-28 12:00" pubdate>
+        2025年8月28日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      80
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+<style>
+  .prevent_reptile{
+    display: none;
+  }
+</style>
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Echarts高级柱状图开发：渐变与3D效果实现</h1>
+            
+            <div class="markdown-body">
+              <p>　　这不最近我司设计又又给我整活了，甩给我几张炫酷的图表效果图，看得我眼花缭乱；笔者瞅了一眼ECharts常规配置项，果然直接配置是实现不了的。不过没关系，这次正好深入ECharts的renderItem函数，它可以说是ECharts中实现高度自定义图表的”终极武器”。</p>
+<span id="more"></span>
+
+
+<h1 id="renderItem"><a href="#renderItem" class="headerlink" title="renderItem"></a>renderItem</h1><p>　　想要实现上述效果，我们首先对echart的renderItem函数有一定的了解；这个函数是Echarts用来实现一些自定义形状(custom series)的核心渲染函数，它可以允许开发者完全控制图形的绘制逻辑，而不仅局限于官方提供的图形；</p>
+<p>　　首先它的使用方式也很简单，将type定义成custom，然后传入renderItem函数就可以了：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">var</span> options = &#123;<br>    <span class="hljs-attr">series</span>: [<br>      &#123;<br>        <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;custom&quot;</span>,<br>        <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;名称&quot;</span>,<br>        <span class="hljs-attr">data</span>: dataArray,<br>        <span class="hljs-attr">renderItem</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">params, api</span>) &#123;<br>          <span class="hljs-comment">// 返回你想要的图形</span><br>        &#125;,<br>      &#125;,<br>    ],<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　对于每一项data数据，都会调用renderItem进行渲染；在最近新发布<a target="_blank" rel="noopener" href="https://echarts.apache.org/zh/api.html#echarts.registerCustomSeries">Echarts6+</a>的特性中，还可以对renderItem函数进行封装注册，在series使用时支持字符串的写法：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">renderItem</span> = (<span class="hljs-params">params, api</span>) =&gt; &#123;<br>    <span class="hljs-keyword">return</span> &#123;<br>        <span class="hljs-comment">// 定义图形</span><br>    &#125;<br>&#125;;<br>echarts.<span class="hljs-title function_">registerCustomSeries</span>(<span class="hljs-string">&#x27;bubble&#x27;</span>, renderItem);<br><span class="hljs-keyword">var</span> options = &#123;<br>    <span class="hljs-attr">series</span>: [<br>      &#123;<br>        <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;custom&quot;</span>,<br>        <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;名称&quot;</span>,<br>        <span class="hljs-attr">data</span>: dataArray,<br>        <span class="hljs-attr">renderItem</span>: <span class="hljs-string">&#x27;bubble&#x27;</span>,<br>      &#125;,<br>    ],<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　我们看到，不管函数怎么封装，它接受两个参数，这两个参数对于我们后续绘制图形起着至关重要的作用，我们下面就好好说道说道这个函数。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="params"><a href="#params" class="headerlink" title="params"></a>params</h2><p>　　params参数包含了当前数据信息和坐标系的信息，它提供了下面几个属性：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript">&#123;<br>  <span class="hljs-comment">// 触发此次重绘的 action 的 type。</span><br>  <span class="hljs-attr">actionType</span>: <span class="hljs-literal">null</span>,<br>  <span class="hljs-comment">// 一个可供开发者暂存东西的对象。生命周期只为：当前次的渲染</span><br>  <span class="hljs-attr">context</span>: &#123;&#125;,<br>  <span class="hljs-comment">// 坐标系信息，不同的坐标系中，coordSys里的信息不一样</span><br>  <span class="hljs-attr">coordSys</span>: &#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;cartesian2d&quot;</span>,<br>    <span class="hljs-attr">x</span>: <span class="hljs-number">200</span>,<br>    <span class="hljs-attr">y</span>: <span class="hljs-number">20</span>,<br>    <span class="hljs-attr">width</span>: <span class="hljs-number">743</span>,<br>    <span class="hljs-attr">height</span>: <span class="hljs-number">297</span><br>  &#125;,<br>  <span class="hljs-comment">// data中数据项的index</span><br>  <span class="hljs-attr">dataIndex</span>: <span class="hljs-number">2</span>,<br>  <span class="hljs-comment">// 数据项在当前坐标系中可见的数据的 index（即 dataZoom 当前窗口中的数据的 index）</span><br>  <span class="hljs-attr">dataIndexInside</span>: <span class="hljs-number">2</span>,<br>  <span class="hljs-comment">// 维度数据</span><br>  <span class="hljs-attr">encode</span>: &#123; <span class="hljs-attr">x</span>: ... <span class="hljs-attr">y</span>: ... &#125;,<br>  <span class="hljs-comment">// 本系列 id</span><br>  <span class="hljs-attr">seriesId</span>: <span class="hljs-string">&quot;&quot;</span>,<br>  <span class="hljs-comment">// 本系列 index</span><br>  <span class="hljs-attr">seriesIndex</span>: <span class="hljs-number">0</span>,<br>  <span class="hljs-comment">// 本系列 name</span><br>  <span class="hljs-attr">seriesName</span>: <span class="hljs-string">&quot;&quot;</span>,<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<blockquote>
+<p>params参数一般配合api中的函数使用。</p>
+</blockquote>
+<h2 id="api"><a href="#api" class="headerlink" title="api"></a>api</h2><p>　　第二个参数比较常用，就是<code>api</code>参数，它是一个CustomSeriesRenderItemAPI类型的对象，上面挂载有很多的函数供开发者调用，主要用来将数据和坐标进行转换使用。</p>
+<h3 id="value函数"><a href="#value函数" class="headerlink" title="value函数"></a>value函数</h3><p>　　这么多函数，我们挑选几个重要的函数讲解一下；首先看下<code>value</code>函数，它的作用是取出当前维度dimension的数据值，我们看下实际的案例：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">var</span> options = &#123;<br>  <span class="hljs-attr">series</span>: [<br>    &#123;<br>      <span class="hljs-attr">data</span>: [<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>],<br>      <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;custom&quot;</span>,<br>      <span class="hljs-attr">renderItem</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">params, api</span>) &#123;<br>        <span class="hljs-comment">// 0,1,2</span><br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(api.<span class="hljs-title function_">value</span>(<span class="hljs-number">0</span>))<br>        <span class="hljs-comment">// 10,20,30</span><br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(api.<span class="hljs-title function_">value</span>(<span class="hljs-number">1</span>))<br>      &#125;<br>    &#125;<br>  ]<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　我们上面模拟了一组简单的数据，<code>api.value(0)</code>获取的是第一个维度的数据，这里数据是一维数组，第一个维度一般是X轴，因此循环输入在X轴上的顺序0,1,2；而<code>api.value(1)</code>获取的是第二个维度的数据，一般是Y轴，因此循环输出对应data的值。</p>
+<p>　　如果我们把数据的维度扩大一个维度，比如散点图会用到二维数组，那么<code>api.value(dimension)</code>就输出对应维度的数据。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">var</span> options = &#123;<br>  <span class="hljs-attr">series</span>: [<br>    &#123;<br>      <span class="hljs-attr">data</span>: [<br>        [<span class="hljs-number">10</span>, <span class="hljs-number">100</span>], <br>        [<span class="hljs-number">20</span>, <span class="hljs-number">200</span>],<br>        [<span class="hljs-number">30</span>, <span class="hljs-number">300</span>],<br>      ],<br>      <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;custom&quot;</span>,<br>      <span class="hljs-attr">renderItem</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">params, api</span>) &#123;<br>        <span class="hljs-comment">// 10,20,30</span><br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(api.<span class="hljs-title function_">value</span>(<span class="hljs-number">0</span>))<br>        <span class="hljs-comment">// 100,200,300</span><br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(api.<span class="hljs-title function_">value</span>(<span class="hljs-number">1</span>))<br>      &#125;<br>    &#125;<br>  ]<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　那么聪明的小伙伴可能就会想到了，如果我的数据不是纯数值，而是类似下面的对象数组，那么请问api.value该如何返回？</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">var</span> options = &#123;<br>  <span class="hljs-attr">series</span>: [<br>    &#123;<br>      <span class="hljs-attr">data</span>: [<br>        &#123; <span class="hljs-attr">value</span>: <span class="hljs-number">1048</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Search Engine&#x27;</span> &#125;,<br>        &#123; <span class="hljs-attr">value</span>: <span class="hljs-number">735</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Direct&#x27;</span> &#125;,<br>        &#123; <span class="hljs-attr">value</span>: <span class="hljs-number">580</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Email&#x27;</span> &#125;,<br>        &#123; <span class="hljs-attr">value</span>: <span class="hljs-number">484</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Union Ads&#x27;</span> &#125;,<br>        &#123; <span class="hljs-attr">value</span>: <span class="hljs-number">300</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Video Ads&#x27;</span> &#125;<br>      ],<br>    &#125;<br>  ]<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　其实这样的对象数据结构本质上也是一维数组，因此和一维数组的返回是相同的。</p>
+<h3 id="coord函数"><a href="#coord函数" class="headerlink" title="coord函数"></a>coord函数</h3><p>　　了解了api.value函数的用法之后，下面就是<code>coord</code>函数，根据名字我们能猜测到，它的作用是定位，不过千万可别小瞧了这个函数，它可是我们下面需要用到的一个最重要的坐标转换函数；它可以将我们value中获取到的数据，转换成画布上的坐标；<code>coord</code>函数的定义如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">type</span> <span class="hljs-title class_">Coord</span> = [<span class="hljs-built_in">number</span>, <span class="hljs-built_in">number</span>]; <span class="hljs-comment">// [x, y] 或 [radius, angle]</span><br><br>api.<span class="hljs-title function_">coord</span>(<br>  <span class="hljs-attr">dataValue</span>: <span class="hljs-title class_">Coord</span> | <span class="hljs-built_in">number</span>[], <span class="hljs-comment">// 输入数据值</span><br>  clamp?: <span class="hljs-built_in">boolean</span>              <span class="hljs-comment">// 是否限制在坐标系内（默认false）</span><br>): <span class="hljs-title class_">Coord</span>;                      <span class="hljs-comment">// 返回画布像素坐标 [pxX, pxY]</span><br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　coord函数比较难理解，我们还是通过上面的的例子来具体看下；比如我们根据<code>[10, 20, 30]</code>这样的一个数据，使用自定义图形展示一个柱状图；首先我们需要使用value函数获取x、y轴的值：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript">&#123;<br>  <span class="hljs-attr">renderItem</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">params, api</span>) &#123;<br>    <span class="hljs-keyword">const</span> xValue = api.<span class="hljs-title function_">value</span>(<span class="hljs-number">0</span>); <span class="hljs-comment">// 类目索引</span><br>    <span class="hljs-keyword">const</span> yValue = api.<span class="hljs-title function_">value</span>(<span class="hljs-number">1</span>); <span class="hljs-comment">// 数值</span><br>    <span class="hljs-comment">// ...</span><br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<blockquote>
+<p>这里对api.value(0)和api.value(1)用法有所疑问的小伙伴可以回到上一节再看一下。</p>
+</blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　接着使用coord返回数据点所在的x、y坐标以及基准线坐标的坐标：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript">&#123;<br>  <span class="hljs-attr">renderItem</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">params, api</span>) &#123;<br>    <span class="hljs-keyword">const</span> [x, y] = api.<span class="hljs-title function_">coord</span>([xValue, yValue]); <span class="hljs-comment">// 数据点坐标</span><br>    <span class="hljs-keyword">const</span> [x0, y0] = api.<span class="hljs-title function_">coord</span>([xValue, <span class="hljs-number">0</span>]); <span class="hljs-comment">// 基准线坐标</span><br>    <span class="hljs-comment">// ...</span><br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里代码比较抽象，我们知道，在echarts坐标系中，原点的位置在左下角；而在canvas画布坐标系下，原点的位置是位于左上角；但是，而我们在renderItem函数中返回的图形是基于canvas坐标系，coord的定位作用正是将echarts的数据转换为在canvas上的位置，可以说是连接起了两个图形系统的重要桥梁，我们通过一张示意图来更好的理解：</p>
+<p><img src="/images/Echarts-Custom-Render/api-coord.jpg" srcset="/img/loading.gif" lazyload alt="coord定位示意"></p>
+<blockquote>
+<p>上面获取的[x,y]和[x0,y0]正是我们的数据10,20,30在每次循环调用时转换为canvas下的坐标位置。</p>
+</blockquote>
+<p>　　理解了coord的作用，我们再来画柱状图就非常简单了：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">const</span> boxWidth = <span class="hljs-number">20</span><br>&#123;<br>  <span class="hljs-attr">renderItem</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">params, api</span>) &#123;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;rect&quot;</span>,<br>      <span class="hljs-attr">shape</span>: &#123;<br>        <span class="hljs-comment">// 向左偏移10px</span><br>        <span class="hljs-attr">x</span>: x - boxWidth / <span class="hljs-number">2</span>, <br>        <span class="hljs-comment">// 顶部对齐数据点</span><br>        y, <br>        <span class="hljs-comment">// 固定宽度</span><br>        <span class="hljs-attr">width</span>: boxWidth, <br>        <span class="hljs-comment">// 高度 = 基准线y - 数据点y</span><br>        <span class="hljs-attr">height</span>: y0 - y, <br>      &#125;,<br>      <span class="hljs-attr">style</span>:&#123;<br>        <span class="hljs-attr">fill</span>: api.<span class="hljs-title function_">visual</span>(<span class="hljs-string">&quot;color&quot;</span>),<br>      &#125;<br>    &#125;;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里最终的重要的就是这个高度<code>y0 - y</code>的计算了，相信只要理解了上面坐标转换，这里的计算公式就很好理解，我们看下我们生成的自定义柱状图效果：</p>
+<p><img src="/images/Echarts-Custom-Render/coord-effect.png" srcset="/img/loading.gif" lazyload alt="自定义柱状图"></p>
+<h3 id="visual函数"><a href="#visual函数" class="headerlink" title="visual函数"></a>visual函数</h3><p>　　<code>visual</code>函数用于获取视觉映射结果，它能够将数据值自动映射到颜色、大小、透明度等视觉属性；它的用法如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript">api.<span class="hljs-title function_">visual</span>(<br>  <span class="hljs-attr">visualType</span>: <span class="hljs-string">&#x27;color&#x27;</span> | <span class="hljs-string">&#x27;symbol&#x27;</span> | <span class="hljs-string">&#x27;symbolSize&#x27;</span> | <span class="hljs-string">&#x27;opacity&#x27;</span> | ...,<br>  dataIndex?: <span class="hljs-built_in">number</span>,<br>  payload?: <span class="hljs-built_in">object</span><br>);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　第一个参数是我们想要从数据值中获取的类型，比如上面柱状图中我们就获取了每个柱子的颜色；第二个参数是数据的索引，第三个参数是一个自定义的附加数据。</p>
+<p>　　再比如我们在绘制自定义散点图的时候，就可以通过visual函数获取散点的大小和颜色，呈现更好的视觉效果：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript">&#123;<br>  <span class="hljs-attr">series</span>: [<br>    &#123;<br>      <span class="hljs-attr">data</span>: [<br>        [<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">5</span>],<br>        [<span class="hljs-number">40</span>, <span class="hljs-number">60</span>, <span class="hljs-number">12</span>],<br>        [<span class="hljs-number">70</span>, <span class="hljs-number">30</span>, <span class="hljs-number">8</span>],<br>        [<span class="hljs-number">80</span>, <span class="hljs-number">50</span>, <span class="hljs-number">20</span>],<br>        [<span class="hljs-number">30</span>, <span class="hljs-number">80</span>, <span class="hljs-number">15</span>],<br>      ],<br>      <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;custom&quot;</span>,<br>      <span class="hljs-attr">renderItem</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">params, api</span>) &#123;<br>        <span class="hljs-comment">// 获取数据值（x, y, size）</span><br>        <span class="hljs-keyword">const</span> xValue = api.<span class="hljs-title function_">value</span>(<span class="hljs-number">0</span>);<br>        <span class="hljs-keyword">const</span> yValue = api.<span class="hljs-title function_">value</span>(<span class="hljs-number">1</span>);<br><br>        <span class="hljs-comment">// 转换为画布坐标</span><br>        <span class="hljs-keyword">const</span> [x, y] = api.<span class="hljs-title function_">coord</span>([xValue, yValue]);<br><br>        <span class="hljs-comment">// 动态获取视觉属性</span><br>        <span class="hljs-keyword">const</span> symbolSize = api.<span class="hljs-title function_">visual</span>(<span class="hljs-string">&quot;symbolSize&quot;</span>);<br><br>        <span class="hljs-comment">// 绘制圆形（气泡）</span><br>        <span class="hljs-keyword">return</span> &#123;<br>          <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;circle&quot;</span>,<br>          <span class="hljs-attr">shape</span>: &#123;<br>            <span class="hljs-attr">cx</span>: x,<br>            <span class="hljs-attr">cy</span>: y,<br>            <span class="hljs-attr">r</span>: symbolSize / <span class="hljs-number">2</span>,<br>          &#125;,<br>          <span class="hljs-attr">style</span>: &#123;<br>            <span class="hljs-attr">fill</span>: api.<span class="hljs-title function_">visual</span>(<span class="hljs-string">&quot;color&quot;</span>),<br>          &#125;,<br>        &#125;;<br>      &#125;,<br>    &#125;,<br>  ],<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们看效果如下：</p>
+<p><img src="/images/Echarts-Custom-Render/custom-scatter.png" srcset="/img/loading.gif" lazyload alt="自定义散点图"></p>
+<h2 id="返回参数"><a href="#返回参数" class="headerlink" title="返回参数"></a>返回参数</h2><p>　　介绍完api中常用的函数，我们就来看下如何在renderItem中返回图形元素；支持以下多种图形元素：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<ul>
+<li><code>line</code>（直线）</li>
+<li><code>rect</code>（矩形）</li>
+<li><code>circle</code>（圆形）</li>
+<li><code>ring</code>（圆环）</li>
+<li><code>sector</code>（扇形）</li>
+<li><code>arc</code>（圆弧）</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li><code>polygon</code>（多边形）</li>
+<li><code>path</code>（路径，可绘制任意形状）</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<li><code>text</code>（文本）</li>
+<li><code>group</code>（组合多个图形）</li>
+</ul>
+<p>　　上面的案例中我们已经返回过了rect矩形和circle圆形两种图形，<code>type属性</code>定义了图形的类型；而<code>shape属性</code>则定义了图形的结构，<code>style属性</code>定义图形的样式，这两种属性在不同图形中差别比较大，我们都可以在官方文档中查到。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　我们可以通过<code>style.fill</code>属性，将上面的柱状图，改写成一个渐变的柱状图：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-comment">// 创建透明度渐变的辅助函数</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">createAlphaGradient</span>(<span class="hljs-params">baseColor, startAlpha = <span class="hljs-number">1</span>, endAlpha = <span class="hljs-number">0</span></span>) &#123;<br>  <span class="hljs-comment">// 解析基础颜色（支持多种格式）</span><br>  <span class="hljs-keyword">const</span> parsedColor = echarts.<span class="hljs-property">color</span>.<span class="hljs-title function_">parse</span>(baseColor);<br><br>  <span class="hljs-comment">// 创建起始颜色（RGBA数组格式）</span><br>  <span class="hljs-keyword">const</span> startColor = [<br>    parsedColor[<span class="hljs-number">0</span>],<br>    parsedColor[<span class="hljs-number">1</span>],<br>    parsedColor[<span class="hljs-number">2</span>],<br>    startAlpha,<br>  ];<br><br>  <span class="hljs-comment">// 创建结束颜色</span><br>  <span class="hljs-keyword">const</span> endColor = [<br>    parsedColor[<span class="hljs-number">0</span>],<br>    parsedColor[<span class="hljs-number">1</span>],<br>    parsedColor[<span class="hljs-number">2</span>],<br>    endAlpha,<br>  ];<br><br>  <span class="hljs-comment">// 正确调用 stringify - 传入 RGBA 数组</span><br>  <span class="hljs-keyword">const</span> startColorStr = echarts.<span class="hljs-property">color</span>.<span class="hljs-title function_">stringify</span>(startColor, <span class="hljs-string">&quot;rgba&quot;</span>);<br>  <span class="hljs-keyword">const</span> endColorStr = echarts.<span class="hljs-property">color</span>.<span class="hljs-title function_">stringify</span>(endColor, <span class="hljs-string">&quot;rgba&quot;</span>);<br><br>  <span class="hljs-comment">// 返回线性渐变（从上到下）</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> echarts.<span class="hljs-property">graphic</span>.<span class="hljs-title class_">LinearGradient</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, [<br>    &#123; <span class="hljs-attr">offset</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">color</span>: startColorStr &#125;,<br>    &#123; <span class="hljs-attr">offset</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">color</span>: endColorStr &#125;,<br>  ]);<br>&#125;<br>&#123;<br>  <span class="hljs-attr">renderItem</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">params, api</span>) &#123;<br>    <span class="hljs-comment">// 省略其他代码</span><br>    <span class="hljs-comment">// 获取基础颜色</span><br>    <span class="hljs-keyword">const</span> baseColor = api.<span class="hljs-title function_">visual</span>(<span class="hljs-string">&quot;color&quot;</span>);<br><br>    <span class="hljs-comment">// 创建垂直渐变（从1到0.05透明度）</span><br>    <span class="hljs-keyword">const</span> gradientColor = <span class="hljs-title function_">createAlphaGradient</span>(baseColor, <span class="hljs-number">1</span>, <span class="hljs-number">0.05</span>);<br><br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-attr">style</span>: &#123;<br>        <span class="hljs-attr">fill</span>: gradientColor,<br>      &#125;,<br>    &#125;;<br>  &#125;,<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　上面代码通过visual获取了当前柱子的一个基准颜色baseColor，然后解析这个基准颜色的RGB通道值，再通过createAlphaGradient函数返回<code>graphic.LinearGradient</code>一个渐变效果。</p>
+<p><img src="/images/Echarts-Custom-Render/columnar-gradient.png" srcset="/img/loading.gif" lazyload alt="柱状渐变图"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　除了图形的属性，renderItem函数还可以返回<code>enterFrom</code>、<code>leaveTo</code>、<code>enterAnimation</code>、<code>leaveAnimation</code>等一系列进入和离开的动画属性，比如我们可以让柱子实现逐个增长的动画效果：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript">&#123;<br>  <span class="hljs-attr">renderItem</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">params, api</span>) &#123;<br>    <span class="hljs-comment">// 省略其他代码</span><br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;rect&quot;</span>,<br>      <span class="hljs-comment">// 省略其他属性</span><br>      <span class="hljs-attr">enterAnimation</span>: &#123;<br>        <span class="hljs-attr">delay</span>: params.<span class="hljs-property">dataIndex</span> * <span class="hljs-number">400</span>,<br>      &#125;,<br>      <span class="hljs-attr">enterFrom</span>: &#123;<br>        <span class="hljs-attr">shape</span>: &#123;<br>          <span class="hljs-attr">height</span>: <span class="hljs-number">0</span>,<br>          <span class="hljs-attr">y</span>: y0,<br>        &#125;,<br>        <span class="hljs-attr">style</span>: &#123;&#125;<br>      &#125;,<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　这里添加了<code>enterFrom</code>属性，这个属性用于实现入场动画；shape里面可以放各种图形的属性，style属性添加入场前的样式，例如在style中添加color、opacity等，我们看下效果：</p>
+<p><img src="/images/Echarts-Custom-Render/grow.gif" srcset="/img/loading.gif" lazyload alt="柱状渐变图动画"></p>
+<blockquote>
+<p>我们可以访问这个页面<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/echarts/bar/gradient">查看效果</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+</blockquote>
+<p>　　除了基础的元素，我们还可以将多元素组合后，返回一个group，这样就可以组合成更复杂的图形了；下面就是我们今天要实现的三个案例：折线装饰旋转元素、分隔渐变柱状图和立体渐变柱状图。</p>
+<h1 id="折线装饰旋转元素"><a href="#折线装饰旋转元素" class="headerlink" title="折线装饰旋转元素"></a>折线装饰旋转元素</h1><p>　　我们想要在折线图上添加一些下面的装饰旋转元素：</p>
+<p><img src="/images/Echarts-Custom-Render/polyline-decoration.gif" srcset="/img/loading.gif" lazyload alt="折线装饰旋转元素效果"></p>
+<p>　　首先我们发现这个装饰元素整体可以分成两个部分，一个大的圆点，后面拖着一个渐变的圆弧；大的圆点好实现，通过circle绘制即可，我们首先在group中添加一个circle：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript">&#123;<br>  <span class="hljs-attr">renderItem</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">params, api</span>) &#123;<br>    <span class="hljs-keyword">const</span> xValue = api.<span class="hljs-title function_">value</span>(<span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">const</span> yValue = api.<span class="hljs-title function_">value</span>(<span class="hljs-number">1</span>);<br><br>    <span class="hljs-keyword">const</span> [x, y] = api.<span class="hljs-title function_">coord</span>([xValue, yValue]);<br><br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;group&quot;</span>,<br>      x,<br>      y,<br>      <span class="hljs-attr">children</span>: [<br>        &#123;<br>          <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;circle&quot;</span>,<br>          <span class="hljs-attr">shape</span>: &#123;<br>            <span class="hljs-attr">cx</span>: -<span class="hljs-number">15</span>,<br>            <span class="hljs-attr">cy</span>: <span class="hljs-number">0</span>,<br>            <span class="hljs-attr">r</span>: <span class="hljs-number">2</span>,<br>          &#125;,<br>          <span class="hljs-attr">style</span>: &#123;<br>            <span class="hljs-attr">fill</span>: <span class="hljs-string">&quot;rgba(255,255,255,0.6)&quot;</span>,<br>          &#125;,<br>        &#125;,<br>      ]<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　接着我们来绘制圆环，经过在官方文档组件的一通查找后，发现了一个名为<code>arc</code>的图形元素，我们通过stroke属性给它一个线性的渐变效果：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript">&#123;<br>  <span class="hljs-attr">renderItem</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">params, api</span>) &#123;<br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;group&quot;</span>,<br>      x,<br>      y,<br>      <span class="hljs-attr">children</span>: [<br>        <span class="hljs-comment">// 省略其他代码</span><br>        &#123;<br>          <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;arc&quot;</span>,<br>          <span class="hljs-attr">shape</span>: &#123;<br>            <span class="hljs-attr">cx</span>: <span class="hljs-number">0</span>,<br>            <span class="hljs-attr">cy</span>: <span class="hljs-number">0</span>,<br>            <span class="hljs-attr">r</span>: <span class="hljs-number">15</span>,<br>            <span class="hljs-attr">r0</span>: <span class="hljs-number">10</span>,<br>            <span class="hljs-attr">startAngle</span>: <span class="hljs-number">0</span>,<br>            <span class="hljs-attr">endAngle</span>: <span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span> * <span class="hljs-number">2</span>,<br>          &#125;,<br>          <span class="hljs-attr">style</span>: &#123;<br>            <span class="hljs-attr">stroke</span>: &#123;<br>              <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;linear&quot;</span>,<br>              <span class="hljs-attr">colorStops</span>: [<br>                &#123;<br>                  <span class="hljs-attr">offset</span>: <span class="hljs-number">0</span>,<br>                  <span class="hljs-attr">color</span>: <span class="hljs-string">&quot;rgba(255,255,255,1)&quot;</span>,<br>                &#125;,<br>                &#123;<br>                  <span class="hljs-attr">offset</span>: <span class="hljs-number">1</span>,<br>                  <span class="hljs-attr">color</span>: <span class="hljs-string">&quot;rgba(255,255,255,0)&quot;</span>,<br>                &#125;,<br>              ],<br>            &#125;,<br>            <span class="hljs-attr">lineWidth</span>: <span class="hljs-number">2</span>,<br>            <span class="hljs-attr">fill</span>: <span class="hljs-string">&quot;transparent&quot;</span>,<br>          &#125;,<br>        &#125;,<br>      ]<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们看到arc元素的圆环渐变效果是在整体圆环上的从左到右渐变，而不是我们想要沿着整个圆环的渐变效果：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><img src="/images/Echarts-Custom-Render/arc.png" srcset="/img/loading.gif" lazyload alt="arc元素绘制圆环"></p>
+<p>　　俗话说得好，既然一个圆环不行，那就给他来两个；我们把圆环分割成上下两个部分，每个部分分别使用线性渐变：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript">&#123;<br>  <span class="hljs-attr">children</span>: [<br>    &#123;<br>      <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;arc&quot;</span>,<br>      <span class="hljs-attr">shape</span>: &#123;<br>        <span class="hljs-attr">startAngle</span>: <span class="hljs-number">0</span>,<br>        <span class="hljs-attr">endAngle</span>: <span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span>,<br>      &#125;,<br>      <span class="hljs-attr">style</span>: &#123;<br>        <span class="hljs-attr">colorStops</span>: [<br>          &#123;<br>            <span class="hljs-attr">offset</span>: <span class="hljs-number">0</span>,<br>            <span class="hljs-attr">color</span>: <span class="hljs-string">&quot;rgba(255,255,255,0.6)&quot;</span>,<br>          &#125;,<br>          &#123;<br>            <span class="hljs-attr">offset</span>: <span class="hljs-number">1</span>,<br>            <span class="hljs-attr">color</span>: <span class="hljs-string">&quot;rgba(255,255,255,0.3)&quot;</span>,<br>          &#125;,<br>        ],<br>        <span class="hljs-comment">// 省略其他代码</span><br>      &#125;,<br>    &#125;,<br>    &#123;<br>      <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;arc&quot;</span>,<br>      <span class="hljs-comment">// 旋转</span><br>      <span class="hljs-attr">rotation</span>: <span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span>,<br>      <span class="hljs-attr">shape</span>: &#123;<br>        <span class="hljs-attr">startAngle</span>: <span class="hljs-number">0</span>,<br>        <span class="hljs-attr">endAngle</span>: <span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span>,<br>      &#125;,<br>      <span class="hljs-attr">style</span>: &#123;<br>        <span class="hljs-attr">colorStops</span>: [<br>          &#123;<br>            <span class="hljs-attr">offset</span>: <span class="hljs-number">0</span>,<br>            <span class="hljs-attr">color</span>: <span class="hljs-string">&quot;rgba(255,255,255,0.3)&quot;</span>,<br>          &#125;,<br>          &#123;<br>            <span class="hljs-attr">offset</span>: <span class="hljs-number">1</span>,<br>            <span class="hljs-attr">color</span>: <span class="hljs-string">&quot;rgba(255,255,255,0)&quot;</span>,<br>          &#125;,<br>        ],<br>        <span class="hljs-comment">// 省略其他代码</span><br>      &#125;,<br>    &#125;,<br>  ]<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+<p>　　这样就能达到我们想要的效果了：</p>
+<p><img src="/images/Echarts-Custom-Render/arc1.png" srcset="/img/loading.gif" lazyload alt="arc元素绘制圆环"></p>
+<p>　　图形上的元素已经基本绘制完成了，下面我们就来让group元素旋转起来；在<code>renderItem</code>的返回属性中还有一个<code>keyframeAnimation属性</code>可以用来配置动画</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript">&#123;<br>  <span class="hljs-attr">renderItem</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">params, api</span>) &#123;<br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;group&quot;</span>,<br>      x,<br>      y,<br>      <span class="hljs-attr">keyframeAnimation</span>: &#123;<br>        <span class="hljs-comment">// 动画时长，单位 ms</span><br>        <span class="hljs-attr">duration</span>: <span class="hljs-number">2000</span>,<br>        <span class="hljs-comment">// 动画缓动</span><br>        <span class="hljs-attr">easing</span>: <span class="hljs-string">&#x27;linear&#x27;</span><br>        <span class="hljs-comment">// 是否循环</span><br>        <span class="hljs-attr">loop</span>: <span class="hljs-literal">true</span>,<br>        <span class="hljs-comment">// 动画的关键帧</span><br>        <span class="hljs-attr">keyframes</span>: [<br>          &#123;<br>            <span class="hljs-attr">percent</span>: <span class="hljs-number">0</span>,<br>            <span class="hljs-attr">rotation</span>: <span class="hljs-number">0</span>,<br>          &#125;,<br>          &#123;<br>            <span class="hljs-attr">percent</span>: <span class="hljs-number">0.5</span>,<br>            <span class="hljs-attr">rotation</span>: -<span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span>,<br>          &#125;,<br>          &#123;<br>            <span class="hljs-attr">percent</span>: <span class="hljs-number">1</span>,<br>            <span class="hljs-attr">rotation</span>: -<span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span> * <span class="hljs-number">2</span>,<br>          &#125;,<br>        ],<br>      &#125;,<br>      <span class="hljs-comment">// 省略其他代码</span><br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　<code>keyframes数组</code>每一项为一个关键帧，它的第一个必选属性是<code>percent</code>，表示该关键帧的百分比，取值范围是0-1；其它属性为图形在这个关键帧的属性，例如位置x，y，样式style和shape等等；这样我们就实现了元素的旋转动画。</p>
+<blockquote>
+<p>我们可以访问这个页面<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/echarts/line/decoration">查看效果</a></p>
+</blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h1 id="分隔渐变柱状图"><a href="#分隔渐变柱状图" class="headerlink" title="分隔渐变柱状图"></a>分隔渐变柱状图</h1><p>　　下面就是本文要实现的重点：分隔渐变柱状图，我们看下最后达到的效果：</p>
+<p><img src="/images/Echarts-Custom-Render/seperate.png" srcset="/img/loading.gif" lazyload alt="柱状渐变图"></p>
+<p>　　回顾我们上面已经实现的渐变柱状图，我们发现分隔渐变柱状图，就是将一根柱子拆分成多个方块呈现出来，每个方块的颜色都在像着更浅的颜色变化；因此这个图的难度其实在于如何计算出当前index所对应小方块的颜色和方块所在y轴位置。</p>
+<p>　　我们先把小方块的基础信息都定义出来，比如宽高以及格子间的间距等数据：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript">&#123;<br>  <span class="hljs-attr">renderItem</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">params, api</span>) &#123;<br>    <span class="hljs-keyword">const</span> xValue = api.<span class="hljs-title function_">value</span>(<span class="hljs-number">0</span>); <span class="hljs-comment">// 类目索引</span><br>    <span class="hljs-keyword">const</span> yValue = api.<span class="hljs-title function_">value</span>(<span class="hljs-number">1</span>); <span class="hljs-comment">// 数值</span><br><br>    <span class="hljs-keyword">const</span> [x, y] = api.<span class="hljs-title function_">coord</span>([xValue, yValue]); <span class="hljs-comment">// 数据点坐标</span><br>    <span class="hljs-keyword">const</span> [x0, y0] = api.<span class="hljs-title function_">coord</span>([xValue, <span class="hljs-number">0</span>]); <span class="hljs-comment">// 基准线坐标</span><br><br>    <span class="hljs-comment">// 总体柱子的高度</span><br>    <span class="hljs-keyword">const</span> totalHeight = y0 - y;<br>    <span class="hljs-comment">// 每个格子间的间距</span><br>    <span class="hljs-keyword">const</span> gap = <span class="hljs-number">3</span>;<br>    <span class="hljs-comment">// 每个格子的宽度</span><br>    <span class="hljs-keyword">const</span> width = <span class="hljs-number">20</span>;<br>    <span class="hljs-comment">// 每个格子的高度</span><br>    <span class="hljs-keyword">const</span> height = <span class="hljs-number">6</span>;<br>    <span class="hljs-comment">// 格子的总数</span><br>    <span class="hljs-keyword">const</span> count = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(totalHeight / (height + gap));<br>    <span class="hljs-comment">// 获取基础颜色</span><br>    <span class="hljs-keyword">const</span> baseColor = api.<span class="hljs-title function_">visual</span>(<span class="hljs-string">&quot;color&quot;</span>);<br><br>    <span class="hljs-keyword">const</span> rects = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(&#123; <span class="hljs-attr">length</span>: count &#125;, <span class="hljs-function">(<span class="hljs-params">_, index</span>) =&gt;</span> &#123;<br>      <span class="hljs-keyword">const</span> realHeight = y0 - (height + gap) * index;<br>      <span class="hljs-keyword">return</span> &#123;<br>        <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;rect&quot;</span>,<br>        <span class="hljs-attr">shape</span>: &#123;<br>          <span class="hljs-attr">x</span>: x,<br>          <span class="hljs-attr">y</span>: realHeight,<br>          width,<br>          height,<br>        &#125;,<br>        <span class="hljs-attr">style</span>: &#123;<br>          <span class="hljs-attr">fill</span>: baseColor,<br>        &#125;,<br>      &#125;;<br>    &#125;);<br><br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;group&quot;</span>,<br>      <span class="hljs-attr">x</span>: <span class="hljs-number">0</span>,<br>      <span class="hljs-attr">y</span>: <span class="hljs-number">0</span>,<br>      <span class="hljs-attr">children</span>: rects,<br>    &#125;;<br>  &#125;,<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里我们把<code>height+gap</code>看作是一整个格子的高度；先通过基准线yo减去数据y的坐标，获取整个柱子的高度totalHeight；然后通过totalHeight可以计算整个柱子所需的小方块数量count。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　然后循环count，来生成每一个小方块；每一个小方块的y轴位置计算，从基准线开始向上计算，公式为<code>realHeight = y0 - (height + gap) * index</code>；我们看下最后的效果：</p>
+<p><img src="/images/Echarts-Custom-Render/seperate1.png" srcset="/img/loading.gif" lazyload alt="柱状渐变图"></p>
+<p>　　我们发现由于<code>api.coord([xValue, yValue])</code>获取的数据坐标的x轴是在中心，因此我们需要将x的位置减去二分之一的柱子宽度width；而下面第一个方块也超出了基准线y0的高度，我们为了让最后一个方块底部贴着基准线，我们将柱子整体往上偏移一个小方块height的高度：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-comment">// 省略其他代码</span><br><span class="hljs-keyword">const</span> rects = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(&#123; <span class="hljs-attr">length</span>: count &#125;, <span class="hljs-function">(<span class="hljs-params">_, index</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> realHeight = y0 - (height + gap) * index;<br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;rect&quot;</span>,<br>    <span class="hljs-attr">shape</span>: &#123;<br>      <span class="hljs-comment">// x位置减去柱子一半的宽度</span><br>      <span class="hljs-attr">x</span>: x - width / <span class="hljs-number">2</span>,<br>      <span class="hljs-comment">// y位置向上偏移height距离</span><br>      <span class="hljs-attr">y</span>: realHeight - height,<br>    &#125;,<br>  &#125;;<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　这样修复柱子的x、y位置后，柱子就在整个空间的中间位置；下面我们再给每个小方块一个动画效果，让小方块刚开始宽度高度都为0，从中心开始，挨个的增长出来。</p>
+<p>　　这里我们不设置width、height为0,而是通过scaleX和scaleY在X、Y轴上的缩放；这是因为通过缩放，我们可以控制缩放的中心点在小方块的中间：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">const</span> realHeight = y0 - (height + gap) * index;<br><span class="hljs-keyword">return</span> &#123;<br>  <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;rect&quot;</span>,<br>  <span class="hljs-attr">scaleX</span>: <span class="hljs-number">1</span>,<br>  <span class="hljs-attr">scaleY</span>: <span class="hljs-number">1</span>,<br>  <span class="hljs-attr">opacity</span>: <span class="hljs-number">1</span>,<br>  <span class="hljs-attr">originX</span>: x0,<br>  <span class="hljs-attr">originY</span>: realHeight - height / <span class="hljs-number">2</span>,<br>  <span class="hljs-attr">shape</span>: &#123;<br>    <span class="hljs-attr">x</span>: x - width / <span class="hljs-number">2</span>,<br>    <span class="hljs-attr">y</span>: realHeight - height,<br>    width,<br>    height,<br>  &#125;,<br>  <span class="hljs-attr">enterFrom</span>: &#123;<br>    <span class="hljs-attr">scaleX</span>: <span class="hljs-number">0</span>,<br>    <span class="hljs-attr">scaleY</span>: <span class="hljs-number">0</span>,<br>    <span class="hljs-attr">style</span>: &#123; <span class="hljs-attr">opacity</span>: <span class="hljs-number">0</span> &#125;,<br>  &#125;,<br>  <span class="hljs-attr">enterAnimation</span>: &#123;<br>    <span class="hljs-attr">delay</span>: <span class="hljs-number">20</span> * index,<br>  &#125;,<br>&#125;;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　我们还是通过<code>enterFrom属性</code>设置每个小方块进入时的状态，XY方向缩放都为0，透明度也为0；缩放中心点的设置上，originX设置为x0就是小方块的X轴中心；而我们上面Y轴向上偏移了height绘制了方块，因此originY设置为<code>realHeight - height / 2</code>即为Y轴中心；这样我们缩放的动画也设置好了。</p>
+<h2 id="渐变颜色"><a href="#渐变颜色" class="headerlink" title="渐变颜色"></a>渐变颜色</h2><p>　　每个小方块的形状和位置确定后，我们下面就需要给它们来“涂颜色”了；我们在上面获取到每个柱子的基础颜色<code>baseColor</code>，一般是一个十六进制的颜色值，我们需要计算得到柱子底部的颜色，是一个rgba的色值，例如：<code>rgba(255, 255, 255, 0.1)</code>；我们先实现两个色值转换的工具函数：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 十六进制颜色转rgb颜色</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">string</span>&#125; hex 十六进制颜色，例如#212c37</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@returns</span> &#123;<span class="hljs-type">number[]</span>&#125; rgb颜色</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">hexToRgb</span>(<span class="hljs-params">hex: <span class="hljs-built_in">string</span></span>): <span class="hljs-built_in">number</span>[] &#123;<br>  <span class="hljs-keyword">let</span> str = hex.<span class="hljs-title function_">replace</span>(<span class="hljs-string">&quot;#&quot;</span>, <span class="hljs-string">&quot;&quot;</span>);<br>  <span class="hljs-keyword">if</span> (str.<span class="hljs-property">length</span> === <span class="hljs-number">8</span>) &#123;<br>    <span class="hljs-comment">// 长度八位，是212c37ff的格式，先把后面的透明度替换掉</span><br>    str = str.<span class="hljs-title function_">substring</span>(<span class="hljs-number">0</span>, <span class="hljs-number">6</span>);<br>  &#125;<br>  <span class="hljs-keyword">if</span> (str.<span class="hljs-property">length</span> % <span class="hljs-number">3</span>) &#123;<br>    <span class="hljs-keyword">return</span> [];<br>  &#125;<br>  <span class="hljs-comment">//获取截取的字符长度</span><br>  <span class="hljs-keyword">let</span> count = str.<span class="hljs-property">length</span> / <span class="hljs-number">3</span>;<br>  <span class="hljs-comment">//根据字符串的长度判断是否需要 进行幂次方</span><br>  <span class="hljs-keyword">let</span> power = <span class="hljs-number">6</span> / str.<span class="hljs-property">length</span>;<br>  <span class="hljs-keyword">let</span> r = <span class="hljs-built_in">parseInt</span>(<span class="hljs-string">&quot;0x&quot;</span> + str.<span class="hljs-title function_">substring</span>(<span class="hljs-number">0</span> * count, <span class="hljs-number">1</span> * count)) ** power;<br>  <span class="hljs-keyword">let</span> g = <span class="hljs-built_in">parseInt</span>(<span class="hljs-string">&quot;0x&quot;</span> + str.<span class="hljs-title function_">substring</span>(<span class="hljs-number">1</span> * count, <span class="hljs-number">2</span> * count)) ** power;<br>  <span class="hljs-keyword">let</span> b = <span class="hljs-built_in">parseInt</span>(<span class="hljs-string">&quot;0x&quot;</span> + str.<span class="hljs-title function_">substring</span>(<span class="hljs-number">2</span> * count)) ** power;<br><br>  <span class="hljs-keyword">return</span> [r, g, b];<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 设置颜色的alpha值</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">string</span>&#125; colorStr 颜色字符串</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">number</span>&#125; alpha 亮度0-1</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-type">string</span>&#125; 新的rgba颜色字符串</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">alphaBlend</span>(<span class="hljs-params">colorStr: <span class="hljs-built_in">string</span>, alpha: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">string</span> &#123;<br>  <span class="hljs-keyword">const</span> colorArr = <span class="hljs-title function_">hexToRgb</span>(colorStr);<br>  <span class="hljs-keyword">if</span> (!colorArr.<span class="hljs-property">length</span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;<br>  &#125;<br>  <span class="hljs-keyword">const</span> [r, g, b] = colorArr;<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-string">`rgba(<span class="hljs-subst">$&#123;r&#125;</span>,<span class="hljs-subst">$&#123;g&#125;</span>,<span class="hljs-subst">$&#123;b&#125;</span>,<span class="hljs-subst">$&#123;alpha&#125;</span>)`</span>;<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+<p>　　hexToRgb函数是一个色值转换函数，而alphaBlend则是我们需要用到的将<code>baseColor</code>转为最终颜色的函数：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-comment">// 获取基础颜色</span><br><span class="hljs-keyword">const</span> baseColor = api.<span class="hljs-title function_">visual</span>(<span class="hljs-string">&quot;color&quot;</span>);<br><br><span class="hljs-comment">// 柱子底部的最终颜色</span><br><span class="hljs-keyword">const</span> endColor = <span class="hljs-title function_">alphaBlend</span>(baseColor <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>, <span class="hljs-number">0</span>);<br></code></pre></div></td></tr></table></figure>
+
+<p>　　起点和终点的颜色确定了，在循环count函数时，我们就可以根据这两个颜色来确定方块的颜色了；为了让每个小方块在相同高度有相同的渐变颜色，我们还需要用到api中的一个函数<code>api.getHeight</code>，它的作用是获取整个echarts容器的高度。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">const</span> rects = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(&#123; <span class="hljs-attr">length</span>: count &#125;, <span class="hljs-function">(<span class="hljs-params">_, index</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> realHeight = y0 - (height + gap) * index;<br><br>  <span class="hljs-keyword">const</span> fill = <span class="hljs-title function_">liftColor</span>(<br>    baseColor,<br>    endColor,<br>    realHeight / api.<span class="hljs-title function_">getHeight</span>()<br>  );<br>  <span class="hljs-keyword">return</span> &#123;<br>    <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;rect&quot;</span>,<br>    <span class="hljs-comment">// 其他属性</span><br>    <span class="hljs-attr">style</span>: &#123;<br>      fill,<br>    &#125;,<br>  &#125;;<br>&#125;);<br></code></pre></div></td></tr></table></figure>
+
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　这里我们使用一个<code>liftColor函数</code>，它接受三个参数，baseColor和endColor作为起点和终点的颜色，第三个参数是在两个颜色中间的过渡比例，我们使用柱子当前高度realHeight除以容器的总高度作为比例，这样在相同的高度就可以保持一致；最后我们就能看到最后的实现效果如下：</p>
+<p><img src="/images/Echarts-Custom-Render/seperate-effect.gif" srcset="/img/loading.gif" lazyload alt="分隔渐变动画效果"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<blockquote>
+<p>我们可以访问这个页面<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/echarts/separated/gradient/bar">查看效果</a></p>
+</blockquote>
+<h1 id="立体渐变柱状图"><a href="#立体渐变柱状图" class="headerlink" title="立体渐变柱状图"></a>立体渐变柱状图</h1><p>　　我们先来看下立体渐变柱状图的实现效果如下：</p>
+<p><img src="/images/Echarts-Custom-Render/3d-columnar.png" srcset="/img/loading.gif" lazyload alt="立体渐变柱状图效果"></p>
+<p>　　我们发现，这个立体柱状图其实是一个2.5D的立体，相比于普通一维的柱状图，它是由左右两个梯形和顶部的菱形拼接而成；而这三种形状官方文档中都是没有提供的，因此我们需要通过<code>graphic.registerShape</code>来注册新的图形绘制函数：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-comment">// 左侧的图形</span><br><span class="hljs-keyword">const</span> leftShape = graphic.<span class="hljs-title function_">extendShape</span>(&#123;<br>  <span class="hljs-title function_">buildPath</span>(<span class="hljs-params">ctx, shape</span>) &#123;<br>    <span class="hljs-keyword">const</span> &#123; topBasicsYAxis, bottomYAxis, basicsXAxis &#125; = shape<br>    <span class="hljs-comment">// 侧面宽度</span><br>    <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">WIDTH</span> = <span class="hljs-number">15</span><br>    <span class="hljs-comment">// 斜角高度</span><br>    <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">OBLIQUE_ANGLE_HEIGHT</span> = <span class="hljs-number">4</span><br><br>    <span class="hljs-comment">// 使用整数坐标避免浮点精度问题</span><br>    <span class="hljs-keyword">const</span> p1 = [<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(basicsXAxis - <span class="hljs-variable constant_">WIDTH</span>), <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(topBasicsYAxis - <span class="hljs-variable constant_">OBLIQUE_ANGLE_HEIGHT</span>)]<br>    <span class="hljs-keyword">const</span> p2 = [<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(basicsXAxis - <span class="hljs-variable constant_">WIDTH</span>), <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(bottomYAxis)]<br>    <span class="hljs-keyword">const</span> p3 = [<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(basicsXAxis), <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(bottomYAxis)]<br>    <span class="hljs-keyword">const</span> p4 = [<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(basicsXAxis), <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(topBasicsYAxis)]<br><br>    ctx.<span class="hljs-title function_">moveTo</span>(p1[<span class="hljs-number">0</span>], p1[<span class="hljs-number">1</span>])<br>    ctx.<span class="hljs-title function_">lineTo</span>(p2[<span class="hljs-number">0</span>], p2[<span class="hljs-number">1</span>])<br>    ctx.<span class="hljs-title function_">lineTo</span>(p3[<span class="hljs-number">0</span>], p3[<span class="hljs-number">1</span>])<br>    ctx.<span class="hljs-title function_">lineTo</span>(p4[<span class="hljs-number">0</span>], p4[<span class="hljs-number">1</span>])<br>    ctx.<span class="hljs-title function_">closePath</span>()<br>  &#125;,<br>&#125;)<br><span class="hljs-comment">// 右侧图形</span><br><span class="hljs-keyword">const</span> rightShape = graphic.<span class="hljs-title function_">extendShape</span>(&#123;<br>  <span class="hljs-title function_">buildPath</span>(<span class="hljs-params">ctx, shape</span>) &#123;<br>    <span class="hljs-keyword">const</span> &#123; topBasicsYAxis, bottomYAxis, basicsXAxis &#125; = shape<br>    <span class="hljs-comment">// 侧面宽度</span><br>    <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">WIDTH</span> = <span class="hljs-number">15</span><br>    <span class="hljs-comment">// 斜角高度</span><br>    <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">OBLIQUE_ANGLE_HEIGHT</span> = <span class="hljs-number">4</span><br><br>    <span class="hljs-keyword">const</span> p1 = [<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(basicsXAxis), <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(topBasicsYAxis)]<br>    <span class="hljs-keyword">const</span> p2 = [<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(basicsXAxis), <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(bottomYAxis)]<br>    <span class="hljs-keyword">const</span> p3 = [<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(basicsXAxis + <span class="hljs-variable constant_">WIDTH</span>), <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(bottomYAxis)]<br>    <span class="hljs-keyword">const</span> p4 = [<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(basicsXAxis + <span class="hljs-variable constant_">WIDTH</span>), <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(topBasicsYAxis - <span class="hljs-variable constant_">OBLIQUE_ANGLE_HEIGHT</span>)]<br><br>    ctx.<span class="hljs-title function_">moveTo</span>(p1[<span class="hljs-number">0</span>], p1[<span class="hljs-number">1</span>])<br>    ctx.<span class="hljs-title function_">lineTo</span>(p2[<span class="hljs-number">0</span>], p2[<span class="hljs-number">1</span>])<br>    ctx.<span class="hljs-title function_">lineTo</span>(p3[<span class="hljs-number">0</span>], p3[<span class="hljs-number">1</span>])<br>    ctx.<span class="hljs-title function_">lineTo</span>(p4[<span class="hljs-number">0</span>], p4[<span class="hljs-number">1</span>])<br>    ctx.<span class="hljs-title function_">closePath</span>()<br>  &#125;,<br>&#125;)<br><span class="hljs-comment">// 顶部图形</span><br><span class="hljs-keyword">const</span> topShape = graphic.<span class="hljs-title function_">extendShape</span>(&#123;<br>  <span class="hljs-title function_">buildPath</span>(<span class="hljs-params">ctx, shape</span>) &#123;<br>    <span class="hljs-keyword">const</span> &#123; topBasicsYAxis, basicsXAxis &#125; = shape<br>    <span class="hljs-comment">// 侧面宽度</span><br>    <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">WIDTH</span> = <span class="hljs-number">15</span><br>    <span class="hljs-comment">// 斜角高度</span><br>    <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">OBLIQUE_ANGLE_HEIGHT</span> = <span class="hljs-number">4</span><br><br>    <span class="hljs-comment">// 稍微扩大顶部形状以覆盖可能的间隙</span><br>    <span class="hljs-keyword">const</span> p1 = [<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(basicsXAxis), <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(topBasicsYAxis + <span class="hljs-number">0.5</span>)]<br>    <span class="hljs-keyword">const</span> p2 = [<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(basicsXAxis + <span class="hljs-variable constant_">WIDTH</span> + <span class="hljs-number">0.5</span>), <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(topBasicsYAxis - <span class="hljs-variable constant_">OBLIQUE_ANGLE_HEIGHT</span>)]<br>    <span class="hljs-keyword">const</span> p3 = [<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(basicsXAxis), <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(topBasicsYAxis - <span class="hljs-variable constant_">OBLIQUE_ANGLE_HEIGHT</span> * <span class="hljs-number">2</span>)]<br>    <span class="hljs-keyword">const</span> p4 = [<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(basicsXAxis - <span class="hljs-variable constant_">WIDTH</span> - <span class="hljs-number">0.5</span>), <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(topBasicsYAxis - <span class="hljs-variable constant_">OBLIQUE_ANGLE_HEIGHT</span>)]<br><br>    ctx.<span class="hljs-title function_">moveTo</span>(p1[<span class="hljs-number">0</span>], p1[<span class="hljs-number">1</span>])<br>    ctx.<span class="hljs-title function_">lineTo</span>(p2[<span class="hljs-number">0</span>], p2[<span class="hljs-number">1</span>])<br>    ctx.<span class="hljs-title function_">lineTo</span>(p3[<span class="hljs-number">0</span>], p3[<span class="hljs-number">1</span>])<br>    ctx.<span class="hljs-title function_">lineTo</span>(p4[<span class="hljs-number">0</span>], p4[<span class="hljs-number">1</span>])<br>    ctx.<span class="hljs-title function_">closePath</span>()<br>  &#125;,<br>&#125;)<br>graphic.<span class="hljs-title function_">registerShape</span>(<span class="hljs-string">&quot;leftShape&quot;</span>, leftShape)<br>graphic.<span class="hljs-title function_">registerShape</span>(<span class="hljs-string">&quot;rightShape&quot;</span>, rightShape)<br>graphic.<span class="hljs-title function_">registerShape</span>(<span class="hljs-string">&quot;topShape&quot;</span>, topShape)<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这里ctx就是canvas的上下文，我们可以用它来绘制；shape是传入的图形数据，这里都是一些canvas的语法，不再赘述了。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　下面就是我们熟悉的renderItem函数了，在<code>type</code>中使用registerShape中注册的图形名称，传入shape的数据：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript">&#123;<br>  <span class="hljs-attr">renderItem</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">params, api</span>) &#123;<br>    <span class="hljs-keyword">const</span> xValue = api.<span class="hljs-title function_">value</span>(<span class="hljs-number">0</span>) <span class="hljs-comment">// 类目索引</span><br>    <span class="hljs-keyword">const</span> yValue = api.<span class="hljs-title function_">value</span>(<span class="hljs-number">1</span>) <span class="hljs-comment">// 数值</span><br><br>    <span class="hljs-keyword">const</span> [x, y] = api.<span class="hljs-title function_">coord</span>([xValue, yValue]) <span class="hljs-comment">// 数据点坐标</span><br>    <span class="hljs-keyword">const</span> [x0, y0] = api.<span class="hljs-title function_">coord</span>([xValue, <span class="hljs-number">0</span>]) <span class="hljs-comment">// 基准线坐标</span><br><br>    <span class="hljs-comment">// 获取颜色</span><br>    <span class="hljs-keyword">const</span> baseColor = api.<span class="hljs-title function_">visual</span>(<span class="hljs-string">&quot;color&quot;</span>) <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span><br><br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;group&quot;</span>,<br>      <span class="hljs-attr">children</span>: [<br>        &#123;<br>          <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;leftShape&quot;</span>,<br>          <span class="hljs-attr">shape</span>: &#123;<br>            <span class="hljs-attr">topBasicsYAxis</span>: y,<br>            <span class="hljs-attr">basicsXAxis</span>: x,<br>            <span class="hljs-attr">bottomYAxis</span>: y0,<br>          &#125;,<br>          <span class="hljs-attr">style</span>: &#123;<br>            <span class="hljs-attr">fill</span>: <span class="hljs-title function_">reateAlphaGradient</span>(baseColor, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>),<br>          &#125;,<br>        &#125;,<br>        &#123;<br>          <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;rightShape&quot;</span>,<br>          <span class="hljs-attr">shape</span>: &#123;<br>            <span class="hljs-attr">topBasicsYAxis</span>: y,<br>            <span class="hljs-attr">basicsXAxis</span>: x,<br>            <span class="hljs-attr">bottomYAxis</span>: y0,<br>          &#125;,<br>          <span class="hljs-attr">style</span>: &#123;<br>            <span class="hljs-attr">fill</span>: <span class="hljs-title function_">createAlphaGradient</span>(baseColor, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>),<br>          &#125;,<br>        &#125;,<br>        &#123;<br>          <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;topShape&quot;</span>,<br>          <span class="hljs-attr">shape</span>: &#123;<br>            <span class="hljs-attr">topBasicsYAxis</span>: y,<br>            <span class="hljs-attr">basicsXAxis</span>: x,<br>            <span class="hljs-attr">bottomYAxis</span>: y0,<br>          &#125;,<br>          <span class="hljs-attr">style</span>: &#123;<br>            <span class="hljs-attr">fill</span>: baseColor,<br>          &#125;,<br>        &#125;,<br>      ],<br>    &#125;<br>  &#125;,<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<p>　　这样我们就得到了一个由三个图形拼接而成的渐变柱状图：</p>
+<p><img src="/images/Echarts-Custom-Render/3d-columnar1.png" srcset="/img/loading.gif" lazyload alt="拼接图形柱状图效果"></p>
+<p>　　为了让图形更有立体的效果，我们让下面两个梯形的颜色透明度更低一点：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript">&#123;<br>  <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;leftShape&quot;</span>,<br>  <span class="hljs-attr">style</span>: &#123;<br>    <span class="hljs-attr">fill</span>: <span class="hljs-title function_">createAlphaGradient</span>(baseColor, <span class="hljs-number">0.7</span>, <span class="hljs-number">0</span>),<br>  &#125;,<br>&#125;<br>&#123;<br>  <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;rightShape&quot;</span>,<br>  <span class="hljs-attr">style</span>: &#123;<br>    <span class="hljs-attr">fill</span>: <span class="hljs-title function_">createAlphaGradient</span>(baseColor, <span class="hljs-number">0.9</span>, <span class="hljs-number">0</span>),<br>  &#125;,<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+
+<p>　　这样我们就实现了立体渐变柱状图的整体效果，我们可以访问这个页面<a target="_blank" rel="noopener" href="https://gallery.xieyufei.com/case/echarts/three/dimensional/columnar">查看效果</a></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　本文详细介绍了<code>renderItem</code>函数如何创建自定义的图表；首先解释<code>renderItem</code>函数的基本用法和参数结构，包括params对象提供的上下文信息、api中的关键函数（value函数、coord函数、visual函数等）；主要的难点就在于理解在函数中如何数据值转换为视觉属性，以及如何组合基本图形元素来构建复杂的自定义图表。</p>
+<p>　　本文重点介绍了三个高级案例的实现：折线装饰旋转元素通过组合圆形和圆弧创建动态旋转效果；分隔渐变柱状图将单个柱子分解为多个渐变色块；立体渐变柱状图则通过注册自定义形状创建2.5D立体效果。</p>
+<p>　　这三个案例显示了<code>renderItem</code>强大的灵活性，让我们能够开发出超过Echarts内置的图表类型，创造出高度定制化的数据可视化效果。</p>
+<blockquote>
+<p>本文所有代码敬请关注公众号【前端壹读】，后台回复关键词【Echarts高级开发】即可获取。</p>
+</blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7232529163814125629">echarts - 自定义形状 - 实现立体柱状图</a><br><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000043454169">通过Echarts怎样实现立体柱状图</a></p>
+
+            </div>
+            <hr>
+            <div>
+              
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script><div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/programing/">编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/FrontEnd/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Animation/">动画</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Graphical/">图形化</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本网所有内容文字和图片，版权均属谢小飞所有，任何媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表。如需转载请关注公众号【前端壹读】后回复【转载】。
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/10/30/Threejs-Pie-Annular.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Three.js实战：打造交互式3D饼图与环形图</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/11/Threejs-Cube-Loading.html">
+                        <span class="hidden-mobile">一款解压的3D方块加载动画效果</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="waline"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#waline', function() {
+      Fluid.utils.createScript('https://xieyufei.com/npm/waline@1.6.0/Waline.min.js', function() {
+        var options = Object.assign(
+          {"serverURL":"https://comment.xieyufei.com","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":true,"avatarCDN":"","avatarForce":false,"requiredFields":[],"emojiCDN":null,"emojiMaps":null,"anonymous":null,"appId":"dUHCmA1MmCKBNcTMG9KBopvL-MdYXbMMI","appKey":"33GvkVfTefXyelQRBTXNgEn6"},
+          {
+            el: '#waline',
+            path: window.location.pathname
+          }
+        )
+        new Waline(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="javascript:; target="_blank" rel="nofollow noopener"><span>We</span></a> <i class="iconfont icon-love"></i> <a href="https://xieyufei.com" target="_blank" rel="nofollow noopener"><span>谢小飞</span></a> <div> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+  <!-- 备案信息 -->
+  <div class="beian">
+    <span>
+      <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+        苏ICP备2024128889号-1
+      </a>
+    </span>
+    
+  </div>
+
+
+  
+    <!-- cnzz Analytics Icon -->
+    <span id="cnzz_stat_icon_1260607518" style="display: none"></span>
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://xieyufei.com/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://xieyufei.com/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://xieyufei.com/npm/bootstrap/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://xieyufei.com/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://xieyufei.com/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://xieyufei.com/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+
+  <script  src="https://xieyufei.com/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?466240fe55764d8ee20bd7f43c5e8b26";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- cnzz Analytics -->
+    <script defer src="//s4.cnzz.com/z_stat.php?id=1260607518&show=pic"
+            type="text/javascript"></script>
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

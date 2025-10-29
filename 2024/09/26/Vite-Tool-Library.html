@@ -286,55 +286,53 @@
 <p>　　最终我们生成项目模板的基本目录结构如下：</p>
 <figure class="highlight 1c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs 1c"><span class="hljs-string">|- lib</span><br>    <span class="hljs-string">|- main.ts</span><br><span class="hljs-string">|- public</span><br>    <span class="hljs-string">|- vite.svg</span><br><span class="hljs-string">|- src</span><br>    <span class="hljs-string">|- main.ts</span><br>    <span class="hljs-string">|- style.css</span><br>    <span class="hljs-string">|- typescript.svg</span><br>    <span class="hljs-string">|- vite-env.d.ts</span><br><span class="hljs-string">|- index.d.ts</span><br><span class="hljs-string">|- index.html</span><br><span class="hljs-string">|- package.json</span><br><span class="hljs-string">|- tsconfig.json</span><br><span class="hljs-string">|- vite.config.ts</span><br></code></pre></div></td></tr></table></figure>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　这里我们对主要的文件和文件夹进行使用的说明；lib作为我们项目模块的主要存放目录，可以将我们不同的函数和模块等，放到它的下面，最后使用index.ts进行统一导出。</p>
 <p>　　src目录是调试目录，我们可以在main.ts中引入lib中的模块，进行调试，测试功能是否正常调用；因此这个文件夹下面的style.css和svg文件基本用不到。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <blockquote>
 <p>想要在局域网中开启调试，在package.json中修改dev添加<code>--host</code>参数。</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </blockquote>
 <p>　　此外，还有两个文件夹是打包后出现，一个是dist文件夹，生成打包后的文件；另一个是types文件夹，存放生成的类型声明文件；因此我们调整后的目录结构大致如下：</p>
 <figure class="highlight 1c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs 1c"><span class="hljs-string">|- dist</span><br>    <span class="hljs-string">|-（打包后的文件）</span><br><span class="hljs-string">|- lib</span><br>    <span class="hljs-string">|- index.ts</span><br>    <span class="hljs-string">|- （其他模块）</span><br><span class="hljs-string">|- src</span><br>    <span class="hljs-string">|- main.ts</span><br><span class="hljs-string">| types</span><br>    <span class="hljs-string">|- index.d.ts</span><br>    <span class="hljs-string">|- （其他类型声明文件）</span><br><span class="hljs-string">|- package.json</span><br><span class="hljs-string">|- vite.config.ts</span><br></code></pre></div></td></tr></table></figure>
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <h1 id="使用块级注释"><a href="#使用块级注释" class="headerlink" title="使用块级注释"></a>使用块级注释</h1><p>　　我们项目的主要结构基本定义完后，先来写两个工具函数尝试一下，在lib目录下新建一个format.ts，导出两个函数，用来实现时间戳和时间字符串的相互转换：</p>
 <figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> moment, &#123; <span class="hljs-title class_">MomentInput</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;moment&quot;</span>;<br><br><span class="hljs-comment">// 将时间戳转换成时间字符串</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">formatTimestampToDate</span>(<span class="hljs-params"></span><br><span class="hljs-params">  timestamp: MomentInput,</span><br><span class="hljs-params">  formatter = <span class="hljs-string">&quot;YYYY-MM-DD HH:mm:ss&quot;</span></span><br><span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">moment</span>(timestamp).<span class="hljs-title function_">format</span>(formatter);<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 将时间字符串转换成时间戳</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">String</span>&#125; date 时间格式，例如2023-06-01 02:00:00</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@returns</span> &#123;<span class="hljs-type">Number</span>&#125; 返回时间戳，例如1689264000000</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">formatDateToTimestamp</span>(<span class="hljs-params">date: MomentInput</span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">moment</span>(date).<span class="hljs-title function_">valueOf</span>();<br>&#125;<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　接着我们需要在lib/index.ts中进行统一导出：</p>
 <figure class="highlight typescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs typescript"><span class="hljs-keyword">export</span> &#123; formatTimestampToDate, formatDateToTimestamp &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./format&quot;</span>;<br></code></pre></div></td></tr></table></figure>
 
 
 <p>　　上面的两个函数，我们发现使用了两种注释方式，一个是我们常见的行内注释，也就是两个斜杠的方式；另一个是比较详细的块级注释，将入参和出参都详细的标注说明；块级注释的好处，让我们在<code>src/main.ts</code>中引入两个函数看下实际的效果就知道了。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Vite-Tool-Library/notes1.png" srcset="/img/loading.gif" lazyload alt="行内注释"></p>
 <p><img src="/images/Vite-Tool-Library/notes2.png" srcset="/img/loading.gif" lazyload alt="块级注释"></p>
 <p>　　很容易就发现，使用块级注释，在调用函数时具有很好的提示效果；这样别人在调用我们封装的函数时，就不用担心不知道函数的怎么调用，以及入参怎么传的问题了。</p>
 <p>　　那么如何来生成这样的注释呢？VSCode提供了一个插件jsdoc，我们可以在商店中很方便的搜索并安装：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/Vite-Tool-Library/jsdoc.png" srcset="/img/loading.gif" lazyload alt="jsdoc"></p>
 <p>　　插件的使用也很简单，我们只要写前面<code>/**</code>，然后VSCode就会自动提示使用jsdoc的注释了。</p>
 <p><img src="/images/Vite-Tool-Library/use.png" srcset="/img/loading.gif" lazyload alt="使用jsdoc"></p>
 <h1 id="生成类型声明文件"><a href="#生成类型声明文件" class="headerlink" title="生成类型声明文件"></a>生成类型声明文件</h1><p>　　我们在上面目录结构中说到，types文件夹用来存放生成的类型声明文件；这些类型声明文件包括上面编写的函数注释以及入参出参的类型；它的作用，主要就是在我们安装项目依赖后，VSCode就会从依赖中找到声明文件，进行提示操作，方便包的使用者来调用函数。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　因此类型声明文件就相当于是我们项目提供给外部的一份说明书，其重要性自然不必多说，但是如果让我们一个函数一个函数的编写说明书，大家肯定是不乐意的；那么回到我们的项目上来，看下如何根据我们导出的函数，自动的生成类型声明文件呢？</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <blockquote>
 <p>可以将项目根目录下初始化生成的<code>index.d.ts</code>文件删除。</p>
 </blockquote>
 <p>　　打开<code>tsconfig.json</code>文件，添加类型声明文件的配置，<code>outDir属性</code>设置输出的目录：</p>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;compilerOptions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        + <span class="hljs-attr">&quot;declaration&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>        + <span class="hljs-attr">&quot;outDir&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;types&quot;</span><span class="hljs-punctuation">,</span><br>        + <span class="hljs-attr">&quot;emitDeclarationOnly&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>        -  <span class="hljs-attr">&quot;noEmit&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    -  <span class="hljs-attr">&quot;include&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;src&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>    +  <span class="hljs-attr">&quot;include&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;lib&quot;</span><span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 
 <p>　　这里include属性是设置生成类型声明文件需要包含的文件夹，我们上面定义了src作为调试目录，因此这里需要改为我们代码的主要目录lib；修改后我们进行打包，可以看到我们的类型声明文件已经生成在types目录下了：</p>
 <p><img src="/images/Vite-Tool-Library/types.png" srcset="/img/loading.gif" lazyload alt="类型声明文件"></p>
 <p>　　此外，我们还需要将package.json中的<code>types</code>属性进行修改，告诉包的调用者，我们的类型声明文件放在哪：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    - <span class="hljs-attr">&quot;types&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./index.d.ts&quot;</span><span class="hljs-punctuation">,</span><br>    + <span class="hljs-attr">&quot;types&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./types/index.d.ts&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
 
 
 
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h1 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h1><p>　　在平时的开发中，相信大家对<code>dependencies</code>和<code>devDependencies</code>比较了解了，我们知道<code>dependencies</code>是我们项目运行所必须的依赖，比如我们正常开发一个项目，用到vue、react、element-plus等依赖，都可以放到这里；而<code>devDependencies</code>则是在开发过程中用到的依赖，比如typescript、vite、webpack等涉及编译打包等一些依赖，都是放到devDependencies字段。</p>
 <p>　　那么如果别人在安装我们开发的包时，npm会如何处理devDependencies字段里面的包呢？很明显，npm不会去管这个字段，这个字段只是在我们包在开发中用到的依赖。</p>
 <p>　　而另外一个<code>peerDependencies</code>这个字段我们在平时项目开发中接触的比较少，它的翻译过来的意思就是<code>对等依赖</code>；就像我们在包里封装时间函数时，需要用到Momentjs库，但是如果打包的时候将其打包进去，会导致整个包非常臃肿，如果调用我们包的项目也安装了Momentjs库，就会造成资源重复打包。</p>
@@ -342,24 +340,24 @@
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;peerDependencies&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;vue&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^3.2.0&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　那么回到我们的项目中来，我们在安装Momentjs时，可以添加<code>--save-peer</code>参数：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">pnpm add moment --save-peer<br></code></pre></div></td></tr></table></figure>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　在vite打包时，还需要通过配置将其从打包中排除：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; defineConfig &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vite&quot;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>(&#123;<br>  <span class="hljs-attr">build</span>: &#123;<br>    <span class="hljs-comment">// 其他配置</span><br>    <span class="hljs-attr">rollupOptions</span>: &#123;<br>      <span class="hljs-attr">external</span>: [<span class="hljs-string">&quot;moment&quot;</span>],<br>      <span class="hljs-attr">output</span>: &#123;<br>        <span class="hljs-attr">globals</span>: &#123;<br>          <span class="hljs-attr">moment</span>: <span class="hljs-string">&quot;moment&quot;</span>,<br>        &#125;,<br>      &#125;,<br>    &#125;,<br>  &#125;,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 
 <p>　　这样，后续当我们在项目中安装我们开发的包时，我们会看到提示安装了两个依赖包,即包本身及其下面对等依赖的包；如果我们去查看node_modules，目录下中也有了moment。</p>
 <figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">npm</span> install vite-library-demo<br><span class="hljs-attribute">added</span> <span class="hljs-number">2</span> packages in <span class="hljs-number">2</span>s<br></code></pre></div></td></tr></table></figure>
 
+
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
-
 <h1 id="发包"><a href="#发包" class="headerlink" title="发包"></a>发包</h1><p>　　写到这里，我们的包基本的功能已经都具备了，可以进行发包的操作了；这时我们又面临了一个问题，我们需要对哪些文件进行打包然后发布上去呢？</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　根据上面的项目结构，我们主要需要发布的就是dist和types文件夹，而lib和src文件夹都是需要排除的。和<code>.gitignore</code>一样，<code>.npmignore</code>文件是用来指定在发包时需要排除的目录；此外，下面这些文件是默认发布的，加不加到ignore都没有影响：</p>
 <ul>
 <li>package.json</li>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>README.md</li>
 <li>LICENSE</li>
 <li>CHANGELOG</li>
@@ -367,18 +365,18 @@
 <blockquote>
 <p>当项目中没有指定<code>.npmignore</code>时，默认使用<code>.gitignore</code>文件</p>
 </blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　因此，我们在项目根目录新建一个<code>.npmignore</code>文件，写入如下内容，将我们不需要的文件和文件夹进行发包时的排除：</p>
 <figure class="highlight stylus"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs stylus">node_modules<br><span class="hljs-attribute">src</span><br>lib<br>vite<span class="hljs-selector-class">.config</span><span class="hljs-selector-class">.ts</span><br>tsconfig<span class="hljs-selector-class">.json</span><br>index.html<br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　此外，如果我们项目下文件比较多，一个一个排除比较麻烦，我们可以参考vuex包的package.json，将我们需要发布的文件，直接放到<code>files</code>属性下即可：</p>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;files&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;dist&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-string">&quot;types&quot;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-comment">// 其他属性</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
 
 <p>　　因此，我们可以发现，包文件的优先级从高到低如下顺序：</p>
 <figure class="highlight jboss-cli"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jboss-cli">files属性 &gt; <span class="hljs-string">.npmignore</span> &gt; <span class="hljs-string">.gitignore</span><br></code></pre></div></td></tr></table></figure>
+
+
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-
-
 <p>　　另外这里有一个非常实用的小技巧，我们不需要每次publish后再查看包的内容，可以通过<code>npm pack</code>先生成一个包进行预览，再通过<code>tar -tf XXX.tgz</code>就可以预览包了。</p>
 <p><img src="/images/Vite-Tool-Library/pack.png" srcset="/img/loading.gif" lazyload alt="发布预览"></p>
 <p>　　最后，我们可以在这个包里添加一些发布信息，例如包作者和主页的信息：</p>
@@ -391,13 +389,12 @@
 <blockquote>
 <p>本文所有源码敬请关注公众号【前端壹读】，后台回复关键词【Vite工具库】即可获取。</p>
 </blockquote>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <img src="/images/qrcode.png" srcset="/img/loading.gif" lazyload alt="" align="center" width="40%" style="display:block;margin:0 auto;"/>
             </div>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
             <hr>
             <div>
-              
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script><div class="post-metas mb-3">
+              <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>

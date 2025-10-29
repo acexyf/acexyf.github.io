@@ -283,16 +283,16 @@
 <table>
 <thead>
 <tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <th>URL</th>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <th>说明</th>
 <th>是否允许通信</th>
 </tr>
 </thead>
 <tbody><tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td><a target="_blank" rel="noopener" href="http://www.a.com/a.js">http://www.a.com/a.js</a> <br> <a target="_blank" rel="noopener" href="http://www.a.com/b.js">http://www.a.com/b.js</a></td>
 <td>同一域名</td>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>允许</td>
 </tr>
 <tr>
@@ -300,41 +300,44 @@
 <td>不同域名</td>
 <td>不允许</td>
 </tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <tr>
 <td><a target="_blank" rel="noopener" href="http://www.a.com:8000/a.js">http://www.a.com:8000/a.js</a><br><a target="_blank" rel="noopener" href="http://www.a.com/b.js">http://www.a.com/b.js</a></td>
 <td>同一域名不同端口</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>不允许</td>
 </tr>
 <tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td><a target="_blank" rel="noopener" href="https://www.a.com/a.js">https://www.a.com/a.js</a> <br> <a target="_blank" rel="noopener" href="http://www.a.com/b.js">http://www.a.com/b.js</a></td>
 <td>同一域名不同协议</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>不允许</td>
 </tr>
 </tbody></table>
 <p>　　在JAVA中处理跨域问题，通常有以下两种常用的解决方法。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h2 id="第一种解决方法"><a href="#第一种解决方法" class="headerlink" title="第一种解决方法"></a>第一种解决方法</h2><p>　　后台代码在被请求的Servlet中添加Header设置：</p>
 <figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java">response.setHeader(<span class="hljs-string">&quot;Access-Control-Allow-Origin&quot;</span>, <span class="hljs-string">&quot;*&quot;</span>);<br><span class="hljs-type">PrintWriter</span> <span class="hljs-variable">out</span> <span class="hljs-operator">=</span><span class="hljs-literal">null</span>;<br><span class="hljs-keyword">try</span><br>&#123;<br>	out = response.getWriter();<br>&#125; <span class="hljs-keyword">catch</span> (IOException e)<br>&#123;<br>	<span class="hljs-comment">// TODO Auto-generated catch block</span><br>	e.printStackTrace();<br>&#125;<br>out.print(<span class="hljs-string">&quot;&#123;&#x27;status&#x27;:&#x27;ok&#x27;&#125;&quot;</span>);<br>out.flush();<br>out.close();<br></code></pre></div></td></tr></table></figure>
 
 <p>　　Access-Control-Allow-Origin这个Header在W3C标准里用来检查该跨域请求是否可以被通过，如果值为*则表明当前页面可以跨域访问。默认的情况下是不允许的。<br>　　在前端JS中需要向Servlet发出请求，请求代码如下所示：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">$.<span class="hljs-title function_">ajax</span>(&#123;<br>  <span class="hljs-attr">url</span>: <span class="hljs-string">&quot;your url&quot;</span>,<br>  <span class="hljs-attr">type</span>:<span class="hljs-string">&quot;get or post&quot;</span>,<br>  <span class="hljs-attr">dataType</span>:<span class="hljs-string">&quot;json&quot;</span>,<br>  <span class="hljs-attr">data</span>:&#123;<br>    ....<br>  &#125;,<br>  <span class="hljs-attr">success</span>:<span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)&#123;<br>    ...<br>  &#125;<br></code></pre></div></td></tr></table></figure>
 
 <h2 id="第二种解决方法"><a href="#第二种解决方法" class="headerlink" title="第二种解决方法"></a>第二种解决方法</h2><p>　　通过jsonp跨域请求的方式。JSONP和JSON虽然只有一个字母的区别，但是他们完全就是两回事，很多人很容易把他们搞混。JSON是一种数据交换的格式，而JSONP则是一种非官方跨域数据交互协议。<br>　　首先来说一下前端JS是怎么发送请求。代码如下所示：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">$.<span class="hljs-title function_">ajax</span>(&#123;<br>  <span class="hljs-attr">url</span>:<span class="hljs-string">&quot;your url&quot;</span>,<br>  <span class="hljs-attr">type</span>:<span class="hljs-string">&quot;get or post&quot;</span>,<br>  <span class="hljs-attr">async</span>:<span class="hljs-literal">false</span>,<br>  dataType : <span class="hljs-string">&quot;jsonp&quot;</span>,<br>  <span class="hljs-comment">//服务端用于接收callback调用的function名的参数</span><br>  <span class="hljs-attr">jsonp</span>:<span class="hljs-string">&quot;callbackparam&quot;</span>,<br>  <span class="hljs-comment">//callback的function名称</span><br>  <span class="hljs-attr">jsonpCallback</span>:<span class="hljs-string">&quot;success_jsonpCallback&quot;</span>,<br>  <span class="hljs-attr">success</span>:<span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)&#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data);<br>  &#125;,<br>  <span class="hljs-attr">error</span>:<span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)&#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data);<br>  &#125;<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 
 <p>　　这里的callbackparam和success_jsonpCallback可以理解为发送的data数据的键值对，可以自定义，但是callbackparam需要和后台约定好参数名称，因为后台需要获取到这个参数里面的值（即success_jsonpCallback）。<br>　　下面，最重要的来了，后台怎么样获取和返回数据呢。代码如下所示:</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java"><span class="hljs-type">PrintWriter</span> <span class="hljs-variable">out</span> <span class="hljs-operator">=</span><span class="hljs-literal">null</span>;<br>String callback=req.getParameter(<span class="hljs-string">&quot;callbackparam&quot;</span>);<br>String json=callback+<span class="hljs-string">&quot;(&#123;&#x27;status&#x27;:&#x27;ok&#x27;&#125;)&quot;</span>;<br><span class="hljs-keyword">try</span><br>&#123;<br>  out = resp.getWriter();<br>&#125; <span class="hljs-keyword">catch</span> (IOException e)<br>&#123;<br>  <span class="hljs-comment">// TODO Auto-generated catch block</span><br>  e.printStackTrace();<br>&#125;<br>out.print(json);<br>out.flush();<br>out.close();<br></code></pre></div></td></tr></table></figure>
 
 <p>　　首先需要获取参数名为callbackparam的值，这里获取到的值就是“success_jsonpCallback”。然后将这个值加上一对小括号。小括号里放入你需要返回的数据内容，比如这里我返回一个JSON对象。当然你也可以返回其他对象，比如只返回一个字符串类型数据也可以。最后前端JS返回的数据就是这样的：</p>
 <figure class="highlight java"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs java">success_jsonpCallback(&#123;<span class="hljs-string">&#x27;status&#x27;</span>:<span class="hljs-string">&#x27;ok&#x27;</span>&#125;)<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　浏览器会自动解析为json对象，这时候你只需要在success回调函数中直接用data.status就可以了。</p>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
             </div>
             <hr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
             <div>
               <div class="post-metas mb-3">
                 

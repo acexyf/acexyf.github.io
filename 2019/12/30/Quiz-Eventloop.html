@@ -278,6 +278,7 @@
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">async1</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;async1 start&#x27;</span>)<br>    <span class="hljs-keyword">await</span> <span class="hljs-title function_">async2</span>()<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;async1 end&#x27;</span>)<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">async2</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;async2&#x27;</span>)<br>&#125;<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;script start&#x27;</span>)<br><br><span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;setTimeOut&#x27;</span>)<br>&#125;, <span class="hljs-number">0</span>)<br><br><span class="hljs-title function_">async1</span>()<br><br><span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">resolve</span>)&#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;promise1&#x27;</span>) <br>    <span class="hljs-title function_">resolve</span>()<br>&#125;).<span class="hljs-title function_">then</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;promise2&#x27;</span>) <br>&#125;)<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;script end&#x27;</span>)<br></code></pre></div></td></tr></table></figure>
 
 <p>　　先贴一下在浏览器里的运行的结果（如果跟你的思路一模一样的话，大佬请直接Ctrl+F4）：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//script start</span><br><span class="hljs-comment">//async1 start</span><br><span class="hljs-comment">//async2</span><br><span class="hljs-comment">//promise1</span><br><span class="hljs-comment">//script end</span><br><span class="hljs-comment">//async1 end</span><br><span class="hljs-comment">//promise2</span><br><span class="hljs-comment">//setTimeOut</span><br></code></pre></div></td></tr></table></figure>
 
 <p>　　如果跟你的思路不一样的话也不用担心，我们从简单的开始一点点剖析这道面试题。</p>
@@ -285,14 +286,15 @@
 <p>　　因为这是由于JavaScript所运行的浏览器环境决定，他只能是单线程的。试想一下，如果JavaScript能开启多个线程，页面上有一个div，我们同时在多个线程中来改变这个div中的内容，那么最终这个div会变成什么样子谁也确定不了，最后只能听天由命，看哪个线程是最后一个运行结束的。</p>
 <p><img src="/images/Quiz-Eventloop/uncertain.jpg" srcset="/img/loading.gif" lazyload alt="uncertain.jpg"></p>
 <p>　　因此多线程带来了很多的不确定性，为了避免这种问题，JavaScript必须是单线程。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　可能有的同学又会说了，JavaScript不是可以通过Web Worker开启多线程么？是的，Web Worker是可以开启另一个线程，但是这个新开线程的功能被限制了，只能做一些消耗CPU的逻辑运算等，数据传输也是通过回调的方式来进行，不会阻塞主线程的执行；而且最最重要的是，Web Worker不能来操作dom，笔者经过尝试发现，在新开的线程中甚至都不能获取到document和window对象。</p>
 <p>　　所以还是没有改变JavaScript是单线程运行这一核心原则。当然，虽然JavaScript是单线程运行的，但是还是存在其他线程的；例如：处理Ajax请求的线程、定时器的线程、读写文件的线程（nodejs中）等。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h1 id="同步任务和异步任务"><a href="#同步任务和异步任务" class="headerlink" title="同步任务和异步任务"></a>同步任务和异步任务</h1><p>　　因为JavaScript是单线程运行的，所有的任务只能在主线程上排队执行；但是如果某个任务特别耗时，比如Ajax请求一个接口，可能1s返回结果，也可能10s才返回，有很多的不确定因素（网络延迟等）；如果这些任务也放到主线程中去，那么会阻塞浏览器（用户除了等，不能进行其他操作）。</p>
 <p>　　于是，浏览器就把这些任务分派到异步任务队列中去，并且跟他们说：你们自己去后台玩儿，等你们好了再过来通知我！先来看简单的例子来理解一下同步和异步任务：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;start&#x27;</span>)<br><br><span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;setTimeout&#x27;</span>)<br>&#125;, <span class="hljs-number">0</span>)<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;end&#x27;</span>)<br></code></pre></div></td></tr></table></figure>
 
 <p>　　当主线程执行到setTimeout的时候，虽然是延迟了0s，但是并不会马上来运行，而是放到异步任务队列中，等下面的同步任务队列执行完了，再来执行异步队列中的任务，所以运行结果是：start、end、setTimeout。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　但如果同步任务中有特别耗时的操作，阻塞了<code>setTimeout</code>的定时执行，那么<code>setTimeout</code>就不会按时来完成。来看下面的例子：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;start&#x27;</span>)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">time</span>(<span class="hljs-string">&#x27;now&#x27;</span>)<br><span class="hljs-keyword">let</span> list = []<br><br><span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">timeEnd</span>(<span class="hljs-string">&#x27;now&#x27;</span>)<br>&#125;, <span class="hljs-number">1000</span>)<br><br><br><span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>;i&lt;<span class="hljs-number">9999999</span>;i++)&#123;<br>    <span class="hljs-keyword">let</span> now = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>()<br>    list.<span class="hljs-title function_">push</span>(i)<br>&#125;<br></code></pre></div></td></tr></table></figure>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
@@ -307,64 +309,64 @@
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h1 id="宏任务与微任务"><a href="#宏任务与微任务" class="headerlink" title="宏任务与微任务"></a>宏任务与微任务</h1><p>　　如果任务队列中有多个异步任务，那么先执行哪个任务呢？于是在异步任务中，也进行了等级划分，分为宏任务（macrotask）和微任务（microtask）；不同的API注册的任务会依次进入自身对应的队列中，然后等待事件循环将它们依次压入执行栈中执行。</p>
 <p>　　宏任务包括：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <ul>
 <li>script(整体代码)</li>
 <li>setTimeout, setInterval, setImmediate,</li>
 <li>I/O</li>
 <li>UI rendering</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </ul>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　微任务包括：</p>
 <ul>
 <li>process.nextTick</li>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <li>Promise</li>
 <li>Object.observe(已废弃)</li>
 <li>MutationObserver(html5新特性)</li>
 </ul>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　我们可以把整体的JS代码也看成是一个宏任务，主线程也是从宏任务开始的。我们把上面事件循环的步骤更新一下：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <ol>
 <li>执行一个宏任务</li>
 <li>执行过程中如果遇到微任务就加入微任务队列，遇到宏任务就加入宏任务队列</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <li>宏任务执行完毕后，检查当前微任务队列，如果有，就依次执行（一轮事件循环结束）</li>
 <li>开始下一个宏任务</li>
 </ol>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Quiz-Eventloop/task-job.png" srcset="/img/loading.gif" lazyload alt="task-job.png"></p>
 <p>　　让我们来看一个例子：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;start&#x27;</span>)<br><br><span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;timeout&#x27;</span>);<br>&#125;, <span class="hljs-number">0</span>)<br><br><span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">resolve</span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;promise&#x27;</span>);<br>    <span class="hljs-comment">//注意这边调用resolve</span><br>    <span class="hljs-comment">//不然then方法不会执行</span><br>    <span class="hljs-title function_">resolve</span>()<br>&#125;).<span class="hljs-title function_">then</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;then&#x27;</span>);<br>&#125;)<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;end&#x27;</span>);<br></code></pre></div></td></tr></table></figure>
 
 <p>　　分析一下执行流程：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <ul>
 <li>刚开始打印<code>start</code></li>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>遇到setTimeout，放入宏任务中，等待执行</li>
 <li>遇到new Promise的回调函数，同步执行，打印<code>promise</code></li>
 <li>当resolve后，then方法会放入微任务，等待执行</li>
 <li>打印<code>end</code>，这时整个执行栈清空了，宏任务和微任务队列各有一个回调方法</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>先执行微任务队列，打印<code>then</code></li>
 <li>执行宏任务，打印<code>timeout</code></li>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </ul>
 <p>　　我们把Promise进行一下改变，看一下下面的例子：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">async1</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;async1 start&#x27;</span>)<br>    <span class="hljs-keyword">await</span> <span class="hljs-title function_">async2</span>()<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;async1 end&#x27;</span>)<br>&#125;<br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">async2</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;async2&#x27;</span>)<br>&#125;<br><span class="hljs-title function_">async1</span>()<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;script end&#x27;</span>)<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　刚开始我们会想当然的认为执行顺序是：<code>async1 start</code> –&gt; <code>async2</code> –&gt; <code>async1 end</code> –&gt; <code>script end</code>。但是当真正理解了async函数的本质后，我们知道async函数还是基于Promise的一些封装，而Promise是属于微任务的一种；因此会把<code>await async2()</code>后面的所有代码放到Promise的then回调函数中去，因此，如果把上面代码进行如下改写，会好理解很多：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">async1</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;async1 start&#x27;</span>)<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">resolve</span>)&#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;async2&#x27;</span>)<br>        <span class="hljs-title function_">resolve</span>()<br>    &#125;).<span class="hljs-title function_">then</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;async1 end&#x27;</span>)<br>    &#125;)<br>&#125;<br><span class="hljs-title function_">async1</span>()<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;script end&#x27;</span>)<br></code></pre></div></td></tr></table></figure>
 
 <p>　　根据上面对微任务的理解，<code>console.log(&#39;async1 end&#39;)</code>会放到微任务队列中，所以实际执行顺序是：<code>async1 start</code> –&gt; <code>async2</code> –&gt; <code>script end</code> –&gt; <code>async1 end</code>。</p>
 <p>　　最后来看那道面试题，相信已经不难理解了。</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <ol>
 <li>第一轮循环开始</li>
 <li>打印<code>script start</code></li>
 <li>发现setTimeout，放入宏任务1</li>
 <li>打印<code>async1 start</code></li>
 <li>打印<code>async2</code></li>
-<li>把await async2函数后面的回调放入微任务1</li>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<li>把await async2函数后面的回调放入微任务1</li>
 <li>打印<code>promise1</code></li>
 <li>把then中的函数放入微任务2</li>
 <li>打印<code>script end</code></li>
@@ -373,10 +375,11 @@
 <li>微任务执行完，第一轮循环结束</li>
 <li>开始宏任务1，打印<code>setTimeOut</code></li>
 <li>结束，完美撒花</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </ol>
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
             </div>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
             <hr>
             <div>
               <div class="post-metas mb-3">

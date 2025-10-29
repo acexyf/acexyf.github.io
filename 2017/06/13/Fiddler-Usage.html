@@ -284,14 +284,14 @@
 <li>最上面的红色区域是菜单栏，主要有保存/导入请求、自定义规则、设置选项等功能。</li>
 <li>中间的蓝色区域是工具栏，针对当前请求的操作，包括清除请求、恢复断点、查找请求。</li>
 <li>左侧是请求数据的面板，所有Fiddler捕获到的请求都会在这个面板里，每一个字段的含义如下图所示。</li>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>右侧是数据统计的面板，我们可以在这边看到每个请求的详细统计数据（包括请求头、响应头、响应主体、请求时间），还可以设置过滤条件，把我们需要的请求过滤出来。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>命令行输入QuickExec可以输入命令进行一些快捷操作。</li>
 </ol>
 <p><img src="/images/Fiddler-Usage/Columns.png" srcset="/img/loading.gif" lazyload alt="Columns.png"></p>
 <h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>　　Fiddler简单介绍完了，下面来看下Fiddler的一些配置。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h2 id="电脑设置代理"><a href="#电脑设置代理" class="headerlink" title="电脑设置代理"></a>电脑设置代理</h2><p>　　Fiddler打开后会自动更改IE的代理设置，由于Chrome默认代理设置是跟IE关联在一起的，因此Chrome不用进行配置，但是火狐使用独立的代理设置，因此需要单独配置。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　首先查看Fiddler的监听端口。在Fiddler中选择<code>Tools</code> =&gt; <code>Fiddler Options</code> =&gt; <code>connections</code>，打开如下界面：</p>
 <p><img src="/images/Fiddler-Usage/FiddlerPort.png" srcset="/img/loading.gif" lazyload alt="FiddlerPort.png"></p>
 <p>　　其中的<code>Fiddler Listens on port</code>就是Fiddler的监听端口，我们只要代理到这个端口就可以用Fiddler进行监听了。然后把<code>Allow remote computers to connect</code>这一行前面的勾打上，允许其他电脑来连接。</p>
@@ -299,117 +299,119 @@
 <p>　　Firefox手动设置如下，打开<code>工具</code> =&gt; <code>选项</code> =&gt; <code>高级</code> =&gt; <code>网络</code> =&gt; <code>设置</code>，然后进行如下设置。</p>
 <p><img src="/images/Fiddler-Usage/Firefoxpng.png" srcset="/img/loading.gif" lazyload alt="Firefoxpng.png"></p>
 <p>　　不过上面的手动设置比较麻烦，我们可以安装一个FiddlerHook插件，安装好后启用这个插件就行。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Fiddler-Usage/FirefoxPlugin.png" srcset="/img/loading.gif" lazyload alt="FirefoxPlugin.png"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h2 id="手机端设置代理"><a href="#手机端设置代理" class="headerlink" title="手机端设置代理"></a>手机端设置代理</h2><p>　　Fiddler不仅能够代理电脑的请求，也能够代理手机端的请求，当我们开发微信站或者手机站的时候，就可以很方便我们来进行调试。</p>
 <h3 id="IOS设置"><a href="#IOS设置" class="headerlink" title="IOS设置"></a>IOS设置</h3><p>　　IOS选择对应的无线网设置，然后找到HTTP代理，服务器一栏填写电脑的IP地址，端口号是Fiddler端口号，默认8888。</p>
 <p><img src="/images/Fiddler-Usage/IOS-Setting.png" srcset="/img/loading.gif" lazyload alt="IOS-Setting.png"></p>
 <h3 id="Android设置"><a href="#Android设置" class="headerlink" title="Android设置"></a>Android设置</h3><p>　　在Android中，长按所连接的无线网，然后修改网络，在代理的选项卡里选择手动。同样，服务器一栏填写电脑的IP地址，端口号默认8888.</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/Fiddler-Usage/Android-Setting.jpg" srcset="/img/loading.gif" lazyload alt="Android-Setting.jpg"></p>
 <h2 id="捕获HTTPS"><a href="#捕获HTTPS" class="headerlink" title="捕获HTTPS"></a>捕获HTTPS</h2><p>　　默认情况下，Fiddler不会捕获HTTPS会话，因此如果不开启HTTPS捕获的话自动应答器是不会替换HTTPS的会话。打开<code>Tools</code> =&gt; <code>Fiddler Options</code> =&gt; <code>HTTPS</code></p>
 <p><img src="/images/Fiddler-Usage/Open-HTTPS.png" srcset="/img/loading.gif" lazyload alt="Open-HTTPS.png"></p>
 <p>　　弹出框需要安装一个证书，然后全程点Yes就可以了。</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h1 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h1><h2 id="统计结果"><a href="#统计结果" class="headerlink" title="统计结果"></a>统计结果</h2><p>　　Fiddler的统计选项卡中显示了当前Session的基本信息，在选项卡的最上方显示的是文本信息，最下方是个饼图，按MIME类型显示流量。使用Statistics页签，用户可以通过选择多个会话来得来这几个会话的总的信息统计，比如多个请求和传输的字节数。</p>
 <p>　　选择第一个请求和最后一个请求，可获得整个页面加载所消耗的总体时间。从条形图表中还可以分别出哪些请求耗时最多，从而对页面的访问进行访问速度优化。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Fiddler-Usage/Statistics.png" srcset="/img/loading.gif" lazyload alt="Statistics.png"></p>
 <h2 id="查看请求头和响应结果"><a href="#查看请求头和响应结果" class="headerlink" title="查看请求头和响应结果"></a>查看请求头和响应结果</h2><p>　　在左侧请求数据列表中选中一条记录会自动切换到<code>Insprctors</code>面板，这个面板分为上下两个，上面是请求头的一些信息，下面是返回的响应主体。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Fiddler-Usage/Inspectors.png" srcset="/img/loading.gif" lazyload alt="Inspectors.png"></p>
 <h2 id="自动应答器"><a href="#自动应答器" class="headerlink" title="自动应答器"></a>自动应答器</h2><p>　　在日常工作中，有时候脚本样式或者页面有点问题是家常便饭，经常需要对文件进行修改。但是每次都需要发布到测试环境才能看到效果很麻烦，我们希望在自己本机就能看到调试的效果。Fiddler就提供了自动应答器这个功能，能让我们直接看到效果。<br>　　打开<code>AutoResponder</code>面板，我们可以添加URL匹配规则，让请求的URL从本地返回文件而不是从服务器。<br>　　例如现在需要将线上地址<code>http://xieyufei.com</code>替换为本地的一个HTML文件，首先勾选<code>Enable rules</code>使所有的匹配规则生效，然后勾选<code>Unmatched request passthrough</code>，让没有匹配到的规则通过（如果不勾选这个，打开其他网页会失败）。<br>　　然后点<code>Add rules</code>来新增一个匹配规则，在x下面的<code>Rule Editor</code>输入要替换的URL和本地文件的路径，然后Save就添加成功了。</p>
 <p><img src="/images/Fiddler-Usage/AutoResponder.png" srcset="/img/loading.gif" lazyload alt="AutoResponder.png"></p>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　虽然这样添加匹配成功了，但是产生了一个心得问题，由于是匹配URL，所以只要是URL中带有<code>http://xieyufei.com</code>都会被替换掉，所以该域名下所有的脚本、样式以及子页面都会被替换，这样显然不利于我们调试。但是Fiddler提供了另外的四种匹配规则。</p>
 <ol>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>前缀为“EXACT:”表示完全匹配（大小写敏感）</li>
 <li>前缀为“NOT:”表示发现就不匹配</li>
 <li>前缀为“REGEX:”表示使用正则表达式匹配</li>
 <li>前缀为“REGEX:(?insx)”表示匹配方式其中：</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </ol>
 <ul>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <li>i表示不区分大小写；</li>
 <li>n表示指定的唯一有效的捕获是显式命名或编号的形式；</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <li>s表示单行模式；</li>
 <li>x表示空格说明的；</li>
 </ul>
 <p>　　因此修改一下我们的匹配规则，改为<code>EXACT:http://xieyufei.com</code>就可以了。还有一个小Tips：</p>
 <ul>
 <li>将左侧的会话列表中选择一条数据，直接拖拽到<code>AutoResponder</code>面板会直接生成匹配规则。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>点击<code>Rule Editor</code>的第二个输入框旁边的小三角找到<code>Find a file</code>可以选择文件路径。</li>
 <li><code>Test...</code>可以测试匹配规则。</li>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>在匹配规则上右击会有选项框，你惊不惊喜，意不意外。</li>
 </ul>
 <h2 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h2><p>　　构造器composer用来创建一个HTTP请求然后发送到服务器。可以自己定义一个请求，也可以讲会话列表中拖拽一个已有的请求过来。</p>
 <h3 id="Parsed请求"><a href="#Parsed请求" class="headerlink" title="Parsed请求"></a>Parsed请求</h3><p>　　打开Composer面板，第一个就是Parsed选项卡，在表单中我们输入一个HTTP请求，比如对baidu.com发送一个请求。点击<code>Execute</code>按钮，这个请求就发送出去了。这时候在会话列表中就多了一次请求。</p>
 <p><img src="/images/Fiddler-Usage/Composer.png" srcset="/img/loading.gif" lazyload alt="Composer.png"></p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h3 id="Raw请求"><a href="#Raw请求" class="headerlink" title="Raw请求"></a>Raw请求</h3><p>　　第二个选项卡是Raw，也是原始请求，如果熟悉HTTP请求，可以直接手动输入。</p>
 <h3 id="ScratchPad暂存"><a href="#ScratchPad暂存" class="headerlink" title="ScratchPad暂存"></a>ScratchPad暂存</h3><p>　　第三个选项卡是ScratchPad，可以同时保存多条<strong>原始请求</strong>，然后选择性的发送。高亮选中你要发送的请求，然后点击Execute就发送出去了。</p>
 <p><img src="/images/Fiddler-Usage/ScratchPad.png" srcset="/img/loading.gif" lazyload alt="ScratchPad.png"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h3 id="Options选项"><a href="#Options选项" class="headerlink" title="Options选项"></a>Options选项</h3><p>　　几个选项说明：</p>
 <ul>
 <li>Inspector Session：使用同一个 Session 进行连接（同一个域名或者主机的情况下）</li>
 <li>Fix Content-Length Header： 当你发送 Post 请求时，自动加上或者修正 Header 中的 Content-Length.</li>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>Follow Redirect：自动根踪 HTTP 状态码为 301 和 302 中返回带 Location 的请求。</li>
 <li>Automatically Authenticate：自动进行身份验证。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>Tear Off：将 Composer 变成一个浮动窗口。</li>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </ul>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h2><p>　　有时候请求刷新一个页面会有很多的请求，看得眼花缭乱，但是绝大多数请求可能并不是我们想要的，这时候我们就需要对请求进行一些过滤。</p>
 <p><img src="/images/Fiddler-Usage/Filters.png" srcset="/img/loading.gif" lazyload alt="Filters.png"></p>
 <p>　　在<code>Zone Filter</code>中有三个选项，分别过滤以下请求：</p>
 <ul>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>No Zone Filter：不过滤</li>
 <li>Show only Intranet Hosts：仅显示内网的请求</li>
 <li>Show only Internet Hosts：仅显示外网的请求</li>
 </ul>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　在<code>Host Filter</code>中有四个选项，分别过滤以下请求</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <ul>
 <li>No Host Filter：不过滤</li>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>Hide the following Hosts：隐藏下面的主机</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <li>Show only the following Hosts：仅显示下面的主机</li>
 <li>Flag the following Hosts：标记下面的主机</li>
 </ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h1 id="命令行输入"><a href="#命令行输入" class="headerlink" title="命令行输入"></a>命令行输入</h1><p>　　命令行QuickExec允许我们快速的执行一些脚本命令。</p>
 <p><img src="/images/Fiddler-Usage/QuickExecBox.png" srcset="/img/loading.gif" lazyload alt="QuickExecBox.png"></p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="select命令"><a href="#select命令" class="headerlink" title="select命令"></a>select命令</h2><p>　　select命令用来选择所有类型为指定类型的HTTP请求，即根据请求的content-type来选择所有同一类型的。常用的<code>select css</code>选择所有的样式请求，<code>select image</code>选择所有的图片请求。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="allbut命令"><a href="#allbut命令" class="headerlink" title="allbut命令"></a>allbut命令</h2><p>　　allbut命令用于清除除了指定类型之外的其他HTTP请求，仅保留指定类型。例如<code>allbut image</code>仅保留图片的请求。如果跟一个不存在的类型，执行效果和csl，命令相同，清除所有的请求。</p>
 <h2 id="text命令"><a href="#text命令" class="headerlink" title="?text命令"></a>?text命令</h2><p>　　当你在问号后输入一些文本的时候，Fiddler会高亮URL中带有这些文本的所有请求。</p>
 <h2 id="gt-size和-lt-size命令"><a href="#gt-size和-lt-size命令" class="headerlink" title="&gt;size和&lt;size命令"></a>&gt;size和&lt;size命令</h2><p>　　大于号小于号命令选择响应主体的大小大于（或者小于）指定大小。</p>
 <h2 id="status和-method命令"><a href="#status和-method命令" class="headerlink" title="=status和=method命令"></a>=status和=method命令</h2><p>　　等号命令用于选择状态码等于指定状态码或者指定请求方法的会话。</p>
 <h2 id="host命令"><a href="#host命令" class="headerlink" title="@host命令"></a>@host命令</h2><p>　　选择包含指定HOST的全部请求。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h2 id="bold命令"><a href="#bold命令" class="headerlink" title="bold命令"></a>bold命令</h2><p>　　如果以后的请求的URL中带有指定的字符串，那么将会被加粗显示。<code>bold /bar.aspx</code>表示加粗URL带有bar.aspx。再次执行<code>bold</code>会清除加粗。</p>
 <h2 id="bpafter（bpu）、bps、、bpv（bpm）"><a href="#bpafter（bpu）、bps、、bpv（bpm）" class="headerlink" title="bpafter（bpu）、bps、、bpv（bpm）"></a>bpafter（bpu）、bps、、bpv（bpm）</h2><p>　　这几个命令用于批量设置断点。</p>
 <ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>bpafter和bpu: 中断URL包含指定字符的全部会话</li>
 <li>bps: 中断响应状态为指定字符的全部会话</li>
 <li>bpv和bpm: 中断指定请求方式的全部会话</li>
 </ul>
 <h2 id="cls命令"><a href="#cls命令" class="headerlink" title="cls命令"></a>cls命令</h2><p>　　清除请求列表。</p>
 <h1 id="断点调试"><a href="#断点调试" class="headerlink" title="断点调试"></a>断点调试</h1><p>　　虽然bpafter和bpu都是用于中断URL包含指定字符的全部会话，但是打断点的时间是不一样的。bpu是在浏览器发送请求的时候进行断点，可以对请求参数进行修改；而bpafter是在服务器响应的后进行断点，可以对响应结果进行修改。<br>　　我们使用用express模拟简单的ajax请求。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;express&#x27;</span>);<br><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;path&#x27;</span>);<br><span class="hljs-keyword">var</span> app = <span class="hljs-title function_">express</span>();<br><span class="hljs-keyword">var</span> port = process.<span class="hljs-property">env</span>.<span class="hljs-property">PORT</span> || <span class="hljs-number">8088</span>;<br><br>app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/test&#x27;</span>,<span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)&#123;<br>	<span class="hljs-keyword">var</span> params = req.<span class="hljs-title function_">param</span>(<span class="hljs-string">&#x27;name&#x27;</span>) || <span class="hljs-string">&#x27;&#x27;</span>;<br>	res.<span class="hljs-title function_">json</span>(&#123;<span class="hljs-attr">name</span>:<span class="hljs-string">&#x27;request name is &#x27;</span>+params&#125;);<br>&#125;);<br><br><span class="hljs-keyword">var</span> server=app.<span class="hljs-title function_">listen</span>(port,<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>	<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;server is listening on port:&#x27;</span>+port);<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;express&#x27;</span>);<br><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;path&#x27;</span>);<br><span class="hljs-keyword">var</span> app = <span class="hljs-title function_">express</span>();<br><span class="hljs-keyword">var</span> port = process.<span class="hljs-property">env</span>.<span class="hljs-property">PORT</span> || <span class="hljs-number">8088</span>;<br><br>app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/test&#x27;</span>,<span class="hljs-keyword">function</span>(<span class="hljs-params">req,res</span>)&#123;<br>	<span class="hljs-keyword">var</span> params = req.<span class="hljs-title function_">param</span>(<span class="hljs-string">&#x27;name&#x27;</span>) || <span class="hljs-string">&#x27;&#x27;</span>;<br>	res.<span class="hljs-title function_">json</span>(&#123;<span class="hljs-attr">name</span>:<span class="hljs-string">&#x27;request name is &#x27;</span>+params&#125;);<br>&#125;);<br><br><span class="hljs-keyword">var</span> server=app.<span class="hljs-title function_">listen</span>(port,<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>	<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;server is listening on port:&#x27;</span>+port);<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 <h2 id="修改请求参数bpu"><a href="#修改请求参数bpu" class="headerlink" title="修改请求参数bpu"></a>修改请求参数bpu</h2><p>　　我们输入命令 <code>bpu /test</code>，然后Fiddler就会进入等待。在浏览器中输入网址，这时候浏览器就会进入等待的状态。在会话列表中选择进入断点状态的请求，然后修改请求参数，修改完后点击<code>Run to Completion</code>结束断点。这时候，浏览器页面也结束等待，出现修改后的结果。</p>
 <p><img src="/images/Fiddler-Usage/Bpu.png" srcset="/img/loading.gif" lazyload alt="Bpu.png"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　调试完后我们不需要Fiddler再进行断点，可以输入<code>bpu</code>清除所有bpu的断点。</p>
 <h2 id="修改响应结果bpafter"><a href="#修改响应结果bpafter" class="headerlink" title="修改响应结果bpafter"></a>修改响应结果bpafter</h2><p>　　同样，我们输入命令 <code>bpafter /test</code>，然后Fiddler就会进入等待。在浏览器中输入网址，这时候浏览器就会进入等待的状态。在会话列表中选择进入断点状态的请求，然后修改响应结果，修改完后点击<code>Run to Completion</code>结束断点。这时候，浏览器页面也结束等待，出现修改后的结果。</p>
 <p><img src="/images/Fiddler-Usage/Bpafter.png" srcset="/img/loading.gif" lazyload alt="Bpafter.png"></p>
 <p>调试完后我们不需要Fiddler再进行断点，可以输入<code>bpafter</code>清除所有bpafter的断点。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
             </div>
             <hr>
             <div>
-              <div class="post-metas mb-3">
+              
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p><div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>

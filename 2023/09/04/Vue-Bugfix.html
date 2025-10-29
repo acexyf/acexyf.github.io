@@ -281,27 +281,30 @@
 
 <p>　　报错截图：</p>
 <p><img src="/images/Vue-Bugfix/default-slot.png" srcset="/img/loading.gif" lazyload alt="default slot"></p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　产生原因：在h函数挂载时，使用了字符串：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title function_">h</span>(<br>    <span class="hljs-title class_">NButton</span>,<br>    &#123; <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;parimary&#x27;</span>, <span class="hljs-attr">text</span>: <span class="hljs-literal">true</span> &#125;,<br>    <span class="hljs-string">&#x27;点击按钮&#x27;</span><br>)<br></code></pre></div></td></tr></table></figure>
 
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　需要改成函数的形式。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-title function_">h</span>(<br>    <span class="hljs-title class_">NButton</span>,<br>    &#123; <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;parimary&#x27;</span>, <span class="hljs-attr">text</span>: <span class="hljs-literal">true</span> &#125;,<br>    <span class="hljs-function">() =&gt;</span> <span class="hljs-string">&#x27;点击按钮&#x27;</span><br>)<br></code></pre></div></td></tr></table></figure>
-
-
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
 
 <h1 id="rowKey"><a href="#rowKey" class="headerlink" title="rowKey"></a>rowKey</h1><p>　　报错信息：</p>
 <figure class="highlight smali"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs smali">Invalid prop: type<span class="hljs-built_in"> check </span>failed for prop <span class="hljs-string">&quot;rowKey&quot;</span>. Expected String | Number, got Undefined  <br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　报错截图：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Vue-Bugfix/row-key.png" srcset="/img/loading.gif" lazyload alt="row-key"></p>
 <p>　　产生原因：组件获取参数类型失败，为undefined</p>
 <h1 id="none-props"><a href="#none-props" class="headerlink" title="none-props"></a>none-props</h1><p>　　报错信息：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight mipsasm"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs mipsasm">[Vue warn]: <span class="hljs-keyword">Extraneous </span>non-props attributes (<span class="hljs-keyword">batch-delete) </span>were passed to component <span class="hljs-keyword">but </span>could not <span class="hljs-keyword">be </span>automatically inherited <span class="hljs-keyword">because </span>component renders fragment <span class="hljs-keyword">or </span>text root nodes. <br></code></pre></div></td></tr></table></figure>
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　报错截图：</p>
 <p><img src="/images/Vue-Bugfix/non-props.png" srcset="/img/loading.gif" lazyload alt="non-props"></p>
 <p>　　产生原因：父组件传参时，有几个参数子组件props中没有定义，删掉即可</p>
@@ -309,7 +312,6 @@
             </div>
             <hr>
             <div>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
               <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">

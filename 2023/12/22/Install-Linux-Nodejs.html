@@ -284,14 +284,16 @@
 <p><img src="/images/Install-Linux-Nodejs/download.png" srcset="/img/loading.gif" lazyload alt="官网下载"></p>
 <p>　　我们可以选择这里Linux（x64）版本的，如果想要其他版本的，也可以选择<code>全部安装包</code>；这里我们用wget命令下载：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ <span class="hljs-built_in">cd</span> ~/下载/<br>$ wget https://registry.npmmirror.com/-/binary/node/v18.<span class="hljs-number">18</span>.<span class="hljs-number">0</span>/node-v18.<span class="hljs-number">18</span>.<span class="hljs-number">0</span>-linux-x64.tar.gz<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　解压压缩包并且移动到/usr/local目录下：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ tar -zxvf node-v18.<span class="hljs-number">18</span>.<span class="hljs-number">0</span>-linux-x64.tar.gz<br>$ sudo mv node-v18.<span class="hljs-number">18</span>.<span class="hljs-number">0</span>-linux-x64 /usr/local/nodejs/<br></code></pre></div></td></tr></table></figure>
 
 <p>　　创建软链接：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ sudo ln -s /usr/local/nodejs/bin/node /usr/local/bin/<br>$ sudo ln -s /usr/local/nodejs/bin/npm /usr/local/bin/<br></code></pre></div></td></tr></table></figure>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　验证node是否安装成功：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ node -v<br>v18.<span class="hljs-number">18</span>.<span class="hljs-number">0</span><br>$ npm -v<br><span class="hljs-number">9</span>.<span class="hljs-number">8</span>.<span class="hljs-number">1</span><br></code></pre></div></td></tr></table></figure>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>

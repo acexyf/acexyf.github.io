@@ -277,46 +277,44 @@
 <blockquote>
 <p><code>Object.defineProperty()</code>方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。</p>
 </blockquote>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　它的语法是传入三个参数：</p>
 <blockquote>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>Object.defineProperty(obj, prop, descriptor)</p>
 </blockquote>
 <p>　　三个参数的作用分别是：</p>
 <ul>
 <li>obj：要定义属性的对象。</li>
 <li>prop：要定义或修改的属性的名称或 Symbol 。</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>descriptor：要定义或修改的属性描述符。</li>
 </ul>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　我们先来看下这个函数的简单用法；既然它能够在对象上定义新的属性，那我们通过它来给对象添加新的属性：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> user = &#123;&#125;<br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(user, <span class="hljs-string">&#x27;name&#x27;</span>, &#123;<br>  <span class="hljs-attr">value</span>: <span class="hljs-string">&#x27;xyf&#x27;</span><br>&#125;)<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(user)<br></code></pre></div></td></tr></table></figure>
 
 <p>　　这里描述符中的<code>value</code>值即是需要在对象上定义或者修改的属性值（如果对象上本身有该属性，则会进行修改操作）；除了字符串，还可以是JS的其他数据类型（数值，函数等）。</p>
 <p>　　属性描述符是个对象，那么就有很多操作的地方了，它除了value这个属性，还有以下：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <table>
 <thead>
 <tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <th>属性名</th>
 <th>作用</th>
 <th>默认值</th>
 </tr>
 </thead>
 <tbody><tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>configurable</td>
 <td>只有该属性的<code>configurable</code>为true，该属性的描述符才能够被改变，同时该属性也能从对应的对象上被删除。</td>
 <td>false</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <tr>
 <td>enumerable</td>
 <td>只有该属性的<code>enumerable</code>为true，该属性才会出现在对象的枚举属性中。</td>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>false</td>
 </tr>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <tr>
 <td>writable</td>
 <td>只有该属性的<code>enumerable</code>为true，才能被赋值运算符改变。</td>
@@ -328,14 +326,14 @@
 <td>该属性对应的值</td>
 <td>undefined</td>
 </tr>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <tr>
 <td>get</td>
 <td>属性的getter函数，当访问该属性时，会调用此函数。</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>undefined</td>
 </tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>set</td>
 <td>当属性值被修改时，会调用此函数。该方法接受一个参数，会传入赋值时的 this 对象。</td>
 <td>undefined</td>
@@ -343,26 +341,26 @@
 </tbody></table>
 <h2 id="configurable"><a href="#configurable" class="headerlink" title="configurable"></a>configurable</h2><p>　　我们一一来看每个属性的用法；首先<code>configurable</code>用来描述属性是否可配置（改变和删除），主要有两个作用：</p>
 <ul>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <li>属性第一次设置后是否可以被修改</li>
 <li>属性是否可以被删除</li>
 </ul>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　在非严格模式下，属性配置<code>configurable:false</code>后进行删除操作会发现属性仍然存在。</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> user = &#123;&#125;<br><br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(user, <span class="hljs-string">&#x27;name&#x27;</span>, &#123;<br>  <span class="hljs-attr">value</span>: <span class="hljs-string">&#x27;xyf&#x27;</span>,<br>  <span class="hljs-attr">configurable</span>: <span class="hljs-literal">false</span>,<br>  <span class="hljs-attr">writable</span>: <span class="hljs-literal">true</span>,<br>  <span class="hljs-attr">enumerable</span>: <span class="hljs-literal">true</span>,<br>&#125;)<br><br><span class="hljs-keyword">delete</span> user.<span class="hljs-property">name</span><br></code></pre></div></td></tr></table></figure>
 
 <p>　　而在严格模式下会抛出错误：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-meta">&quot;use strict&quot;</span>;<br><span class="hljs-keyword">var</span> user = &#123;&#125;<br><br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(user, <span class="hljs-string">&#x27;name&#x27;</span>, &#123;<br>  <span class="hljs-attr">value</span>: <span class="hljs-string">&#x27;xyf&#x27;</span>,<br>  <span class="hljs-attr">configurable</span>: <span class="hljs-literal">false</span>,<br>  <span class="hljs-attr">writable</span>: <span class="hljs-literal">true</span>,<br>  <span class="hljs-attr">enumerable</span>: <span class="hljs-literal">true</span>,<br>&#125;)<br><br><span class="hljs-comment">//TypeError: Cannot delete property &#x27;name&#x27; of #&lt;Object&gt;</span><br><span class="hljs-keyword">delete</span> user.<span class="hljs-property">name</span><br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　<code>configurable:false</code>配置后也不能重新修改：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> user = &#123;&#125;<br><br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(user, <span class="hljs-string">&#x27;name&#x27;</span>, &#123;<br>  <span class="hljs-attr">value</span>: <span class="hljs-string">&#x27;xyf&#x27;</span>,<br>  <span class="hljs-attr">configurable</span>: <span class="hljs-literal">false</span>,<br>  <span class="hljs-attr">writable</span>: <span class="hljs-literal">true</span>,<br>  <span class="hljs-attr">enumerable</span>: <span class="hljs-literal">true</span>,<br>&#125;)<br><br><span class="hljs-comment">//TypeError: Cannot redefine property: name</span><br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(user, <span class="hljs-string">&#x27;name&#x27;</span>, &#123;<br>  <span class="hljs-attr">value</span>: <span class="hljs-string">&#x27;new&#x27;</span>,<br>&#125;)<br></code></pre></div></td></tr></table></figure>
 
 <h2 id="enumerable"><a href="#enumerable" class="headerlink" title="enumerable"></a>enumerable</h2><p>　　<code>enumerable</code>用来描述属性是否能出现在<code>for in</code>或者<code>Object.keys()</code>的遍历中：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> user = &#123;<br>    <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;xyf&quot;</span>,<br>    <span class="hljs-attr">age</span>: <span class="hljs-number">0</span>,<br>&#125;;<br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(user, <span class="hljs-string">&quot;gender&quot;</span>, &#123;<br>    <span class="hljs-attr">value</span>: <span class="hljs-string">&quot;m&quot;</span>,<br>    <span class="hljs-attr">enumerable</span>: <span class="hljs-literal">true</span>,<br>    <span class="hljs-attr">configurable</span>: <span class="hljs-literal">false</span>,<br>    <span class="hljs-attr">writable</span>: <span class="hljs-literal">false</span>,<br>&#125;);<br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(user, <span class="hljs-string">&quot;birth&quot;</span>, &#123;<br>    <span class="hljs-attr">value</span>: <span class="hljs-string">&quot;2020&quot;</span>,<br>    <span class="hljs-attr">enumerable</span>: <span class="hljs-literal">false</span>,<br>    <span class="hljs-attr">configurable</span>: <span class="hljs-literal">false</span>,<br>    <span class="hljs-attr">writable</span>: <span class="hljs-literal">false</span>,<br>&#125;);<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> key <span class="hljs-keyword">in</span> user) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(key, <span class="hljs-string">&quot;key&quot;</span>);<br>&#125;<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(user));<br></code></pre></div></td></tr></table></figure>
 
 <p>　　很明显，enumerable为true的gender就会被遍历到，而birth则不会。</p>
 <h2 id="writable"><a href="#writable" class="headerlink" title="writable"></a>writable</h2><p>　　writable用来描述属性的值是否可以被重写，值为false时属性只能读取：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> user = &#123;&#125;;<br><br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(user, <span class="hljs-string">&quot;name&quot;</span>, &#123;<br>    <span class="hljs-attr">value</span>: <span class="hljs-string">&quot;xyf&quot;</span>,<br>    <span class="hljs-attr">writable</span>: <span class="hljs-literal">false</span>,<br>    <span class="hljs-attr">enumerable</span>: <span class="hljs-literal">false</span>,<br>    <span class="hljs-attr">configurable</span>: <span class="hljs-literal">false</span>,<br>&#125;);<br><br>user.<span class="hljs-property">name</span> = <span class="hljs-string">&quot;new&quot;</span>;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(user);<br></code></pre></div></td></tr></table></figure>
 
 <p>　　在非严格模式下给name属性再次赋值会静默失败，不会抛出错误；而在严格模式下会抛出异常：</p>
@@ -376,39 +374,40 @@
 
 <p>　　当获取name时和赋值name时，都会分别调用一次get和set函数；看到这里，很多同学可能会有疑问，为什么这里要用一个<code>initName</code>，而不是在get和set函数中直接<code>return user.name</code>和<code>user.name = val</code>呢？</p>
 <p>　　如果我们直接在get函数中<code>return user.name</code>的话，这里的<code>user.name</code>同时也会调用一次get函数，这样的话会陷入一个死循环；set函数也是同样的道理，因此我们通过一个第三方的变量<code>initName</code>来防止死循环。</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　但是如果我们需要代理更多的属性，不可能给每一个属性定义一个第三方的变量，可以通过闭包来解决</p>
 <blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><strong>注</strong>：get和set函数不是必须成对出现，可以只出现一个；两个函数如果不设置，则默认值为undefined。</p>
 </blockquote>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>　　在上面表格中可以看到，上述的三种描述符<code>configurable</code>、<code>enumerable</code>和<code>writable</code>的默认值都是false，因此我们一旦使用Object.defineProperty给对象添加属性，如果不设置属性的特性，那么这些值都是false：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> user = &#123;&#125;;<br><br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(user, <span class="hljs-string">&quot;name&quot;</span>, &#123;<br>    <span class="hljs-attr">value</span>: <span class="hljs-string">&quot;xyf&quot;</span>,<br>&#125;);<br><span class="hljs-comment">// 等价于</span><br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(user, <span class="hljs-string">&quot;name&quot;</span>, &#123;<br>    <span class="hljs-attr">value</span>: <span class="hljs-string">&quot;xyf&quot;</span>,<br>    <span class="hljs-attr">configurable</span>: <span class="hljs-literal">false</span>,<br>    <span class="hljs-attr">enumerable</span>: <span class="hljs-literal">false</span>,<br>    <span class="hljs-attr">writable</span>: <span class="hljs-literal">false</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　而我们通过<code>点运算符</code>给属性赋值时，则默认给三种描述符都赋值true：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> user = &#123;&#125;;<br><br>user.<span class="hljs-property">name</span> = <span class="hljs-string">&quot;xyf&quot;</span><br><br><span class="hljs-comment">// 等价于</span><br><br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(user, <span class="hljs-string">&quot;name&quot;</span>, &#123;<br>    <span class="hljs-attr">value</span>: <span class="hljs-string">&quot;xyf&quot;</span>,<br>    <span class="hljs-attr">configurable</span>: <span class="hljs-literal">true</span>,<br>    <span class="hljs-attr">enumerable</span>: <span class="hljs-literal">true</span>,<br>    <span class="hljs-attr">writable</span>: <span class="hljs-literal">true</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="属性描述符分类"><a href="#属性描述符分类" class="headerlink" title="属性描述符分类"></a>属性描述符分类</h2><p>　　属性描述符主要有两种形式：数据描述符和存取描述符；数据描述符特有的两个属性：<code>value</code>和<code>writable</code>；存取描述符特有的两个属性：<code>get</code>和<code>set</code>；两种形式的属性描述符不能混合使用，否则会报错，下面是一个错误的示范：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> user = &#123;&#125;;<br><br><span class="hljs-keyword">var</span> initName = <span class="hljs-string">&#x27;&#x27;</span><br><br><span class="hljs-comment">//TypeError: Invalid property descriptor. </span><br><span class="hljs-comment">//Cannot both specify accessors and a value or writable attribute, #&lt;Object&gt;</span><br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(user, <span class="hljs-string">&quot;name&quot;</span>, &#123;<br>    <span class="hljs-attr">value</span>: <span class="hljs-string">&#x27;new&#x27;</span>,<br>    <span class="hljs-attr">writable</span>: <span class="hljs-literal">true</span>,<br>    <span class="hljs-attr">get</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;get name&#x27;</span>)<br>        <span class="hljs-keyword">return</span> initName<br>    &#125;,<br>    <span class="hljs-attr">set</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">val</span>)&#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;set name&#x27;</span>)<br>        initName = val<br>    &#125;<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　我们简单想一下就能理解为什么两种描述不能混合使用；value用来定义属性的值，而get和set同样也是定义和修改属性的值，两种描述符在功能上有明显的相似性。</p>
 <p>　　虽然数据描述符和存取描述符不能混着用，但是他们均能分别和<code>configrable</code>、<code>enumerable</code>一起搭配使用，下面表格表示了两种描述符可以同时拥有的健值：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <table>
 <thead>
 <tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <th></th>
 <th>configurable</th>
 <th>enumerable</th>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <th>value</th>
 <th>writable</th>
 <th>get</th>
 <th>set</th>
 </tr>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </thead>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <tbody><tr>
 <td>数据描述符</td>
 <td>Yes</td>
@@ -418,7 +417,7 @@
 <td>No</td>
 <td>No</td>
 </tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <tr>
 <td>存取描述符</td>
 <td>Yes</td>
@@ -426,18 +425,18 @@
 <td>No</td>
 <td>No</td>
 <td>Yes</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>Yes</td>
 </tr>
 </tbody></table>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h2 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h2><p>　　通过上面的代码我们可以发现，虽然<code>Object.defineProperty</code>能够劫持对象的属性，但是需要对对象的每一个属性进行遍历劫持；如果对象上有新增的属性，则需要对新增的属性再次进行劫持；如果属性是对象，还需要深度遍历。这也是为什么Vue给对象新增属性需要通过<code>$set</code>的原因，其原理也是通过<code>Object.defineProperty</code>对新增的属性再次进行劫持。</p>
 <p>　　<code>Object.defineProperty</code>除了能够劫持对象的属性，还可以劫持数组；虽然数组没有属性，但是我们可以把数组的索引看成是属性：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> list = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]<br><br>list.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">elem, index</span>) =&gt;</span> &#123;<br>    <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(list, index, &#123;<br>        <span class="hljs-attr">get</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;get index:&quot;</span> + index);<br>            <span class="hljs-keyword">return</span> elem;<br>        &#125;,<br>        <span class="hljs-attr">set</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">val</span>) &#123;<br>            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;set index:&quot;</span> + index);<br>            elem = val;<br>        &#125;<br>    &#125;);<br>&#125;);<br><br><span class="hljs-comment">// set index:2</span><br>list[<span class="hljs-number">2</span>] = <span class="hljs-number">6</span><br><span class="hljs-comment">// get index:1</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(list[<span class="hljs-number">1</span>])<br></code></pre></div></td></tr></table></figure>
 
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　虽然我们监听到了数组中元素的变化，但是和监听对象属性面临着同样的问题，就是新增的元素并不会触发监听事件：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> list = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br><br>list.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">elem, index</span>) =&gt;</span> &#123;<br>    <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(list, index, &#123;<br>        <span class="hljs-attr">get</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;get index:&quot;</span> + index);<br>            <span class="hljs-keyword">return</span> elem;<br>        &#125;,<br>        <span class="hljs-attr">set</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">val</span>) &#123;<br>            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;set index:&quot;</span> + index);<br>            elem = val;<br>        &#125;<br>    &#125;);<br>&#125;);<br><br><span class="hljs-comment">// 没有输出</span><br>list.<span class="hljs-title function_">push</span>(<span class="hljs-number">4</span>)<br>list[<span class="hljs-number">3</span>] = <span class="hljs-number">5</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　为此，Vue的解决方案是劫持<code>Array.property</code>原型链上的7个函数，我们通过下面的函数简单进行劫持：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">const</span> arratMethods = [<br>    <span class="hljs-string">&quot;push&quot;</span>,<br>    <span class="hljs-string">&quot;pop&quot;</span>,<br>    <span class="hljs-string">&quot;shift&quot;</span>,<br>    <span class="hljs-string">&quot;unshift&quot;</span>,<br>    <span class="hljs-string">&quot;splice&quot;</span>,<br>    <span class="hljs-string">&quot;sort&quot;</span>,<br>    <span class="hljs-string">&quot;reverse&quot;</span>,<br>];<br><br><span class="hljs-keyword">const</span> arrayProto = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">create</span>(<span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>);<br><br>arratMethods.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">method</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> origin = <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>[method];<br>    arrayProto[method] = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;run method&quot;</span>, method);<br>        <span class="hljs-keyword">return</span> origin.<span class="hljs-title function_">apply</span>(<span class="hljs-variable language_">this</span>, <span class="hljs-variable language_">arguments</span>);<br>    &#125;;<br>&#125;);<br><br><span class="hljs-keyword">const</span> list = [];<br><br>list.<span class="hljs-property">__proto__</span> = arrayProto;<br><br><span class="hljs-comment">//run method push</span><br>list.<span class="hljs-title function_">push</span>(<span class="hljs-number">2</span>);<br><span class="hljs-comment">//run method shift</span><br>list.<span class="hljs-title function_">shift</span>(<span class="hljs-number">3</span>);<br></code></pre></div></td></tr></table></figure>
@@ -446,47 +445,46 @@
 <blockquote>
 <p>实例对象能够获取原型对象上的属性和方法</p>
 </blockquote>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　我们在数组上进行操作的push、shift等函数都是调用的原型对象上的函数，因此我们将改写后的原型对象重新给绑定到实例对象上的<code>__proto__</code>，这样就能进行劫持。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　除此之外，直接修改数组的<code>length</code>属性也会导致<code>Object.defineProperty</code>的监听失败：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> list = [];<br><br>list.<span class="hljs-property">length</span> = <span class="hljs-number">10</span>;<br><br>list.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">elem, index</span>) =&gt;</span> &#123;<br>    <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(list, index, &#123;<br>        <span class="hljs-attr">get</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;get index:&quot;</span> + index);<br>            <span class="hljs-keyword">return</span> elem;<br>        &#125;,<br>        <span class="hljs-attr">set</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">val</span>) &#123;<br>            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;set index:&quot;</span> + index);<br>            elem = val;<br>        &#125;,<br>    &#125;);<br>&#125;);<br><br>list[<span class="hljs-number">5</span>] = <span class="hljs-number">4</span>;<br><span class="hljs-comment">// undefined</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(list[<span class="hljs-number">6</span>]);<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 
 <p>　　通过给length修改为10，数组中有10个undefied，虽然我们给每个元素都劫持了，但是没有触发get/set函数。</p>
 <p>　　我们总结一下<code>Object.defineProperty</code>在劫持对象和数组时的缺陷：</p>
 <ol>
 <li>无法检测到对象属性的添加或删除</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <li>无法检测数组元素的变化，需要进行数组方法的重写</li>
 <li>无法检测数组的长度的修改</li>
 </ol>
 <h1 id="Proxy"><a href="#Proxy" class="headerlink" title="Proxy"></a>Proxy</h1><p>　　相较于Object.defineProperty<strong>劫持</strong>某个属性，Proxy则更彻底，不在局限某个属性，而是直接对整个对象进行<strong>代理</strong>，我们看一下ES6文档对Proxy的描述：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <blockquote>
 <p><code>Proxy</code>可以理解成，在目标对象之前架设一层“拦截”，外界对该对象的访问，都必须先通过这层拦截，因此提供了一种机制，可以对外界的访问进行过滤和改写。</p>
 </blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　首先还是来看一下Proxy的语法：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> proxy = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Proxy</span>(target, handler);<br></code></pre></div></td></tr></table></figure>
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　Proxy本身是一个构造函数，通过<code>new Proxy</code>生成拦截的实例对象，让外界进行访问；构造函数中的<code>target</code>就是我们需要代理的目标对象，可以是对象或者数组；<code>handler</code>和<code>Object.defineProperty</code>中的descriptor描述符有些类似，也是一个对象，用来定制代理规则。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> target = &#123;&#125;<br><br><span class="hljs-keyword">var</span> proxyObj = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Proxy</span>(<br>    target,<br>    &#123;<br>        <span class="hljs-attr">get</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">target, propKey, receiver</span>) &#123;<br>            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`getting <span class="hljs-subst">$&#123;propKey&#125;</span>!`</span>);<br>            <span class="hljs-keyword">return</span> <span class="hljs-title class_">Reflect</span>.<span class="hljs-title function_">get</span>(target, propKey, receiver);<br>        &#125;,<br>        <span class="hljs-attr">set</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">target, propKey, value, receiver</span>) &#123;<br>            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`setting <span class="hljs-subst">$&#123;propKey&#125;</span>!`</span>);<br>            <span class="hljs-keyword">return</span> <span class="hljs-title class_">Reflect</span>.<span class="hljs-title function_">set</span>(target, propKey, value, receiver);<br>        &#125;,<br>        <span class="hljs-attr">deleteProperty</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">target, propKey</span>) &#123;<br>            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`delete <span class="hljs-subst">$&#123;propKey&#125;</span>!`</span>);<br>            <span class="hljs-keyword">delete</span> target[propKey];<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>        &#125;<br>    &#125;<br>);<br><span class="hljs-comment">//setting count!</span><br>proxyObj.<span class="hljs-property">count</span> = <span class="hljs-number">1</span>;<br><span class="hljs-comment">//getting count!</span><br><span class="hljs-comment">//1</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(proxyObj.<span class="hljs-property">count</span>)<br><span class="hljs-comment">//delete count!</span><br><span class="hljs-keyword">delete</span> proxyObj.<span class="hljs-property">count</span><br></code></pre></div></td></tr></table></figure>
 
 <p>　　可以看到Proxy直接代理了<code>target</code>整个对象，并且返回了一个新的对象，通过监听代理对象上属性的变化来获取目标对象属性的变化；而且我们发现Proxy不仅能够监听到属性的增加，还能监听属性的删除，比<code>Object.defineProperty</code>的功能更为强大。</p>
 <p>　　除了对象，我们来看一下Proxy面对数组时的表现如何：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> list = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]<br><span class="hljs-keyword">var</span> proxyObj = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Proxy</span>(list, &#123;<br>    <span class="hljs-attr">get</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">target, propKey, receiver</span>) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`getting <span class="hljs-subst">$&#123;propKey&#125;</span>!`</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-title class_">Reflect</span>.<span class="hljs-title function_">get</span>(target, propKey, receiver);<br>    &#125;,<br>    <span class="hljs-attr">set</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">target, propKey, value, receiver</span>) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`setting <span class="hljs-subst">$&#123;propKey&#125;</span>:<span class="hljs-subst">$&#123;value&#125;</span>!`</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-title class_">Reflect</span>.<span class="hljs-title function_">set</span>(target, propKey, value, receiver);<br>    &#125;,<br>&#125;)<br><br><span class="hljs-comment">//setting 1:3!</span><br>proxyObj[<span class="hljs-number">1</span>] = <span class="hljs-number">3</span><br><span class="hljs-comment">//getting push!</span><br><span class="hljs-comment">//getting length!</span><br><span class="hljs-comment">//setting 2:4!</span><br><span class="hljs-comment">//setting length:3!</span><br>proxyObj.<span class="hljs-title function_">push</span>(<span class="hljs-number">4</span>)<br><span class="hljs-comment">//setting length:5!</span><br>proxyObj.<span class="hljs-property">length</span> = <span class="hljs-number">5</span><br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　不管是数组下标或者数组长度的变化，还是通过函数调用，Proxy都能很好的监听到变化；而且除了我们常用的get、set，Proxy更是支持13种拦截操作。</p>
 <p>　　可以看到Proxy相较于Object.defineProperty在语法和功能上都有着明显的优势；而且Object.defineProperty存在的缺陷，Proxy也都很好地解决了。</p>
 
             </div>
             <hr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
             <div>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
-              
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p><div class="post-metas mb-3">
+              <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>

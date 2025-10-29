@@ -278,7 +278,6 @@
 <blockquote>
 <p>扩展程序是自定义浏览体验的小型软件程序。它们让用户可以通过多种方式定制<code>Chrome</code>的功能和行为。</p>
 </blockquote>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　插件程序提供了以下几个功能：</p>
 <ul>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
@@ -286,255 +285,251 @@
 <li>网页内容丰富</li>
 <li>信息聚合</li>
 <li>乐趣和游戏</li>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </ul>
 <p>　　我们可以通过点击<code>更多工具 -&gt; 扩展程序</code>来查看我们所有安装的插件，或者直接打开<a href="chrome://extensions/">插件标签页</a>。</p>
 <p><img src="/images/Chrome-Plugin/where.png" srcset="/img/loading.gif" lazyload alt="查看插件标签页"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　那么学习开发插件有什么意义呢？我们为什么要来学习插件开发呢？个人总结下，有以下几方面的意义：</p>
 <ul>
 <li>增强浏览器功能，实现属于自己的定制插件功能</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>了解现有的插件，对其功能进行优化改进</li>
 </ul>
 <h2 id="获取插件"><a href="#获取插件" class="headerlink" title="获取插件"></a>获取插件</h2><p>　　大多数Chrome用户从<a target="_blank" rel="noopener" href="https://chrome.google.com/webstore">Chrome网上应用店</a>获得插件程序。世界各地的开发人员会在Chrome网上应用店中发布他们的插件，经过Chrome的审查并向最终用户提供。</p>
 <p>　　但是由于一些众所周知的原因，我们并不能访问网上应用店，但同时Chrome又要求插件必须从它的Chrome应用商店下载安装，这仿佛是一个绕不开的死循环，不过俗话说<code>魔高一尺道高一尺一</code>，下面我们会讲解如何从本地加载插件，绕开网上应用店的限制。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h2 id="插件如何工作？"><a href="#插件如何工作？" class="headerlink" title="插件如何工作？"></a>插件如何工作？</h2><p>　　插件是基于Web技术构建的，例如HTML、JavaScript和CSS。它们在单独的沙盒执行环境中运行并与Chrome浏览器进行交互。</p>
 <p>　　插件允许我们通过使用API修改浏览器行为和访问Web内容来扩展和增强浏览器的功能。插件通过最终用户UI和开发人员API进行操作：</p>
 <ul>
 <li>扩展用户界面，这为用户提供了一种一致的方式来管理他们的扩展。</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <li>扩展的API允许浏览器本身的扩展的代码访问功能：激活标签，修改网络请求等等。</li>
 </ul>
 <p>　　要创建插件程序，我们需要组合构成插件程序的一些资源清单，例如JS文件和HTML文件、图像等。对于开发和测试，可以使用扩展开发者模式将这些“解压”加载到Chrome中。如果我们对自己开发出来的插件程序感到满意，就可以通过网上商店将其打包并分享给其他的用户。</p>
 <h2 id="插件的原则"><a href="#插件的原则" class="headerlink" title="插件的原则"></a>插件的原则</h2><p>　　我们编写的插件想要发布到<code>Chrome网上应用店</code>中，就必须遵守网上应用店政策，它规定了以下几点：</p>
 <ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>插件必须满足一个定义狭窄且易于理解的单一目的。单个插件可以包含多个组件和一系列功能，只要一切都有助于实现一个共同的目的。</li>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <li>用户界面应该是最小的并且有意图。它们的范围可以从简单的图标到打开一个带有表单的新窗口。</li>
 </ul>
 <h1 id="一个简单的小插件"><a href="#一个简单的小插件" class="headerlink" title="一个简单的小插件"></a>一个简单的小插件</h1><p>　　Chrome插件并没有很严格的项目结构要求，比如src、public、components等等，因此我们如果去看很多插件的源码，会发现每个插件的项目结构，甚至项目下的文件名称都大相径庭；但是在根目录下我们都会找到一个<code>manifest.json</code>文件，这是插件的配置文件，说明了插件的各种信息；它的作用等同于小程序的app.json和前端项目的package.json。</p>
 <p>　　我们在项目中创建一个最简单的<code>manifest.json</code>配置文件：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-comment">// 插件名称</span><br>    <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Hello Extensions&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-comment">// 插件的描述</span><br>    <span class="hljs-attr">&quot;description&quot;</span> <span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Base Level Extension&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-comment">// 插件的版本</span><br>    <span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-comment">// 配置插件程序的版本号，主流版本是2，最新是3</span><br>    <span class="hljs-attr">&quot;manifest_version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
-
 <p>　　我们经常会点击右上角插件图标时弹出一个小窗口的页面，焦点离开时就关闭了，一般做一些临时性的交互操作；在配置文件中新增<code>browser_action</code>字段，配置popup弹框：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Hello Extensions&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;description&quot;</span> <span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Base Level Extension&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;manifest_version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-comment">// 新增popup弹框</span><br>    <span class="hljs-attr">&quot;browser_action&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;default_popup&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;popup.html&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;default_icon&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;popup.png&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
 
 <p>　　然后创建我们的弹框页面popup.html：</p>
 <figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Hello Extensions<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
 
 <p>　　点击图标后，插件显示popup.html。</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/Chrome-Plugin/load3.png" srcset="/img/loading.gif" lazyload alt="弹框页面"></p>
 <p>　　为了用户方便点击，我们还可以在manifest.json中设置一个键盘快捷键的命令，通过快捷键来弹出popup页面：</p>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Hello Extensions&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;description&quot;</span> <span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Base Level Extension&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1.0&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;manifest_version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;browser_action&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;default_popup&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;popup.html&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;default_icon&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;popup.png&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-comment">// 新增命令</span><br>  <span class="hljs-attr">&quot;commands&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;_execute_browser_action&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;suggested_key&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;default&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Ctrl+Shift+F&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;mac&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;MacCtrl+Shift+F&quot;</span><br>      <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Opens popup.html&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
 
-<p>　　这样我们的插件就可以通过按键盘上的<code>Ctrl+Shift+F</code>来弹出。</p>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p>　　这样我们的插件就可以通过按键盘上的<code>Ctrl+Shift+F</code>来弹出。</p>
 <h2 id="加载及调试插件"><a href="#加载及调试插件" class="headerlink" title="加载及调试插件"></a>加载及调试插件</h2><p>　　我们开发的插件需要在浏览器里面运行，打开<code>插件标签页</code>，打开<code>开发者模式</code>，点击<code>加载已解压的扩展程序</code>，选择项目文件夹，就可将开发中的插件加载进来。</p>
 <p><img src="/images/Chrome-Plugin/load1.png" srcset="/img/loading.gif" lazyload alt="加载插件"></p>
 <blockquote>
 <p>开发中更改了代码，点击插件右下角刷新按钮即可重新加载</p>
 </blockquote>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　如果我们的代码中有错误，加载插件后，会显示红色的<code>错误按钮</code>：</p>
 <p><img src="/images/Chrome-Plugin/load-error.png" srcset="/img/loading.gif" lazyload alt="插件加载错误"></p>
 <p>　　点击错误按钮以查看错误的日志：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/Chrome-Plugin/error-detail.png" srcset="/img/loading.gif" lazyload alt="错误日志"></p>
 <p>　　我们上面说过Chrome插件只能从网上应用店中下载安装，但是第三方平台也提供了下载的渠道，下载下来的文件后缀是<code>.crx</code>的压缩包，现在的问题就是如何将crx文件进行安装了。</p>
 <p>　　从Chrome 73版本开始，谷歌修改了插件策略，不可以随意安装crx文件：如果直接将crx文件拖拽安装可能会提示一下报错：</p>
 <figure class="highlight 1c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs 1c">程序包无效：<span class="hljs-string">&quot;CRX_HEADER_INVALID&quot;</span><br></code></pre></div></td></tr></table></figure>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　我们可以尝试以下几种方法，第一种方法：将crx后缀改为zip，解压后<code>加载已解压的扩展程序</code>的方式，将插件用开发者模式进行加载。</p>
 <p>　　第二种办法，通过<code>Chrome插件伴侣</code>，将crx提取到桌面，然后还是用开发者模式进行加载。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Chrome-Plugin/partner.png" srcset="/img/loading.gif" lazyload alt="Chrome插件伴侣"></p>
 <p>　　使用插件伴侣提取插件后，插件内容默认会被放在你的电脑桌面上，可以把它剪切/复制到任意位置；加载插件选择的文件夹路径时，一定要包含manifest.json文件；加载后请勿删除提取的文件夹。</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　第三种方法就是用梯子了，直接去网上应用店下载，没有梯子的同学可以使用插件伴侣进行代理，插件伴侣的获取方式下文会给出。</p>
 <h2 id="后台background"><a href="#后台background" class="headerlink" title="后台background"></a>后台background</h2><p>　　我们的插件安装后，popup页面也运行了；但是我们也发现了，popup页面只能做临时性的交互操作，用完就关了，不能存储信息或者和其他标签页进行交互等等；这时就需要用到background（后台），它是一个常驻的页面，它的生命周期是插件中所有类型页面中最长的；它随着浏览器的打开而打开，随着浏览器的关闭而关闭，所以通常把需要一直运行的、启动就运行的、全局的代码放在background里面。</p>
 <p>　　background也是需要在<code>manifest.json</code>中进行配置，可以通过<code>page</code>指定一张网页，或者通过<code>scripts</code>直接指定一个js数组，Chrome会自动为js生成默认网页：</p>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;background&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-comment">// &quot;page&quot;: &quot;background.html&quot;,</span><br>    <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;background.js&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;persistent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
 
 <p>　　<strong>需要注意</strong>的是，page属性和scripts属性只需要配置一个即可，如果两个同时配置，则会报以下错误信息：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight sml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sml"><span class="hljs-type">Only</span> one <span class="hljs-keyword">of</span> <span class="hljs-symbol">&#x27;background</span>.page&#x27;, <span class="hljs-symbol">&#x27;background</span>.scripts&#x27;, <span class="hljs-keyword">and</span> <span class="hljs-symbol">&#x27;background</span>.service_worker&#x27; can be specified.<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　我们给background设置一个监听事件，当插件安装时打印日志：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// background.js</span><br>chrome.<span class="hljs-property">runtime</span>.<span class="hljs-property">onInstalled</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;插件已被安装&quot;</span>);<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 
 <p>　　点击<code>查看视图</code>旁边的<code>背景页</code>，看到我们设置的background：</p>
 <p><img src="/images/Chrome-Plugin/background.png" srcset="/img/loading.gif" lazyload alt="背景页"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h2 id="storage存储"><a href="#storage存储" class="headerlink" title="storage存储"></a>storage存储</h2><p>　　我们在插件安装时在storage中设置一个值，这将允许多个插件组件访问该值并进行更新操作：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">//background.js</span><br>chrome.<span class="hljs-property">runtime</span>.<span class="hljs-property">onInstalled</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">// storage中设置值</span><br>  chrome.<span class="hljs-property">storage</span>.<span class="hljs-property">sync</span>.<span class="hljs-title function_">set</span>(&#123; <span class="hljs-attr">color</span>: <span class="hljs-string">&quot;#3aa757&quot;</span> &#125;, <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;storage init color value&quot;</span>);<br>  &#125;);<br>  <span class="hljs-comment">// 为特定的网址显示图标</span><br>  chrome.<span class="hljs-property">declarativeContent</span>.<span class="hljs-property">onPageChanged</span>.<span class="hljs-title function_">removeRules</span>(<span class="hljs-literal">undefined</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>    chrome.<span class="hljs-property">declarativeContent</span>.<span class="hljs-property">onPageChanged</span>.<span class="hljs-title function_">addRules</span>([<br>      &#123;<br>        <span class="hljs-attr">conditions</span>: [<br>          <span class="hljs-keyword">new</span> chrome.<span class="hljs-property">declarativeContent</span>.<span class="hljs-title class_">PageStateMatcher</span>(&#123;<br>            <span class="hljs-attr">pageUrl</span>: &#123; <span class="hljs-attr">hostEquals</span>: <span class="hljs-string">&quot;baidu.com&quot;</span> &#125;,<br>          &#125;),<br>        ],<br>        <span class="hljs-attr">actions</span>: [<span class="hljs-keyword">new</span> chrome.<span class="hljs-property">declarativeContent</span>.<span class="hljs-title class_">ShowPageAction</span>()],<br>      &#125;,<br>    ]);<br>  &#125;);<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 
 <p>　　<code>chrome.declarativeContent</code>用于精确地控制什么时候显示我们的页面按钮，或者需要在用户单击它之前更改它的外观以匹配当前标签页。</p>
 <p>　　这里调用的chrome.storage和我们常用的localStorage和sessionStorage不是一个东西；由于调用到了storage和declarativeContent的API，因此我们需要在manifest中给插件注册使用的权限：</p>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-comment">// 新增</span><br>  <span class="hljs-attr">&quot;permissions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;storage&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;declarativeContent&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;background&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;background.js&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;persistent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　再次查看背景页的视图，我们就能看到打印的日志了；既然可以存储，那也能取出来，我们在popup中添加事件进行获取，首先我们新增一个触发的button：</p>
 <figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- popup.html --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">      <span class="hljs-selector-tag">button</span> &#123;</span><br><span class="language-css">        <span class="hljs-attribute">width</span>: <span class="hljs-number">60px</span>;</span><br><span class="language-css">        <span class="hljs-attribute">height</span>: <span class="hljs-number">30px</span>;</span><br><span class="language-css">        <span class="hljs-attribute">outline</span>: none;</span><br><span class="language-css">      &#125;</span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;changeColor&quot;</span>&gt;</span>change<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;popup.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
 
 <p>　　我们再创建一个<code>popup.js</code>的文件，用来从storage存储中拿到颜色值，并将此颜色作为按钮的背景色：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> changeColor = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;changeColor&quot;</span>);<br><br>changeColor.<span class="hljs-property">onclick</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">el</span>) &#123;<br>  chrome.<span class="hljs-property">storage</span>.<span class="hljs-property">sync</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;color&quot;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) &#123;<br>    changeColor.<span class="hljs-property">style</span>.<span class="hljs-property">backgroundColor</span> = data.<span class="hljs-property">color</span>;<br>  &#125;);<br>&#125;;<br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <blockquote>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>如果需要调试popup页面，可以在弹框中右击 =&gt; 检查，在DevTools中进行调试查看。</p>
 </blockquote>
 <p>　　我们多次打开popup页面，发现页面每次点开按钮都会恢复最开始的默认状态。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Chrome-Plugin/storage.gif" srcset="/img/loading.gif" lazyload alt="storage存储值"></p>
 <h2 id="获取浏览器tabs"><a href="#获取浏览器tabs" class="headerlink" title="获取浏览器tabs"></a>获取浏览器tabs</h2><p>　　现在，我们获取到了storage中的值，需要逻辑来进一步与用户交互；更新popup.js中的交互代码：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// popupjs</span><br>changeColor.<span class="hljs-property">onclick</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">el</span>) &#123;<br>  chrome.<span class="hljs-property">storage</span>.<span class="hljs-property">sync</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;color&quot;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) &#123;<br>    <span class="hljs-keyword">let</span> &#123; color &#125; = data;<br>    chrome.<span class="hljs-property">tabs</span>.<span class="hljs-title function_">query</span>(&#123; <span class="hljs-attr">active</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">currentWindow</span>: <span class="hljs-literal">true</span> &#125;, <span class="hljs-keyword">function</span> (<span class="hljs-params">tabs</span>) &#123;<br>      chrome.<span class="hljs-property">tabs</span>.<span class="hljs-title function_">executeScript</span>(tabs[<span class="hljs-number">0</span>].<span class="hljs-property">id</span>, &#123;<br>        <span class="hljs-attr">code</span>: <span class="hljs-string">&#x27;document.body.style.backgroundColor = &quot;&#x27;</span> + color + <span class="hljs-string">&#x27;&quot;;&#x27;</span>,<br>      &#125;);<br>    &#125;);<br>  &#125;);<br>&#125;;<br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　<code>chrome.tabs</code>的API主要是和浏览器的标签页进行交互，通过<code>query</code>找到当前的激活中的tab，然后使用<code>executeScript</code>向标签页注入脚本内容。</p>
 <p>　　manifest同样需要<code>activeTab</code>的权限，来允许我们的插件使用<code>tabs</code>的API。</p>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Hello Extensions&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-comment">// ...</span><br>  <span class="hljs-attr">&quot;permissions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;storage&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;declarativeContent&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;activeTab&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　重新加载插件，我们点击按钮，会发现当前页面的背景颜色已经变成storage中设置的色值了；但是某些用户可能希望使用不同的色值，我们给用户提供选择的机会。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="颜色选项页面"><a href="#颜色选项页面" class="headerlink" title="颜色选项页面"></a>颜色选项页面</h2><p>　　现在我们的插件功能还比较单一，只能让用户选择唯一的颜色；我们可以在插件中加入选项页面，以便用户更好的自定义插件的功能。</p>
 <p>　　在程序目录新增一个options.html文件：</p>
 <figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">      <span class="hljs-selector-tag">button</span> &#123;</span><br><span class="language-css">        <span class="hljs-attribute">height</span>: <span class="hljs-number">30px</span>;</span><br><span class="language-css">        <span class="hljs-attribute">width</span>: <span class="hljs-number">30px</span>;</span><br><span class="language-css">        <span class="hljs-attribute">outline</span>: none;</span><br><span class="language-css">        <span class="hljs-attribute">margin</span>: <span class="hljs-number">10px</span>;</span><br><span class="language-css">      &#125;</span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;buttonDiv&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>选择一个不同的颜色<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;options.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　然后添加选择页面的逻辑代码<code>options.js</code>：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> page = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;buttonDiv&quot;</span>);<br><span class="hljs-keyword">const</span> kButtonColors = [<span class="hljs-string">&quot;#3aa757&quot;</span>, <span class="hljs-string">&quot;#e8453c&quot;</span>, <span class="hljs-string">&quot;#f9bb2d&quot;</span>, <span class="hljs-string">&quot;#4688f1&quot;</span>];<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">constructOptions</span>(<span class="hljs-params">kButtonColors</span>) &#123;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> item <span class="hljs-keyword">of</span> kButtonColors) &#123;<br>    <span class="hljs-keyword">let</span> button = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&quot;button&quot;</span>);<br>    button.<span class="hljs-property">style</span>.<span class="hljs-property">backgroundColor</span> = item;<br>    button.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;click&quot;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>      chrome.<span class="hljs-property">storage</span>.<span class="hljs-property">sync</span>.<span class="hljs-title function_">set</span>(&#123; <span class="hljs-attr">color</span>: item &#125;, <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;color is &quot;</span> + item);<br>      &#125;);<br>    &#125;);<br>    page.<span class="hljs-title function_">appendChild</span>(button);<br>  &#125;<br>&#125;<br><span class="hljs-title function_">constructOptions</span>(kButtonColors);<br></code></pre></div></td></tr></table></figure>
 
 
 <p>　　上面代码中预设了四个颜色选项，通过onclick事件监听，生成页面上的按钮；当用户单击按钮时，将更新storage中存储的颜色值。</p>
 <p>　　options页面完成后，我们可以将其在manifest的<code>options_page</code>进行注册：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Hello Extensions&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-comment">//...</span><br>  <span class="hljs-attr">&quot;options_page&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;options.html&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-comment">//...</span><br>  <span class="hljs-attr">&quot;manifest_version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　重新加载我们的插件，点击详情，滚动到底部，点击<code>扩展程序选项</code>来查看选项页面。</p>
 <p><img src="/images/Chrome-Plugin/options.png" srcset="/img/loading.gif" lazyload alt="选项页面"></p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　或者可以在浏览器右上角插件图标上<code>右击 =&gt; 选项</code>。</p>
 <h1 id="插件功能进阶"><a href="#插件功能进阶" class="headerlink" title="插件功能进阶"></a>插件功能进阶</h1><p>　　通过上面一个简单的小插件，相信大家对插件的功能和组件都有了一个大致的了解，知道了每个组件在其中发挥的作用；但这还只是插件的一小部分功能，下面我们对插件每个部分的功能以及组件做一个更深入的了解。</p>
 <h2 id="使用background管理事件"><a href="#使用background管理事件" class="headerlink" title="使用background管理事件"></a>使用background管理事件</h2><p>　　background是插件的事件处理程序，它包含对插件很重要的浏览器事件的监听器。background处于休眠状态，直到触发事件，然后执行指示的逻辑；一个好的background仅在需要时加载，并在空闲时卸载。</p>
 <p><img src="/images/Chrome-Plugin/background-action.png" srcset="/img/loading.gif" lazyload alt="background和popup交互"></p>
 <p>　　background监听的一些浏览器事件包括：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <ul>
 <li>插件程序首次安装或更新为新版本。</li>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <li>后台页面正在监听事件，并且已调度该事件</li>
 <li>内容脚本或其他插件发送消息</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>插件中的另一个视图（例如弹出窗口）调用runtime.getBackgroundPage</li>
 </ul>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　加载完成后，只要触发某个事件，background就会保持运行状态；在上面manifest中，我们还指定了一个<code>persistent</code>属性：</p>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;background&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;background.js&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;persistent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　<code>persistent</code>属性定义了插件常驻后台的方式；当其值为true时，表示插件将一直在后台运行，无论其是否正在工作；当其值为false时，表示插件在后台按需运行，这就是Chrome后来提出的<code>Event Page</code>（非持久性后台）。<code>Event Page</code>是基于事件驱动运行的，只有在事件发生的时候才可以访问；这样做的目的是为了能够有效减小插件对内存的消耗，如非必要，请将persistent设置为false。</p>
 <blockquote>
 <p>persistent属性的默认值为true</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </blockquote>
 <h3 id="alarms"><a href="#alarms" class="headerlink" title="alarms"></a>alarms</h3><p>　　一些基于DOM页面的计时器（例如window.setTimeout或window.setInterval），如果在非持久后台休眠时进行了触发，可能不会按照预定的时间运行：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> timeout = <span class="hljs-number">1000</span> * <span class="hljs-number">60</span> * <span class="hljs-number">3</span>;  <span class="hljs-comment">// 3 minutes in milliseconds</span><br><span class="hljs-variable language_">window</span>.<span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-title function_">alert</span>(<span class="hljs-string">&#x27;Hello, world!&#x27;</span>);<br>&#125;, timeout);<br></code></pre></div></td></tr></table></figure>
 
 
 <p>　　Chrome提供了另外的API，alarms：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">chrome.<span class="hljs-property">alarms</span>.<span class="hljs-title function_">create</span>(&#123;<span class="hljs-attr">delayInMinutes</span>: <span class="hljs-number">3.0</span>&#125;)<br><br>chrome.<span class="hljs-property">alarms</span>.<span class="hljs-property">onAlarm</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-title function_">alert</span>(<span class="hljs-string">&quot;Hello, world!&quot;</span>)<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">chrome.<span class="hljs-property">alarms</span>.<span class="hljs-title function_">create</span>(&#123;<span class="hljs-attr">delayInMinutes</span>: <span class="hljs-number">3.0</span>&#125;)<br><br>chrome.<span class="hljs-property">alarms</span>.<span class="hljs-property">onAlarm</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-title function_">alert</span>(<span class="hljs-string">&quot;Hello, world!&quot;</span>)<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 
 <h2 id="browserAction"><a href="#browserAction" class="headerlink" title="browserAction"></a>browserAction</h2><p>　　我们知道了browser_action字段用来配置popup的页面，在其他的一些文档中还给出了<code>page_action</code>字段的配置，不过page_action并不是所有的页面都能够使用；不过随着Chrome的版本更新，这两者的功能也越来越相近；在Chrome 48版本之后，page_action也从原来的地址栏中移出来，和插件放在一起；笔者在配置<code>page_action</code>的时候没有发现有什么比较大的区别，因此下面以browser_action为主。</p>
 <p>　　在browserAction的配置中，我们可以提供多种尺寸的图标，Chrome会选择最接近的图标并将其缩放到适当的大小来填充；如果没有提供确切的大小，这种缩放会导致图标丢失细节或看起来模糊。</p>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-comment">// ...</span><br>  <span class="hljs-attr">&quot;browser_action&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;default_icon&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span>                <span class="hljs-comment">// optional</span><br>      <span class="hljs-attr">&quot;16&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;images/icon16.png&quot;</span><span class="hljs-punctuation">,</span>     <span class="hljs-comment">// optional</span><br>      <span class="hljs-attr">&quot;24&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;images/icon24.png&quot;</span><span class="hljs-punctuation">,</span>     <span class="hljs-comment">// optional</span><br>      <span class="hljs-attr">&quot;32&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;images/icon32.png&quot;</span>      <span class="hljs-comment">// optional</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;default_title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;hello popup&quot;</span><span class="hljs-punctuation">,</span>  <span class="hljs-comment">// optional</span><br>    <span class="hljs-attr">&quot;default_popup&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;popup.html&quot;</span>    <span class="hljs-comment">// optional</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　也可以通过调用<code>browserAction.setPopup</code>动态设置弹出窗口。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">chrome.<span class="hljs-property">browserAction</span>.<span class="hljs-title function_">setPopup</span>(&#123;<span class="hljs-attr">popup</span>: <span class="hljs-string">&#x27;popup_new.html&#x27;</span>&#125;);<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <h3 id="Tooltip"><a href="#Tooltip" class="headerlink" title="Tooltip"></a>Tooltip</h3><p>　　要设置提示文案，使用default_title字段，或者调用<code>browserAction.setTitle</code>函数。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">chrome.<span class="hljs-property">browserAction</span>.<span class="hljs-title function_">setTitle</span>(&#123; <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;New Tooltip&quot;</span> &#125;);<br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Chrome-Plugin/tooltip.png" srcset="/img/loading.gif" lazyload alt="Tooltip"></p>
 <h3 id="Badge"><a href="#Badge" class="headerlink" title="Badge"></a>Badge</h3><p>　　Badge（徽章）就是在图标上显示的一些文本内容，用来详细显示插件的提示信息；由于Bage的空间有限，因此最多显示4个英文字符或者2个函数；badge无法通过配置文件来指定，必须通过代码实现，设置badge文字和颜色可以分别使用<code>browserAction.setBadgeText()</code>和<code>browserAction.setBadgeBackgroundColor()</code>：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">chrome.<span class="hljs-property">browserAction</span>.<span class="hljs-title function_">setBadgeText</span>(&#123; <span class="hljs-attr">text</span>: <span class="hljs-string">&quot;new&quot;</span> &#125;);<br>chrome.<span class="hljs-property">browserAction</span>.<span class="hljs-title function_">setBadgeBackgroundColor</span>(&#123; <span class="hljs-attr">color</span>: [<span class="hljs-number">255</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">255</span>] &#125;);<br><span class="hljs-comment">// or 颜色字符串</span><br><span class="hljs-comment">// chrome.action.setBadgeBackgroundColor(&#123;color: &#x27;#4688F1&#x27;&#125;);</span><br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/Chrome-Plugin/badge.png" srcset="/img/loading.gif" lazyload alt="Badge"></p>
 <h2 id="content-scripts"><a href="#content-scripts" class="headerlink" title="content-scripts"></a>content-scripts</h2><p>　　content-scripts（内容脚本）是在网页上下文中运行的文件。通过使用标准的文档对象模型(DOM)，它能够读取浏览器访问的网页的详细信息，对其进行更改，并将信息传递给其父级插件。内容脚本相对于background还是有一些访问API上的限制，它可以直接访问以下chrome的API：</p>
 <ul>
 <li>i18n</li>
 <li>storage</li>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>runtime:<ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>connect</li>
 <li>getManifest</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <li>getURL</li>
 <li>id</li>
 <li>onConnect</li>
 <li>onMessage</li>
 <li>sendMessage</li>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </ul>
 </li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </ul>
 <p>　　内容脚本运行于一个独立、隔离的环境，它不会和<code>主页面的脚本</code>或者<code>其他插件的内容脚本</code>发生冲突，当然也不能调用其上下文和变量。假设我们在主页面中定义了变量和函数：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Document<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript">      <span class="hljs-keyword">const</span> a = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">b</span>: <span class="hljs-string">&quot;2&quot;</span> &#125;;</span><br><span class="language-javascript">      <span class="hljs-keyword">const</span> b = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">b</span>: <span class="hljs-string">&quot;2&quot;</span>, <span class="hljs-attr">c</span>: [] &#125;;</span><br><span class="language-javascript">      <span class="hljs-keyword">function</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">a, b</span>)&#123; <span class="hljs-keyword">return</span> a + b &#125;;</span><br><span class="language-javascript">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　由于隔离的机制，在内容脚本中调用add函数会报错：Uncaught ReferenceError: add is not defined。</p>
 <p>　　内容脚本分为以代码方式或声明方式注入。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h3 id="代码方式注入"><a href="#代码方式注入" class="headerlink" title="代码方式注入"></a>代码方式注入</h3><p>　　对于需要在特定情况下运行的代码，我们需要使用代码注入的方式；在上面的popup页面中，我们就是将内容脚本以代码的方式进行注入到页面中：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">chrome.<span class="hljs-property">tabs</span>.<span class="hljs-title function_">executeScript</span>(tabs[<span class="hljs-number">0</span>].<span class="hljs-property">id</span>, &#123;<br>  <span class="hljs-attr">code</span>: <span class="hljs-string">&#x27;document.body.style.backgroundColor = &quot;red&quot;;&#x27;</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 
 <p>　　或者可以注入整个文件。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">chrome.<span class="hljs-property">tabs</span>.<span class="hljs-title function_">executeScript</span>(tabs[<span class="hljs-number">0</span>].<span class="hljs-property">id</span>, &#123;<br>  <span class="hljs-attr">file</span>: <span class="hljs-string">&quot;contentScript.js&quot;</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <h3 id="声明式注入"><a href="#声明式注入" class="headerlink" title="声明式注入"></a>声明式注入</h3><p>　　在指定页面上自动运行的内容脚本，我们可使用声明式注入的方式；以声明方式注入的脚本需注册在manifest文件的<code>content_scripts</code>属性下。它们可以包括JS文件或CSS文件。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;content_scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-comment">// 必需。指定此内容脚本将被注入到哪些页面。</span><br>      <span class="hljs-attr">&quot;matches&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;https://*.xieyufei.com/*&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;css&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;myStyles.css&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;js&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;contentScript.js&quot;</span><span class="hljs-punctuation">]</span><br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
 
 <p>　　声明式注入除了matches必须外，还可以包含以下字段，来自定义指定页面匹配：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <table>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <thead>
 <tr>
 <th>Name</th>
 <th>Type</th>
 <th>Description</th>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
 </thead>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <tbody><tr>
 <td>exclude_matches</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>字符串数组</td>
 <td>可选。排除此内容脚本将被注入的页面。</td>
 </tr>
 <tr>
 <td>include_globs</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>字符串数组</td>
 <td>可选。 在 matches 后应用，以匹配与此 glob 匹配的URL。旨在模拟 @exclude 油猴关键字。</td>
 </tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <tr>
 <td>exclude_globs</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>字符串数组</td>
 <td>可选。 在 matches 后应用，以排除与此 glob 匹配的URL。旨在模拟 @exclude 油猴关键字。</td>
 </tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tbody></table>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　声明匹配URL可以使用Glob属性，Glob属性遵循更灵活的语法。可接受的Glob字符串可能包含“通配符”星号和问号的URL。星号<code>*</code>匹配任意长度的字符串，包括空字符串，而问号<code>？</code>匹配任何单个字符。</p>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;content_scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;matches&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;https://*.xieyufei.com/*&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;exclude_matches&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;*://*/*business*&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;include_globs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;*xieyufei.com/???s/*&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;exclude_globs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;*science*&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;js&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;contentScript.js&quot;</span><span class="hljs-punctuation">]</span><br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
 
@@ -543,14 +538,14 @@
 
 <p>　　三个字段注入的时机区别如下：</p>
 <table>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <thead>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <tr>
 <th>Name</th>
 <th>Type</th>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <th>Description</th>
 </tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </thead>
 <tbody><tr>
 <td>document_idle</td>
@@ -559,9 +554,9 @@
 </tr>
 <tr>
 <td>document_start</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>string</td>
 <td>在 css 文件之后，但在构造其他 DOM 或运行其他脚本前注入。</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
 <tr>
 <td>document_end</td>
@@ -569,11 +564,10 @@
 <td>在 DOM 创建完成后，但在加载子资源（例如 images 和 frames ）之前，立即注入脚本。</td>
 </tr>
 </tbody></table>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h3 id="消息通信"><a href="#消息通信" class="headerlink" title="消息通信"></a>消息通信</h3><p>　　尽管内容脚本的执行环境和托管它们的页面是相互隔离的，但是它们共享对页面DOM的访问；如果内容脚本想要和插件通信，可以通过<code>onMessage</code>和<code>sendMessage</code></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// contentScript.js</span><br>chrome.<span class="hljs-property">runtime</span>.<span class="hljs-property">onMessage</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params">message, sender, sendResponse</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;content-script收到的消息&quot;</span>, message);<br>  <span class="hljs-title function_">sendResponse</span>(<span class="hljs-string">&quot;我收到了你的消息！&quot;</span>);<br>&#125;);<br><br>chrome.<span class="hljs-property">runtime</span>.<span class="hljs-title function_">sendMessage</span>(<br>  &#123; <span class="hljs-attr">greeting</span>: <span class="hljs-string">&quot;我是content-script呀，我主动发消息给后台！&quot;</span> &#125;,<br>  <span class="hljs-keyword">function</span> (<span class="hljs-params">response</span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;收到来自后台的回复：&quot;</span> + response);<br>  &#125;<br>);<br></code></pre></div></td></tr></table></figure>
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　更多消息通信的在后面我们会进行详细的总结。</p>
 <h2 id="contextMenus"><a href="#contextMenus" class="headerlink" title="contextMenus"></a>contextMenus</h2><p>　　contextMenus可以自定义浏览器的右键菜单（也有叫上下文菜单的），主要是通过<code>chrome.contextMenus</code>API实现；在manifest中添加权限来开启菜单权限：</p>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-comment">// ...</span><br>  <span class="hljs-attr">&quot;permissions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;contextMenus&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;icons&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;16&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;contextMenus16.png&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;48&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;contextMenus48.png&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;128&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;contextMenus128.png&quot;</span><br>   <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
@@ -598,71 +592,69 @@
 
 
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h2 id="override"><a href="#override" class="headerlink" title="override"></a>override</h2><p>　　覆盖页面（override）是一种将Chrome默认的特定页面替换为插件程序中的HTML文件。除了HTML之外，覆盖页面通常还有CSS和JS代码；插件可以替换以下Chrome的页面。</p>
 <ul>
 <li>书签管理器<ul>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>当用户从 Chrome 菜单中选择书签管理器菜单项或在 Mac 上从书签菜单中选择书签管理器项时出现的页面。您也可以通过输入 URL chrome://bookmarks来访问此页面。</li>
 </ul>
 </li>
 <li>历史记录<ul>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <li>当用户从 Chrome 菜单中选择历史记录菜单项或在 Mac 上从历史记录菜单中选择显示完整历史记录项时出现的页面。您也可以通过输入URL chrome://history来访问此页面。</li>
 </ul>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </li>
 <li>新标签<ul>
 <li>当用户创建新标签或窗口时出现的页面。您也可以通过输入 URL chrome://newtab来访问此页面。</li>
 </ul>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </li>
 </ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　PS：像我们熟知的Momentum插件，就是覆盖了新标签页面。</p>
 <blockquote>
 <p>需要注意的是：单个插件只能覆盖某一个页面。例如，插件程序不能同时覆盖书签管理器和历史记录页面。</p>
 </blockquote>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　在manifest进行如下配置：</p>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;chrome_url_overrides&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;newtab&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;newtab.html&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-comment">// &quot;history&quot;: &quot;history.html&quot;,</span><br>    <span class="hljs-comment">// &quot;bookmarks&quot;: &quot;bookmarks.html&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　覆盖newtab效果如下：</p>
 <p><img src="/images/Chrome-Plugin/override.png" srcset="/img/loading.gif" lazyload alt="覆盖newtab"></p>
 <p>　　如果我们覆盖多个特定页面，Chrome加载插件时会直接报错：</p>
 <p><img src="/images/Chrome-Plugin/override-more.png" srcset="/img/loading.gif" lazyload alt="覆盖多个页面报错"></p>
 <h2 id="storage"><a href="#storage" class="headerlink" title="storage"></a>storage</h2><p>　　用户在操作时，会产生一些用户数据，插件需要在本地存储这些数据，在需要调用的时候再拿出来；Chrome推荐使用<code>chrome.storage</code>的API，该API经过优化，提供和localStorage相同的存储功能；不推荐直接存在<code>localStorage</code>中，两者主要有以下区别：</p>
 <ul>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>用户数据使用chrome.storage存储可以和Chrome的同步功能自动同步。</li>
 <li>插件的内容脚本可以直接访问用户数据，而无需background。</li>
 <li>chrome.storage可以直接存储对象，而localStorage是存储字符串，需要再次转换</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </ul>
 <p>　　如果要使用storage的自动同步，我们可以使用<code>storage.sync</code>：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">chrome.<span class="hljs-property">storage</span>.<span class="hljs-property">sync</span>.<span class="hljs-title function_">set</span>(&#123;<span class="hljs-attr">key</span>: value&#125;, <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Value is set to &#x27;</span> + value);<br>&#125;);<br><br>chrome.<span class="hljs-property">storage</span>.<span class="hljs-property">sync</span>.<span class="hljs-title function_">get</span>([<span class="hljs-string">&#x27;key&#x27;</span>], <span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Value currently is &#x27;</span> + result.<span class="hljs-property">key</span>);<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　当Chrome离线时，Chrome会将数据存储在本地。下次浏览器在线时，Chrome会同步数据。即使用户禁用同步，storage.sync仍将工作。</p>
 <p>　　不需要同步的数据可以用<code>storage.local</code>进行存储：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">chrome.<span class="hljs-property">storage</span>.<span class="hljs-property">local</span>.<span class="hljs-title function_">set</span>(&#123;<span class="hljs-attr">key</span>: value&#125;, <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Value is set to &#x27;</span> + value);<br>&#125;);<br><br>chrome.<span class="hljs-property">storage</span>.<span class="hljs-property">local</span>.<span class="hljs-title function_">get</span>([<span class="hljs-string">&#x27;key&#x27;</span>], <span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Value currently is &#x27;</span> + result.<span class="hljs-property">key</span>);<br>&#125;);<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 
 <p>　　如果我们想要监听storage中的数据变化，可以用<code>onChanged</code>添加监听事件；每当存储中的数据发生变化时，就会触发该事件：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// background.js</span><br><br>chrome.<span class="hljs-property">storage</span>.<span class="hljs-property">onChanged</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params">changes, namespace</span>) &#123;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> [key, &#123; oldValue, newValue &#125;] <span class="hljs-keyword">of</span> <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">entries</span>(changes)) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<br>      <span class="hljs-string">`Storage key &quot;<span class="hljs-subst">$&#123;key&#125;</span>&quot; in namespace &quot;<span class="hljs-subst">$&#123;namespace&#125;</span>&quot; changed.`</span>,<br>      <span class="hljs-string">`Old value was &quot;<span class="hljs-subst">$&#123;oldValue&#125;</span>&quot;, new value is &quot;<span class="hljs-subst">$&#123;newValue&#125;</span>&quot;.`</span><br>    );<br>  &#125;<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="devtools"><a href="#devtools" class="headerlink" title="devtools"></a>devtools</h2><p>　　用过Vue或者React的devtools的童鞋应该见过这样新增的扩展面板：</p>
 <p><img src="/images/Chrome-Plugin/dev-vue.png" srcset="/img/loading.gif" lazyload alt="Vue Panel"></p>
 <p>　　DevTools可以为Chrome的DevTools添加功能，它可以添加新的UI面板和侧边栏，与检查的页面交互，获取有关网络请求的信息等等；它可以访问以下特定的API：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <ul>
 <li>devtools.inspectedWindow</li>
 <li>devtools.network</li>
 <li>devtools.panels</li>
 </ul>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　DevTools扩展的结构与任何其他扩展一样：它可以有一个背景页面、内容脚本和其他项目。此外，每个DevTools扩展都有一个DevTools页面，可以访问DevTools的API。</p>
 <p><img src="/images/Chrome-Plugin/devtools.png" srcset="/img/loading.gif" lazyload alt="DevTools扩展"></p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　配置devtools不需要权限，只要在manifest中配置一个<code>devtools.html</code>：</p>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;devtools_page&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;devtools.html&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　devtools.html中只引用了devtools.js，如果写了其他内容也不会展示：</p>
 <figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span> <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;./devtools.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
@@ -670,9 +662,9 @@
 <p>　　在项目中新建<code>devtools.js</code>：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// devtools.js</span><br><span class="hljs-comment">// 创建扩展面板</span><br>chrome.<span class="hljs-property">devtools</span>.<span class="hljs-property">panels</span>.<span class="hljs-title function_">create</span>(<br>  <span class="hljs-comment">// 扩展面板显示名称</span><br>  <span class="hljs-string">&quot;DevPanel&quot;</span>,<br>  <span class="hljs-comment">// 扩展面板icon，并不展示</span><br>  <span class="hljs-string">&quot;panel.png&quot;</span>,<br>  <span class="hljs-comment">// 扩展面板页面</span><br>  <span class="hljs-string">&quot;Panel.html&quot;</span>,<br>  <span class="hljs-keyword">function</span> (<span class="hljs-params">panel</span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;自定义面板创建成功！&quot;</span>);<br>  &#125;<br>);<br><br><span class="hljs-comment">// 创建自定义侧边栏</span><br>chrome.<span class="hljs-property">devtools</span>.<span class="hljs-property">panels</span>.<span class="hljs-property">elements</span>.<span class="hljs-title function_">createSidebarPane</span>(<br>  <span class="hljs-string">&quot;Sidebar&quot;</span>,<br>  <span class="hljs-keyword">function</span> (<span class="hljs-params">sidebar</span>) &#123;<br>    sidebar.<span class="hljs-title function_">setPage</span>(<span class="hljs-string">&quot;sidebar.html&quot;</span>);<br>  &#125;<br>);<br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　这里调用create创建扩展面板，createSidebarPane创建侧边栏，每个扩展面板和侧边栏都是一个单独的HTML页面，其中可以包含其他资源（JavaScript、CSS、图像等）。</p>
 <h3 id="DevPanel"><a href="#DevPanel" class="headerlink" title="DevPanel"></a>DevPanel</h3><p>　　DevPanel面板是一个顶级标签，和Element、Source、Network等是同一级，在一个devtools.js可以创建多个；在<code>Panel.html</code>中我们先设置2个按钮：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>dev panel<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;check_jquery&quot;</span>&gt;</span>检查jquery<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;get_all_resources&quot;</span>&gt;</span>获取所有资源<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;panel.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
 
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
@@ -682,8 +674,8 @@
 
 <p>　　<code>eval</code>函数为插件提供了在被检查页面的上下文中执行JS代码的能力，而<code>getResources</code>获取页面上所有加载的资源；我们找到一个页面，然后右击检查打开调试工具，发现在最右侧多了一个<code>DevPanel</code>的tab页，点击我们的调试按钮，那么日志在哪里能看到呢？</p>
 <p>　　我们在调试工具上右击检查，再开一个调试工具，这个就是调试工具的调试工具。。。。</p>
-<p><img src="/images/Chrome-Plugin/dolls.jpg" srcset="/img/loading.gif" lazyload alt="禁止套娃"></p>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<p><img src="/images/Chrome-Plugin/dolls.jpg" srcset="/img/loading.gif" lazyload alt="禁止套娃"></p>
 <p>　　最终两个调试工具的效果如下：</p>
 <p><img src="/images/Chrome-Plugin/dev-panel.png" srcset="/img/loading.gif" lazyload alt="DevTools面板"></p>
 <h3 id="Sidebar"><a href="#Sidebar" class="headerlink" title="Sidebar"></a>Sidebar</h3><p>　　回到devtools.js，我们使用<code>createSidebarPane</code>创建了侧边栏面板，并且设置为<code>sidebar.html</code>，最终呈现在<code>Element</code>面板的最右侧：</p>
@@ -691,54 +683,54 @@
 <p>　　有几种方法可以在侧边栏中显示内容：</p>
 <ul>
 <li>HTML内容。调用setPage以指定要在窗格中显示的 HTML 页面。</li>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <li>JSON数据。将JSON对象传递给setObject.</li>
 <li>JavaScript表达式。将表达式传递给setExpression</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </ul>
 <p>　　通过JS表达式，我们可以很方便进行页面查询，比如，查询页面上所有的img元素：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">chrome.<span class="hljs-property">devtools</span>.<span class="hljs-property">panels</span>.<span class="hljs-property">elements</span>.<span class="hljs-title function_">createSidebarPane</span>(<br>  <span class="hljs-string">&quot;All Images&quot;</span>,<br>  <span class="hljs-keyword">function</span> (<span class="hljs-params">sidebar</span>) &#123;<br>    sidebar.<span class="hljs-title function_">setExpression</span>(<span class="hljs-string">&#x27;document.querySelectorAll(&quot;img&quot;)&#x27;</span>, <span class="hljs-string">&quot;All Images&quot;</span>);<br>  &#125;<br>);<br></code></pre></div></td></tr></table></figure>
 
 <p><img src="/images/Chrome-Plugin/sidebar-img.png" srcset="/img/loading.gif" lazyload alt="展示所有图片"></p>
 <p>　　另外，我们可以通过<code>elements.onSelectionChanged</code>监听事件，在Element面板选中元素更改后，更新侧边栏面板的状态；例如，可以将我们关心的一些元素的样式进行实时展示在侧边面板，方面查看：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> page_getProperties = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">if</span> ($0 <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">HTMLElement</span>) &#123;<br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-attr">tag</span>: $0.<span class="hljs-property">tagName</span>.<span class="hljs-title function_">toLocaleLowerCase</span>(),<br>      <span class="hljs-attr">class</span>: $0.<span class="hljs-property">classList</span>,<br>      <span class="hljs-attr">width</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">getComputedStyle</span>($0)[<span class="hljs-string">&quot;width&quot;</span>],<br>      <span class="hljs-attr">height</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">getComputedStyle</span>($0)[<span class="hljs-string">&quot;height&quot;</span>],<br>      <span class="hljs-attr">margin</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">getComputedStyle</span>($0)[<span class="hljs-string">&quot;margin&quot;</span>],<br>      <span class="hljs-attr">padding</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">getComputedStyle</span>($0)[<span class="hljs-string">&quot;padding&quot;</span>],<br>      <span class="hljs-attr">color</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">getComputedStyle</span>($0)[<span class="hljs-string">&quot;color&quot;</span>],<br>      <span class="hljs-attr">fontSize</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">getComputedStyle</span>($0)[<span class="hljs-string">&quot;fontSize&quot;</span>],<br>    &#125;;<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">return</span> &#123;&#125;;<br>  &#125;<br>&#125;;<br><br>chrome.<span class="hljs-property">devtools</span>.<span class="hljs-property">panels</span>.<span class="hljs-property">elements</span>.<span class="hljs-title function_">createSidebarPane</span>(<br>  <span class="hljs-string">&quot;Select Element&quot;</span>,<br>  <span class="hljs-keyword">function</span> (<span class="hljs-params">sidebar</span>) &#123;<br>    <span class="hljs-keyword">function</span> <span class="hljs-title function_">updateElementProperties</span>(<span class="hljs-params"></span>) &#123;<br>      sidebar.<span class="hljs-title function_">setExpression</span>(<br>        <span class="hljs-string">&quot;(&quot;</span> + page_getProperties.<span class="hljs-title function_">toString</span>() + <span class="hljs-string">&quot;)()&quot;</span>,<br>        <span class="hljs-string">&quot;select element&quot;</span><br>      );<br>    &#125;<br>    <span class="hljs-title function_">updateElementProperties</span>();<br>    chrome.<span class="hljs-property">devtools</span>.<span class="hljs-property">panels</span>.<span class="hljs-property">elements</span>.<span class="hljs-property">onSelectionChanged</span>.<span class="hljs-title function_">addListener</span>(<br>      updateElementProperties<br>    );<br>  &#125;<br>);<br></code></pre></div></td></tr></table></figure>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> page_getProperties = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">if</span> ($0 <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">HTMLElement</span>) &#123;<br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-attr">tag</span>: $0.<span class="hljs-property">tagName</span>.<span class="hljs-title function_">toLocaleLowerCase</span>(),<br>      <span class="hljs-attr">class</span>: $0.<span class="hljs-property">classList</span>,<br>      <span class="hljs-attr">width</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">getComputedStyle</span>($0)[<span class="hljs-string">&quot;width&quot;</span>],<br>      <span class="hljs-attr">height</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">getComputedStyle</span>($0)[<span class="hljs-string">&quot;height&quot;</span>],<br>      <span class="hljs-attr">margin</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">getComputedStyle</span>($0)[<span class="hljs-string">&quot;margin&quot;</span>],<br>      <span class="hljs-attr">padding</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">getComputedStyle</span>($0)[<span class="hljs-string">&quot;padding&quot;</span>],<br>      <span class="hljs-attr">color</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">getComputedStyle</span>($0)[<span class="hljs-string">&quot;color&quot;</span>],<br>      <span class="hljs-attr">fontSize</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">getComputedStyle</span>($0)[<span class="hljs-string">&quot;fontSize&quot;</span>],<br>    &#125;;<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">return</span> &#123;&#125;;<br>  &#125;<br>&#125;;<br><br>chrome.<span class="hljs-property">devtools</span>.<span class="hljs-property">panels</span>.<span class="hljs-property">elements</span>.<span class="hljs-title function_">createSidebarPane</span>(<br>  <span class="hljs-string">&quot;Select Element&quot;</span>,<br>  <span class="hljs-keyword">function</span> (<span class="hljs-params">sidebar</span>) &#123;<br>    <span class="hljs-keyword">function</span> <span class="hljs-title function_">updateElementProperties</span>(<span class="hljs-params"></span>) &#123;<br>      sidebar.<span class="hljs-title function_">setExpression</span>(<br>        <span class="hljs-string">&quot;(&quot;</span> + page_getProperties.<span class="hljs-title function_">toString</span>() + <span class="hljs-string">&quot;)()&quot;</span>,<br>        <span class="hljs-string">&quot;select element&quot;</span><br>      );<br>    &#125;<br>    <span class="hljs-title function_">updateElementProperties</span>();<br>    chrome.<span class="hljs-property">devtools</span>.<span class="hljs-property">panels</span>.<span class="hljs-property">elements</span>.<span class="hljs-property">onSelectionChanged</span>.<span class="hljs-title function_">addListener</span>(<br>      updateElementProperties<br>    );<br>  &#125;<br>);<br></code></pre></div></td></tr></table></figure>
 
 <p><img src="/images/Chrome-Plugin/siderbar-select.gif" srcset="/img/loading.gif" lazyload alt="元素样式实时展示"></p>
 <h2 id="notifications"><a href="#notifications" class="headerlink" title="notifications"></a>notifications</h2><p>　　Chrome提供<code>chrome.notifications</code>的API来推送桌面通知；同样也需要现在manifest中注册权限：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;permissions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;notifications&quot;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
 
 <p>　　在background调用创建即可</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// background.js</span><br>chrome.<span class="hljs-property">notifications</span>.<span class="hljs-title function_">create</span>(<span class="hljs-literal">null</span>, &#123;<br>  <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;basic&quot;</span>,<br>  <span class="hljs-attr">iconUrl</span>: <span class="hljs-string">&quot;drink.png&quot;</span>,<br>  <span class="hljs-attr">title</span>: <span class="hljs-string">&quot;喝水小助手&quot;</span>,<br>  <span class="hljs-attr">message</span>: <span class="hljs-string">&quot;看到此消息的人可以和我一起来喝一杯水&quot;</span>,<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　效果如下：</p>
 <p><img src="/images/Chrome-Plugin/notifications.png" srcset="/img/loading.gif" lazyload alt="消息推送"></p>
 <p>　　根据chrome.notifications的API，笔者做了一个<a target="_blank" rel="noopener" href="https://github.com/acexyf/drink-helper">喝水小助手</a>，和我一起成为一天八杯水的人吧！</p>
 <blockquote>
 <p>chrome.notifications支持更多的属性详见附录。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </blockquote>
 <h2 id="webRequest"><a href="#webRequest" class="headerlink" title="webRequest"></a>webRequest</h2><p>　　通过webRequest的API可以对浏览器发出的任何HTTP请求进行拦截、组织或者修改；可以拦截的请求还包括脚本、样式的GET请求以及图片的链接；我们也需要在manifest中配置权限才能使用API：</p>
 <figure class="highlight json"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-comment">//...</span><br>  <span class="hljs-attr">&quot;permissions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;webRequest&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-string">&quot;webRequestBlocking&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-string">&quot;*://*.xieyufei.com/&quot;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　权限中还需要声明拦截请求的URL，如果你想拦截所有的URL，可以使用<code>*://*/*</code>（不过不推荐这么做，数据会非常多），如果我们想以阻塞方式使用Web请求API，则需要用到<code>webRequestBlocking</code>权限。</p>
 <p>　　比如我们可以对拦截的请求进行取消：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript">chrome.<span class="hljs-property">webRequest</span>.<span class="hljs-property">onBeforeRequest</span>.<span class="hljs-title function_">addListener</span>(<br>  <span class="hljs-keyword">function</span> (<span class="hljs-params">detail</span>) &#123;<br>    <span class="hljs-keyword">return</span> &#123;<span class="hljs-attr">cancel</span>: details.<span class="hljs-property">url</span>.<span class="hljs-title function_">indexOf</span>(<span class="hljs-string">&quot;example.com&quot;</span>) != -<span class="hljs-number">1</span>&#125;;;<br>  &#125;,<br>  &#123; <span class="hljs-attr">urls</span>: [<span class="hljs-string">&quot;&lt;all_urls&gt;&quot;</span>] &#125;,<br>  [<span class="hljs-string">&quot;blocking&quot;</span>]<br>);<br></code></pre></div></td></tr></table></figure>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <h1 id="组件消息通信"><a href="#组件消息通信" class="headerlink" title="组件消息通信"></a>组件消息通信</h1><p>　　不同组件之间经常需要进行消息通信来进行数据的传递，我们来看下他们之间是如何进行通信的：</p>
 <h2 id="background和popup通信"><a href="#background和popup通信" class="headerlink" title="background和popup通信"></a>background和popup通信</h2><p>　　background和popup之间的通信比较简单，在popup中，我们可以通过<code>extension.getBackgroundPage</code>直接获取到background对象，直接调用对象上的方法即可：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// popup.js</span><br><span class="hljs-keyword">var</span> bg = chrome.<span class="hljs-property">extension</span>.<span class="hljs-title function_">getBackgroundPage</span>();<br>bg.<span class="hljs-title function_">someMethods</span>()<br></code></pre></div></td></tr></table></figure>
 
 <p>　　而background访问popup上则通过<code>extension.getViews</code>来访问，不过前提是popup弹框已经展示，否则获取到的views是空数组：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">//background.js</span><br><span class="hljs-keyword">var</span> views = chrome.<span class="hljs-property">extension</span>.<span class="hljs-title function_">getViews</span>(&#123;<span class="hljs-attr">type</span>:<span class="hljs-string">&#x27;popup&#x27;</span>&#125;);<br><span class="hljs-keyword">if</span>(views.<span class="hljs-property">length</span> &gt; <span class="hljs-number">0</span>) &#123;<br>  <span class="hljs-comment">// 相当于popup的windows对象</span><br>	<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(views[<span class="hljs-number">0</span>].<span class="hljs-property">location</span>.<span class="hljs-property">href</span>);<br>&#125;<br></code></pre></div></td></tr></table></figure>
 
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="background和内容脚本通信"><a href="#background和内容脚本通信" class="headerlink" title="background和内容脚本通信"></a>background和内容脚本通信</h2><p>　　在background和内容脚本通信，我们可以使用简单直接的<code>runtime.sendMessage</code>或者<code>tabs.sendMessage</code>发送消息，消息内容可以是JSON数据</p>
 <p>　　从内容脚本发送消息如下：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">// content-script.js</span><br>chrome.<span class="hljs-property">runtime</span>.<span class="hljs-title function_">sendMessage</span>(<br>  &#123; <span class="hljs-attr">greeting</span>: <span class="hljs-string">&quot;hello，我是content-script，主动发消息给后台！&quot;</span> &#125;,<br>  <span class="hljs-keyword">function</span> (<span class="hljs-params">response</span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;收到来自后台的回复：&quot;</span> + response);<br>  &#125;<br>);<br></code></pre></div></td></tr></table></figure>
 
 <p>　　而从后台发送消息到内容脚本时，由于有多个标签页，我们需要指定发送到某个标签页：</p>
@@ -760,73 +752,76 @@
 <figure class="highlight javascript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs javascript"><span class="hljs-comment">//background.js</span><br>chrome.<span class="hljs-property">runtime</span>.<span class="hljs-property">onConnect</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">port</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">assert</span>(port.<span class="hljs-property">name</span> == <span class="hljs-string">&quot;knockknock&quot;</span>);<br>  port.<span class="hljs-property">onMessage</span>.<span class="hljs-title function_">addListener</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">msg</span>) &#123;<br>    <span class="hljs-keyword">if</span> (msg.<span class="hljs-property">joke</span> == <span class="hljs-string">&quot;Knock knock&quot;</span>)<br>      port.<span class="hljs-title function_">postMessage</span>(&#123;<span class="hljs-attr">question</span>: <span class="hljs-string">&quot;Who&#x27;s there?&quot;</span>&#125;);<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (msg.<span class="hljs-property">answer</span> == <span class="hljs-string">&quot;Madame&quot;</span>)<br>      port.<span class="hljs-title function_">postMessage</span>(&#123;<span class="hljs-attr">question</span>: <span class="hljs-string">&quot;Madame who?&quot;</span>&#125;);<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (msg.<span class="hljs-property">answer</span> == <span class="hljs-string">&quot;Madame... Bovary&quot;</span>)<br>      port.<span class="hljs-title function_">postMessage</span>(&#123;<span class="hljs-attr">question</span>: <span class="hljs-string">&quot;I don&#x27;t get it.&quot;</span>&#125;);<br>  &#125;);<br>&#125;);<br></code></pre></div></td></tr></table></figure>
 
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h1 id="实用插件推荐"><a href="#实用插件推荐" class="headerlink" title="实用插件推荐"></a>实用插件推荐</h1><p>　　介绍了这么多插件的开发，我们来介绍一下应用市场上的优秀插件，这些插件能够帮助我们在平时的开发中提高生产效率。</p>
 <h2 id="Adblock-Plus"><a href="#Adblock-Plus" class="headerlink" title="Adblock Plus"></a>Adblock Plus</h2><p>　　Adblock Plus是一款可以屏蔽广告以及任何你想屏蔽元素的软件；它不仅内置了一些过滤规则，可以自动屏蔽广告，还可以自行添加屏蔽内容。</p>
 <p><img src="/images/Chrome-Plugin/adblock.png" srcset="/img/loading.gif" lazyload alt="屏蔽效果"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　选择拦截元素，淡黄色框住的内容就是拦截的内容</p>
 <p><img src="/images/Chrome-Plugin/select.png" srcset="/img/loading.gif" lazyload alt="自定义拦截内容"></p>
 <h2 id="Axure-RP-Extension-for-Chrome"><a href="#Axure-RP-Extension-for-Chrome" class="headerlink" title="Axure RP Extension for Chrome"></a>Axure RP Extension for Chrome</h2><p>　　Axure RP Extension for Chrome是原型设计工具Axure RP的Chrome浏览器插件，chrome浏览器打开axure生成的HTML静态文件页面预览打开如下报错，这是因为chrome浏览器没有安装Axure插件导致的。</p>
 <p><img src="/images/Chrome-Plugin/axure.png" srcset="/img/loading.gif" lazyload alt="Axure"></p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="FeHelper前端助手"><a href="#FeHelper前端助手" class="headerlink" title="FeHelper前端助手"></a>FeHelper前端助手</h2><p>　　FE助手是由国人开发的一款前端工具集合的小插件，插件功能比较全面：包括字符串编解码、代码压缩、美化、JSON格式化、正则表达式、时间转换工具、二维码生成与解码、编码规范检测、页面性能检测、页面取色、Ajax接口调试。</p>
 <p><img src="/images/Chrome-Plugin/fe1.png" srcset="/img/loading.gif" lazyload alt="FE助手"></p>
 <h2 id="Momentum"><a href="#Momentum" class="headerlink" title="Momentum"></a>Momentum</h2><p>　　Momentum插件是一款自动更换壁纸，自带时钟，任务日历和工作清单的chrome浏览器插件。官方的解释就是：替换你 Chrome 浏览器默认的“标签页”。里面的图片全部来自500PX里面的高清图，无广告，无弹窗，非常适合笔记本使用，让装逼再上新台阶。让我来感受下出自细节，触及心灵的美。</p>
 <p><img src="/images/Chrome-Plugin/momentum.png" srcset="/img/loading.gif" lazyload alt="Momentum"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="Octotree"><a href="#Octotree" class="headerlink" title="Octotree"></a>Octotree</h2><p>　　在Github上查看源代码的体验十分糟糕，尤其是从一个目录跳转到另一个目录的时候，非常麻烦。Octotree是一款chrome插件，用于将Github项目代码以树形格式展示，而且在展示的列表中，我们可以下载指定的文件，而不需要下载整个项目。</p>
 <p><img src="/images/Chrome-Plugin/octotree.jpg" srcset="/img/loading.gif" lazyload alt="Octotree"></p>
 <h2 id="OneTab"><a href="#OneTab" class="headerlink" title="OneTab"></a>OneTab</h2><p>　　Chrome浏览器很好用，这是我们不得不承认的；但是人无完人，何况一个浏览器呢？一直以来，Chrome占用内存这样的“吃相”就很让人头疼。</p>
 <p><img src="/images/Chrome-Plugin/eat.gif" srcset="/img/loading.gif" lazyload alt="占用内存"></p>
 <p>　　OneTab是一款可以在用户打开过多Chrome标签页而“不知所措”的时候点击OneTab插件一键释放Chrome标签页内存的谷歌浏览器插件，OneTab插件并不是像关闭浏览器那样直接把所有的标签页都关闭掉，它会先把现有的标签页都缓存起来，然后使用一键关闭所有标签页的功能弹出只有一个恢复窗口的新标签页，在这个OneTab插件的标签页中用户可以选择恢复其中有用的Chrome标签页而放弃其他应该关闭的标签页。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Chrome-Plugin/onetab.jpg" srcset="/img/loading.gif" lazyload alt="OneTab"></p>
 <p>　　在恢复标签页的时候，OneTab插件会以新标签页的方式去恢复，所以用户可以简单地点击几次鼠标都可以把有用的标签都找出来一起恢复，当用户打开的Chrome标签页过多的时候使用OneTab插件大约能够节省用户95%的系统内存，还可以让用户在标签页变小的情况下更加清晰地关注自己应该关注的Chrome标签页。</p>
 <h2 id="Tampermonkey"><a href="#Tampermonkey" class="headerlink" title="Tampermonkey"></a>Tampermonkey</h2><p>　　Tampermonkey（俗称油猴）是一款免费的浏览器扩展和最为流行的用户脚本管理器。虽然有些受支持的浏览器拥有原生的用户脚本支持，但 Tampermonkey将在您的用户脚本管理方面提供更多的便利。 它提供了诸如便捷脚本安装、自动更新检查、标签中的脚本运行状况速览、内置的编辑器等众多功能， 同时Tampermonkey还有可能正常运行原本并不兼容的脚本。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Chrome-Plugin/tampermonkey.png" srcset="/img/loading.gif" lazyload alt="Tampermonkey"></p>
 <p>　　通过给管理器安装各类脚本，可以让大部分 HTML 为主的网页更方便易用，比如：全速下载网盘文件、去广告、悬停显示大图、Flash/HTML5 播放器转换、阅读模式等。有点像给Chrome的插件装上插件（这里又是一个套娃）。</p>
 <h2 id="Web-Vitals"><a href="#Web-Vitals" class="headerlink" title="Web Vitals"></a>Web Vitals</h2><p>　　多年来，Google 提供了很多工具：Lighthouse, Chrome DevTools, PageSpeed Insights, Search Console’s Speed Report 等来衡量和报告性能。而其中的衡量标准都很难学习和使用，Web Vitals计划的目的就是简化场景，降低学习成本，并帮助站点关注最重要的指标</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　Web Vitals是Google发起的，旨在提供各种质量信号的统一指南，其可获取三个关键指标（CLS、FID、LCP）：</p>
 <p><img src="/images/Chrome-Plugin/web-vitals1.png" srcset="/img/loading.gif" lazyload alt="Web Vitals"></p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　通过在浏览器安装Web Vitals插件，我们就可以在页面加载完成后很方便的查看这三个指标的情况。</p>
 <p><img src="/images/Chrome-Plugin/web-vitals.png" srcset="/img/loading.gif" lazyload alt="Web Vitals插件"></p>
 <h2 id="Allow-CORS"><a href="#Allow-CORS" class="headerlink" title="Allow CORS"></a>Allow CORS</h2><p>　　我们开发过程中经常会遇到接口跨域的问题，通过Allow CORS: Access-Control-Allow-Origin这个插件，可以允许我们在接口的响应头轻松执行跨域请求，只需要激活插件并且执行。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/Chrome-Plugin/allow-cors.jpg" srcset="/img/loading.gif" lazyload alt="Allow CORS插件"></p>
 <p>　　安装插件后，默认是不会添加跨域响应头的，点击插件弹框的C字母按钮，按钮变成橙色插件激活。</p>
 <h2 id="Window-Resizer"><a href="#Window-Resizer" class="headerlink" title="Window Resizer"></a>Window Resizer</h2><p>　　Window Resizer是一款可以设置浏览器窗口大小的Chrome扩展，用户安装了window resizer插件后可以快速调节chrome的窗口大小，用户可以将窗口调节为320x480、480x800、1024x768等大小，也可以选择自定义浏览器窗口的尺寸。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Chrome-Plugin/window-resizer.png" srcset="/img/loading.gif" lazyload alt="Window Resizer"></p>
 <blockquote>
 <p>以上所有插件和工具敬请关注公众号：<code>前端壹读</code>后，回复关键字<code>Chrome插件</code>即可获取。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </blockquote>
 <h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><h2 id="notifications对象属性"><a href="#notifications对象属性" class="headerlink" title="notifications对象属性"></a>notifications对象属性</h2><table>
 <thead>
 <tr>
-<th>Name</th>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<th>Name</th>
 <th>Type</th>
 <th>Description</th>
-</tr>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</tr>
 </thead>
 <tbody><tr>
 <td>type</td>
 <td>string</td>
 <td>显示的通知类型，”basic”, “image”, “list”, or “progress”</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <tr>
 <td>title</td>
 <td>string</td>
-<td>通知的标题</td>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<td>通知的标题</td>
 </tr>
 <tr>
 <td>message</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>string</td>
 <td>通知的主体内容</td>
 </tr>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <tr>
 <td>contextMessage</td>
 <td>string</td>
@@ -835,16 +830,17 @@
 <tr>
 <td>buttons</td>
 <td>array of object</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>最多两个通知操作按钮的文本和图标。</td>
 </tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <tr>
 <td>iconUrl</td>
 <td>string</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>图标的URL</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
 <tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>imageUrl</td>
 <td>string</td>
 <td>“image”类型的通知的图片的URL</td>
@@ -853,86 +849,83 @@
 <td>eventTime</td>
 <td>double</td>
 <td>通知的时间戳，单位ms</td>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <tr>
 <td>items</td>
 <td>array of object</td>
 <td>多项目通知的项目。Mac OS X上的用户只能看到第一项。</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
 <tr>
 <td>progress</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>integer</td>
 <td>当前的进度，有效范围0~100</td>
 </tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <tr>
 <td>isClickable</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>boolean</td>
 <td>通知窗口是否响应点击事件</td>
 </tr>
 </tbody></table>
 <h2 id="contextMenu对象属性"><a href="#contextMenu对象属性" class="headerlink" title="contextMenu对象属性"></a>contextMenu对象属性</h2><table>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <thead>
 <tr>
 <th>Name</th>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <th>Type</th>
 <th>Description</th>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
 </thead>
 <tbody><tr>
 <td>type</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>string [“normal”, “checkbox”, “radio”, “separator”]</td>
 <td>菜单项的类型。如果没有指定则默认为’normal’（普通）</td>
 </tr>
 <tr>
 <td>id</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>string</td>
 <td>唯一标志符，对于事件页面来说必须存在，不能与同一扩展程序中的其它标志符相同。</td>
 </tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <tr>
 <td>title</td>
 <td>string</td>
 <td>显示在菜单项中的文字，除非类型是’separator’（分隔符）该参数是必选的。 当上下文为’selection’（选定内容）时，您可以在字符串中使用%s来显示选中的文本。</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
 <tr>
 <td>checked</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>boolean</td>
 <td>单选或复选菜单项的初始状态</td>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
 <tr>
 <td>contexts</td>
 <td>enumerated string [“all”, “page”, “frame”, “selection”, “link”, “editable”, “image”, “video”, “audio”]</td>
 <td>列出该菜单项将会出现在哪些上下文中，包括”all”（全部）、”page”（页面）、”frame”（框架）、”selection”（选定内容）、”link”（链接）、”editable”（可编辑内容）、”image”（图片）、”video”（视频）、”audio”（音频），如果没有指定则默认为page（页面）</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
 <tr>
 <td>onclick</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>function</td>
 <td>菜单项单击时的回调函数</td>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
 <tr>
 <td>parentId</td>
 <td>integer or string</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>父菜单项标识符</td>
 </tr>
 <tr>
 <td>documentUrlPatterns</td>
 <td>array of string</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>将该菜单项限制在URL匹配给定表达式的文档中显示</td>
 </tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <tr>
 <td>targetUrlPatterns</td>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>array of string</td>
 <td>允许您基于img/audio/video标签的src属性以及 a 标签的href属性过滤</td>
 </tr>
@@ -941,8 +934,8 @@
 <td>boolean</td>
 <td>该右键菜单项是否启用或禁用</td>
 </tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tbody></table>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="插件权限列表"><a href="#插件权限列表" class="headerlink" title="插件权限列表"></a>插件权限列表</h2><table>
 <thead>
 <tr>
@@ -950,10 +943,11 @@
 <th>描述</th>
 </tr>
 </thead>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <tbody><tr>
 <td>activeTab</td>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>请求根据activeTab规范向扩展授予权限。</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
 <tr>
 <td>alarms</td>
@@ -962,75 +956,76 @@
 <tr>
 <td>background</td>
 <td>使 Chrome 早启动晚关闭，从而延长扩展程序的使用寿命。</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
 <tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>bookmarks</td>
 <td>授予您的扩展程序访问chrome.bookmarks API 的权限。</td>
 </tr>
 <tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>browsingData</td>
 <td>授予您的扩展程序访问chrome.browsingData API 的权限。</td>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
 <tr>
 <td>certificateProvider</td>
 <td>授予您的扩展程序访问chrome.certificateProvider API 的权限。</td>
 </tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <tr>
 <td>clipboardRead</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>如果扩展使用document.execCommand(‘paste’).</td>
 </tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <tr>
 <td>clipboardWrite</td>
 <td>表示扩展使用document.execCommand(‘copy’)或document.execCommand(‘cut’)。</td>
 </tr>
 <tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>contentSettings</td>
 <td>授予您的扩展程序访问chrome.contentSettings API 的权限。</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <tr>
 <td>contextMenus</td>
 <td>使您的扩展程序可以访问chrome.contextMenus API。</td>
 </tr>
 <tr>
 <td>cookies</td>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>允许您的扩展程序访问chrome.cookies API。</td>
 </tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <tr>
 <td>debugger</td>
 <td>授予您的扩展程序访问chrome.debugger API 的权限。</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
 <tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>declarativeContent</td>
 <td>授予您的扩展程序访问chrome.declarativeContent API 的权限。</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
 <tr>
 <td>declarativeNetRequest</td>
 <td>使您的扩展程序可以访问chrome.declarativeNetRequest API。</td>
 </tr>
 <tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>declarativeNetRequestFeedback</td>
 <td>授予扩展访问chrome.declarativeNetRequest API 中的事件和方法的权限，这些事件和方法返回有关匹配的声明性规则的信息。</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
 <tr>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>declarativeWebRequest</td>
 <td>授予您的扩展程序访问chrome.declarativeWebRequest API 的权限。</td>
 </tr>
 <tr>
 <td>desktopCapture</td>
 <td>授予您的扩展程序访问chrome.desktopCapture API 的权限。</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
 <tr>
 <td>documentScan</td>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>授予您的扩展程序访问chrome.documentScan API 的权限。</td>
 </tr>
 <tr>
@@ -1040,7 +1035,7 @@
 <tr>
 <td>enterprise.deviceAttributes</td>
 <td>授予您的扩展程序访问chrome.enterprise.deviceAttributes API 的权限。</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
 <tr>
 <td>enterprise.hardwarePlatform</td>
@@ -1048,13 +1043,12 @@
 </tr>
 <tr>
 <td>enterprise.networkingAttributes</td>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>授予您的扩展程序访问chrome.enterprise.networkingAttributes API 的权限。</td>
 </tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <tr>
 <td>enterprise.platformKeys</td>
 <td>授予您的扩展程序访问chrome.enterprise.platformKeys API 的权限。</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
 <tr>
 <td>experimental</td>
@@ -1063,14 +1057,16 @@
 </tr>
 <tr>
 <td>fileBrowserHandler</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>授予您的扩展程序访问chrome.fileBrowserHandler API 的权限。</td>
 </tr>
 <tr>
 <td>fileSystemProvider</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>授予您的扩展程序访问chrome.fileSystemProvider API 的权限。</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
 <tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>fontSettings</td>
 <td>授予您的扩展程序访问chrome.fontSettings API 的权限。</td>
 </tr>
@@ -1079,190 +1075,193 @@
 <td>gcm</td>
 <td>使您的扩展程序可以访问chrome.gcm API。</td>
 </tr>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>geolocation</td>
 <td>允许扩展程序在不提示用户许可的情况下使用地理定位 API。</td>
 </tr>
 <tr>
 <td>history</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>授予您的扩展程序访问chrome.history API 的权限。</td>
 </tr>
 <tr>
 <td>identity</td>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>授予您的扩展程序访问chrome.identity API 的权限。</td>
 </tr>
 <tr>
 <td>idle</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>授予您的扩展程序访问chrome.idle API 的权限。</td>
 </tr>
 <tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>loginState</td>
 <td>授予您的扩展程序访问chrome.loginState API 的权限。</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
 <tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>management</td>
 <td>授予您的扩展程序访问chrome.management API 的权限。</td>
 </tr>
 <tr>
 <td>nativeMessaging</td>
 <td>使您的扩展程序可以访问本机消息传递 API。</td>
-</tr>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+</tr>
 <tr>
 <td>notifications</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>授予您的扩展程序访问chrome.notifications API 的权限。</td>
 </tr>
 <tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>pageCapture</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>授予您的扩展程序访问chrome.pageCapture API 的权限。</td>
 </tr>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <tr>
 <td>platformKeys</td>
 <td>授予您的扩展程序访问chrome.platformKeys API 的权限。</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
 <tr>
 <td>power</td>
 <td>授予您的扩展程序访问chrome.power API 的权限。</td>
 </tr>
 <tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>printerProvider</td>
 <td>授予您的扩展程序访问chrome.printerProvider API 的权限。</td>
 </tr>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <tr>
 <td>printing</td>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>授予您的扩展程序访问chrome.printing API 的权限。</td>
 </tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <tr>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>printingMetrics</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>授予您的扩展程序访问chrome.printingMetrics API 的权限。</td>
 </tr>
 <tr>
 <td>privacy</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>授予您的扩展程序访问chrome.privacy API 的权限。</td>
 </tr>
 <tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>processes</td>
 <td>授予您的扩展程序访问chrome.processes API 的权限。</td>
 </tr>
-<tr>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<tr>
 <td>proxy</td>
 <td>授予您的扩展程序访问chrome.proxy API 的权限。</td>
 </tr>
 <tr>
 <td>scripting</td>
 <td>授予您的扩展程序访问chrome.scripting API 的权限。</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
 <tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>search</td>
 <td>授予您的扩展程序访问chrome.search API 的权限。</td>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
 <tr>
 <td>sessions</td>
 <td>授予您的扩展程序访问chrome.sessions API 的权限。</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tr>
 <tr>
-<td>signedInDevices</td>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<td>signedInDevices</td>
 <td>授予您的扩展程序访问chrome.signedInDevices API 的权限。</td>
 </tr>
 <tr>
 <td>storage</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>授予您的扩展程序访问chrome.storage API 的权限。</td>
 </tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>system.cpu</td>
 <td>授予您的扩展程序访问chrome.system.cpu API 的权限。</td>
 </tr>
 <tr>
 <td>system.display</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>使您的扩展程序可以访问chrome.system.display API。</td>
 </tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <tr>
 <td>system.memory</td>
 <td>使您的扩展程序可以访问chrome.system.memory API。</td>
 </tr>
 <tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>system.storage</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>授予您的扩展程序访问chrome.system.storage API 的权限。</td>
 </tr>
 <tr>
 <td>tabCapture</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>授予您的扩展程序访问chrome.tabCapture API 的权限。</td>
 </tr>
 <tr>
 <td>tabGroups</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>授予您的扩展程序访问chrome.tabGroups API 的权限。</td>
 </tr>
 <tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>tabs</td>
 <td>使您的扩展程序可以访问Tab多个API使用的对象的特权字段，包括chrome.tabs和chrome.windows。在许多情况下，您的扩展程序不需要声明’tabs’使用这些API的权限。</td>
 </tr>
 <tr>
 <td>topSites</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>授予您的扩展程序访问chrome.topSites API 的权限。</td>
 </tr>
 <tr>
 <td>tts</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>授予您的扩展程序访问chrome.tts API 的权限。</td>
 </tr>
 <tr>
 <td>ttsEngine</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>授予您的扩展程序访问chrome.ttsEngine API 的权限。</td>
 </tr>
 <tr>
 <td>unlimitedStorage</td>
 <td>为存储客户端数据提供无限配额，例如数据库和本地存储文件。没有此权限，扩展程序仅限于 5 MB 的本地存储空间。</td>
 </tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <tr>
 <td>vpnProvider</td>
 <td>授予您的扩展程序访问chrome.vpnProvider API 的权限。</td>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </tr>
 <tr>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>wallpaper</td>
 <td>使您的扩展程序可以访问chrome.wallpaper API。</td>
 </tr>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <tr>
 <td>webNavigation</td>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <td>授予您的扩展程序访问chrome.webNavigation API 的权限。</td>
 </tr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <tr>
 <td>webRequest</td>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <td>授予您的扩展程序访问chrome.webRequest API 的权限。</td>
 </tr>
 <tr>
 <td>webRequestBlocking</td>
 <td>如果扩展以阻塞方式使用chrome.webRequest API，则为必需。</td>
 </tr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </tbody></table>
 
             </div>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
             <hr>
             <div>
-              <div class="post-metas mb-3">
+              
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script><div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>

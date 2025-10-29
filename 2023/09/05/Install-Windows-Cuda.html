@@ -280,48 +280,44 @@
 <p>　　在实践中，CUDA和cuDNN被广泛应用于图像识别、语音识别、自然语言处理等人工智能领域。此外，它们还被用于科学计算、大数据分析、虚拟现实等领域。本文在Windows10环境下进行CUDA和cuDNN的安装。</p>
 <h1 id="显卡驱动"><a href="#显卡驱动" class="headerlink" title="显卡驱动"></a>显卡驱动</h1><p>　　首先查看电脑有没有安装NVIDIA的显卡驱动，鼠标在桌面空白处右击<code>NVIDIA控制面板</code>，或者在右下角双击NVIDIA控制面板的绿色图标：</p>
 <p><img src="/images/Install-Windows-Cuda/icon.png" srcset="/img/loading.gif" lazyload alt="控制面板图标"></p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　两种方式都能打开控制面板界面，可以看到我们的显卡型号以及驱动程序的版本：</p>
 <p><img src="/images/Install-Windows-Cuda/panel.png" srcset="/img/loading.gif" lazyload alt="NVIDIA控制面板"></p>
 <p>　　如果上述方式都没有找到，则需要下载安装，打开<a target="_blank" rel="noopener" href="https://www.nvidia.cn/Download/index.aspx?lang=cn">NVIDIA官方驱动https://www.nvidia.cn/Download/index.aspx?lang=cn</a>，选择和自己显卡适配的驱动，下载进行安装。</p>
 <p><img src="/images/Install-Windows-Cuda/download-nvidia.png" srcset="/img/loading.gif" lazyload alt="下载驱动程序"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h1 id="安装CUDA"><a href="#安装CUDA" class="headerlink" title="安装CUDA"></a>安装CUDA</h1><p>　　显卡驱动安装完成后，我们就来安装CUDA了，需要注意的是显卡驱动的版本决定了CUDA的版本，并不可以无限安装最新版本，我们还是在控制面板中查看，打开<code>帮助 =&gt; 系统信息 =&gt; 组件</code>：</p>
 <p><img src="/images/Install-Windows-Cuda/support.png" srcset="/img/loading.gif" lazyload alt="查看CUDA支持版本"></p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　可以看到我电脑最高能安装12.2.79的版本，然后就可以去下载我们需要的CUDA了，打开<a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-downloads">CUDA下载页面</a>：</p>
 <p><img src="/images/Install-Windows-Cuda/download-cuda.png" srcset="/img/loading.gif" lazyload alt="下载CUDA"></p>
 <p>　　默认是最新的版本，如果我们需要低版本，可以点击页面下方的<code>Previouse Release</code>，打开<a href="%E5%AD%98%E6%A1%A3%E7%89%88%E6%9C%AC%E9%A1%B5%E9%9D%A2">https://developer.nvidia.com/cuda-toolkit-archive</a>，找到我们对应的版本下载即可：</p>
 <p><img src="/images/Install-Windows-Cuda/archive.png" srcset="/img/loading.gif" lazyload alt="存档版本页面"></p>
 <p>　　完成后双击我们下载的<code>cuda_12.0.0_527.41_windows.exe</code>安装包，出现安装界面，默认安装即可；这里需要记住安装目录，后面配置环境变量时需要：</p>
 <blockquote>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>安装过程中可能出现闪屏现象，属于正常。</p>
 </blockquote>
 <p><img src="/images/Install-Windows-Cuda/install-cuda.png" srcset="/img/loading.gif" lazyload alt="安装界面"></p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　安装成功后我们运行<code>nvcc -V</code>就能看到CUDA的版本号。</p>
 <h1 id="安装cuDNN"><a href="#安装cuDNN" class="headerlink" title="安装cuDNN"></a>安装cuDNN</h1><p>　　打开<a target="_blank" rel="noopener" href="https://developer.nvidia.com/rdp/cudnn-download">cuDNN下载页面</a>，这里需要注册一个NVIDIA的账号，填写邮箱很方便：</p>
 <p><img src="/images/Install-Windows-Cuda/download-cudnn.png" srcset="/img/loading.gif" lazyload alt="下载cudNN"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　我们也选择适合自己版本的进行下载，解压后我们得到以下的目录结构：</p>
 <p><img src="/images/Install-Windows-Cuda/cudnn.png" srcset="/img/loading.gif" lazyload alt="cuDNN"></p>
 <p>　　我们将文件夹覆盖到上面的CUDA安装目录下，比如我的CUDA的安装目录是<code>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0</code>，将压缩包内对应的文件夹复制到bin、include、lib目录下即可</p>
 <p>　　然后添加环境变量，<code>鼠标右键此电脑 =&gt; 属性 =&gt; 高级系统设置 =&gt; 环境变量</code>，将CUDA的安装目录添加到<code>CUDA_PATH</code>变量中</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/Install-Windows-Cuda/cuda-path.png" srcset="/img/loading.gif" lazyload alt="环境变量"></p>
 <p>　　然后在PATH中添加以下路径：</p>
 <figure class="highlight livescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs livescript">C:<span class="hljs-string">\Program</span> Files<span class="hljs-string">\NVIDIA</span> GPU Computing Toolkit<span class="hljs-string">\CUDA\v12.0\bin</span><br>C:<span class="hljs-string">\Program</span> Files<span class="hljs-string">\NVIDIA</span> GPU Computing Toolkit<span class="hljs-string">\CUDA\v12.0\libnvvp</span><br>C:<span class="hljs-string">\Program</span> Files<span class="hljs-string">\NVIDIA</span> GPU Computing Toolkit<span class="hljs-string">\CUDA\v12.0</span><br>C:<span class="hljs-string">\Program</span> Files<span class="hljs-string">\NVIDIA</span> GPU Computing Toolkit<span class="hljs-string">\CUDA\v12.0\lib\x64</span><br></code></pre></div></td></tr></table></figure>
 
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　命令行输入<code>nvidia-smi</code>，能够正确显示各种信息就安装完成了。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Install-Windows-Cuda/smi.png" srcset="/img/loading.gif" lazyload alt="检查安装"></p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
             </div>
             <hr>
             <div>
-              
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p><div class="post-metas mb-3">
+              <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>

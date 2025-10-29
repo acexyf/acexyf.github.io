@@ -281,49 +281,49 @@
 
 
 <p>　　然后我们执行<code>git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git</code>，将项目克隆到本地：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Install-Linux-StableDiffusion/clone.png" srcset="/img/loading.gif" lazyload alt="克隆"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　项目克隆下来后，我们需要切换到SD项目里面去安装依赖：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd"><span class="hljs-built_in">cd</span> stable-diffusion-webui<br>pip3 install -r requirements.txt<br></code></pre></div></td></tr></table></figure>
 
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　在安装过程中我们会看到有下面这种报错的情况，一般都是某个依赖安装不上，我们可以查看具体的报错信息，然后尝试手动安装：</p>
 <p><img src="/images/Install-Linux-StableDiffusion/error.png" srcset="/img/loading.gif" lazyload alt="error"></p>
 <p>　　比如pytorch，下载安装比较慢，会导致报错，我们可以尝试下面的命令进行手动安装：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd"># cpu版本<br>pip3 install torch==<span class="hljs-number">2</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>+cpu torchvision=<span class="hljs-number">0</span>.<span class="hljs-number">15</span>.<span class="hljs-number">1</span>+cpu -f https://download.pytorch.org/whl/torch_stable.html<br># gpu版本<br>pip3 install torch==<span class="hljs-number">2</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>+cu115 torchvision=<span class="hljs-number">0</span>.<span class="hljs-number">15</span>.<span class="hljs-number">1</span>+cu115 -f https://download.pytorch.org/whl/torch_stable.html<br></code></pre></div></td></tr></table></figure>
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　pytorch分为CPU版本和GPU版本，其中GPU版本的安装需要先安装CUDA，可以参考<a href="https://xieyufei.com/2023/09/05/Install-Windows-Cuda.html">CUDA和cuDNN安装教程</a>。所有依赖安装完成后，如果我们直接执行启动命令：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">./webui.sh<br></code></pre></div></td></tr></table></figure>
 
 <p>　　有可能会如下报错：</p>
 <figure class="highlight subunit"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs subunit"><span class="hljs-keyword">ERROR: </span>Cannot activate python venv, aborting...<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 
 <p>　　我们需要使用python创建一个虚拟环境：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">python3 -m venv venv_name<br>source venv_name/bin/activate<br><br><span class="hljs-built_in">cd</span> stable-diffusion-webui/<br>./webui.sh<br></code></pre></div></td></tr></table></figure>
 
 <p>　　看到以下提示，就说明启动成功了，我们在浏览器打开<code>http://localhost:7860</code>：</p>
 <p><img src="/images/Install-Linux-StableDiffusion/run.png" srcset="/img/loading.gif" lazyload alt="启动成功"></p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　如果我们启动时想要加一些参数，比如，启动时不想要cuda的校验，打开<code>webui.sh</code>，添加以下命令行参数：</p>
 <figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh"><span class="hljs-built_in">export</span> COMMANDLINE_ARGS=<span class="hljs-string">&quot;--skip-torch-cuda-test --precision full --no-half&quot;</span><br></code></pre></div></td></tr></table></figure>
 
 
 <p>　　这样启动后我们服务器只能通过localhost访问，如果我们想要服务器可以通过远程访问，添加参数：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh"><span class="hljs-built_in">export</span> COMMANDLINE_ARGS=<span class="hljs-string">&quot;--server-name 0.0.0.0&quot;</span><br></code></pre></div></td></tr></table></figure>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　我们还可以为SD设置访问密码的限制：</p>
 <figure class="highlight sh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sh"><span class="hljs-built_in">export</span> COMMANDLINE_ARGS=<span class="hljs-string">&quot;--gradio-auth username:password&quot;</span><br></code></pre></div></td></tr></table></figure>
 
 
 <p><img src="/images/Install-Linux-StableDiffusion/login.png" srcset="/img/loading.gif" lazyload alt="登录限制"></p>
-<h1 id="Anaconda安装启动"><a href="#Anaconda安装启动" class="headerlink" title="Anaconda安装启动"></a>Anaconda安装启动</h1><p>　　由于Linux系统自带的Python版本可能不是我们想要的（SD推荐的版本是3.10.6），因此我们还可以很方便的通过Anaconda创建一个虚拟环境，然后再启动SD，免去重新安装python的烦恼；首先我们从<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/">清华镜像</a>下载安装Anaconda：</p>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<h1 id="Anaconda安装启动"><a href="#Anaconda安装启动" class="headerlink" title="Anaconda安装启动"></a>Anaconda安装启动</h1><p>　　由于Linux系统自带的Python版本可能不是我们想要的（SD推荐的版本是3.10.6），因此我们还可以很方便的通过Anaconda创建一个虚拟环境，然后再启动SD，免去重新安装python的烦恼；首先我们从<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/">清华镜像</a>下载安装Anaconda：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-5.3.1-Linux-x86_64.sh -c --user-agent=<span class="hljs-string">&quot;Mozilla&quot;</span><br><span class="hljs-built_in">chmod</span> +x Anaconda3-5.3.1-Linux-x86_64.sh<br>./Anaconda3-5.3.1-Linux-x86_64.sh<br></code></pre></div></td></tr></table></figure>
 
 
@@ -331,15 +331,15 @@
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">conda create --name sd python=3.10。6<br>conda activate sd<br></code></pre></div></td></tr></table></figure>
 
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　通过虚拟环境，我们还是执行webui.sh，等待一系列的包安装后，就可以启动我们的SD了；我们还可以使用nohup命令，把webui.sh放到后台执行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">source</span> /home/boe/anaconda3/bin/activate sd<br><span class="hljs-built_in">nohup</span> ./webui.sh &gt; nohup.log 2&gt;&amp;1 &amp;<br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <h1 id="插件扩展的安装"><a href="#插件扩展的安装" class="headerlink" title="插件扩展的安装"></a>插件扩展的安装</h1><p>　　SD还有一些不错的插件和扩展可以配合使用。</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h2 id="Easynegative"><a href="#Easynegative" class="headerlink" title="Easynegative"></a>Easynegative</h2><p>　　反向提示词（Negative prompt），就是我们不想出现什么的描述，例如一些容易变形的身体部位的描述等。EasyNegative是目前使用率极高的一款反向提示词embedding模型，可以有效提升画面的精细度，避免模糊、灰色调、面部扭曲等情况，适合动漫风大模型。</p>
 <p>　　它的用法也是最简单的，下载<code>easynegative.safetensors文件</code>，并且放到<code>stable-diffusion-webui/embeddings/</code>目录下，然后在反向输入词中，输入触发关键词<code>easynegative</code>，就可以使用了；除此之外，还有以下一些可以用的Embedding模型：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <ul>
 <li>Deep Negative_v1_75t：Deep Negative可以提升图像的构图和色彩，减少扭曲的面部、错误的人体结构、颠倒的空间结构等情况的出现，无论是动漫风还是写实风的大模型都适用。</li>
 <li>badhandv4：badhand 是一款专门针对手部进行优化的负面提示词embedding模型，能够在对原画风影响较小的前提下，减少手部残缺、手指数量不对、出现多余手臂的情况，适合动漫风大模型。</li>
@@ -347,49 +347,48 @@
 <p>　　我们将Embedding模型放入文件夹后，重启SD，在webui中找到<code>Embedding面板</code>，点击相应的模型就可以使用了。</p>
 <p><img src="/images/Install-Linux-StableDiffusion/embedding.png" srcset="/img/loading.gif" lazyload alt="Embedding模型使用"></p>
 <h2 id="汉化插件"><a href="#汉化插件" class="headerlink" title="汉化插件"></a>汉化插件</h2><p>　　相信全是英文界面的webui肯定没有几个小伙伴有耐心一个个的看下去，因此汉化插件是必备的；官方有好几种安装方式，我们通过最简单的下载zip的方式；打开<a target="_blank" rel="noopener" href="https://github.com/dtlnor/stable-diffusion-webui-localization-zh_CN">stable-diffusion-webui-localization-zh_CN</a>，下载zip文件</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Install-Linux-StableDiffusion/zip.png" srcset="/img/loading.gif" lazyload alt="下载ZIP"></p>
 <p>　　解压zip文件，并把文件夹放到<code>stable-diffusion-webui/extensions/</code>文件夹中，放好之后目录如下：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Install-Linux-StableDiffusion/path.png" srcset="/img/loading.gif" lazyload alt="路径"></p>
 <p>　　如果有魔法加持的话，可以直接在根目录执行克隆命令：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">git <span class="hljs-built_in">clone</span> https://github.com/dtlnor/stable-diffusion-webui-localization-zh_CN extensions/stable-diffusion-webui-localization-zh_CN<br></code></pre></div></td></tr></table></figure>
 
 
 <p>　　重启webui，点击<code>Extensions =&gt; Installed</code>，可以看到我们的插件已经安装；确保已经勾选插件，如果没有，勾选后点击<code>Apply and restart UI</code>按钮启用：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/Install-Linux-StableDiffusion/installed.png" srcset="/img/loading.gif" lazyload alt="确保插件已经安装"></p>
 <p>　　然后就需要切换界面的语言，找到<code>Settings =&gt; User interface =&gt; Localization</code>选项，在下拉菜单中选中<code>zh_CN</code>，然后点击上面的两个按钮`Apply settings<code>和</code>Reload UI``，等待一段时间后就可以看到我们的界面切换中文了。</p>
 <p><img src="/images/Install-Linux-StableDiffusion/select.png" srcset="/img/loading.gif" lazyload alt="选择切换"></p>
 <h2 id="sd-webui-prompt-all-in-one"><a href="#sd-webui-prompt-all-in-one" class="headerlink" title="sd-webui-prompt-all-in-one"></a>sd-webui-prompt-all-in-one</h2><p>　　sd-webui-prompt-all-in-one也可以算是SD的必备实用插件之一了，它的作用在于提高提示词/反向提示词输入框的使用体验。它拥有更直观、强大的输入界面功能，它提供了自动翻译、历史记录和收藏等功能，它支持多种语言，满足不同用户的需求。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　它的安装也非常简单，将插件克隆下来到extensions目录即可：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd"><span class="hljs-built_in">cd</span> stable-diffusion-webui<br>git clone https://gitee.com/physton/sd-webui-prompt-all-<span class="hljs-keyword">in</span>-one.git extensions/sd-webui-prompt-all-<span class="hljs-keyword">in</span>-one<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　重启服务器，我们在界面上看到有各种密密麻麻的提示词，插件就生效了。</p>
 <p><img src="/images/Install-Linux-StableDiffusion/all-in-one.png" srcset="/img/loading.gif" lazyload alt="sd-webui-prompt-all-in-one"></p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　我们来看下插件的主要功能，首先就是实时翻译功能了，由于SD只支持英文，对我们来说，怎么让它知道我们想要画什么图案就不是那么友好了，因此翻译工具是必备的；在插件的输入框中（注意，是插件的输入框，不是SD原始的输入框）输入内容后，插件会自动帮我们翻译。</p>
 <p>　　同时，我们也不需要一个一个的输入翻译，可以在一次性输入完成后，点击<code>一键翻译</code>的按钮，将输入框中的内容统一进行翻译。</p>
 <p><img src="/images/Install-Linux-StableDiffusion/fanyi.png" srcset="/img/loading.gif" lazyload alt="翻译功能"></p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　对于密密麻麻的提示词，我们可以在下面可视化的快速调整某一提示词的权重或者顺序，不会因为各种符号问题而烦恼了。</p>
 <p><img src="/images/Install-Linux-StableDiffusion/quanzhong.png" srcset="/img/loading.gif" lazyload alt="调整权重和顺序"></p>
 <p>　　而且在使用一段时间后，肯定积累了一些高频常用的提示词，使用收藏工具，可以把这些词收藏起来，后面使用就很方便了。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/Install-Linux-StableDiffusion/favorite.png" srcset="/img/loading.gif" lazyload alt="收藏功能"></p>
 <h2 id="Adetailer"><a href="#Adetailer" class="headerlink" title="Adetailer"></a>Adetailer</h2><p>　　adetailer是一款可以修复面部崩坏以及更换脸部标签的插件，操作比较简单，首先我们通过本地命令行来进行安装：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd"><span class="hljs-built_in">cd</span> stable-diffusion-webui<br>git clone https://github.com/Bing-su/adetailer.git extensions/adetailer<br></code></pre></div></td></tr></table></figure>
 
 <p>　　安装完成后重启我们的SD进行，打开浏览器后发现文生图的左下方多了一个Adetailer选项，点击展开可以看到有一些参数调整，点击<code>Enable ADetailer</code>的选项就可以启用插件了：</p>
 <p><img src="/images/Install-Linux-StableDiffusion/adetailer1.png" srcset="/img/loading.gif" lazyload alt="adetailer运行界面"></p>
 <p>　　我们选择<code>mediapipe_face_full</code>模型，在下面提示词中，我们可以更改最后生成的面部表情，比如这里我们写smile，可以让生成的人物表情更加的微笑；最后的运行效果，面部对比之前也更加的自然。</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/Install-Linux-StableDiffusion/adetailer-result.png" srcset="/img/loading.gif" lazyload alt="adetailer运行效果"></p>
 <h2 id="ControlNet"><a href="#ControlNet" class="headerlink" title="ControlNet"></a>ControlNet</h2><p>　　我们知道在SD中，想要精确控制物品、人物是比较困难的事，不过通过ControlNet插件，我们可以完成，通过下面命令进行安装：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd"><span class="hljs-built_in">cd</span> stable-diffusion-webui<br>git clone https://github.com/Mikubill/sd-webui-controlnet extensions/sd-webui-controlnet<br></code></pre></div></td></tr></table></figure>
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　重启后可以在主界面下方看到ControlNet的选项。</p>
 <h2 id="OpenPoseEditor"><a href="#OpenPoseEditor" class="headerlink" title="OpenPoseEditor"></a>OpenPoseEditor</h2><p>　　通过OpenPoseEditor插件，我们可以进一步的控制人物的动作</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd"><span class="hljs-built_in">cd</span> stable-diffusion-webui<br>git clone https://github.com/fkunn1326/openpose-editor.git extensions/openpose-editor<br></code></pre></div></td></tr></table></figure>
 
 
@@ -397,33 +396,32 @@
 <blockquote>
 <p>Cannot locate TCMalloc. Do you have tcmalloc or goole-perftool installed on your system? (imporves CPU memory usage)</p>
 </blockquote>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　执行如下命令：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">sudo apt-get install libgoogle-perftools4 libtcmalloc-minimal4 -y<br></code></pre></div></td></tr></table></figure>
 
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <h2 id="Can’t-load-tokenizer-for-‘openai-clip-vit-large-patch14’"><a href="#Can’t-load-tokenizer-for-‘openai-clip-vit-large-patch14’" class="headerlink" title="Can’t load tokenizer for ‘openai/clip-vit-large-patch14’"></a>Can’t load tokenizer for ‘openai/clip-vit-large-patch14’</h2><p>　　报错信息：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <blockquote>
 <p>OSError: Can’t load tokenizer for ‘openai/clip-vit-large-patch14’. If you were trying to load it from ‘<a target="_blank" rel="noopener" href="https://huggingface.co/models%E2%80%99">https://huggingface.co/models’</a>, make sure you don’t have a local directory with the same name. Otherwise, make sure ‘openai/clip-vit-large-patch14’ is the correct path to a directory containing all relevant files for a CLIPTokenizer tokenizer.</p>
 </blockquote>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> openai<br>git <span class="hljs-built_in">clone</span> https://www.modelscope.cn/AI-ModelScope/clip-vit-large-patch14.git<br></code></pre></div></td></tr></table></figure>
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><h2 id="模型下载"><a href="#模型下载" class="headerlink" title="模型下载"></a>模型下载</h2><p><a target="_blank" rel="noopener" href="https://civitai.com/">C站civitai.com（需梯子）</a></p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><a target="_blank" rel="noopener" href="https://huggingface.co/">huggingface.co（需梯子）</a></p>
 <p><a target="_blank" rel="noopener" href="https://aigccafe.net/">AIGC Cafe</a></p>
 <h2 id="提示词生成工具"><a href="#提示词生成工具" class="headerlink" title="提示词生成工具"></a>提示词生成工具</h2><p><a target="_blank" rel="noopener" href="https://tag.redsex.cc/">AI咒术生成器</a></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><a target="_blank" rel="noopener" href="https://tags.novelai.dev/">Danbooru标签超市</a></p>
 <h2 id="提示词分享社区"><a href="#提示词分享社区" class="headerlink" title="提示词分享社区"></a>提示词分享社区</h2><p><a target="_blank" rel="noopener" href="https://lexica.art/">lexica.art/</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
             </div>
             <hr>
             <div>
-              
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script><div class="post-metas mb-3">
+              <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>

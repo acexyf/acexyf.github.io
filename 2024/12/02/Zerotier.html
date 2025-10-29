@@ -278,62 +278,58 @@
 <p>　　所谓的组网，其实就是构建了一个<code>虚拟局域网</code>，简单来说就是将处于异地不同网络中的设备，跨网络组建在同一个虚拟局域网中，从而实现基于内网IP的设备间的互相访问。</p>
 <p>　　这么说起来有点枯燥无聊，如果我们装了Zerotier之后打开电脑的<code>网络连接</code>，就可以看到一个新的虚拟网络：</p>
 <p><img src="/images/Zerotier/net.png" srcset="/img/loading.gif" lazyload alt="虚拟局域网"></p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　这里我们就看到它创建了一个新的网络<code>Zerotier One</code>，不过这个网络在物理上并不存在，因为它不是一张网卡也不是一根网线连接的，只是一个虚拟的网络；同时你可以将不同的设备（比如pad、phone等）都安装软件后，添加到这个局域网，通过IP的方式互相访问，下图是组网示意图：</p>
 <p><img src="/images/Zerotier/zerotier-network.png" srcset="/img/loading.gif" lazyload alt="Zerotier网络示意图"></p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　因此我们发现Zerotier的内网穿透方式和FRP有着本质的不同，FRP依赖于公网IP，对单个设备特定端口号进行隧道穿透，适合部署网站服务、ssh连接等少量固定端口的办公环境；而Zerotier适合多设备间多端口号之间组网，常见的情况例如访问家里的nas设备，同时我们在nas上运行了多个服务，需要开放多个端口，这个时候通过Zerotier就可以让我们在异地通过手机、电脑等多种设备都能够访问到nas中的服务。</p>
 <p>　　同时Zerotier没有直接暴露内网设备的端口，避免了设备被大量网络扫描到，更类似FRP的stcp模式。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　好了，话不多说，我们下面就来看下它是如何安装配置的。</p>
 <h1 id="客户端安装配置"><a href="#客户端安装配置" class="headerlink" title="客户端安装配置"></a>客户端安装配置</h1><p>　　Zerotier支持多种客户端的接入，我们可以在它的官网下载页面，找到常见的Windows、MacOS、Linux下载软件，还有不常见的如OpenWRT系统、FreeNAS和群晖等不同的nas系统；下面我们看下几种常用系统是如何来安装的。</p>
 <blockquote>
 <p>笔者将本文所有的安装软件都整理上传了，需要的直接跳转到文末自取。</p>
 </blockquote>
 <h2 id="Windows环境"><a href="#Windows环境" class="headerlink" title="Windows环境"></a>Windows环境</h2><p>　　首先我们需要去官网注册开通一个免费的网络Network，打开<a target="_blank" rel="noopener" href="https://my.zerotier.com/">官网注册地址</a>，点击<code>SIGN UP</code>，填写一系列信息后，重新登录进去，到我们的网络页面；点击<code>Create A Network</code>就可以新建网络：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/Zerotier/new.png" srcset="/img/loading.gif" lazyload alt="创建网络"></p>
 <p>　　在网络页面，我们可以看到我们有多少网络和多少设备，如果是免费用户的话最多只能创建3个网络和连接10个设备；记住我们新创建<strong>网络的ID</strong>，下面需要用到。</p>
 <p>　　然后下载我们<code>ZeroTierOne.msi</code>的安装包，双击安装后我们桌面右下角就会出现Zerotier图标，右击出现一个操作框：</p>
 <p><img src="/images/Zerotier/join.png" srcset="/img/loading.gif" lazyload alt="加入网络"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　点击<code>Join New Network</code>，出现一个弹框，将我们上面的<strong>网络的ID</strong>复制粘贴进去，这样我们就加入这个网络了；但是加入网络后还需要对该设备进行认证，我们点击网络详情页面，找到该设备中Edit按钮，在出现的弹框最上面点击<code>Authorized</code>，然后点击Save即可。</p>
 <p><img src="/images/Zerotier/auth.png" srcset="/img/loading.gif" lazyload alt="加入网络"></p>
 <p>　　这样我们的设备就认证通过了，我们可以通过<code>Managed IPs</code>分配的IP访问到该设备下的服务。</p>
 <h2 id="Linux环境"><a href="#Linux环境" class="headerlink" title="Linux环境"></a>Linux环境</h2><p>　　Linux下安装Zerotier则相对容易，Zerotier提供了一键安装的脚本，我们只需要在Linux环境下输入如下的命令即可：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">curl -s https://install.zerotier.com | sudo bash<br></code></pre></div></td></tr></table></figure>
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　最后看到如下的提示就安装成功了。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">Success! You are ZeroTier address<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 
 <p>　　我们也需要通过命令加入网络：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">sudo zerotier-cli <span class="hljs-built_in">join</span> &lt;NETWORK ID&gt;<br></code></pre></div></td></tr></table></figure>
 
 <p>　　看到如下加入成功的提示即可：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">200 <span class="hljs-built_in">join</span> OK<br></code></pre></div></td></tr></table></figure>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　加入成功后也需要对设备进行认证。</p>
 <p>　　还有一些nas设备会自带的ZeroTier插件，我们切到设备面板，然后输入<code>网络ID</code>，点击<code>启用</code>按钮，即可实现nas设备的接入网络；比如下面就是笔者家中的一台安装iStore的nas设备的配置界面：</p>
 <p><img src="/images/Zerotier/istore.png" srcset="/img/loading.gif" lazyload alt="iStore"></p>
 <p>　　还有Macos和安卓环境的安装也都很简单，这里不再赘述了。</p>
 <h1 id="自建planet服务器"><a href="#自建planet服务器" class="headerlink" title="自建planet服务器"></a>自建planet服务器</h1><p>　　我们上面创建和加入的网络都是官方的，但是由于众所周知的原因，官方的网络延迟比较大，使用起来体验可能不是很友好；因此有自己服务器并且对延迟要求比较高的小伙伴就可以愉快的搭建私有服务器进行玩耍了。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　这里推荐一下笔者目前在用的<a target="_blank" rel="noopener" href="https://www.aliyun.com/minisite/goods?userCode=oe95ob41">阿里云服务器</a>，专门用来部署我自己的planet服务器；滑到下面找到99月一年的ECS实例服务器购买，它不仅性价比极高，而且性能稳定可靠，完全能够满足个人和小型企业的日常需求；无论你是想要搭建个人网站、进行小型项目开发，还是作为学习实践的平台，这款服务器都是一个绝佳的选择；笔者都已经续费到26年了，这样的羊毛不薅更待何时。</p>
 <p><img src="/images/Zerotier/ecs.png" srcset="/img/loading.gif" lazyload alt="服务器实例"></p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　除了服务器之外，这里需要用到一个开源的仓库：<code>docker-zerotier-planet</code>，我们将其克隆到服务器后后执行部署的脚本：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">git <span class="hljs-built_in">clone</span> https://github.com/xubiaolin/docker-zerotier-planet<br><br><span class="hljs-built_in">cd</span> docker-zerotier-planet/<br><br>./deploy.sh<br></code></pre></div></td></tr></table></figure>
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/Zerotier/deploy.png" srcset="/img/loading.gif" lazyload alt="docker部署"></p>
 <p>　　部署成功后，我们需要去开放端口，开放<code>9994/tcp</code>、<code>9994/udp</code>、<code>3443/tcp</code>、<code>3000/tcp</code>4个端口；然后访问http://[公网ip]:3443，进入控制页面，默认账号/密码为：admin/password，修改初始密码。</p>
 <p>　　然后再次登录，点击<code>Add Network</code>，然后输入网络名称，创建一个新的网络，这里我们会得到一个网络的id：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Zerotier/create1.png" srcset="/img/loading.gif" lazyload alt="创建网络"></p>
 <p>　　选中<code>easy setup</code>，输入默认的ip地址范围，提交即可：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Zerotier/setup.png" srcset="/img/loading.gif" lazyload alt="setup"></p>
 <p>　　创建网络后，对于我们加入网络的设备，勾选<code>Authorized</code>选项框即可通过认证：</p>
 <p><img src="/images/Zerotier/detail.png" srcset="/img/loading.gif" lazyload alt="加入网络"></p>
@@ -341,8 +337,8 @@
 <h2 id="替换文件"><a href="#替换文件" class="headerlink" title="替换文件"></a>替换文件</h2><p>　　我们服务器安装好后，还需要对不同客户端进行配置文件替换，将客户端中的配置替换成我们上面服务生成的配置文件；在Windows中，将<code>plant</code>文件覆盖粘贴到<code>C:\ProgramData\ZeroTier\One</code>目录下：</p>
 <p><img src="/images/Zerotier/replace.png" srcset="/img/loading.gif" lazyload alt="Windows替换文件"></p>
 <blockquote>
-<p>需要注意的是，ProgramData目录是一个隐藏文件夹，需要允许查看隐藏目录才可打开。</p>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>需要注意的是，ProgramData目录是一个隐藏文件夹，需要允许查看隐藏目录才可打开。</p>
 </blockquote>
 <blockquote>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
@@ -356,30 +352,30 @@
 <blockquote>
 <p>安卓客户端的安装包笔者也已经整理好了，在文末自取。</p>
 </blockquote>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Zerotier/moon.jpg" srcset="/img/loading.gif" lazyload alt="入轨"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　入轨后，点击底部的加号，还是老样子，输入<code>网络ID</code>，我们就可以在主界面看到一条新建的网络了，点击右边的switch开关即可开启网络：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/Zerotier/fix.jpg" srcset="/img/loading.gif" lazyload alt="ZerotierFix连接上网络"></p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　这里进行一个简单的总结，笔者在日常生活中也体验过很多的内网穿透工具，每家的穿透工具在功能和使用上各有侧重，像基于开源FRP衍生的主要商业化工具ngrok、NATAPP、Cpolar都侧重端口映射，在流量、域名、隧道条数上进行收费，比较适用于部署网站、搭建服务等办公场景下的应用。</p>
 <p>　　而笔者在日常生活中会选择Zerotier的原因，是因为体验下来是一款非常<code>适合家用组网</code>的工具软件，它可以帮助我们十分方便的访问家里的各种设备，以及设备的不同端口；同时Zerotier在软件上对于设备的支持程度也是相当丰富的，Windows、Linux、Macos、安卓和iPhone等常见的系统都能够支持到，甚至我们也能看到Zerotier还支持一些nas版的软件；因此哪怕是在外出的环境下，我们通过身边的手机或平板，也能够很方便的穿透到内网环境。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <blockquote>
 <p>甚至笔者在服务器上安装VSCode网页版后，实现了通过手机远程回公司改代码。</p>
 </blockquote>
 <p>　　而且通过本文的安装教程我们也能看到，只需要让设备安装软件然后加入网络即可，安装组网十分便捷，设备会自动获取IP地址；Zerotier官方在设备数量和网络数量上也有限制，但是对于有公网服务器的同学来说，通过自建服务器可以绕开数量的限制，同时也可以极大降低延迟。</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <blockquote>
 <p>本文所有软件敬请关注公众号【前端壹读】，后台回复关键词【Zerotier】即可获取。</p>
 </blockquote>
 <img src="/images/qrcode.png" srcset="/img/loading.gif" lazyload alt="" align="center" width="40%" style="display:block;margin:0 auto;"/>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
             </div>
             <hr>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
             <div>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
-              <div class="post-metas mb-3">
+              
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p><div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>

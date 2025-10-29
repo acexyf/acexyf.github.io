@@ -277,167 +277,171 @@
 <h1 id="RN简介"><a href="#RN简介" class="headerlink" title="RN简介"></a>RN简介</h1><p>　　React Native(简称RN)是Facebook于2015年4月开源的跨平台移动应用开发框架，用于创建原生移动<code>Android</code>和<code>iOS</code>平台应用程序。它基于Facebook的JavaScript库React，为移动平台创建用户界面。</p>
 <blockquote>
 <p>官方slogan：一次学习，随处编写</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </blockquote>
 <p>　　开发人员可以使用React Native编写Android和iOS应用程序，这些程序的操作和外观都与原生应用程序相似。使用React Native编写的代码也可以跨平台共享，这就允许IOS和Android同时进行高效开发；React Native有以下优势：</p>
 <ul>
 <li>免费的，开源的，有大型的社区支持</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>接近原生性能</li>
 <li>节省跨平台应用程序开发时间</li>
 <li>实时和热重载</li>
 </ul>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　但是它同时也有不少缺点：</p>
 <ul>
 <li>兼容性和调试问题</li>
 <li>缺乏安全稳健性，React Native是一个JavaScript库和开源框架，它在安全性方面存在重大问题</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>React Native在最初渲染之前需要花费大量时间来初始化运行，因为JavaScript线程需要时间来初始化</li>
 <li>仍然需要Native开发人员</li>
 </ul>
-<p>　　那么React Native是如何做到跨平台的呢？我们先看下React和React Native的区别，很多童鞋对他们俩的关系都傻傻分不清：</p>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　那么React Native是如何做到跨平台的呢？我们先看下React和React Native的区别，很多童鞋对他们俩的关系都傻傻分不清：</p>
 <ul>
 <li>React是一个基于JavaScript的应用程序开发框架。</li>
 <li>React Native是一个允许用户开发跨平台和移动应用程序的平台</li>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　首先我们需要知道的是：React只是一个纯JS库，它不涉及任何移动平台的功能，React的代码经过编译后需要JS Engine来进行解析执行；它封装了一套<code>Virtual Dom</code>的概念，实现驱动编程模式，为复杂的Web UI实现了一种无状态管理的机制；但是底层的一些事情，比如驱动原生控件展示、读写磁盘、网络等，它就无能为力了。</p>
 <p>　　但是React Native就不一样了，JSX的源码通过React Native编译后，通过对应平台的<code>Bridge</code>实现了与原生框架的通信；Bridge的作用就是给RN内嵌的JS提供原生接口的扩展供JS调用；所有的原生功能，例如原生控件绘制、图片资源、本地存储、网络访问、地图定位等功能，都是通过Bridge封装成JS接口注入JS Engine供JS调用。</p>
 <p>　　我们通过一张图来具体的看下：</p>
 <p><img src="/images/React-Native-Env/framework.jpeg" srcset="/img/loading.gif" lazyload alt="技术架构"></p>
 <p>　　绿色的部分就是我们应用开发的部分，主要就是我们写的JSX代码；蓝色部分代表公用的跨平台的代码和工具引擎；黄色的部分就是我们的Bridge，和每个原生平台相关的代码；红色部分是每个系统平台的东西。</p>
 <h1 id="软件环境的安装配置"><a href="#软件环境的安装配置" class="headerlink" title="软件环境的安装配置"></a>软件环境的安装配置</h1><p>　　需要的软件</p>
-<ul>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<ul>
 <li>JDK == 1.8</li>
 <li>Android Studio</li>
 <li>Nodejs &gt;= 12</li>
 </ul>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　React Native要求JDK的版本为1.8，我们从<a target="_blank" rel="noopener" href="https://www.oracle.com/java/technologies/downloads/">官网下载</a>适合自己系统的jdk，然后配置系统的环境变量，网上有很多教程，这里就不再赘述。</p>
 <p>　　然后配置Android环境，从<a target="_blank" rel="noopener" href="https://developer.android.google.cn/studio/">官网下载</a>Android Studio，下载下来是一个exe程序：</p>
 <p><img src="/images/React-Native-Env/studio.png" srcset="/img/loading.gif" lazyload alt="Android Studio安装"></p>
 <p>　　在安装界面中我们可以勾选<code>Android Virtual Device</code>：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/React-Native-Env/studio1.png" srcset="/img/loading.gif" lazyload alt="勾选AVD"></p>
 <p>　　Android Studio默认会安装最新版本的Android SDK，我们可以查看它的配置路径，具体路径是<code>Appearance &amp; Behavior → System Settings → Android SDK</code>；默认SDK的路径是如下格式：</p>
 <figure class="highlight moonscript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs moonscript"><span class="hljs-name">C</span>:\Users\你的用户名\AppData\Local\Android\Sdk<br></code></pre></div></td></tr></table></figure>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　RN需要环境变量来知道我们的SDK安装在什么路径下，从而来编译；打开<code>控制面板 -&gt; 系统和安全 -&gt; 系统 -&gt; 高级系统设置 -&gt; 高级 -&gt; 环境变量 -&gt; 新建</code>，创建一个<code>ANDROID_HOME</code>的环境变量，指向我们上面找到的SDK所在的目录。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/React-Native-Env/path.png" srcset="/img/loading.gif" lazyload alt="ANDROID_HOME环境变量"></p>
 <p>　　SDK下有一些工具，我们需要在全局使用，打开<code>控制面板 -&gt; 系统和安全 -&gt; 系统 -&gt; 高级系统设置 -&gt; 高级 -&gt; 环境变量</code>，选中Path变量，然后点击编辑，将以下目录添加进去：</p>
 <figure class="highlight haml"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs haml"><span class="hljs-tag">%<span class="hljs-selector-tag">ANDROID_HOME</span></span>%\platform-tools<br><span class="hljs-tag">%<span class="hljs-selector-tag">ANDROID_HOME</span></span>%\emulator<br><span class="hljs-tag">%<span class="hljs-selector-tag">ANDROID_HOME</span></span>%\tools<br><span class="hljs-tag">%<span class="hljs-selector-tag">ANDROID_HOME</span></span>%\tools\bin<br></code></pre></div></td></tr></table></figure>
 
 <h1 id="adb连接设备"><a href="#adb连接设备" class="headerlink" title="adb连接设备"></a>adb连接设备</h1><p>　　Android Debug Bridge（安卓调试桥），是一个命令行窗口，用于通过电脑端与模拟器或者是安卓设备之间的交互；adb是一个标准的CS结构的工具，主要包含如下三部分：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <ul>
 <li>Client端：运行在开发机器中, 即你的开发PC机. 用来发送adb命令.</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <li>Deamon守护进程：运行在调试设备中, 即的调试手机或模拟器.</li>
 <li>Server端：作为一个后台进程运行在开发机器中, 即你的开发PC机. 用来管理PC中的Client端和手机的Deamon之间的通信.</li>
 </ul>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　adb的下载和安装主要有两种方式，第一种直接下载adb的工具压缩包解压，然后将它的目录配置到环境变量<code>Path</code>中；第二种就是利用上面已经安装的<code>Android Studio</code>，它本身带有adb工具，在SDK目录下的<code>platform-tools</code>中；如果按照上一节配置好<code>Android Studio</code>的环境变量，一般是直接可以调用adb命令的。</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　在命令行输入<code>adb version</code>查看版本号，如果有输出，就已经配置成功了。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ adb version<br>Android Debug Bridge version 1.0.41<br>Version 31.0.3-7562133<br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　配置好环境后，我们还需要打开android手机的<code>USB调试</code>功能；首先要进入手机的开发者模式，在手机<code>设置 -&gt; 关于手机</code>连续点击版本号七次就打开了开发者模式；然后进入<code>设置 -&gt; 开发者选项</code>，打开<code>USB调试</code>以及允许ADB的一些权限，这样手机就配置好了。下面我们来看下adb的一些常用命令。</p>
 <h2 id="adb-start-kill-server"><a href="#adb-start-kill-server" class="headerlink" title="adb start/kill-server"></a>adb start/kill-server</h2><p>　　启动/杀死adb，我们在上面提到的Server端进程，由于adb并不稳定，有时候莫名的问题掉线时，可以先kill-server, 然后start-server来确保Server进程启动. 往往可以解决问题.</p>
 <h2 id="adb-devices"><a href="#adb-devices" class="headerlink" title="adb devices"></a>adb devices</h2><p>　　列举当前连接的调试设备：</p>
 <figure class="highlight accesslog"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs accesslog">$ adb devices<br>List of devices attached<br>cf264b8f	device<br>emulator-<span class="hljs-number">5554</span>	device<br><span class="hljs-number">10.129.164.6:5555</span>	device<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　其中前面的一串字符串代表了手机的serialNumber，后面的<code>device</code>代表手机的连接状态，有以下几种状态：</p>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <ul>
 <li>device：设备已连接</li>
 <li>offline：表示设备未连接成功或无响应；</li>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <li>unauthorized：设备还没有授权，需要在设备上进行确认</li>
 </ul>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　我们可以通过手机的serialNumber看出设备的类型，第一个字母和数字的代表usb连接的设备，emulator表示是一个Android模拟器，而最后一个IP端口的表示是通过无线网络的方式连接的。</p>
 <p>　　如果我们同时连接了多个设备，需要操作其中一台设备，可以通过<code>-s [serialNumber]</code>方式来执行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ adb -s 9d03b4c4 shell wm size<br><span class="hljs-comment"># Physical size: 1080x1920</span><br></code></pre></div></td></tr></table></figure>
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　比如上面的指令，我们指定<code>9d03b4c4</code>这个设备来获取屏幕分辨率。</p>
 <h2 id="adb-shell"><a href="#adb-shell" class="headerlink" title="adb shell"></a>adb shell</h2><p>　　Android系统是基于Linux内核的，所以Linux里的很多命令在Android里也有相同或类似的实现，在adb shell里可以调用；进入设备的shell界面，此时可以使用很多指令：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ adb shell<br>shell@PD1415BA:/ $ <br></code></pre></div></td></tr></table></figure>
 
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　此时如果想要退出可以输入<code>exit</code>，我们也可以通过<code>adb shell [指令]</code>的方式执行，不需要进入设备的shell界面。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 查看所有安装的apk包名</span><br>adb shell pm list package<br><span class="hljs-comment"># 查看实时资源占用情况</span><br>adb shell top<br><span class="hljs-comment"># 截图保存到设备里</span><br>adb shell screencap -p /sdcard/sc.png<br><span class="hljs-comment"># 录制屏幕</span><br>adb shell screenrecord /sdcard/sr.mp4<br><span class="hljs-comment"># 模拟按键/输入</span><br>adb shell input keyevent &lt;keycode&gt;<br><span class="hljs-comment"># 滑动屏幕</span><br>adb shell input swipe 300 1000 300 500<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <h2 id="adb-install-uninstall"><a href="#adb-install-uninstall" class="headerlink" title="adb install/uninstall"></a>adb install/uninstall</h2><p>　　安装和卸载apk</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 安装时指定apk的路径</span><br>$ adb install d:\chrome.apk<br><br><span class="hljs-comment"># 卸载apk时指定包名</span><br><span class="hljs-comment"># 包名是上面pm获取到的package</span><br>$ adb uninstall com.tencent.mobileqq<br></code></pre></div></td></tr></table></figure>
 
 <h2 id="adb-pull-push"><a href="#adb-pull-push" class="headerlink" title="adb pull/push"></a>adb pull/push</h2><p>　　在调试设备和开发PC之间拷贝文件，从PC拷贝文件到设备中用<code>push</code>；用设备拷贝文件到PC中用<code>pull</code>。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ adb push d:\1.png /sdcard/<br>$ adb pull /sdcard/2.png d:\temp\<br></code></pre></div></td></tr></table></figure>
 
-<h2 id="无线连接"><a href="#无线连接" class="headerlink" title="无线连接"></a>无线连接</h2><p>　　通过无线网络连接，我们就可以无需USB实际连接设备，也可以避免USB连接不稳定等问题出现。</p>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<h2 id="无线连接"><a href="#无线连接" class="headerlink" title="无线连接"></a>无线连接</h2><p>　　通过无线网络连接，我们就可以无需USB实际连接设备，也可以避免USB连接不稳定等问题出现。</p>
 <p>　　首先确保ADB的版本不宜过低（至少30.0.0），然后将Android设备和调试PC机连接到同一个局域网；首次连接我们还是需要将手机通过USB连接PC，然后开启调试的端口，端口号建议选用不常用未被占用的端口：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ adb tcpip 1314<br>restarting <span class="hljs-keyword">in</span> TCP mode port: 1314<br></code></pre></div></td></tr></table></figure>
 
-<p>　　端口开启后，我们就可以移除USB的连接，然后查看手机WiFi的IP地址，然后通过adb去进行连接：</p>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　端口开启后，我们就可以移除USB的连接，然后查看手机WiFi的IP地址，然后通过adb去进行连接：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ adb connect 192.168.0.180:1314<br>connected to 192.168.0.180:1314<br></code></pre></div></td></tr></table></figure>
 
 <p>　　连接后我们可以通过<code>devices</code>来查看设备是否连接成功：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ adb devices<br>List of devices attached<br>192.168.0.120:1314      device<br></code></pre></div></td></tr></table></figure>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <h1 id="IOS环境配置"><a href="#IOS环境配置" class="headerlink" title="IOS环境配置"></a>IOS环境配置</h1><p>　　IOS下的环境配置相较于安卓则要容易些，不需要配置那么多繁琐的环境变量，只要把Xcode的IDE和Xcode的命令行工具，可以从<a target="_blank" rel="noopener" href="https://developer.apple.com/xcode/downloads/">APP开发者官网</a>上下载；然后我们还要装一些其他的软件：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">brew install node<br>brew install watchman<br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　Watchman是 facebook 的一个开源项目，它开源用来监视文件并且记录文件的改动情况，当文件变更它可以触发一些操作,例如执行一些命令等等。</p>
 <p>　　然后我们可以使用yarn来代替npm管理我们的依赖包，方便加速下载。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">npm install -g yarn<br></code></pre></div></td></tr></table></figure>
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　启动Xcode，在<code>Xcode -&gt; Preferences  -&gt; Locations</code>菜单中检查是否配置某个版本的<code>Command Line Tools</code>：</p>
 <p>　　<br><img src="/images/React-Native-Env/locations.png" srcset="/img/loading.gif" lazyload alt="Command Line Tools"></p>
 <p>　　安装IOS模拟器只需要在<code>Xcode -&gt; Preferences  -&gt; Components</code>下，就可以看到不同版本的模拟器，下载启动即可。启动模拟器的时候可能会遇到下面的报错：</p>
 <figure class="highlight nginx"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs nginx"><span class="hljs-attribute">fatal</span> <span class="hljs-literal">error</span>: <span class="hljs-string">&#x27;React/RCTBridgeDelegate.h&#x27;</span> file not found <br><span class="hljs-comment">#import &lt;React/RCTBridgeDelegate.h&gt;</span><br></code></pre></div></td></tr></table></figure>
 
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　原因是一些依赖没有安装，切换到ios的目录下进行安装：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /ios<br>pod install<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 
 <h1 id="创建和运行RN项目"><a href="#创建和运行RN项目" class="headerlink" title="创建和运行RN项目"></a>创建和运行RN项目</h1><p>　　我们先安装React Native脚手架，然后通过脚手架来创建一个demo项目：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">npm install -g react-native-cli<br>react-native init RNDemo<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　接下来，我们就需要一台安卓设备了，既可以是真机，也可以是安卓模拟器；安卓官方提供了<code>Android Virtual Device</code>（简称 AVD）的模拟器，在<code>Android Studio</code>中，打开<code>AVD Manager</code>来创建和管理模拟器，不过官方的性能较差，我们可以安装一些第三方的。</p>
 <p>　　这里推荐<a target="_blank" rel="noopener" href="https://www.yeshen.com/">夜神模拟器</a>，安装后通过adb连接，我们可以在项目里运行以下命令进行编译和安装：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">npm run android<br></code></pre></div></td></tr></table></figure>
 
 <p>　　需要注意的是，第一次编译需要下载依赖，会比较慢；如果配置都没有问题，我们就可以在设备上看到我们第一个RN应用了：</p>
 <p><img src="/images/React-Native-Env/hello.png" srcset="/img/loading.gif" lazyload alt="第一个RN应用"></p>
 <p>　　在Mac中则运行<code>npm run ios</code>命令，启动ios的模拟器：</p>
 <p><img src="/images/React-Native-Env/hello-ios.png" srcset="/img/loading.gif" lazyload alt="IOS上RN应用"></p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　我们来看下<code>package.json</code>中有哪些启动命令：</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 启动本地开发服务器</span><br>npm run start<br><br><span class="hljs-comment"># 将APP运行在iOS设备上，仅仅Mac系统支持，且需要安装Xcode。</span><br>npm run ios<br><br><span class="hljs-comment"># 将APP运行在Android设备上，需要Android构建工具。</span><br>npm run android<br>    <br><span class="hljs-comment"># 运行测试用例。</span><br>npm <span class="hljs-built_in">test</span><br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　很多童鞋看到这几个命令很疑惑，<code>npm run start</code>和<code>npm run android/ios</code>不都是启动么？有什么区别？</p>
 <p>　　<code>npm run android/ios</code>在启动开发服务器的同时，会检测有没有设备已经连接；如果有的话，会将开发包安装到开发设备中（安卓or苹果手机），而<code>npm run start</code>只是启动开发服务器，并不安装应用程序，如果你的开发设备中已经有开发包，只需要启动服务器即可。</p>
 <h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><p>　　RN的开发，不仅涉及React中js的调试，还会涉及到样式、原生组件功能的调试，因此，掌握调试方式对我们的后续的开发有很大的帮助。</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　Developer Menu（简称DevMenu）是React Native给开发者定制的一个开发者菜单，来帮助开发者调试React Native应用；如果是在iOS模拟器中运行，可以通过按下<code>Command⌘ + D 快捷键</code>来打开：如果是在<code>Android官网模拟器</code>中，则是<code>Command⌘ + M</code>，在第三方模拟器中一般在侧边栏中有一个菜单键；在Android真机中可以通过摇晃设备来打开。</p>
 <blockquote>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>开发者菜单在生产环境的应用下是不能唤起的。</p>
 </blockquote>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/React-Native-Env/menu.png" srcset="/img/loading.gif" lazyload alt="调试菜单"></p>
 <p>　　我们看到菜单中有下面几个选项：</p>
 <ul>
 <li>Reload：刷新页面</li>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <li>Change Bundle Location：改变打包后的地址</li>
 <li>Show Element Inspect：显示元素检查</li>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <li>Disable Fast Refresh：禁止快速刷新</li>
 <li>Show Perf Monitor：该功能启用后会显示一个监控窗口，显示出实时的内存占用、UI 和 JavaScript 的 FPS 等信息。帮助我们调试性能问题。</li>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
@@ -445,23 +449,24 @@
 <li>Enable Sampling Profiler：启用采样分析器</li>
 <li>Debug：开启调试</li>
 </ul>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　当我们修改RN的代码后，肯定想第一时间就能看到修改后的效果，在原生App的开发中，修改后经常需要重新编译、运行等才可以看到效果；但是RN中我们可以直接通过开发者菜单上的<code>Reload</code>按钮自动完成代码的打包编译和运行，方便我们修改后直接查看效果。</p>
 <p>　　但是RN觉得这样还是要去点击Reload按钮，还不够，有没有什么更加“偷懒”的方式能够自动帮我们触发Reload呢？这就是快速刷新（Fast Refresh）功能，RN在监测到JS代码更改后，自动编译运行，立即就能看更改后的效果；如果觉得太频繁了，可以Disable禁用该功能。</p>
 <p>　　当我们只启动开发服务器，adb也已经连接设备，但是在开发设备中出现<code>No apps connected. Sending &quot;reload&quot; to all React Native apps failed</code>的错误提示时，我们可以在开发者菜单中选择<code>Change Bundle Location</code>，然后输入``<ip>:8081```来连接我们的开发服务器。</p>
 <p>　　<code>Show Element Inspect</code>选项可以调出元素检查的悬浮框，展示当前选中元素的位置、样式、层级关系、盒子模型信息等等，有点类似Chrome的DevTools，让我们可以很方便的调试元素的样式。</p>
 <p><img src="/images/React-Native-Env/inspect.png" srcset="/img/loading.gif" lazyload alt="元素检查"></p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　Debug允许我们在Chrome中调试应用，其调试方式和我们在Web中调试一模一样；点击该选项，会自动启动Chrome浏览器，并且打开一个<code>http://localhost:8081/debugger-ui/</code>的新标签页，在这个标签页里，我们打开开发者工具，就能看到JS输出的日志信息了。</p>
 <p><img src="/images/React-Native-Env/debug1.png" srcset="/img/loading.gif" lazyload alt="输出日志信息"></p>
 <p>　　在<code>Sources Tab</code>页中还可以显示当前调试项目的所有js文件。并在上面进行断点调试。</p>
 <p><img src="/images/React-Native-Env/debug2.png" srcset="/img/loading.gif" lazyload alt="断点调试"></p>
 <h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><p>　　熟悉项目的结构，是项目上手的第一步，也是最重要的一步，有助于我们更好的理解项目，我们来看下项目中每个文件是做什么的：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight jboss-cli"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs jboss-cli">RNDemo                              <br>  ├── <span class="hljs-string">/_test_</span>                  <span class="hljs-comment"># 测试目录</span><br>  ├── <span class="hljs-string">/android</span>                 <span class="hljs-comment"># Android的原生开发目录，可以用Android Studio打开进行原生开发。</span><br>  ├── <span class="hljs-string">/ios</span>                     <span class="hljs-comment"># Ios的原生开发目录，可以用Xcode打开进行原生开发。</span><br>  ├── <span class="hljs-string">.buckconfig</span>              <span class="hljs-comment"># buck的配置文件，buck是Facebook推出的一款高效率的App项目构建工具。</span><br>  ├── <span class="hljs-string">.eslintrc.js</span>             <span class="hljs-comment"># eslint配置文件</span><br>  ├── <span class="hljs-string">.flowconfig</span>              <span class="hljs-comment"># Flow的配置文件</span><br>  ├── <span class="hljs-string">.watchmanconfig</span>          <span class="hljs-comment"># 用于监控bug文件和文件变化，并且可以出发指定的操作。</span><br>  ├── App.js                   <span class="hljs-comment"># 整个App的入口文件，比如整个项目的路由在这里导入</span><br>  ├── app.json                 <span class="hljs-comment"># 给原生app打包用，包括项目名称和手机桌面展示名称</span><br>  ├── index.js                 <span class="hljs-comment"># ios或android的入口</span><br>  ├── metro.config.js          <span class="hljs-comment"># Metro配置文件</span><br></code></pre></div></td></tr></table></figure>
 
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　index.js这个文件是IOS和Android在相应设备上打包运行的入口文件，在<code>0.49</code>之前版本的React Native项目，入口则是<code>index.ios.js</code>和<code>index.android.js</code>两个单独的入口文件。</p>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
             </div>
             <hr>
             <div>

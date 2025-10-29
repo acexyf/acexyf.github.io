@@ -279,42 +279,42 @@
 <figure class="highlight html"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- GET提交 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">action</span>=<span class="hljs-string">&quot;/api/test/get&quot;</span> <span class="hljs-attr">method</span>=<span class="hljs-string">&quot;get&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;password&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span>&gt;</span>提交<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span><br><span class="hljs-comment">&lt;!-- POST提交 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">action</span>=<span class="hljs-string">&quot;/api/test/post&quot;</span> <span class="hljs-attr">method</span>=<span class="hljs-string">&quot;post&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;password&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span>&gt;</span>提交<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span><br></code></pre></div></td></tr></table></figure>
 
 <p>　　两种方式提交后URL上的差别让人们觉得POST相对于GET更安全。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p><img src="/images/Diff-Get-Post/form-get-post.png" srcset="/img/loading.gif" lazyload alt="form-get-post"></p>
 <p>　　然而安全性的说法存在着两个问题：</p>
 <ol>
 <li>抓包后POST请求也是能看到<code>请求体（body）</code>中的数据</li>
 <li>HTTP规范并未规定说 GET 就不能在<code>请求体（body）</code>中传输数据</li>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 </ol>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　既然HTTP规范没有规定，那么为什么就不能传呢？我试着用axios和jQuery来在GET请求体中加入数据，无一例外的失败了；既然框架靠不住那就直接用原生的吧：</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-keyword">var</span> xhr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>();<br>xhr.<span class="hljs-property">onreadystatechange</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;<br>    <span class="hljs-keyword">if</span> (xhr.<span class="hljs-property">readyState</span> == <span class="hljs-number">4</span> &amp;&amp; xhr.<span class="hljs-property">status</span> == <span class="hljs-number">200</span>) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(xhr.<span class="hljs-property">responseText</span>)<br>    &#125;<br>&#125;<br>xhr.<span class="hljs-title function_">open</span>(<span class="hljs-string">&#x27;GET&#x27;</span>, <span class="hljs-string">&#x27;/api/test/get&#x27;</span>, <span class="hljs-literal">true</span>);<br>xhr.<span class="hljs-title function_">setRequestHeader</span>(<span class="hljs-string">&#x27;Content-Type&#x27;</span>, <span class="hljs-string">&#x27;application/x-www-form-urlencoded&#x27;</span>);<br><span class="hljs-comment">//发送请求</span><br>xhr.<span class="hljs-title function_">send</span>(<span class="hljs-string">&#x27;password=123&#x27;</span>);<br></code></pre></div></td></tr></table></figure>
 
 
 <p>　　我们通过express来接收一下传输的数据：</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js"><span class="hljs-comment">//其他代码略</span><br>app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/api/test/get&#x27;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">req, res</span>)&#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(req.<span class="hljs-property">body</span>, <span class="hljs-string">&#x27;get body&#x27;</span>)<br>    res.<span class="hljs-title function_">json</span>(&#123;<br>        <span class="hljs-attr">code</span>: <span class="hljs-number">1</span>,<br>        <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;get&#x27;</span><br>    &#125;)<br>&#125;)<br>app.<span class="hljs-title function_">post</span>(<span class="hljs-string">&#x27;/api/test/post&#x27;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">req, res</span>)&#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(req.<span class="hljs-property">body</span>, <span class="hljs-string">&#x27;post body&#x27;</span>)<br>    res.<span class="hljs-title function_">json</span>(&#123;<br>        <span class="hljs-attr">code</span>: <span class="hljs-number">1</span>,<br>        <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;post&#x27;</span><br>    &#125;)<br>&#125;)<br></code></pre></div></td></tr></table></figure>
 
 <p>　　正当我兴奋的准备接收数据时，现实狠狠的给了我一拳：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">&#123;&#125; <span class="hljs-string">&#x27;get body&#x27;</span><br></code></pre></div></td></tr></table></figure>
 
 <p>　　浏览器并没有往请求体中存放数据，直接把send中传输的数据给丢弃了，那么GET的BODY中真的就不能放数据吗？</p>
 <p><img src="/images/Diff-Get-Post/doubt.jpg" srcset="/img/loading.gif" lazyload alt="doubt"></p>
 <p>　　答案自然是可以的，浏览器由于规范问题不会在GET的请求体中添加数据，那我们可以尝试一下通过Fiddler的Composer来添加：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p><img src="/images/Diff-Get-Post/fiddler_get.png" srcset="/img/loading.gif" lazyload alt="fiddler_get"></p>
 <p>　　这样我们就能在express中看到GET请求中的</p>
 <figure class="highlight js"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs js">&#123; <span class="hljs-attr">password</span>: <span class="hljs-string">&#x27;fiddler_123456&#x27;</span> &#125; <span class="hljs-string">&#x27;get body&#x27;</span><br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p>　　既然GET也能在Body中添加数据，那么POST请求数据的安全性并不是面试官期望听到的回答。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h1 id="数据量角度"><a href="#数据量角度" class="headerlink" title="数据量角度"></a>数据量角度</h1><p>　　常见的GET和POST区别还有GET传输的数据比较少，POST传输数据多；在HTTP规范中并没有对URL的长度和传输的数据大小进行限制，但是在实际开发时，由于浏览器和服务器均对URL的长度进行了限制，因此表现出了GET传输数据少的缺点。在笔者的测试过程中，Chrome的URL长度限制比较好，基本能达到1mb的限制；而在IE11中4kb~5kb的时候浏览器就会自动将URL后的参数丢弃了。</p>
 <p>　　而对于POST请求，由于数据放在请求体中，虽然理论上不会受到限制，但是实际开发中各个服务器也会对POST的数据大小进行一定的限制；比如nginx默认上传图片的大小是2mb，图片超过2mb就会提示<code>413 Request Entity Too Large</code>。</p>
 <p>　　因此不管GET还是POST，数据传输大小都会有限制，只是POST的传输大小相对于GET来说比较大；数据量大小也并不是面试官期望听到的回答。</p>
 <h1 id="缓存角度"><a href="#缓存角度" class="headerlink" title="缓存角度"></a>缓存角度</h1><p>　　GET请求多是用来获取数据的，比如一件商品的信息、商品列表等，在一定时间内，商品的信息不会那么快的变化，因此它通常用于缓存。</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　而POST请求多是用于将表单数据提交到服务端，比如修改姓名、修改密码等操作，需要浏览器必须发送请求到达服务器才能进行操作，因此POST请求不能被缓存。</p>
 <p><img src="/images/Diff-Get-Post/cache.png" srcset="/img/loading.gif" lazyload alt="cache"></p>
 <p>　　从上图可以看出，我们同时将GET和POST请求在浏览器中多提交几次，会发现不管多少次提交，POST请求都是200；而GET请求第一次200，后面的请求会304进行缓存下来。</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <h1 id="编码角度"><a href="#编码角度" class="headerlink" title="编码角度"></a>编码角度</h1><p>　　GET请求由于请求数据一般都是在URL上，所以GET一般都是URL编码；而POST请求由于请求参数的多样性，因此有多重编码方式；一般POST请求有<code>application/x-www-form-urlencoded</code>、<code>multipart/form-data</code>和<code>application/json</code>三种传输方式。</p>
 <p>　　<code>multipart/form-data</code>一般在上传文件的时候通过Html5的FormData新特性来构造上传表单对象会用到这种编码方式，通过FormData上传的请求类似这样：</p>
 <p><img src="/images/Diff-Get-Post/formdata.png" srcset="/img/loading.gif" lazyload alt="formdata"></p>
@@ -323,12 +323,13 @@
 <p>　　随着JSON规范越来越流行，并且浏览器支持程度比较好，<code>application/json</code>编码也越来越被更多的开发者使用；通过Content-Type告诉服务器主体内容是JSON格式的字符串，服务器端就会进行解析；这样的好处是前端人员不需要关心数据结构的复杂度，只要是标准的JSON格式就能提交成功。</p>
 <h1 id="幂等性角度"><a href="#幂等性角度" class="headerlink" title="幂等性角度"></a>幂等性角度</h1><p>　　初次看到<code>幂等</code>这个词很多童鞋都很陌生，我们首先来看一下幂等的定义：</p>
 <blockquote>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>在编程中，一个幂等操作的特点是其任意多次执行所产生的影响均与一次执行的影响相同。幂等函数，或幂等方法，是指可以使用相同参数重复执行，并能获得相同结果的函数。</p>
 </blockquote>
 <p>　　HTTP的幂等是指无论调用多少次，无论调用一次还是一千次，都具有<code>同样的副作用</code>。GET请求用于获取资源，不管调用多少次接口，都不会影响返回的资源；因此我们说<code>GET请求是幂等的</code>。</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">GET /list     <span class="hljs-comment"># 获取列表</span><br>GET /detail/1 <span class="hljs-comment"># 获取详情</span><br></code></pre></div></td></tr></table></figure>
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　比如我们在获取列表数据或者获取详情数据，只是查询数据，不会影响到数据本身，也不会<code>对资源产生副作用</code>；因此我们认为它是幂等的。</p>
 <p>　　这里有的小伙伴可能会提出疑问了，如果通过GET请求返回当前时间，那岂不是返回的结果每时每刻都不一样吗？怎么会幂等呢？</p>
 <p>　　注意，我们这里强调的是<code>一次和N次对资源产生的副作用是相同的</code>，而非单纯的比较结果相同。比如我们<code>GET /news/1</code>用来获取某个新闻，不管我们调用N次返回的都是新闻，没有产生副作用；但是新闻偶尔会更新，返回的结果可能不尽相同。</p>
@@ -336,10 +337,9 @@
 <h1 id="TCP角度"><a href="#TCP角度" class="headerlink" title="TCP角度"></a>TCP角度</h1><p>get会产生一个TCP数据包，POST会产生两个TCP数据包。</p>
 <p>get会发送http header和data给服务端，服务端返回一个200，请求成功。</p>
 <p>post会先发送http header给服务端，告诉服务端等一下会有数据过来，服务端返回100，告诉客户端我已经准备接收数据，post在发送一个data给服务端，服务端返回200，请求成功。</p>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
             </div>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
             <hr>
             <div>
               <div class="post-metas mb-3">

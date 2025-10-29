@@ -281,10 +281,10 @@
 <figure class="highlight crmsh"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs crmsh">git <span class="hljs-keyword">clone</span> <span class="hljs-title">[url</span>]<br></code></pre></div></td></tr></table></figure>
 
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h2 id="2-将文件添加到版本库"><a href="#2-将文件添加到版本库" class="headerlink" title="2.将文件添加到版本库"></a>2.将文件添加到版本库</h2><h3 id="追踪文件"><a href="#追踪文件" class="headerlink" title="追踪文件"></a>追踪文件</h3><figure class="highlight routeros"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs routeros">git <span class="hljs-built_in">add</span> [filename]<br></code></pre></div></td></tr></table></figure>
 <p>或者一次性添加所有未追踪的文件</p>
 <figure class="highlight routeros"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs routeros">git <span class="hljs-built_in">add</span> .<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h3 id="提交到仓库"><a href="#提交到仓库" class="headerlink" title="提交到仓库"></a>提交到仓库</h3><figure class="highlight nginx"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs nginx"><span class="hljs-attribute">git</span> commit -m <span class="hljs-string">&quot;[you description]&quot;</span><br></code></pre></div></td></tr></table></figure>
 
 
@@ -303,31 +303,33 @@
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 </ul>
 <p>　　<br>简要状态下颜色的不同也有区别。如果是红色，则表示该文件修改后没有追踪；是绿色则表示修改后追踪了改文件。</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h2 id="4-对比文件差异"><a href="#4-对比文件差异" class="headerlink" title="4.对比文件差异"></a>4.对比文件差异</h2><p>　　git diff(difference)此命令比较的是工作目录中当前文件和暂存区域快照之间的差异,也就是修改之后还没有暂存起来的变化内容</p>
 <figure class="highlight ebnf"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ebnf"><span class="hljs-attribute">git diff</span><br></code></pre></div></td></tr></table></figure>
 <p>　　如果使用add命令追踪该文件后，diff命令失效。</p>
 <h2 id="5-显示提交的日志"><a href="#5-显示提交的日志" class="headerlink" title="5.显示提交的日志"></a>5.显示提交的日志</h2><figure class="highlight 1c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs 1c">git <span class="hljs-built_in">log</span><br></code></pre></div></td></tr></table></figure>
 <p>　　log命令用于显示从最近到以前的提交日志，commit后面显示的一长串字符数字是该次提交所对应的版本号，每次都不会重复的。log命令显示的信息比较多，可以加上 –pretty=oneline 参数</p>
 <figure class="highlight applescript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs applescript">git <span class="hljs-built_in">log</span> <span class="hljs-comment">--pretty=oneline</span><br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　在下面的版本回退中需要用到提交日志的版本号，这时候就需要复制这个版本号。在windows下复制git窗口中的内容的快捷键是Ctrl+Insert，粘贴是Insert</p>
 <h2 id="6-版本回退"><a href="#6-版本回退" class="headerlink" title="6.版本回退"></a>6.版本回退</h2><figure class="highlight css"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs css">git reset <span class="hljs-attr">--hard</span> <span class="hljs-selector-attr">[LogId]</span><br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　reset命令用于控制版本回退到之前提交时的状态。这边的LogId就是上一节中复制出来的版本号。</p>
 <h2 id="7-撤销修改"><a href="#7-撤销修改" class="headerlink" title="7.撤销修改"></a>7.撤销修改</h2><figure class="highlight ada"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ada">git checkout <span class="hljs-comment">-- [filename]</span><br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　checkout命令让你在工作区做的修改全部撤销，回到上一次commit时的状态。</p>
 <h2 id="8-删除文件"><a href="#8-删除文件" class="headerlink" title="8.删除文件"></a>8.删除文件</h2><p>　　如果你在工作区删除了一个文件，那么status就会提醒你工作区和暂存区不一致。这时候你有两种选择，一个是git rm命令确认删除，</p>
 <figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">git</span> rm<span class="hljs-meta"> [filename]</span><br></code></pre></div></td></tr></table></figure>
 <p>　　这个命令相当于同时进行了删除命令和追踪文件命令，其等价命令如下：</p>
 <figure class="highlight sas"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs sas">rm [<span class="hljs-keyword">filename</span>]<br>git <span class="hljs-keyword">add</span> [<span class="hljs-keyword">filename</span>]<br></code></pre></div></td></tr></table></figure>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　另一个是通过checkout命令找回删除的文件</p>
 <figure class="highlight ada"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs ada">git checkout <span class="hljs-comment">-- [filename]</span><br></code></pre></div></td></tr></table></figure>
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
             </div>
             <hr>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
             <div>
-              
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p><div class="post-metas mb-3">
+              <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>

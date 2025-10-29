@@ -281,82 +281,81 @@
 <li>更完整的功能支持： ChatGLM3-6B 采用了全新设计的 Prompt 格式 ，除正常的多轮对话外。同时原生支持工具调用（Function Call）、代码执行（Code Interpreter）和 Agent 任务等复杂场景。</li>
 <li>更全面的开源序列：除了对话模型 ChatGLM3-6B 外，还开源了基础模型 ChatGLM3-6B-Base 、长文本对话模型 ChatGLM3-6B-32K。以上所有权重对学术研究完全开放 ，在填写 问卷 进行登记后亦允许免费商业使用。</li>
 </ul>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <h1 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h1><p>　　看一下笔者的系统环境：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight scss"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs scss">OS：Ubuntu <span class="hljs-number">22.04</span><span class="hljs-selector-class">.3</span> LTS<br>内存：<span class="hljs-number">32</span>G<br>CPU：<span class="hljs-built_in">Intel</span>(R) <span class="hljs-built_in">Core</span>(TM)<span class="hljs-number">2</span> Duo CPU   T7700  @ <span class="hljs-number">2.40</span>GHz<br></code></pre></div></td></tr></table></figure>
 
 <p>　　首先我们将项目克隆下来：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ git clone https://github.com/THUDM/ChatGLM3.git<br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　由于我们电脑上可能会安装多个模型的环境，每个环境的依赖可能都不一样，因此我们使用Anaconda给ChatGLM3创建虚拟环境，避免环境互相干扰：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ conda create -n chatglm3-demo python=<span class="hljs-number">3</span>.<span class="hljs-number">10</span><br>$ conda activate chatglm3-demo<br>$ pip install -r requirements.txt<br></code></pre></div></td></tr></table></figure>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
 <p>　　</p>
 <h1 id="下载模型数据"><a href="#下载模型数据" class="headerlink" title="下载模型数据"></a>下载模型数据</h1><p>　　本地模型的下载我们可以通过huggingface，但是现在huggingface被墙了，我们可以曲线救国，从魔塔社区下载，提供了两种安装方式，第一种调用社区提供的api下载：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">pip install modelscope<br></code></pre></div></td></tr></table></figure>
 
 <p>　　运行下面python代码：</p>
 <figure class="highlight capnproto"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs capnproto"><span class="hljs-keyword">from</span> modelscope <span class="hljs-keyword">import</span> snapshot_download<br>model_dir = snapshot_download(<span class="hljs-string">&quot;ZhipuAI/chatglm3-6b&quot;</span>, revision = <span class="hljs-string">&quot;v1.0.0&quot;</span>)<br></code></pre></div></td></tr></table></figure>
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 
 <p>　　第二种方式系统要安装Git LFS工具：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ sudo apt-get install git-lfs -y<br></code></pre></div></td></tr></table></figure>
 
-<p>　　然后再克隆数据：</p>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　然后再克隆数据：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">git lfs install<br>git clone https://www.modelscope.cn/ZhipuAI/chatglm3-<span class="hljs-number">6</span>b.git<br></code></pre></div></td></tr></table></figure>
 
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <h1 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h1><p>　　我们可以通过命令启动基于Gradio的网页服务器，首先修改<code>/basic_demo/web_demo_gradio.py</code>文件，几个地方我们修改一下，首先修改我们的模型地址，这里改成你下载的本地模型的路径：</p>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <figure class="highlight python"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs python">-MODEL_PATH = os.environ.get(<span class="hljs-string">&#x27;MODEL_PATH&#x27;</span>, <span class="hljs-string">&#x27;THUDM/chatglm3-6b&#x27;</span>)<br>+MODEL_PATH = os.environ.get(<span class="hljs-string">&#x27;MODEL_PATH&#x27;</span>, <span class="hljs-string">&#x27;/home/corner/github/ChatGLM3/chatglm3-6b&#x27;</span>)<br></code></pre></div></td></tr></table></figure>
 
 
-<p>　　这里我们使用CPU的方式部署，因此改成float：</p>
 <script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　这里我们使用CPU的方式部署，因此改成float：</p>
 <figure class="highlight python"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs python">-model = AutoModel.from_pretrained(MODEL_PATH, trust_remote_code=<span class="hljs-literal">True</span>, device_map=<span class="hljs-string">&quot;auto&quot;</span>).<span class="hljs-built_in">eval</span>()<br>+model = AutoModel.from_pretrained(MODEL_PATH, trust_remote_code=<span class="hljs-literal">True</span>, device_map=<span class="hljs-string">&quot;auto&quot;</span>).<span class="hljs-built_in">float</span>()<br></code></pre></div></td></tr></table></figure>
 
 
 <p>　　最后服务器的地址改成0.0.0.0，我们在局域网内也能访问，端口号也可以自定义：</p>
 <figure class="highlight python"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs python">-demo.launch(server_name=<span class="hljs-string">&quot;127.0.0.1&quot;</span>, server_port=<span class="hljs-number">8501</span>, inbrowser=<span class="hljs-literal">True</span>, share=<span class="hljs-literal">False</span>)<br>+demo.launch(server_name=<span class="hljs-string">&quot;0.0.0.0&quot;</span>, server_port=<span class="hljs-number">8501</span>, inbrowser=<span class="hljs-literal">False</span>, share=<span class="hljs-literal">False</span>)<br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　最后执行命令启动服务：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ python basic_demo/web_demo_gradio.py<br></code></pre></div></td></tr></table></figure>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <p>　　打开(<a href="http://localhost:8501)[http://localhost:8501]即可看到我们的demo页面：">http://localhost:8501)[http://localhost:8501]即可看到我们的demo页面：</a></p>
 <p><img src="/images/Linux-Deploy-ChatGLM/demo.png" srcset="/img/loading.gif" lazyload alt="访问demo页面"></p>
 <p>　　demo界面还是比较简陋的，偏工业风格，这里推荐使用Streamlit，它是一个机器学习、数据可视化的Python框架，它能几行代码就构建出一个精美的在线app应用；我们还是按照上面的方式，修改web_demo_streamlit.py，然后启动：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ streamlit run basic_demo/web_demo_streamlit.py<br></code></pre></div></td></tr></table></figure>
 
-<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 <p>　　可以看到界面变得更加美观了。</p>
 <p><img src="/images/Linux-Deploy-ChatGLM/demo.png" srcset="/img/loading.gif" lazyload alt="访问streamlit页面"></p>
 <h1 id="综合Demo"><a href="#综合Demo" class="headerlink" title="综合Demo"></a>综合Demo</h1><p>　　ChatGLM3-6B还提供了一个综合的Demo，包含了对话、工具调用、代码解释器等功能，我们首先安装ipython内核：</p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ pip install ipython<br>$ ipython kernel install --name chatglm3-demo --user<br></code></pre></div></td></tr></table></figure>
 
 
 <p>　　修改composite_demo/client.py：</p>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 <figure class="highlight python"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs python">- MODEL_PATH = os.environ.get(<span class="hljs-string">&#x27;MODEL_PATH&#x27;</span>, <span class="hljs-string">&#x27;THUDM/chatglm3-6b&#x27;</span>)<br>+ MODEL_PATH = os.environ.get(<span class="hljs-string">&#x27;MODEL_PATH&#x27;</span>, <span class="hljs-string">&#x27;/home/corner/github/ChatGLM3/chatglm3-6b&#x27;</span>)<br><br><br>- AutoModel.from_pretrained(<br>-     MODEL_PATH,<br>-    trust_remote_code=<span class="hljs-literal">True</span>,<br>-    device_map=<span class="hljs-string">&quot;auto&quot;</span><br>- ).<span class="hljs-built_in">eval</span>())<br>+ AutoModel.from_pretrained(<br>+     MODEL_PATH,<br>+    trust_remote_code=<span class="hljs-literal">True</span>,<br>+    device_map=<span class="hljs-string">&quot;auto&quot;</span><br>+ ).<span class="hljs-built_in">float</span>())<br></code></pre></div></td></tr></table></figure>
-
-
-<p>　　启动streamlit服务：</p>
 <p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
+
+
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
+<p>　　启动streamlit服务：</p>
 <figure class="highlight cmd"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs cmd">$ streamlit run composite_demo/main.py<br></code></pre></div></td></tr></table></figure>
 
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
 
 <p><img src="/images/Linux-Deploy-ChatGLM/compose.png" srcset="/img/loading.gif" lazyload alt="综合Demo界面"></p>
+<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
 
             </div>
+<p><a class="prevent_reptile" href="https://www.xieyufei.com" style="font-size:24px" target="_blank" rel="noopener">谢小飞博客专用防爬虫链接，想要看最新的前端博客请点这里</a></p>
             <hr>
             <div>
-<script>if(window.location.hostname.indexOf("xieyufei.com") === -1){ window.location.href = "https://xieyufei.com" }</script>
               <div class="post-metas mb-3">
                 
                   <div class="post-meta mr-3">
